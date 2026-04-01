@@ -1,0 +1,17 @@
+# Telegram bot framework
+python-telegram-bot==21.6
+
+# Web scraping
+playwright==1.44.0
+beautifulsoup4==4.12.3
+lxml==5.2.2
+
+# HTTP clients
+requests==2.32.3
+aiohttp==3.9.5
+
+# AI / LLM
+anthropic==0.28.0
+
+# Environment & config
+python-dotenv==1.0.1
