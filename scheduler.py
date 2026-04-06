@@ -58,16 +58,14 @@ async def _run_scrapers() -> list[dict]:
     """Run all scrapers concurrently and return deduplicated listings."""
     logger.info("[scheduler] Starting all scrapers…")
 
-    # Run Playwright scrapers concurrently; openrent is synchronous so wrap it
-    rm_task   = asyncio.create_task(rightmove.scrape())
-    zo_task   = asyncio.create_task(zoopla.scrape())
+    # Run all three scrapers concurrently
+    rm_task = asyncio.create_task(rightmove.scrape())
+    zo_task = asyncio.create_task(zoopla.scrape())
+    or_task = asyncio.create_task(openrent.scrape())
 
-    # openrent uses requests (sync) — run in thread pool to avoid blocking
-    loop      = asyncio.get_event_loop()
-    or_future = loop.run_in_executor(None, openrent.scrape)
-
-    rm_listings, zo_listings = await asyncio.gather(rm_task, zo_task)
-    or_listings = await or_future
+    rm_listings, zo_listings, or_listings = await asyncio.gather(
+        rm_task, zo_task, or_task
+    )
 
     all_listings = rm_listings + zo_listings + or_listings
     logger.info(
