@@ -101,7 +101,7 @@ async def _scrape_area(browser, area: str, slug: str) -> list[dict]:
                 logger.info("[zoopla] No cards on page %d for %s — done", page_num, area)
                 break
 
-            await page.wait_for_timeout(1_000)  # let lazy images settle
+            await page.wait_for_timeout(500)  # let lazy images settle
 
             cards = await page.query_selector_all(card_sel)
             if not cards:
@@ -162,8 +162,8 @@ async def _scrape_area(browser, area: str, slug: str) -> list[dict]:
             if page_count == 0:
                 break
 
-            # Polite delay between pages to avoid rate-limiting
-            await asyncio.sleep(random.uniform(1.5, 3.0))
+            # Brief delay between pages to avoid rate-limiting
+            await asyncio.sleep(random.uniform(0.5, 1.0))
 
         logger.info("[zoopla] %s → %d listings total", area, len(listings))
 
@@ -177,14 +177,20 @@ async def _scrape_area(browser, area: str, slug: str) -> list[dict]:
 
 async def scrape() -> list[dict]:
     """Run Zoopla scraper across all target areas and return deduplicated listings."""
-    all_listings: list[dict] = []
+    # Semaphore limits concurrent browser contexts to avoid Zoopla rate-limiting
+    sem = asyncio.Semaphore(4)
+
+    async def _scrape_with_sem(browser, area, slug):
+        async with sem:
+            return await _scrape_area(browser, area, slug)
 
     async with async_playwright() as pw:
         browser = await pw.chromium.launch(headless=True)
-        for area, slug in AREAS.items():
-            results = await _scrape_area(browser, area, slug)
-            all_listings.extend(results)
+        results = await asyncio.gather(
+            *[_scrape_with_sem(browser, area, slug) for area, slug in AREAS.items()]
+        )
         await browser.close()
+        all_listings = [listing for area_listings in results for listing in area_listings]
 
     # Deduplicate by URL
     seen: set[str] = set()
