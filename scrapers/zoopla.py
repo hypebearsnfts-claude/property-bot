@@ -1,86 +1,97 @@
 import asyncio, logging, random
+from urllib.parse import quote_plus
 from playwright.async_api import async_playwright, TimeoutError as PWTimeout
 
 logger = logging.getLogger(__name__)
 
 AREAS = {
-    "Covent Garden":      "covent-garden",
-    "Soho":               "soho",
-    "Knightsbridge":      "london/knightsbridge",
-    "Kensington Olympia": "west-kensington",
-    "London Bridge":      "bermondsey",
-    "Tower Hill":         "aldgate",
-    "Baker Street":       "marylebone",
-    "Bond Street":        "mayfair",
-    "Marble Arch":        "london/marble-arch",
-    "Oxford Circus":      "fitzrovia",
-    "Marylebone":         "marylebone",
-    "Regent\'s Park":     "regents-park",
+    "Covent Garden":      "Covent Garden, London",
+    "Soho":               "Soho, London",
+    "Knightsbridge":      "Knightsbridge, London",
+    "Kensington Olympia": "West Kensington, London",
+    "London Bridge":      "London Bridge, London",
+    "Tower Hill":         "Tower Hill, London",
+    "Baker Street":       "Baker Street, London",
+    "Bond Street":        "Bond Street, London",
+    "Marble Arch":        "Marble Arch, London",
+    "Oxford Circus":      "Oxford Circus, London",
+    "Marylebone":         "Marylebone, London",
+    "Regent\'s Park":     "Regent\'s Park, London",
 }
 
-BASE = "https://www.zoopla.co.uk/to-rent/property/{slug}/"
 LISTING_SEL = "a[data-testid*='listing']"
 
-async def _scrape_area(browser, area, slug):
+def _url(search_term, pn=1):
+    q = quote_plus(search_term)
+    return (f"https://www.zoopla.co.uk/to-rent/property/london/"
+            f"?q={q}&beds_min=2&furnished_state=furnished"
+            f"&results_sort=newest_listings&pn={pn}")
+
+async def _scrape_area(browser, area, search_term):
     ctx = await browser.new_context(
         user_agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
         viewport={"width": 1280, "height": 900},
+        locale="en-GB",
     )
     page = await ctx.new_page()
-    listings, accepted = [], False
+    listings = []
+    seen_this_area = set()
+    accepted = False
     try:
-        for pn in range(1, 101):
-            url = f"{BASE.format(slug=slug)}?beds_min=2&furnished_state=furnished&pn={pn}"
+        for pn in range(1, 51):
+            if pn > 1:
+                await asyncio.sleep(random.uniform(3.5, 6.0))
+            url = _url(search_term, pn)
             try:
-                await page.goto(url, wait_until="domcontentloaded", timeout=30_000)
+                await page.goto(url, wait_until="domcontentloaded", timeout=35_000)
             except PWTimeout:
-                logger.warning("[zoopla] %s p%d timeout", area, pn); break
-
+                logger.warning("[zoopla] %s p%d goto timeout", area, pn); break
             if not accepted:
                 try:
-                    await page.locator("button:has-text('Accept all'), button:has-text('Accept All')").first.click(timeout=3_000)
+                    await page.locator("button:has-text('Accept all'), button:has-text('Accept All')").first.click(timeout=4_000)
                     accepted = True
-                    await page.wait_for_timeout(500)
+                    await page.wait_for_timeout(800)
                 except Exception:
                     accepted = True
-
-            # Wait for listings to render (client-side)
+            await page.evaluate("window.scrollTo(0, 400)")
+            await asyncio.sleep(random.uniform(0.4, 0.8))
+            await page.evaluate("window.scrollTo(0, 800)")
             try:
-                await page.wait_for_selector(LISTING_SEL, timeout=12_000)
+                await page.wait_for_selector(LISTING_SEL, timeout=18_000)
             except PWTimeout:
-                logger.info("[zoopla] %s p%d: no listings", area, pn); break
-
-            await asyncio.sleep(random.uniform(0.3, 0.6))
-
-            # Extract all listing data via JS
+                logger.info("[zoopla] %s p%d: selector timeout", area, pn); break
+            await asyncio.sleep(random.uniform(0.5, 1.0))
             cards_data = await page.evaluate(r"""
                 (sel) => {
                     const links = document.querySelectorAll(sel);
                     return Array.from(links).map(a => {
                         if (!a.href || a.href.includes('/new-homes/')) return null;
-                        // Skip let agreed
                         const text = a.innerText.toLowerCase();
                         if (text.includes('let agreed')) return null;
-                        const price = a.querySelector('[class*="Price"], [class*="price"], [data-testid*="price"]');
-                        const addr = a.querySelector('[class*="address"], [class*="Address"], [data-testid*="address"]');
-                        const title = a.querySelector('[class*="listing-results-attr"], [class*="PropertyType"], [data-testid*="title"], h2, [class*="title"]');
+                        const price = a.querySelector('[data-testid*="price"], [class*="Price"], [class*="price"]');
+                        const addr  = a.querySelector('[data-testid*="address"], [class*="address"], [class*="Address"]');
+                        const title = a.querySelector('[data-testid*="title"], h2, [class*="title"], [class*="Title"]');
                         return {
-                            url: a.href,
-                            price: price ? price.innerText.trim() : 'Price N/A',
-                            address: addr ? addr.innerText.trim().replace(/\s+/g,' ') : '',
-                            title: title ? title.innerText.trim() : 'Property',
+                            url:     a.href,
+                            price:   price ? price.innerText.trim() : 'Price N/A',
+                            address: addr  ? addr.innerText.trim().replace(/\s+/g,' ') : '',
+                            title:   title ? title.innerText.trim() : 'Property',
                         };
                     }).filter(Boolean);
                 }
             """, LISTING_SEL)
-
+            page_urls = {d['url'] for d in cards_data if d.get('url')}
+            if pn > 1 and page_urls and page_urls.issubset(seen_this_area):
+                logger.info("[zoopla] %s p%d: all dupes — end of results", area, pn); break
             cnt = 0
             for d in cards_data:
-                listings.append({"source":"zoopla","area":area,
-                                  "title":d["title"],"price":d["price"],
-                                  "address":d["address"],"url":d["url"]})
-                cnt += 1
-
+                u = d.get('url', '')
+                if u and u not in seen_this_area:
+                    seen_this_area.add(u)
+                    listings.append({"source":"zoopla","area":area,
+                                     "title":d["title"],"price":d["price"],
+                                     "address":d["address"],"url":u})
+                    cnt += 1
             logger.info("[zoopla] %s p%d: +%d (total %d)", area, pn, cnt, len(listings))
             if cnt == 0:
                 break
@@ -92,18 +103,18 @@ async def _scrape_area(browser, area, slug):
     return listings
 
 async def scrape():
-    sem = asyncio.Semaphore(4)
-    async def _s(browser, area, slug):
-        async with sem: return await _scrape_area(browser, area, slug)
+    sem = asyncio.Semaphore(2)
+    async def _s(browser, area, term):
+        async with sem: return await _scrape_area(browser, area, term)
     async with async_playwright() as pw:
         browser = await pw.chromium.launch(headless=True)
         results = await asyncio.gather(
-            *[_s(browser, a, s) for a, s in AREAS.items()],
+            *[_s(browser, a, t) for a, t in AREAS.items()],
             return_exceptions=True,
         )
         await browser.close()
     all_listings = []
-    for r in results:
+    for r in results: 
         if isinstance(r, list): all_listings.extend(r)
     seen, unique = set(), []
     for lst in all_listings:
