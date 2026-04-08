@@ -104,10 +104,15 @@ def score_listing(listing: dict) -> dict:
             model=_MODEL,
             max_tokens=256,
             system=_SYSTEM_PROMPT,
-            messages=[{"role": "user", "content": user_msg}],
+            messages=[{"role": "user", "content": (__import__("json").dumps(user_msg, indent=2) if isinstance(user_msg, dict) else str(user_msg))}],
         )
-        raw = message.content[0].text.strip()
-
+        raw = message.content[0].text.strip() if message.content else ""
+        if raw.startswith("```"):
+            raw = raw.split("```")[1]
+            if raw.startswith("json"): raw = raw[4:]
+            raw = raw.strip()
+        if not raw:
+            return _default
         import json
         data = json.loads(raw)
         return {
