@@ -7,7 +7,7 @@ AREAS = {
     "Covent Garden":      "REGION%5E87501",
     "Soho":               "REGION%5E87529",
     "Knightsbridge":      "REGION%5E85242",
-    "Kensington Olympia": "STATION%5E5054",
+    "West Kensington":    "STATION%5E5054",
     "London Bridge":      "STATION%5E5792",
     "Tower Hill":         "STATION%5E9290",
     "Baker Street":       "STATION%5E488",
@@ -76,11 +76,29 @@ async def _scrape_area(browser, area, loc_id):
                         const price = card.querySelector('[class*="Price_price"], [class*="propertyCard-priceValue"], [class*="price__"]');
                         const addr = card.querySelector('address, [class*="Address_address"], [class*="propertyCard-address"]');
                         const title = card.querySelector('[class*="propertyCard-title"], h2, [class*="Title"]');
+
+                        // Beds/baths/sqft from features text
+                        const featText = card.innerText || '';
+                        const bathMatch = featText.match(/(\d+)\s*bath/i);
+                        const sqftMatch = featText.match(/([\d,]+)\s*sq\.?\s*ft/i)
+                                       || featText.match(/([\d,]+)\s*sqft/i);
+                        const sqmMatch  = featText.match(/([\d,]+)\s*(?:sq\.?\s*m(?!\w)|sqm)/i);
+                        let sqft = null;
+                        if (sqftMatch) sqft = parseInt(sqftMatch[1].replace(/,/g,''));
+                        else if (sqmMatch) sqft = Math.round(parseInt(sqmMatch[1].replace(/,/g,'')) * 10.764);
+
+                        // Agent name
+                        const agentEl = card.querySelector('[class*="ContactBlock_contactTitle"], [class*="agentLogo"], .propertyCard-contactsItem span, [data-test="agent-title"]');
+                        const agent = agentEl ? agentEl.innerText.trim() : '';
+
                         return {
-                            url: link.href || '',
-                            price: price ? price.innerText.trim() : 'Price N/A',
-                            address: addr ? addr.innerText.trim().replace(/\s+/g,' ') : '',
-                            title: title ? title.innerText.trim() : 'Property',
+                            url:     link.href || '',
+                            price:   price ? price.innerText.trim() : 'Price N/A',
+                            address: addr  ? addr.innerText.trim().replace(/\s+/g,' ') : '',
+                            title:   title ? title.innerText.trim() : 'Property',
+                            baths:   bathMatch ? parseInt(bathMatch[1]) : null,
+                            sqft:    sqft,
+                            agent:   agent,
                         };
                     }).filter(Boolean);
                 }
@@ -88,9 +106,17 @@ async def _scrape_area(browser, area, loc_id):
 
             page_count = 0
             for d in cards_data:
-                listings.append({"source":"rightmove","area":area,
-                                  "title":d["title"],"price":d["price"],
-                                  "address":d["address"],"url":d["url"]})
+                listings.append({
+                    "source":  "rightmove",
+                    "area":    area,
+                    "title":   d["title"],
+                    "price":   d["price"],
+                    "address": d["address"],
+                    "url":     d["url"],
+                    "baths":   d.get("baths"),
+                    "sqft":    d.get("sqft"),
+                    "agent":   d.get("agent", ""),
+                })
                 page_count += 1
 
             logger.info("[rightmove] %s idx=%d +%d (total %d/%d)", area, index, page_count, len(listings), total)

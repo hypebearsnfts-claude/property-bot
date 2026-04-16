@@ -2,9 +2,8 @@ name: Daily Property Scrape
 
 on:
   schedule:
-    # Runs every day at 08:00 UTC (09:00 BST / 08:00 GMT)
-    - cron: "0 8 * * *"
-  workflow_dispatch: # Allow manual trigger from GitHub UI
+    - cron: "59 23 * * *"   # 23:59 UTC every day
+  workflow_dispatch:         # allow manual trigger from GitHub UI
 
 jobs:
   scrape:
@@ -14,11 +13,19 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Python
+      - name: Set up Python 3.11
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: "3.11"
           cache: "pip"
+
+      - name: Restore seen_listings cache
+        uses: actions/cache@v4
+        with:
+          path: seen_listings.json
+          key: seen-listings-${{ github.run_id }}
+          restore-keys: |
+            seen-listings-
 
       - name: Install Python dependencies
         run: pip install -r requirements.txt
@@ -29,8 +36,24 @@ jobs:
       - name: Run scheduler
         env:
           TELEGRAM_RESEARCH_BOT_TOKEN: ${{ secrets.TELEGRAM_RESEARCH_BOT_TOKEN }}
-          TELEGRAM_FILTER_BOT_TOKEN: ${{ secrets.TELEGRAM_FILTER_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-          GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          TELEGRAM_FILTER_BOT_TOKEN:   ${{ secrets.TELEGRAM_FILTER_BOT_TOKEN }}
+          TELEGRAM_RESEARCH_CHAT_ID:   ${{ secrets.TELEGRAM_CHAT_ID }}
+          TELEGRAM_FILTER_CHAT_ID:     ${{ secrets.TELEGRAM_CHAT_ID }}
+          GOOGLE_MAPS_API_KEY:         ${{ secrets.GOOGLE_MAPS_API_KEY }}
+          ANTHROPIC_API_KEY:           ${{ secrets.ANTHROPIC_API_KEY }}
         run: python scheduler.py
+
+      - name: Save seen_listings cache
+        if: always()   # save even if scheduler partially fails
+        uses: actions/cache@v4
+        with:
+          path: seen_listings.json
+          key: seen-listings-${{ github.run_id }}
+
+      - name: Notify on failure
+        if: failure()
+        run: |
+          curl -s -X POST \
+            "https://api.telegram.org/bot${{ secrets.TELEGRAM_FILTER_BOT_TOKEN }}/sendMessage" \
+            -d "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}" \
+            -d "text=❌ Daily run failed. Check GitHub Actions logs."

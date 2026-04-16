@@ -5,29 +5,27 @@ from playwright.async_api import async_playwright, TimeoutError as PWTimeout
 logger = logging.getLogger(__name__)
 
 AREAS = {
-    "Covent Garden":      "Covent Garden, London",
-    "Soho":               "Soho, London",
-    "Knightsbridge":      "Knightsbridge, London",
-    "Kensington Olympia": "West Kensington, London",
-    "London Bridge":      "London Bridge, London",
-    "Tower Hill":         "Tower Hill, London",
-    "Baker Street":       "Baker Street, London",
-    "Bond Street":        "Bond Street, London",
-    "Marble Arch":        "Marble Arch, London",
-    "Oxford Circus":      "Oxford Circus, London",
-    "Marylebone":         "Marylebone, London",
-    "Regent\'s Park":     "Regent\'s Park, London",
+    "Covent Garden":   "covent-garden",
+    "Soho":            "soho",
+    "Knightsbridge":   "sw1x",
+    "West Kensington": "west-kensington",
+    "London Bridge":   "se1",
+    "Tower Hill":      "ec3",
+    "Baker Street":    "marylebone",
+    "Bond Street":     "mayfair",
+    "Marble Arch":     "w1h",
+    "Oxford Circus":   "fitzrovia",
+    "Marylebone":      "marylebone",
+    "Regent's Park":  "regents-park",
 }
 
 LISTING_SEL = "a[data-testid*='listing']"
 
-def _url(search_term, pn=1):
-    q = quote_plus(search_term)
-    return (f"https://www.zoopla.co.uk/to-rent/property/london/"
-            f"?q={q}&beds_min=2&furnished_state=furnished"
-            f"&results_sort=newest_listings&pn={pn}")
+def _url(slug, pn=1):
+    return (f"https://www.zoopla.co.uk/to-rent/property/{slug}/"
+            f"?beds_min=2&furnished_state=furnished&results_sort=newest_listings&pn={pn}")
 
-async def _scrape_area(browser, area, search_term):
+async def _scrape_area(browser, area, slug):
     ctx = await browser.new_context(
         user_agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
         viewport={"width": 1280, "height": 900},
@@ -41,7 +39,7 @@ async def _scrape_area(browser, area, search_term):
         for pn in range(1, 51):
             if pn > 1:
                 await asyncio.sleep(random.uniform(3.5, 6.0))
-            url = _url(search_term, pn)
+            url = _url(slug, pn)
             try:
                 await page.goto(url, wait_until="domcontentloaded", timeout=35_000)
             except PWTimeout:
@@ -71,11 +69,29 @@ async def _scrape_area(browser, area, search_term):
                         const price = a.querySelector('[data-testid*="price"], [class*="Price"], [class*="price"]');
                         const addr  = a.querySelector('[data-testid*="address"], [class*="address"], [class*="Address"]');
                         const title = a.querySelector('[data-testid*="title"], h2, [class*="title"], [class*="Title"]');
+
+                        // Features text (Zoopla often shows "X bed • X bath • X sq ft")
+                        const featText = a.innerText || '';
+                        const bathMatch = featText.match(/(\d+)\s*bath/i);
+                        const sqftMatch = featText.match(/([\d,]+)\s*sq\.?\s*ft/i)
+                                       || featText.match(/([\d,]+)\s*sqft/i);
+                        const sqmMatch  = featText.match(/([\d,]+)\s*(?:sq\.?\s*m(?!\w)|sqm)/i);
+                        let sqft = null;
+                        if (sqftMatch) sqft = parseInt(sqftMatch[1].replace(/,/g,''));
+                        else if (sqmMatch) sqft = Math.round(parseInt(sqmMatch[1].replace(/,/g,'')) * 10.764);
+
+                        // Agent name
+                        const agentEl = a.querySelector('[data-testid="listing-agent-name"], [class*="AgentName"], [class*="agent-name"], [class*="BranchName"]');
+                        const agent = agentEl ? agentEl.innerText.trim() : '';
+
                         return {
                             url:     a.href,
                             price:   price ? price.innerText.trim() : 'Price N/A',
                             address: addr  ? addr.innerText.trim().replace(/\s+/g,' ') : '',
                             title:   title ? title.innerText.trim() : 'Property',
+                            baths:   bathMatch ? parseInt(bathMatch[1]) : null,
+                            sqft:    sqft,
+                            agent:   agent,
                         };
                     }).filter(Boolean);
                 }
@@ -88,9 +104,17 @@ async def _scrape_area(browser, area, search_term):
                 u = d.get('url', '')
                 if u and u not in seen_this_area:
                     seen_this_area.add(u)
-                    listings.append({"source":"zoopla","area":area,
-                                     "title":d["title"],"price":d["price"],
-                                     "address":d["address"],"url":u})
+                    listings.append({
+                        "source":  "zoopla",
+                        "area":    area,
+                        "title":   d["title"],
+                        "price":   d["price"],
+                        "address": d["address"],
+                        "url":     u,
+                        "baths":   d.get("baths"),
+                        "sqft":    d.get("sqft"),
+                        "agent":   d.get("agent", ""),
+                    })
                     cnt += 1
             logger.info("[zoopla] %s p%d: +%d (total %d)", area, pn, cnt, len(listings))
             if cnt == 0:

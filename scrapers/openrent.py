@@ -1,4 +1,4 @@
-import asyncio, logging
+import asyncio, logging, re
 from playwright.async_api import async_playwright, TimeoutError as PWTimeout
 
 logger = logging.getLogger(__name__)
@@ -7,7 +7,7 @@ AREAS = {
     "Covent Garden":      ("covent-garden-london",      "Covent Garden London"),
     "Soho":               ("soho-london",               "Soho London"),
     "Knightsbridge":      ("knightsbridge-london",       "Knightsbridge London"),
-    "Kensington Olympia": ("west-kensington-london",     "West Kensington London"),
+    "West Kensington":    ("west-kensington-london",     "West Kensington London"),
     "London Bridge":      ("london-bridge-london",       "London Bridge London"),
     "Tower Hill":         ("tower-hill-london",          "Tower Hill London"),
     "Baker Street":       ("baker-street-london",        "Baker Street London"),
@@ -61,8 +61,28 @@ async def _scrape_area(browser, area, slug, term):
                 price = ((await price_el.inner_text()).strip() + " /month") if price_el else "Price N/A"
                 title_el = await card.query_selector("div.fw-medium, p.fw-medium")
                 title = (await title_el.inner_text()).strip() if title_el else area
-                listings.append({"source":"openrent","area":area,
-                                  "title":title,"price":price,"address":title,"url":href})
+
+                # Extract baths + sqft from full card text
+                card_text = await card.inner_text()
+                bath_m = re.search(r"(\d+)\s*bath", card_text, re.IGNORECASE)
+                sqft_m = re.search(r"([\d,]+)\s*(?:sq\.?\s*ft|sqft)", card_text, re.IGNORECASE)
+                sqm_m  = re.search(r"([\d,]+)\s*(?:sq\.?\s*m\b|sqm|m²)", card_text, re.IGNORECASE)
+                sqft = None
+                if sqft_m:
+                    sqft = int(sqft_m.group(1).replace(",", ""))
+                elif sqm_m:
+                    sqft = int(int(sqm_m.group(1).replace(",", "")) * 10.764)
+
+                listings.append({
+                    "source":  "openrent",
+                    "area":    area,
+                    "title":   title,
+                    "price":   price,
+                    "address": title,
+                    "url":     href,
+                    "baths":   int(bath_m.group(1)) if bath_m else None,
+                    "sqft":    sqft,
+                })
             except Exception:
                 continue
     except Exception as exc:

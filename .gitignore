@@ -28,6 +28,8 @@ logs/
 *.sqlite
 *.db
 data/
+seen_listings.json
+listings.json
 
 # ── Build & dist ──────────────────────────────────────────────────────────────
 build/
