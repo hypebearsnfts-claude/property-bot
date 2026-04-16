@@ -22,7 +22,7 @@ BASE = "https://www.rightmove.co.uk/property-to-rent/find.html"
 CARD_SEL = "div[class*='PropertyCard_propertyCardContainerWrapper']"
 
 def _url(loc_id, index=0):
-    r = "&radius=0.5" if "STATION" in loc_id else ""
+    r = "&radius=0.25" if "STATION" in loc_id else ""
     return (f"{BASE}?locationIdentifier={loc_id}{r}"
             f"&minBedrooms=2&furnishTypes=furnished"
             f"&includeLetAgreed=false&sortType=6&index={index}&channel=RENT")

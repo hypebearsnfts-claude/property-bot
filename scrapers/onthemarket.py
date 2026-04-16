@@ -43,6 +43,11 @@ AREAS = {
 
 BASE = "https://www.onthemarket.com/to-rent/property/{postcode}/"
 
+# Hard cap per area — OTM district slugs are very broad and most listings lack
+# full postcodes, so the scheduler's postcode filter can't cull them. We stop
+# paginating early once this many unique listings have been collected.
+_MAX_PER_AREA = 25
+
 _UA = ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
        "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36")
 
@@ -206,6 +211,8 @@ async def _scrape_area(browser, area: str, postcode: str) -> list[dict]:
 
             new_on_page = 0
             for d in cards_data:
+                if len(listings) >= _MAX_PER_AREA:
+                    break
                 url_str = d.get("url", "")
                 if not url_str or url_str in seen:
                     continue
@@ -231,7 +238,9 @@ async def _scrape_area(browser, area: str, postcode: str) -> list[dict]:
 
             logger.info("[otm] %s p%d: +%d (total %d)", area, pn, new_on_page, len(listings))
 
-            if new_on_page == 0:
+            if new_on_page == 0 or len(listings) >= _MAX_PER_AREA:
+                if len(listings) >= _MAX_PER_AREA:
+                    logger.info("[otm] %s: reached cap of %d — stopping early", area, _MAX_PER_AREA)
                 break
 
     except Exception as exc:
