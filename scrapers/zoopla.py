@@ -4,25 +4,29 @@ from playwright.async_api import async_playwright, TimeoutError as PWTimeout
 
 logger = logging.getLogger(__name__)
 
+# Station slugs for Zoopla's /station/tube/ URL format — confirmed live 2026-04-17.
+# All use radius=0.25 miles, matching Rightmove STATION and OTM station searches.
+# Soho has no tube station; Piccadilly Circus is the central Soho stop.
+# Tower Hill is the correct tube station (previously used broad "ec3" or "tower-bridge").
 AREAS = {
     "Covent Garden":   "covent-garden",
-    "Soho":            "soho",
-    "Knightsbridge":   "sw1x",
+    "Soho":            "piccadilly-circus",
+    "Knightsbridge":   "knightsbridge",
     "West Kensington": "west-kensington",
-    "London Bridge":   "se1",
-    "Tower Hill":      "tower-bridge",  # was "ec3" (too broad); tower-bridge = 0.25mi confirmed
-    "Baker Street":    "marylebone",
-    "Bond Street":     "mayfair",
-    "Marble Arch":     "w1h",
-    "Oxford Circus":   "fitzrovia",
+    "London Bridge":   "london-bridge",
+    "Tower Hill":      "tower-hill",
+    "Baker Street":    "baker-street",
+    "Bond Street":     "bond-street",
+    "Marble Arch":     "marble-arch",
+    "Oxford Circus":   "oxford-circus",
     "Marylebone":      "marylebone",
-    "Regent's Park":  "regents-park",
+    "Regent's Park":   "regents-park",
 }
 
 LISTING_SEL = "a[data-testid*='listing']"
 
 def _url(slug, pn=1):
-    return (f"https://www.zoopla.co.uk/to-rent/property/{slug}/"
+    return (f"https://www.zoopla.co.uk/to-rent/property/station/tube/{slug}/"
             f"?beds_min=2&furnished_state=furnished&radius=0.25&results_sort=newest_listings&pn={pn}")
 
 async def _scrape_area(browser, area, slug):
