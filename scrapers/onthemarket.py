@@ -13,8 +13,10 @@ HTML structure (confirmed 2026-04-16 via live inspection):
   Agent:    leaf div containing agency name
   Cookie:   #ccc-recommended-settings  (Cookie Control, not OneTrust)
 
-URL format: postcode district slugs — e.g. /wc2/, /sw1x/
-  Old area-name slugs (covent-garden-london) are no longer recognised by OTM.
+URL format: station slugs with radius — e.g. /baker-street-station/?radius=0.25
+  Confirmed 2026-04-17: OTM supports the same station-slug + radius pattern as
+  Rightmove, giving the same tight 0.25-mile circles around each tube station.
+  Previously used postcode district slugs (nw1, se1) which covered huge areas.
 """
 
 import asyncio
@@ -25,38 +27,35 @@ from playwright.async_api import async_playwright, TimeoutError as PWTimeout
 
 logger = logging.getLogger(__name__)
 
-# Postcode district slugs — confirmed working as of 2026-04
+# Station slugs — confirmed live on OTM 2026-04-17
+# Same 0.25-mile radius as Rightmove STATION searches.
+# Soho: no "Soho station" exists; Piccadilly Circus is the central Soho tube stop.
 AREAS = {
-    "Covent Garden":   "wc2h",   # WC2H = Covent Garden/Seven Dials (not all of WC2)
-    "Soho":            "w1d",    # W1D = Soho core (Dean St, Wardour St)
-    "Knightsbridge":   "sw1x",   # SW1X = Knightsbridge/Sloane St
-    "West Kensington": "w14",    # W14 = West Kensington only
-    "London Bridge":   "se1",    # SE1 = London Bridge area
-    "Tower Hill":      "ec3n",   # EC3N = Tower Hill/Aldgate (not all of EC3)
-    "Baker Street":    "nw1",    # NW1 = filtered to sectors 5-6 post-scrape
-    "Bond Street":     "w1k",    # W1K = Bond Street/Mayfair
-    "Marble Arch":     "w1h",    # W1H = Marble Arch/Bryanston Sq
-    "Oxford Circus":   "w1b",    # W1B = Oxford Circus/Regent St
-    "Marylebone":      "w1u",    # W1U = Marylebone High St
-    "Regent's Park":   "nw8",    # NW8 = St John's Wood/Regent's Park (filtered post-scrape)
+    "Covent Garden":   "covent-garden-station",
+    "Soho":            "piccadilly-circus-station",
+    "Knightsbridge":   "knightsbridge-station",
+    "West Kensington": "west-kensington-station",
+    "London Bridge":   "london-bridge-station",
+    "Tower Hill":      "tower-hill-station",
+    "Baker Street":    "baker-street-station",
+    "Bond Street":     "bond-street-station",
+    "Marble Arch":     "marble-arch-station",
+    "Oxford Circus":   "oxford-circus-station",
+    "Marylebone":      "marylebone-station",
+    "Regent's Park":   "regents-park-station",
 }
 
-BASE = "https://www.onthemarket.com/to-rent/property/{postcode}/"
-
-# Hard cap per area — OTM district slugs are very broad and most listings lack
-# full postcodes, so the scheduler's postcode filter can't cull them. We stop
-# paginating early once this many unique listings have been collected.
-_MAX_PER_AREA = 25
+BASE = "https://www.onthemarket.com/to-rent/property/{slug}/"
 
 _UA = ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
        "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36")
 
 
-def _url(postcode: str, page: int = 1) -> str:
+def _url(slug: str, page: int = 1) -> str:
     return (
-        f"{BASE.format(postcode=postcode)}"
+        f"{BASE.format(slug=slug)}"
         f"?min-bedrooms=2&furnishing=furnished&include-let-agreed=false"
-        f"&page={page}"
+        f"&radius=0.25&page={page}"
     )
 
 
@@ -160,7 +159,7 @@ _EXTRACT_JS = r"""
 """
 
 
-async def _scrape_area(browser, area: str, postcode: str) -> list[dict]:
+async def _scrape_area(browser, area: str, slug: str) -> list[dict]:
     ctx = await browser.new_context(
         user_agent=_UA,
         viewport={"width": 1280, "height": 900},
@@ -177,9 +176,9 @@ async def _scrape_area(browser, area: str, postcode: str) -> list[dict]:
                 await asyncio.sleep(random.uniform(2.5, 4.5))
 
             try:
-                await page.goto(_url(postcode, pn), wait_until="domcontentloaded", timeout=35_000)
+                await page.goto(_url(slug, pn), wait_until="domcontentloaded", timeout=35_000)
             except PWTimeout:
-                logger.warning("[otm] %s p%d: page load timeout", area, pn)
+                logger.warning("[otm] %s p%d: page load timeout (slug=%s)", area, pn, slug)
                 break
 
             # Give React time to hydrate and render listings
@@ -211,8 +210,6 @@ async def _scrape_area(browser, area: str, postcode: str) -> list[dict]:
 
             new_on_page = 0
             for d in cards_data:
-                if len(listings) >= _MAX_PER_AREA:
-                    break
                 url_str = d.get("url", "")
                 if not url_str or url_str in seen:
                     continue
@@ -238,9 +235,7 @@ async def _scrape_area(browser, area: str, postcode: str) -> list[dict]:
 
             logger.info("[otm] %s p%d: +%d (total %d)", area, pn, new_on_page, len(listings))
 
-            if new_on_page == 0 or len(listings) >= _MAX_PER_AREA:
-                if len(listings) >= _MAX_PER_AREA:
-                    logger.info("[otm] %s: reached cap of %d — stopping early", area, _MAX_PER_AREA)
+            if new_on_page == 0:
                 break
 
     except Exception as exc:
@@ -256,14 +251,14 @@ async def scrape() -> list[dict]:
     """Scrape all configured areas on OnTheMarket. Returns deduplicated listings."""
     sem = asyncio.Semaphore(2)
 
-    async def _guarded(browser, area, postcode):
+    async def _guarded(browser, area, slug):
         async with sem:
-            return await _scrape_area(browser, area, postcode)
+            return await _scrape_area(browser, area, slug)
 
     async with async_playwright() as pw:
         browser = await pw.chromium.launch(headless=True)
         results = await asyncio.gather(
-            *[_guarded(browser, a, p) for a, p in AREAS.items()],
+            *[_guarded(browser, a, s) for a, s in AREAS.items()],
             return_exceptions=True,
         )
         await browser.close()

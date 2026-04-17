@@ -10,7 +10,7 @@ AREAS = {
     "Knightsbridge":   "sw1x",
     "West Kensington": "west-kensington",
     "London Bridge":   "se1",
-    "Tower Hill":      "ec3",
+    "Tower Hill":      "tower-bridge",  # was "ec3" (too broad); tower-bridge = 0.25mi confirmed
     "Baker Street":    "marylebone",
     "Bond Street":     "mayfair",
     "Marble Arch":     "w1h",
@@ -23,7 +23,7 @@ LISTING_SEL = "a[data-testid*='listing']"
 
 def _url(slug, pn=1):
     return (f"https://www.zoopla.co.uk/to-rent/property/{slug}/"
-            f"?beds_min=2&furnished_state=furnished&results_sort=newest_listings&pn={pn}")
+            f"?beds_min=2&furnished_state=furnished&radius=0.25&results_sort=newest_listings&pn={pn}")
 
 async def _scrape_area(browser, area, slug):
     ctx = await browser.new_context(
