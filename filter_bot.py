@@ -170,7 +170,9 @@ def _format_property_message(listing: dict, verdict: dict) -> str:
 
 def _check_walk(listing: dict) -> tuple[Optional[str], Optional[int]]:
     address = listing.get("address") or listing.get("area", "")
-    return nearest_walk_minutes(address)   # finds nearest ANY tube/rail station
+    # Pass full listing so nearest_walk_minutes can use the free area-based
+    # fallback if Google Maps API is unavailable or returns an error.
+    return nearest_walk_minutes(address, listing=listing)
 
 
 # ── Pipeline ──────────────────────────────────────────────────────────────────
