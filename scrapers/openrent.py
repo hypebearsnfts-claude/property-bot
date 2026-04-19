@@ -28,7 +28,7 @@ async def _scrape_area(browser, area, slug, term):
     page = await ctx.new_page()
     listings = []
     try:
-        url = f"{BASE.format(slug=slug)}?term={term.replace(' ','+')}+&bedrooms_min=2&furnishedType=1&area=1&isLive=true"
+        url = f"{BASE.format(slug=slug)}?term={term.replace(' ','+')}+&bedrooms_min=2&max_rent=15000&furnishedType=1&area=1&isLive=true"
         await page.goto(url, wait_until="domcontentloaded", timeout=30_000)
         try:
             await page.locator("button#onetrust-accept-btn-handler, button:has-text('Accept all'), button:has-text('I agree')").first.click(timeout=3_000)

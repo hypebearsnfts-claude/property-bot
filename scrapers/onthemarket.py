@@ -13,9 +13,9 @@ HTML structure (confirmed 2026-04-16 via live inspection):
   Agent:    leaf div containing agency name
   Cookie:   #ccc-recommended-settings  (Cookie Control, not OneTrust)
 
-URL format: station slugs with radius — e.g. /baker-street-station/?radius=0.25
+URL format: station slugs with radius — e.g. /baker-street-station/?radius=0.5
   Confirmed 2026-04-17: OTM supports the same station-slug + radius pattern as
-  Rightmove, giving the same tight 0.25-mile circles around each tube station.
+  Rightmove, giving the same tight station circles around each tube station.
   Previously used postcode district slugs (nw1, se1) which covered huge areas.
 """
 
@@ -28,7 +28,7 @@ from playwright.async_api import async_playwright, TimeoutError as PWTimeout
 logger = logging.getLogger(__name__)
 
 # Station slugs — confirmed live on OTM 2026-04-17
-# Same 0.25-mile radius as Rightmove STATION searches.
+# Same 0.5-mile radius as Rightmove STATION searches.
 # Soho: no "Soho station" exists; Piccadilly Circus is the central Soho tube stop.
 AREAS = {
     "Covent Garden":   "covent-garden-station",
@@ -54,8 +54,8 @@ _UA = ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
 def _url(slug: str, page: int = 1) -> str:
     return (
         f"{BASE.format(slug=slug)}"
-        f"?min-bedrooms=2&furnishing=furnished&include-let-agreed=false"
-        f"&radius=0.25&page={page}"
+        f"?min-bedrooms=2&max-price=15000&furnishing=furnished&include-let-agreed=false"
+        f"&radius=0.5&page={page}"
     )
 
 

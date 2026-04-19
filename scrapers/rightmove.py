@@ -3,6 +3,10 @@ from playwright.async_api import async_playwright, TimeoutError as PWTimeout
 
 logger = logging.getLogger(__name__)
 
+# Limit concurrent Rightmove browser contexts to avoid rate-limiting.
+# All 12 areas at once triggers blocks; 4 at a time works reliably.
+_SEM: asyncio.Semaphore | None = None
+
 AREAS = {
     "Covent Garden":      "REGION%5E87501",
     "Soho":               "REGION%5E87529",
@@ -22,17 +26,42 @@ BASE = "https://www.rightmove.co.uk/property-to-rent/find.html"
 CARD_SEL = "div[class*='PropertyCard_propertyCardContainerWrapper']"
 
 def _url(loc_id, index=0):
-    r = "&radius=0.25" if "STATION" in loc_id else ""
+    r = "&radius=0.5" if "STATION" in loc_id else ""
     return (f"{BASE}?locationIdentifier={loc_id}{r}"
-            f"&minBedrooms=2&furnishTypes=furnished"
+            f"&minBedrooms=2&maxPrice=15000&furnishTypes=furnished"
             f"&includeLetAgreed=false&sortType=6&index={index}&channel=RENT")
 
 async def _scrape_area(browser, area, loc_id):
-    ctx = await browser.new_context(
-        user_agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
-        viewport={"width": 1280, "height": 900},
-    )
-    page = await ctx.new_page()
+    async with _SEM:
+        return await _scrape_area_inner(browser, area, loc_id)
+
+
+async def _scrape_area_inner(browser, area, loc_id):
+    # Stagger start to spread load across Rightmove's servers
+    await asyncio.sleep(random.uniform(0.5, 3.0))
+
+    for attempt in range(2):   # retry once if 0 cards on first try
+        ctx = await browser.new_context(
+            user_agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+            viewport={"width": 1280, "height": 900},
+        )
+        page = await ctx.new_page()
+        listings, index, total, accepted = [], 0, 0, False
+        try:
+            listings = await _scrape_pages(page, area, loc_id)
+        finally:
+            await ctx.close()
+
+        if listings or attempt == 1:
+            break
+        logger.info("[rightmove] %s got 0 on attempt 1 — retrying in 5s…", area)
+        await asyncio.sleep(5.0)
+
+    logger.info("[rightmove] %s -> %d listings", area, len(listings))
+    return listings
+
+
+async def _scrape_pages(page, area, loc_id):
     listings, index, total, accepted = [], 0, 0, False
     try:
         while True:
@@ -125,12 +154,11 @@ async def _scrape_area(browser, area, loc_id):
                 break
     except Exception as exc:
         logger.error("[rightmove] %s error: %s", area, exc)
-    finally:
-        await ctx.close()
-    logger.info("[rightmove] %s -> %d listings", area, len(listings))
     return listings
 
 async def scrape():
+    global _SEM
+    _SEM = asyncio.Semaphore(4)   # max 4 concurrent browser contexts
     async with async_playwright() as pw:
         browser = await pw.chromium.launch(headless=True)
         results = await asyncio.gather(

@@ -20,8 +20,8 @@ Two distinct Claude-powered capabilities:
         size:      exp(-|diff%| / 0.30)    — 30% size diff → 0.37 weight
 
       PASS rule (hardcoded + unit-tested):
-        asking_price <= fmv + 500  →  PASS
-        asking_price >  fmv + 500  →  FAIL
+        asking_price <= fmv * 1.05  →  PASS  (at or below 5% above FMV)
+        asking_price >  fmv * 1.05  →  FAIL
 
 Set in .env:
     ANTHROPIC_API_KEY   — required for reasoning
@@ -138,49 +138,55 @@ def score_listing(listing: dict) -> dict:
 
 # ── Area mappings ──────────────────────────────────────────────────────────────
 
+# Station-based slugs — same as scrapers/zoopla.py AREAS dict.
+# Using /station/tube/{slug}/?radius=0.5 gives the same tight 0.5-mile
+# circle as the main scraper, so comparables are genuinely close-by.
 _ZOOPLA_SLUGS: dict[str, str] = {
-    "Covent Garden":  "covent-garden",
-    "Soho":           "soho",
-    "Knightsbridge":  "sw1x",
-    "West Kensington":"west-kensington",
-    "London Bridge":  "se1",
-    "Tower Hill":     "ec3",
-    "Baker Street":   "marylebone",
-    "Bond Street":    "mayfair",
-    "Marble Arch":    "w1h",
-    "Oxford Circus":  "fitzrovia",
-    "Marylebone":     "marylebone",
-    "Regent's Park":  "regents-park",
+    "Covent Garden":   "covent-garden",
+    "Soho":            "piccadilly-circus",
+    "Knightsbridge":   "knightsbridge",
+    "West Kensington": "west-kensington",
+    "London Bridge":   "london-bridge",
+    "Tower Hill":      "tower-hill",
+    "Baker Street":    "baker-street",
+    "Bond Street":     "bond-street",
+    "Marble Arch":     "marble-arch",
+    "Oxford Circus":   "oxford-circus",
+    "Marylebone":      "marylebone",
+    "Regent's Park":   "regents-park",
 }
 
-_RIGHTMOVE_REGIONS: dict[str, str] = {
-    "Covent Garden":  "REGION%5E87501",
-    "Soho":           "REGION%5E87529",
-    "Knightsbridge":  "REGION%5E85242",
-    "West Kensington":"REGION%5E85288",
-    "London Bridge":  "REGION%5E87516",
-    "Tower Hill":     "REGION%5E87535",
-    "Baker Street":   "REGION%5E87498",
-    "Bond Street":    "REGION%5E87499",
-    "Marble Arch":    "REGION%5E87520",
-    "Oxford Circus":  "REGION%5E87525",
-    "Marylebone":     "REGION%5E85272",
-    "Regent's Park":  "REGION%5E87527",
+# Station IDs — same as scrapers/rightmove.py AREAS dict.
+# Using STATION + radius=0.5 keeps comparables within 0.5 miles,
+# matching the main scraper's search area exactly.
+_RIGHTMOVE_STATIONS: dict[str, str] = {
+    "Covent Garden":   "REGION%5E87501",    # no tube station ID; region is tight
+    "Soho":            "REGION%5E87529",
+    "Knightsbridge":   "REGION%5E85242",
+    "West Kensington": "STATION%5E5054",
+    "London Bridge":   "STATION%5E5792",
+    "Tower Hill":      "STATION%5E9290",
+    "Baker Street":    "STATION%5E488",
+    "Bond Street":     "STATION%5E1166",
+    "Marble Arch":     "STATION%5E6032",
+    "Oxford Circus":   "STATION%5E6953",
+    "Marylebone":      "STATION%5E6095",
+    "Regent's Park":   "STATION%5E7658",
 }
 
-_OTM_SLUGS: dict[str, str] = {
-    "Covent Garden":   "wc2h",   # updated: specific to Covent Garden/Seven Dials
-    "Soho":            "w1d",
-    "Knightsbridge":   "sw1x",
-    "West Kensington": "w14",
-    "London Bridge":   "se1",
-    "Tower Hill":      "ec3n",   # updated: specific to Tower Hill/Aldgate
-    "Baker Street":    "nw1",
-    "Bond Street":     "w1k",
-    "Marble Arch":     "w1h",
-    "Oxford Circus":   "w1b",
-    "Marylebone":      "w1u",
-    "Regent's Park":   "nw8",
+_OTM_STATION_SLUGS: dict[str, str] = {
+    "Covent Garden":   "covent-garden-station",
+    "Soho":            "piccadilly-circus-station",
+    "Knightsbridge":   "knightsbridge-station",
+    "West Kensington": "west-kensington-station",
+    "London Bridge":   "london-bridge-station",
+    "Tower Hill":      "tower-hill-station",
+    "Baker Street":    "baker-street-station",
+    "Bond Street":     "bond-street-station",
+    "Marble Arch":     "marble-arch-station",
+    "Oxford Circus":   "oxford-circus-station",
+    "Marylebone":      "marylebone-station",
+    "Regent's Park":   "regents-park-station",
 }
 
 _UA = ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
@@ -361,42 +367,228 @@ def _size_weight(subject_sqft: Optional[int], comp_sqft: Optional[int]) -> float
 
 # ── 0. Property-specific price history ────────────────────────────────────────
 
-async def _scrape_property_history(address: str, bedrooms: int) -> list[dict]:
+def _extract_history_from_page_text(full_text: str, address: str, bedrooms: int, source: str) -> list[dict]:
     """
-    Look up this exact property's own rental history on Zoopla.
+    Extract rental history data points from a full page innerText dump.
+
+    Rightmove and Zoopla often put price and date on SEPARATE lines, e.g.:
+        Let agreed
+        £2,750 pcm
+        November 2022
+
+    So we use a sliding window of 6 lines: if any line in the window has a £price,
+    and any other line in the window has a year (with optional month), we record it.
+
+    Only keeps entries with price £500–£30,000/mo and date within the last 10 years.
+    Deduplicates by (year, price rounded to £50).
+    """
+    now   = datetime.now()
+    lines = [l.strip() for l in full_text.split('\n') if l.strip()]
+    results: list[dict] = []
+    seen: set[tuple] = set()
+
+    price_re = re.compile(r'£([\d,]+)')
+    year_re  = re.compile(r'(20\d{2})')
+    month_year_re = re.compile(
+        r'(Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|'
+        r'Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|'
+        r'Dec(?:ember)?)\s+(20\d{2})',
+        re.IGNORECASE,
+    )
+    # Also catch DD Mon YYYY format e.g. "30 Jan 2023"
+    dmy_re = re.compile(
+        r'\d{1,2}\s+(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\w*\s+(20\d{2})',
+        re.IGNORECASE,
+    )
+
+    for i, line in enumerate(lines):
+        pm = price_re.search(line)
+        if not pm:
+            continue
+        price = int(pm.group(1).replace(',', ''))
+        if not (500 <= price <= 30_000):
+            continue
+        # Weekly → monthly
+        window_text = ' '.join(lines[max(0, i-2):i+5])
+        if re.search(r'\bpw\b|per week', window_text, re.IGNORECASE):
+            price = int(price * 52 / 12)
+
+        # Find date in the surrounding window (2 lines before, 4 lines after)
+        m_dmy = dmy_re.search(window_text)
+        m_my  = month_year_re.search(window_text)
+        m_y   = year_re.search(window_text)
+
+        if not m_y:
+            continue
+
+        try:
+            if m_dmy:
+                dt = datetime.strptime(m_dmy.group(0).strip(), "%d %b %Y")
+            elif m_my:
+                raw = m_my.group(0)[:10].strip()
+                try:
+                    dt = datetime.strptime(raw, "%B %Y")
+                except ValueError:
+                    dt = datetime.strptime(raw[:7], "%b %Y")
+            else:
+                dt = datetime(int(m_y.group(1)), 1, 1)
+        except ValueError:
+            dt = datetime(int(m_y.group(1)), 1, 1)
+
+        age_months = max(0, (now.year - dt.year) * 12 + (now.month - dt.month))
+        if age_months > 120:   # ignore data older than 10 years
+            continue
+
+        key = (dt.strftime('%Y-%m'), round(price / 50) * 50)
+        if key in seen:
+            continue
+        seen.add(key)
+
+        results.append({
+            'date':       dt.strftime('%Y-%m'),
+            'price':      price,
+            'bedrooms':   bedrooms,
+            'baths':      None,
+            'sqft':       None,
+            'prop_type':  None,
+            'address':    address,
+            'source':     source,
+            'age_months': age_months,
+        })
+
+    return results
+
+
+# Keep old name as alias (used by search-based fallbacks)
+def _extract_history_rows(history_rows: list[str], address: str, bedrooms: int, source: str) -> list[dict]:
+    return _extract_history_from_page_text('\n'.join(history_rows), address, bedrooms, source)
+
+
+async def _scrape_property_history(address: str, bedrooms: int, listing_url: str = "") -> list[dict]:
+    """
+    Look up this exact property's own rental history on Zoopla AND Rightmove.
 
     Strategy:
-      1. Search Zoopla for the address string — pick the best-matching result.
-      2. Visit its detail page and extract the "Price history" / "Rental history" table.
-      3. Return each historical entry as a data point with its real date and price.
+      1. If we already have the listing URL (Zoopla or Rightmove), visit it directly
+         and read the rental/price history section — no search needed.
+      2. If the URL is from another platform (OTM, OpenRent), search Zoopla by address
+         to find a matching detail page.
 
-    This gives the best possible comparable: the same flat, same size, same location,
-    across up to 10 years of actual let-agreed prices.
-
-    Returns [] if no history found (no crash — caller falls back to area comparables).
+    Both sites typically show 2–5 years of past let events per property.
+    Returns [] if no history found — caller falls back to area comparables.
     """
-    results: list[dict] = []
-    if not _PLAYWRIGHT or not address:
-        return results
+    if not _PLAYWRIGHT:
+        return []
 
-    # Normalise address for search — strip flat/floor prefixes that confuse search
+    import asyncio
+
+    tasks = []
     search_term = re.sub(
         r"(?i)^(?:flat\s*\d+[a-z]?,?\s*|apartment\s*\d+[a-z]?,?\s*|floor\s*\d+,?\s*)",
         "", address.strip()
-    ).strip()
-    if not search_term:
-        return results
+    ).strip() if address else ""
 
+    # 1. Direct URL — visit the listing page itself (fastest, most accurate)
+    if "zoopla.co.uk" in listing_url:
+        tasks.append(asyncio.create_task(
+            _history_from_zoopla_url(listing_url, address, bedrooms)))
+    elif "rightmove.co.uk" in listing_url:
+        tasks.append(asyncio.create_task(
+            _history_from_rightmove_url(listing_url, address, bedrooms)))
+
+    # 2. Always also search by address/postcode on BOTH platforms concurrently —
+    #    catches history even when the listing is on OTM/OpenRent,
+    #    and adds Rightmove history to a Zoopla listing (or vice-versa).
+    if search_term:
+        tasks.append(asyncio.create_task(
+            _history_from_zoopla_search(search_term, address, bedrooms)
+        ))
+        tasks.append(asyncio.create_task(
+            _history_from_rightmove_search(search_term, address, bedrooms)
+        ))
+
+    if not tasks:
+        return []
+
+    results = await asyncio.gather(*tasks, return_exceptions=True)
+    all_pts: list[dict] = []
+    for r in results:
+        if isinstance(r, list):
+            all_pts.extend(r)
+
+    # Deduplicate by (year, price rounded to £50)
+    combined: list[dict] = []
+    seen_keys: set[tuple] = set()
+    for pt in all_pts:
+        key = (pt["date"][:4], round(pt["price"] / 50) * 50)
+        if key not in seen_keys:
+            seen_keys.add(key)
+            combined.append(pt)
+
+    combined.sort(key=lambda p: p["date"])
+    logger.info("[fmv] Property history for '%s': %d data points", address[:50], len(combined))
+    return combined
+
+
+async def _get_page_text_with_scroll(page, extra_wait: float = 1.5) -> str:
+    """
+    Scroll through a page to trigger lazy-loading, click any history toggle
+    buttons, then return the full innerText for Python-side parsing.
+    """
+    # Scroll in steps to trigger lazy-loaded sections
+    for pct in [0.25, 0.5, 0.75, 1.0]:
+        await page.evaluate(f"window.scrollTo(0, document.body.scrollHeight * {pct})")
+        await page.wait_for_timeout(600)
+
+    # Click any history-related expand buttons
+    for btn_text in ["Letting history", "Let history", "Price history",
+                     "Rental history", "Previous rentals", "Show history",
+                     "View letting history", "Listing history", "Show more"]:
+        try:
+            btn = page.locator(f"button:has-text('{btn_text}')")
+            if await btn.count() > 0:
+                await btn.first.click()
+                await page.wait_for_timeout(800)
+                break
+        except Exception:
+            pass
+
+    await page.wait_for_timeout(extra_wait * 1000)
+    return await page.evaluate("() => document.body.innerText")
+
+
+async def _history_from_zoopla_url(url: str, address: str, bedrooms: int) -> list[dict]:
+    """
+    Get Zoopla own-property history.
+
+    Zoopla's active listing page (/to-rent/details/XXXXXX/) doesn't show past
+    rental prices — only the current listing.  Instead we search by postcode
+    with include_let_agreed=true, which returns ALL previous listings of the
+    same property.  Each let-agreed result for a matching address = one
+    historical rental data point.
+    """
+    postcode_m = re.search(
+        r'\b([A-Z]{1,2}\d{1,2}[A-Z]?\s*\d[A-Z]{2})\b', address, re.IGNORECASE
+    )
+    if not postcode_m:
+        # Fall back to visiting the listing page itself (may still pick up history text)
+        return await _history_from_zoopla_page_text(url, address, bedrooms)
+
+    postcode = postcode_m.group(1).strip()
+    words = [w for w in re.findall(r'[a-z]{3,}', address.lower())
+             if w not in {"the","and","for","london","flat","road","street","lane",
+                          "avenue","gardens","square","place","court","house"}]
+
+    results: list[dict] = []
     try:
         async with async_playwright() as pw:
-            browser = await pw.chromium.launch(headless=True)
-            page    = await browser.new_page()
-            await page.set_extra_http_headers({"User-Agent": _UA})
+            browser, ctx, page = await _zoopla_stealth_context(pw)
+            await _zoopla_accept_cookies(page)
 
-            # Step 1: Search Zoopla for the address
+            # Search by postcode, include let-agreed — finds all previous lettings
             search_url = (
                 f"https://www.zoopla.co.uk/to-rent/property/london/"
-                f"?q={search_term.replace(' ', '+')}"
+                f"?q={postcode.replace(' ', '+')}"
                 f"&beds_min={bedrooms}&beds_max={bedrooms}"
                 f"&furnished_state=furnished&include_let_agreed=true"
                 f"&results_sort=newest_listings"
@@ -404,112 +596,61 @@ async def _scrape_property_history(address: str, bedrooms: int) -> list[dict]:
             await page.goto(search_url, timeout=30_000, wait_until="domcontentloaded")
             await page.wait_for_timeout(2_000)
 
-            # Find first result whose address closely matches
-            cards = await page.query_selector_all("[data-testid='search-result']")
-            detail_url = None
-            for card in cards[:5]:
-                try:
-                    addr_el = await card.query_selector("[data-testid='listing-description']")
-                    if not addr_el:
-                        continue
-                    card_addr = (await addr_el.inner_text()).lower()
-                    # Check if key words from the address appear in the card
-                    words = [w for w in re.findall(r'[a-z]{3,}', search_term.lower()) if w not in {"the","and","for","london","flat","road","street"}]
-                    matches = sum(1 for w in words if w in card_addr)
-                    if matches >= max(2, len(words) // 2):
-                        link_el = await card.query_selector("a[href*='/to-rent/details/']")
-                        if link_el:
-                            detail_url = await link_el.get_attribute("href")
-                            if detail_url and not detail_url.startswith("http"):
-                                detail_url = "https://www.zoopla.co.uk" + detail_url
-                            break
-                except Exception:
-                    continue
-
-            if not detail_url:
-                await browser.close()
-                logger.info("[fmv] Property history: no Zoopla match for '%s'", search_term[:60])
-                return results
-
-            # Step 2: Visit the detail page and extract price/rental history
-            await page.goto(detail_url, timeout=30_000, wait_until="domcontentloaded")
-            await page.wait_for_timeout(2_000)
-
-            # Try to find and click "Show price history" / rental history section
-            try:
-                history_btn = page.locator(
-                    "button:has-text('price history'), button:has-text('Price history'), "
-                    "button:has-text('rental history'), button:has-text('Rental history')"
-                )
-                if await history_btn.count() > 0:
-                    await history_btn.first.click()
-                    await page.wait_for_timeout(1_000)
-            except Exception:
-                pass
-
-            # Extract history table rows
-            history_rows = await page.evaluate(r"""
+            cards_data = await page.evaluate(r"""
                 () => {
-                    const results = [];
-                    // Look for price history tables / lists
-                    const rows = document.querySelectorAll(
-                        '[data-testid*="price-history"] tr, '
-                        '[class*="PriceHistory"] tr, '
-                        '[class*="price-history"] tr, '
-                        'table tr'
+                    const cards = document.querySelectorAll(
+                        '[data-testid="search-result"], ' +
+                        '[class*="ListingCard"], article[class*="listing"]'
                     );
-                    for (const row of rows) {
-                        const cells = Array.from(row.querySelectorAll('td, th'));
-                        const text  = cells.map(c => c.innerText.trim());
-                        // Look for rows that have a date and a price
-                        const hasDate  = text.some(t => /20\d{2}/.test(t));
-                        const hasPrice = text.some(t => /£[\d,]+/.test(t));
-                        if (hasDate && hasPrice) {
-                            results.push(text.join(' | '));
-                        }
-                    }
-                    // Also check list-style history items
-                    const items = document.querySelectorAll(
-                        '[data-testid*="price-history"] li, [class*="PriceHistory"] li'
-                    );
-                    for (const item of items) {
-                        const t = item.innerText.trim();
-                        if (/20\d{2}/.test(t) && /£[\d,]+/.test(t)) {
-                            results.push(t);
-                        }
-                    }
-                    return results;
+                    return Array.from(cards).map(card => {
+                        const priceEl = card.querySelector(
+                            '[data-testid="listing-price"], [class*="price"]'
+                        );
+                        const addrEl = card.querySelector(
+                            '[data-testid="listing-description"], address, [class*="address"]'
+                        );
+                        return {
+                            price:   priceEl ? priceEl.innerText.trim() : '',
+                            address: addrEl  ? addrEl.innerText.trim().replace(/\s+/g,' ') : '',
+                            text:    card.innerText.slice(0, 400),
+                        };
+                    }).filter(d => d.price);
                 }
             """)
 
-            await browser.close()
-
             now = datetime.now()
-            for row_text in history_rows:
-                price_m = re.search(r'£([\d,]+)', row_text)
-                year_m  = re.search(r'(20\d{2})', row_text)
-                month_m = re.search(
-                    r'(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\w*\s+(20\d{2})',
-                    row_text, re.IGNORECASE
+            for d in cards_data:
+                card_addr = d.get("address", "").lower()
+                card_text = d.get("text", "")
+                # Must match enough address words to be the same property
+                if not words or sum(1 for w in words if w in card_addr) < max(2, len(words) // 2):
+                    continue
+                price = _parse_price_pcm(d.get("price", ""))
+                if not (price and 500 <= price <= 30_000):
+                    continue
+                # Extract date from card text
+                m_my = re.search(
+                    r'(Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|'
+                    r'Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|'
+                    r'Dec(?:ember)?)\s+(20\d{2})',
+                    card_text, re.IGNORECASE,
                 )
-                if not (price_m and year_m):
-                    continue
-                price = int(price_m.group(1).replace(",", ""))
-                if not (500 <= price <= 50_000):
-                    continue
-                # Weekly → monthly
-                if "pw" in row_text.lower() or "per week" in row_text.lower():
-                    price = int(price * 52 / 12)
-
-                if month_m:
+                m_y = re.search(r'(20\d{2})', card_text)
+                if m_my:
                     try:
-                        dt = datetime.strptime(month_m.group(0), "%b %Y")
+                        dt = datetime.strptime(m_my.group(0)[:10].strip(), "%B %Y")
                     except ValueError:
-                        dt = datetime(int(year_m.group(1)), 1, 1)
+                        try:
+                            dt = datetime.strptime(m_my.group(0)[:7], "%b %Y")
+                        except ValueError:
+                            dt = now
+                elif m_y:
+                    dt = datetime(int(m_y.group(1)), 1, 1)
                 else:
-                    dt = datetime(int(year_m.group(1)), 1, 1)
-
+                    dt = now   # let-agreed recently, no explicit date
                 age_months = max(0, (now.year - dt.year) * 12 + (now.month - dt.month))
+                if age_months > 120:
+                    continue
                 results.append({
                     "date":       dt.strftime("%Y-%m"),
                     "price":      price,
@@ -522,14 +663,327 @@ async def _scrape_property_history(address: str, bedrooms: int) -> list[dict]:
                     "age_months": age_months,
                 })
 
-    except Exception as exc:
-        logger.warning("[fmv] Property history scrape failed for '%s': %s", search_term[:60], exc)
+            await ctx.close()
+            await browser.close()
 
-    logger.info("[fmv] Property history for '%s': %d data points", address[:50], len(results))
+    except Exception as exc:
+        logger.warning("[fmv] Zoopla own history search failed '%s': %s", address[:50], exc)
+
+    logger.info("[fmv] Zoopla own history for '%s': %d records", address[:40], len(results))
     return results
 
 
+async def _history_from_zoopla_page_text(url: str, address: str, bedrooms: int) -> list[dict]:
+    """Fallback: visit Zoopla listing page and extract any visible history from page text."""
+    try:
+        async with async_playwright() as pw:
+            browser, ctx, page = await _zoopla_stealth_context(pw)
+            await _zoopla_accept_cookies(page)
+            await page.goto(url, timeout=30_000, wait_until="domcontentloaded")
+            await page.wait_for_timeout(2_000)
+            full_text = await _get_page_text_with_scroll(page)
+            await ctx.close()
+            await browser.close()
+            return _extract_history_from_page_text(full_text, address, bedrooms,
+                                                    "zoopla_property_history")
+    except Exception as exc:
+        logger.warning("[fmv] Zoopla page-text history failed '%s': %s", url[:80], exc)
+        return []
+
+
+async def _history_from_rightmove_url(url: str, address: str, bedrooms: int) -> list[dict]:
+    """Visit a Rightmove listing URL directly and extract its let history."""
+    try:
+        async with async_playwright() as pw:
+            browser = await pw.chromium.launch(headless=True)
+            page = await browser.new_page()
+            await page.set_extra_http_headers({"User-Agent": _UA})
+
+            # Strip hash fragment — Rightmove ignores it but cleaner
+            clean_url = url.split('#')[0]
+            await page.goto(clean_url, timeout=30_000, wait_until="domcontentloaded")
+            await page.wait_for_timeout(2_000)
+
+            # Accept cookies
+            try:
+                await page.locator("button#onetrust-accept-btn-handler").click(timeout=3_000)
+                await page.wait_for_timeout(500)
+            except Exception:
+                pass
+
+            full_text = await _get_page_text_with_scroll(page)
+            await browser.close()
+
+            pts = _extract_history_from_page_text(full_text, address, bedrooms,
+                                                   "rightmove_property_history")
+            logger.info("[fmv] Rightmove direct URL history for '%s': %d pts",
+                        address[:40], len(pts))
+            return pts
+    except Exception as exc:
+        logger.warning("[fmv] Rightmove URL history failed '%s': %s", url[:80], exc)
+        return []
+
+
+async def _history_from_zoopla_search(search_term: str, address: str, bedrooms: int) -> list[dict]:
+    """Search Zoopla by address string and extract history from the best matching result."""
+    try:
+        async with async_playwright() as pw:
+            browser, ctx, page = await _zoopla_stealth_context(pw)
+            await _zoopla_accept_cookies(page)
+
+            search_url = (
+                f"https://www.zoopla.co.uk/to-rent/property/london/"
+                f"?q={search_term.replace(' ', '+')}"
+                f"&beds_min={bedrooms}&beds_max={bedrooms}"
+                f"&furnished_state=furnished&include_let_agreed=true"
+            )
+            await page.goto(search_url, timeout=30_000, wait_until="domcontentloaded")
+            await page.wait_for_timeout(2_000)
+
+            words = [w for w in re.findall(r'[a-z]{3,}', search_term.lower())
+                     if w not in {"the","and","for","london","flat","road","street","lane"}]
+            detail_url = None
+            cards = await page.query_selector_all("[data-testid='search-result']")
+            for card in cards[:5]:
+                try:
+                    addr_el   = await card.query_selector(
+                        "[data-testid='listing-description'], address, "
+                        "[class*='address'], [class*='Address']"
+                    )
+                    card_addr = (await addr_el.inner_text()).lower() if addr_el else ""
+                    matches   = sum(1 for w in words if w in card_addr)
+                    if matches >= max(2, len(words) // 2):
+                        link_el = await card.query_selector("a[href*='/to-rent/details/']")
+                        if not link_el:
+                            link_el = await card.query_selector("a[href*='/properties/']")
+                        if link_el:
+                            href = await link_el.get_attribute("href")
+                            if href:
+                                detail_url = href if href.startswith("http") \
+                                    else "https://www.zoopla.co.uk" + href
+                            break
+                except Exception:
+                    continue
+
+            if not detail_url:
+                await ctx.close()
+                await browser.close()
+                return []
+
+            await page.goto(detail_url, timeout=30_000, wait_until="domcontentloaded")
+            await page.wait_for_timeout(2_000)
+            full_text = await _get_page_text_with_scroll(page)
+            await ctx.close()
+            await browser.close()
+            return _extract_history_from_page_text(full_text, address, bedrooms,
+                                                    "zoopla_property_history")
+    except Exception as exc:
+        logger.warning("[fmv] Zoopla search history failed for '%s': %s", search_term[:60], exc)
+        return []
+
+
+async def _history_from_rightmove_search(search_term: str, address: str, bedrooms: int) -> list[dict]:
+    """Search Rightmove by postcode/address and extract let history from the best match."""
+    try:
+        # Extract postcode from address — much more reliable than keyword search
+        postcode_m = re.search(r'\b([A-Z]{1,2}\d{1,2}[A-Z]?\s?\d[A-Z]{2})\b',
+                               address, re.IGNORECASE)
+        if not postcode_m:
+            return []   # without a postcode Rightmove search is too imprecise
+
+        postcode = postcode_m.group(1).replace(" ", "%20")
+
+        async with async_playwright() as pw:
+            browser = await pw.chromium.launch(headless=True)
+            page = await browser.new_page()
+            await page.set_extra_http_headers({"User-Agent": _UA})
+
+            search_url = (
+                f"https://www.rightmove.co.uk/property-to-rent/find.html"
+                f"?searchType=RENT&locationIdentifier=POSTCODE%5E{postcode}"
+                f"&minBedrooms={bedrooms}&maxBedrooms={bedrooms}"
+                f"&furnishTypes=furnished&includeLetAgreed=true&sortType=6"
+            )
+            await page.goto(search_url, timeout=30_000, wait_until="domcontentloaded")
+            await page.wait_for_timeout(2_000)
+
+            words = [w for w in re.findall(r'[a-z]{3,}', address.lower())
+                     if w not in {"the","and","for","london","flat","road","street","lane"}]
+            detail_url = None
+            cards_data = await page.evaluate(r"""
+                () => Array.from(document.querySelectorAll(
+                    'a[href*="/properties/"]'
+                )).map(a => ({
+                    href: a.href,
+                    text: (a.closest('[class*="Card"], .l-searchResult, article') || a).innerText
+                }))
+                .filter(d => /\/properties\/\d+/.test(d.href))
+                .slice(0, 8)
+            """)
+            for card in cards_data:
+                card_text = card.get("text", "").lower()
+                matches   = sum(1 for w in words if w in card_text)
+                if matches >= max(2, len(words) // 2):
+                    detail_url = card["href"]
+                    break
+
+            if not detail_url:
+                await browser.close()
+                return []
+
+            await page.goto(detail_url, timeout=30_000, wait_until="domcontentloaded")
+            await page.wait_for_timeout(2_000)
+            full_text = await _get_page_text_with_scroll(page)
+            await browser.close()
+            return _extract_history_from_page_text(full_text, address, bedrooms,
+                                                    "rightmove_property_history")
+    except Exception as exc:
+        logger.warning("[fmv] Rightmove search history failed for '%s': %s", search_term[:60], exc)
+        return []
+
+
+async def _extract_zoopla_history_from_page(page) -> list[str]:
+    """
+    Extract price/rental history rows from a Zoopla property detail page.
+    Tries multiple selectors and also clicks any 'show history' toggle buttons.
+    """
+    # Try clicking any expand/show buttons for history
+    for btn_text in ["Rental history", "Price history", "Show history",
+                     "Previous rentals", "Let history"]:
+        try:
+            btn = page.locator(f"button:has-text('{btn_text}'), "
+                               f"span:has-text('{btn_text}')")
+            if await btn.count() > 0:
+                await btn.first.click()
+                await page.wait_for_timeout(800)
+                break
+        except Exception:
+            pass
+
+    return await page.evaluate("""
+        () => {
+            const out = new Set();
+            const yearRe  = /20\\d{2}/;
+            const poundRe = /\\u00a3[\\d,]+/;   // £ as unicode escape
+
+            // Broad sweep of every text node
+            const walker = document.createTreeWalker(document.body, 4, null);
+            let node;
+            while ((node = walker.nextNode())) {
+                const t = node.textContent.trim();
+                if (yearRe.test(t) && poundRe.test(t) && t.length < 200) {
+                    out.add(t);
+                }
+            }
+
+            // Also check history containers
+            const containers = document.querySelectorAll(
+                '[data-testid*="history"],[data-testid*="price"],' +
+                '[class*="History"],[class*="PreviousRental"],[class*="previousRental"],' +
+                'table,dl'
+            );
+            for (const c of containers) {
+                const t = c.innerText || '';
+                for (const line of t.split('\\n')) {
+                    const l = line.trim();
+                    if (yearRe.test(l) && poundRe.test(l) && l.length < 200) {
+                        out.add(l);
+                    }
+                }
+            }
+            return [...out];
+        }
+    """)
+
+
+async def _extract_rightmove_history_from_page(page) -> list[str]:
+    """
+    Extract let/price history rows from a Rightmove property detail page.
+    Rightmove shows 'Let history' in a collapsible section on rental pages.
+    """
+    # Try clicking the let/price history toggle
+    for btn_text in ["Let history", "Price history", "Listing history", "Show more"]:
+        try:
+            btn = page.locator(f"button:has-text('{btn_text}'), "
+                               f"[aria-label*='{btn_text}'], span:has-text('{btn_text}')")
+            if await btn.count() > 0:
+                await btn.first.click()
+                await page.wait_for_timeout(800)
+                break
+        except Exception:
+            pass
+
+    return await page.evaluate("""
+        () => {
+            const out = new Set();
+            const yearRe  = /20\\d{2}/;
+            const poundRe = /\\u00a3[\\d,]+/;
+
+            // Targeted containers
+            const containers = document.querySelectorAll(
+                '[class*="History"],[class*="letHistory"],[class*="LetHistory"],' +
+                '[id*="history"],[id*="History"],table,dl,ul'
+            );
+            for (const c of containers) {
+                const t = c.innerText || '';
+                for (const line of t.split('\\n')) {
+                    const l = line.trim();
+                    if (yearRe.test(l) && poundRe.test(l) && l.length < 200) {
+                        out.add(l);
+                    }
+                }
+            }
+
+            // Broad text-node sweep
+            const walker = document.createTreeWalker(document.body, 4, null);
+            let node;
+            while ((node = walker.nextNode())) {
+                const t = node.textContent.trim();
+                if (yearRe.test(t) && poundRe.test(t) && t.length < 200) {
+                    out.add(t);
+                }
+            }
+            return [...out];
+        }
+    """)
+
+
 # ── 1. Historical rent scraping ────────────────────────────────────────────────
+
+async def _zoopla_stealth_context(pw):
+    """Create a stealth Playwright browser context for Zoopla to avoid bot detection."""
+    browser = await pw.chromium.launch(headless=True)
+    ctx = await browser.new_context(
+        user_agent=_UA,
+        locale="en-GB",
+        viewport={"width": 1280, "height": 900},
+    )
+    page = await ctx.new_page()
+    # Apply stealth patches if available (randomises fingerprints)
+    try:
+        from playwright_stealth import stealth_async
+        await stealth_async(page)
+    except Exception:
+        pass
+    return browser, ctx, page
+
+
+async def _zoopla_accept_cookies(page):
+    """Navigate to Zoopla homepage and accept cookies."""
+    try:
+        await page.goto("https://www.zoopla.co.uk/", timeout=20_000,
+                        wait_until="domcontentloaded")
+        await page.wait_for_timeout(1_200)
+        accept = page.locator(
+            "button:has-text('Accept all'), button:has-text('Accept All'), "
+            "#onetrust-accept-btn-handler"
+        )
+        if await accept.count() > 0:
+            await accept.first.click()
+            await page.wait_for_timeout(800)
+    except Exception:
+        pass
+
 
 async def _scrape_zoopla_let_agreed(
     slug: str,
@@ -539,16 +993,13 @@ async def _scrape_zoopla_let_agreed(
     subject_sqft: Optional[int] = None,
 ) -> list[dict]:
     """
-    Scrape Zoopla let-agreed listings with strict filters.
-
-    Passes bedrooms + prop_type into the URL.
-    Hard-filters results by baths and size (±25%) after extraction.
+    Scrape Zoopla let-agreed listings within 0.25mi of a tube station.
+    Uses playwright-stealth to avoid bot detection.
     """
     results: list[dict] = []
     if not _PLAYWRIGHT:
         return results
 
-    # Build property_sub_type param
     sub_type_param = ""
     if prop_type == "flat":
         sub_type_param = "&property_sub_type=flats"
@@ -556,79 +1007,97 @@ async def _scrape_zoopla_let_agreed(
         sub_type_param = "&property_sub_type=houses"
 
     async with async_playwright() as pw:
-        browser = await pw.chromium.launch(headless=True)
-        page    = await browser.new_page()
-        await page.set_extra_http_headers({"User-Agent": _UA})
+        browser, ctx, page = await _zoopla_stealth_context(pw)
+        await _zoopla_accept_cookies(page)
 
-        for pn in range(1, 4):   # up to 3 pages
+        for pn in range(1, 7):
             url = (
-                f"https://www.zoopla.co.uk/to-rent/property/{slug}/"
+                f"https://www.zoopla.co.uk/to-rent/property/station/tube/{slug}/"
                 f"?beds_min={bedrooms}&beds_max={bedrooms}"
-                f"&furnished_state=furnished&include_let_agreed=true"
+                f"&price_max=15000&furnished_state=furnished"
+                f"&radius=0.25&include_let_agreed=true"
                 f"&results_sort=newest_listings{sub_type_param}&pn={pn}"
             )
             try:
                 await page.goto(url, timeout=30_000, wait_until="domcontentloaded")
                 await page.wait_for_timeout(2_000)
 
-                cards = await page.query_selector_all("[data-testid='search-result']")
-                if not cards:
+                # Extract all listing data via JS in one pass
+                cards_data = await page.evaluate(r"""
+                    () => {
+                        const cards = document.querySelectorAll(
+                            '[data-testid="search-result"], ' +
+                            '[class*="ListingCard"], [class*="listing-card"], ' +
+                            'article[class*="listing"]'
+                        );
+                        return Array.from(cards).map(card => {
+                            const priceEl = card.querySelector(
+                                '[data-testid="listing-price"], [class*="price"], .listing-results-price'
+                            );
+                            const addrEl = card.querySelector(
+                                '[data-testid="listing-description"], address, [class*="address"]'
+                            );
+                            if (!priceEl) return null;
+                            const text = card.innerText || '';
+                            const bathM = text.match(/(\d+)\s*bath/i);
+                            const sqftM = text.match(/([\d,]+)\s*sq\.?\s*ft/i);
+                            const sqmM  = text.match(/([\d,]+)\s*(?:sq\.?\s*m\b|sqm)/i);
+                            let sqft = null;
+                            if (sqftM) sqft = parseInt(sqftM[1].replace(/,/g,''));
+                            else if (sqmM) sqft = Math.round(parseInt(sqmM[1].replace(/,/g,'')) * 10.764);
+                            return {
+                                price:   priceEl.innerText.trim(),
+                                address: addrEl ? addrEl.innerText.trim().replace(/\s+/g,' ') : '',
+                                baths:   bathM ? parseInt(bathM[1]) : null,
+                                sqft:    sqft,
+                            };
+                        }).filter(Boolean);
+                    }
+                """)
+
+                if not cards_data:
+                    logger.info("[fmv] Zoopla let-agreed p%d (%s): 0 cards — stopping", pn, slug)
                     break
 
-                for card in cards:
-                    try:
-                        price_el = await card.query_selector("[data-testid='listing-price']")
-                        addr_el  = await card.query_selector("[data-testid='listing-description']")
-                        feat_el  = await card.query_selector(
-                            "[data-testid='listing-features'], "
-                            "[class*='features'], [class*='Features']"
-                        )
-                        if not (price_el and addr_el):
-                            continue
-
-                        price_text = await price_el.inner_text()
-                        addr_text  = await addr_el.inner_text()
-                        feat_text  = (await feat_el.inner_text()) if feat_el else ""
-                        full_text  = price_text + " " + feat_text
-
-                        price = _parse_price_pcm(price_text)
-                        if price and 500 <= price <= 50_000:
-                            comp_baths = _parse_baths(full_text)
-                            comp_sqft  = _parse_sqft(full_text)
-                            # Hard filter: baths must match exactly (when both known)
-                            if baths is not None and comp_baths is not None:
-                                if comp_baths != baths:
-                                    continue
-                            # Hard filter: size within ±25% (when both known)
-                            if subject_sqft and comp_sqft and subject_sqft > 0:
-                                if abs(subject_sqft - comp_sqft) / subject_sqft > 0.25:
-                                    continue
-                            results.append({
-                                "date":       datetime.now().strftime("%Y-%m"),
-                                "price":      price,
-                                "bedrooms":   bedrooms,
-                                "baths":      comp_baths,
-                                "sqft":       comp_sqft,
-                                "prop_type":  prop_type,
-                                "address":    addr_text.strip(),
-                                "source":     "zoopla_let_agreed",
-                                "age_months": 0,
-                            })
-                    except Exception:
+                for d in cards_data:
+                    price = _parse_price_pcm(d.get("price", ""))
+                    if not (price and 500 <= price <= 15_000):
                         continue
+                    comp_baths = d.get("baths")
+                    comp_sqft  = d.get("sqft")
+                    if baths is not None and comp_baths is not None and comp_baths != baths:
+                        continue
+                    if subject_sqft and comp_sqft and subject_sqft > 0:
+                        if abs(subject_sqft - comp_sqft) / subject_sqft > 0.25:
+                            continue
+                    results.append({
+                        "date":       datetime.now().strftime("%Y-%m"),
+                        "price":      price,
+                        "bedrooms":   bedrooms,
+                        "baths":      comp_baths,
+                        "sqft":       comp_sqft,
+                        "prop_type":  prop_type,
+                        "address":    d.get("address", ""),
+                        "source":     "zoopla_let_agreed",
+                        "age_months": 0,
+                    })
+
+                logger.info("[fmv] Zoopla let-agreed p%d (%s): %d cards, %d kept",
+                            pn, slug, len(cards_data), len(results))
 
             except Exception as exc:
-                logger.warning("[fmv] Zoopla page %d failed (%s): %s", pn, slug, exc)
+                logger.warning("[fmv] Zoopla let-agreed p%d (%s) failed: %s", pn, slug, exc)
                 break
 
+        await ctx.close()
         await browser.close()
 
-    logger.info("[fmv] Zoopla let-agreed (%s, %d bed): %d data points", slug, bedrooms, len(results))
+    logger.info("[fmv] Zoopla let-agreed (%s, %d bed): %d total", slug, bedrooms, len(results))
     return results
 
 
 async def _scrape_rightmove_let_agreed(
-    region_id: str,
+    loc_id: str,
     bedrooms: int,
     baths: Optional[int] = None,
     prop_type: Optional[str] = None,
@@ -637,15 +1106,18 @@ async def _scrape_rightmove_let_agreed(
     """
     Scrape Rightmove let-agreed listings with strict filters.
 
-    Passes bedrooms + baths + prop_type into the URL directly.
+    Uses STATION IDs with radius=0.5 (same as main scraper) for tight
+    geographic comparables. Passes bedrooms + baths + prop_type into URL.
     Hard-filters results by size (±25%) after extraction.
     """
     results: list[dict] = []
     if not _PLAYWRIGHT:
         return results
 
-    # Build URL — Rightmove supports minBathrooms/maxBathrooms and propertyTypes
-    bath_param = f"&minBathrooms={baths}&maxBathrooms={baths}" if baths else ""
+    # Build URL — Rightmove supports minBathrooms/maxBathrooms and propertyTypes.
+    # Use radius=0.25 for STATION identifiers — tight circle for FMV comparables.
+    bath_param   = f"&minBathrooms={baths}&maxBathrooms={baths}" if baths else ""
+    radius_param = "&radius=0.25" if "STATION" in loc_id else ""
     if prop_type == "flat":
         type_param = "&propertyTypes=flat"
     elif prop_type == "house":
@@ -660,10 +1132,10 @@ async def _scrape_rightmove_let_agreed(
 
         url = (
             f"https://www.rightmove.co.uk/property-to-rent/find.html"
-            f"?locationIdentifier={region_id}"
+            f"?locationIdentifier={loc_id}"
             f"&minBedrooms={bedrooms}&maxBedrooms={bedrooms}"
             f"&furnishTypes=furnished&includeLetAgreed=true"
-            f"&sortType=6{bath_param}{type_param}"
+            f"&sortType=6{radius_param}{bath_param}{type_param}"
         )
         try:
             await page.goto(url, timeout=30_000, wait_until="domcontentloaded")
@@ -723,12 +1195,12 @@ async def _scrape_rightmove_let_agreed(
                     })
 
         except Exception as exc:
-            logger.warning("[fmv] Rightmove let-agreed failed (%s): %s", region_id, exc)
+            logger.warning("[fmv] Rightmove let-agreed failed (%s): %s", loc_id, exc)
 
         await browser.close()
 
     logger.info("[fmv] Rightmove let-agreed (%s, %d bed): %d data points",
-                region_id, bedrooms, len(results))
+                loc_id, bedrooms, len(results))
     return results
 
 
@@ -739,7 +1211,8 @@ async def _scrape_otm_let_agreed(
     prop_type: Optional[str] = None,
     subject_sqft: Optional[int] = None,
 ) -> list[dict]:
-    """Scrape OnTheMarket let-agreed listings with strict filters."""
+    """Scrape OnTheMarket let-agreed listings with strict filters.
+    Uses article[data-component] selector confirmed by the main OTM scraper."""
     results: list[dict] = []
     if not _PLAYWRIGHT:
         return results
@@ -752,16 +1225,17 @@ async def _scrape_otm_let_agreed(
         url = (
             f"https://www.onthemarket.com/to-rent/property/{slug}/"
             f"?min-bedrooms={bedrooms}&max-bedrooms={bedrooms}"
-            f"&furnishing=furnished&include-let-agreed=true"
-            # slug is now a postcode district (e.g. "wc2") — old area-name slugs removed
+            f"&max-price=15000&furnishing=furnished"
+            f"&include-let-agreed=true&radius=0.25"
         )
         try:
             await page.goto(url, timeout=30_000, wait_until="domcontentloaded")
             await page.wait_for_timeout(2_000)
 
-            # Dismiss cookie banner
+            # Dismiss cookie banner (OTM uses Cookie Control, id #ccc-recommended-settings)
             try:
                 await page.locator(
+                    "#ccc-recommended-settings, "
                     "button:has-text('Accept all'), button:has-text('Accept All'), "
                     "#onetrust-accept-btn-handler"
                 ).first.click(timeout=4_000)
@@ -769,37 +1243,33 @@ async def _scrape_otm_let_agreed(
             except Exception:
                 pass
 
+            # Use article[data-component] — confirmed by main OTM scraper (scrapers/onthemarket.py)
             cards_data = await page.evaluate(r"""
                 () => {
-                    const selectors = [
-                        'li.otm-PropertyCardListItem',
-                        'article[class*="PropertyCard"]',
-                        'li[class*="property-result"]',
-                    ];
-                    let cards = [];
-                    for (const sel of selectors) {
-                        const found = document.querySelectorAll(sel);
-                        if (found.length > 0) { cards = Array.from(found); break; }
-                    }
-                    return cards.map(card => {
-                        const priceEl = card.querySelector('[class*="price"], .price');
-                        const addrEl  = card.querySelector('[class*="address"], address');
-                        if (!priceEl) return null;
-                        const cardText  = card.innerText || '';
+                    const cards = document.querySelectorAll('article[data-component]');
+                    return Array.from(cards).map(card => {
+                        const link = card.querySelector('a[href*="/details/"]');
+                        if (!link) return null;
+                        const cardText = card.innerText || '';
+                        // Price: look for pcm pattern
+                        const priceMatch = cardText.match(/[\d,]+\s*pcm/i)
+                                        || cardText.match(/£\s*[\d,]+/);
+                        const addrEl = card.querySelector('address');
                         const bathMatch = cardText.match(/(\d+)\s*bath/i);
                         const sqftMatch = cardText.match(/([\d,]+)\s*sq\.?\s*ft/i)
                                        || cardText.match(/([\d,]+)\s*sqft/i);
-                        const sqmMatch  = cardText.match(/([\d,]+)\s*(?:sq\.?\s*m\b|sqm|m²)/i);
+                        const sqmMatch  = cardText.match(/([\d,]+)\s*(?:sq\.?\s*m\b|sqm)/i);
                         let sqft = null;
                         if (sqftMatch) sqft = parseInt(sqftMatch[1].replace(/,/g,''));
                         else if (sqmMatch) sqft = Math.round(parseInt(sqmMatch[1].replace(/,/g,'')) * 10.764);
                         return {
-                            price:   priceEl.innerText.trim(),
+                            price:   priceMatch ? priceMatch[0].trim() : '',
                             address: addrEl ? addrEl.innerText.trim().replace(/\s+/g,' ') : '',
                             baths:   bathMatch ? parseInt(bathMatch[1]) : null,
                             sqft:    sqft,
+                            text:    cardText.slice(0, 300),
                         };
-                    }).filter(Boolean);
+                    }).filter(d => d && d.price);
                 }
             """)
 
@@ -844,6 +1314,7 @@ async def get_historical_rents(
     baths: Optional[int] = None,
     sqft: Optional[int] = None,
     prop_type: Optional[str] = None,
+    listing_url: str = "",
 ) -> list[dict]:
     """
     Gather let-agreed rental data for apple-to-apple comparables.
@@ -863,7 +1334,7 @@ async def get_historical_rents(
 
     # 0 — Property-specific history (best comparable: same flat, real dates)
     try:
-        own_history = await _scrape_property_history(address, bedrooms)
+        own_history = await _scrape_property_history(address, bedrooms, listing_url=listing_url)
         results.extend(own_history)
         if own_history:
             logger.info("[fmv] Property history for '%s': %d points (own rental history)",
@@ -875,9 +1346,10 @@ async def get_historical_rents(
     # Sources: property's own history + live let-agreed comps only.
 
     # 1, 2, 3 — Live let-agreed scraping (concurrent), with strict params
+    # Using 0.25 mile radius (tight circle) and let-agreed only — no asking prices
     slug      = _ZOOPLA_SLUGS.get(area)
-    region_id = _RIGHTMOVE_REGIONS.get(area)
-    otm_slug  = _OTM_SLUGS.get(area)
+    loc_id    = _RIGHTMOVE_STATIONS.get(area)
+    otm_slug  = _OTM_STATION_SLUGS.get(area)
 
     import asyncio
     tasks = []
@@ -885,9 +1357,9 @@ async def get_historical_rents(
         tasks.append(asyncio.create_task(
             _scrape_zoopla_let_agreed(slug, bedrooms, baths=baths, prop_type=prop_type, subject_sqft=sqft)
         ))
-    if region_id:
+    if loc_id:
         tasks.append(asyncio.create_task(
-            _scrape_rightmove_let_agreed(region_id, bedrooms, baths=baths, prop_type=prop_type, subject_sqft=sqft)
+            _scrape_rightmove_let_agreed(loc_id, bedrooms, baths=baths, prop_type=prop_type, subject_sqft=sqft)
         ))
     if otm_slug:
         tasks.append(asyncio.create_task(
@@ -925,14 +1397,18 @@ async def get_comparable_listings(
     area: str,
     bedrooms: int,
     current_price: int,
+    baths: Optional[int] = None,
+    sqft:  Optional[int] = None,
+    prop_type: Optional[str] = None,
 ) -> dict:
     """
     Find comparable furnished listings in the same area.
-    Prefers exact bedroom + bathroom + size match. Falls back gracefully.
+    Filters by bedrooms, then applies strict baths/size/type matching
+    when those fields are known (apple-to-apple).
     """
     comps: list[dict] = []
 
-    # Pull from local listings.json first (fast)
+    # Pull from local listings.json — same area, same beds
     try:
         if LISTINGS_PATH.exists():
             local = json.loads(LISTINGS_PATH.read_text(encoding="utf-8"))
@@ -943,30 +1419,36 @@ async def get_comparable_listings(
                 beds  = _parse_beds(listing.get("title", "")) or bedrooms
                 if price and beds == bedrooms and 500 <= price <= 50_000:
                     comps.append({
-                        "price":   price,
-                        "address": listing.get("address", ""),
-                        "source":  listing.get("source", "local"),
-                        "baths":   listing.get("baths"),
-                        "sqft":    listing.get("sqft"),
+                        "price":     price,
+                        "address":   listing.get("address", ""),
+                        "source":    listing.get("source", "local"),
+                        "baths":     listing.get("baths"),
+                        "sqft":      listing.get("sqft"),
+                        "prop_type": _parse_property_type(listing.get("title", "") + " " + listing.get("address", "")),
                     })
     except Exception as exc:
         logger.warning("[fmv] comparable listings local read failed: %s", exc)
 
-    # Supplement with live Zoopla if thin
+    # Supplement with live Zoopla (station-based, 0.5 mile radius) if thin
     slug = _ZOOPLA_SLUGS.get(area)
     if slug and _PLAYWRIGHT and len(comps) < 5:
         try:
-            live = await _scrape_zoopla_let_agreed(slug, bedrooms)
+            live = await _scrape_zoopla_let_agreed(slug, bedrooms, baths=baths, prop_type=prop_type, subject_sqft=sqft)
             for item in live:
                 comps.append({
-                    "price":   item["price"],
-                    "address": item["address"],
-                    "source":  "zoopla_live",
-                    "baths":   item.get("baths"),
-                    "sqft":    item.get("sqft"),
+                    "price":     item["price"],
+                    "address":   item["address"],
+                    "source":    "zoopla_live",
+                    "baths":     item.get("baths"),
+                    "sqft":      item.get("sqft"),
+                    "prop_type": prop_type,
                 })
         except Exception as exc:
             logger.warning("[fmv] live comparable scrape failed: %s", exc)
+
+    # Apply strict filter — only keep apple-to-apple matches when fields are known
+    strict = _strict_filter(comps, baths, sqft, prop_type)
+    comps  = strict if len(strict) >= 3 else comps   # fall back to all if too few
 
     if not comps:
         return {
@@ -1080,14 +1562,15 @@ You are a London rental market expert with deep knowledge of Zone 1/2 pricing tr
 
 You will receive:
 - A property's asking price, bedrooms, bathrooms, and size (if known)
-- Current comparable listings (same area, same bedrooms, weighted by bathroom + size match)
-- 10 years of VOA historical rental data for the borough
-- Live let-agreed data from Zoopla, Rightmove, and OnTheMarket
+- This property's own rental history (what it actually let for in previous years), if found
+- Let-agreed prices of similar properties within 0.25 mile (same beds/baths/type), from Zoopla, Rightmove, and OnTheMarket
+
+IMPORTANT: The FMV is calculated from real let-agreed prices only — no asking prices.
 
 Your job:
-1. Assess whether the calculated Fair Market Value is reasonable given the comparables
+1. Assess whether the asking price is fair given real let-agreed evidence
 2. Write a concise 1-2 sentence reasoning explaining the verdict
-3. Be specific — mention actual price ranges, number of comparables, and bathroom/size context where relevant
+3. Be specific — mention actual price ranges, number of data points, and any own-history context
 
 Always be direct. Focus on the numbers. Do not hedge excessively.
 Respond with ONLY valid JSON:
@@ -1097,9 +1580,9 @@ Respond with ONLY valid JSON:
 }
 
 Confidence guide:
-  high   = 10+ well-matched comparables
-  medium = 5-9 comparables or partial bath/size data
-  low    = fewer than 5 comparables, or scraping largely failed
+  high   = 10+ let-agreed data points, or own history found
+  medium = 3-9 let-agreed data points, or partial data
+  low    = fewer than 3 data points total
 """
 
 
@@ -1134,21 +1617,26 @@ def _get_claude_reasoning(
             f"avg £{comparables['avg']:,}/mo, median £{comparables['median']:,}/mo."
         )
 
-    # Summarise historical data sources
-    voa_points = [p for p in historical_data if "VOA" in p.get("source", "")]
-    live_points = [p for p in historical_data if "VOA" not in p.get("source", "")]
+    # Summarise data sources
+    own_pts  = [p for p in historical_data
+                if p.get("source") in ("zoopla_property_history", "rightmove_property_history")]
+    comp_pts = [p for p in historical_data
+                if p.get("source") not in ("zoopla_property_history", "rightmove_property_history")]
     hist_summary = ""
-    if voa_points:
-        hist_prices = [p["price"] for p in voa_points]
+    if own_pts:
+        own_prices = [p["price"] for p in own_pts]
+        own_dates  = sorted(p.get("date", "") for p in own_pts)
         hist_summary += (
-            f"VOA 10-year borough data: {len(voa_points)} annual data points, "
-            f"range £{min(hist_prices):,}–£{max(hist_prices):,}/mo. "
+            f"Own property history: {len(own_pts)} records, "
+            f"range £{min(own_prices):,}–£{max(own_prices):,}/mo "
+            f"({own_dates[0][:4] if own_dates else '?'}–{own_dates[-1][:4] if own_dates else '?'}). "
         )
-    if live_points:
-        live_prices = [p["price"] for p in live_points]
+    if comp_pts:
+        comp_prices = [p["price"] for p in comp_pts]
         hist_summary += (
-            f"Live let-agreed (Zoopla/Rightmove/OTM): {len(live_points)} data points, "
-            f"range £{min(live_prices):,}–£{max(live_prices):,}/mo."
+            f"Let-agreed comps within 0.25mi (Zoopla/Rightmove/OTM): "
+            f"{len(comp_pts)} data points, "
+            f"range £{min(comp_prices):,}–£{max(comp_prices):,}/mo."
         )
 
     user_msg = (
@@ -1166,11 +1654,14 @@ def _get_claude_reasoning(
     try:
         client  = anthropic.Anthropic(api_key=_API_KEY)
         message = client.messages.create(
-            model=_SONNET_MODEL, max_tokens=256,
+            model=_SONNET_MODEL, max_tokens=512,
             system=_FMV_SYSTEM,
             messages=[{"role": "user", "content": user_msg}],
         )
-        data = json.loads(message.content[0].text.strip())
+        raw  = message.content[0].text.strip()
+        # Strip markdown code fences if Claude wraps the JSON
+        raw  = re.sub(r"^```(?:json)?\s*|\s*```$", "", raw, flags=re.DOTALL).strip()
+        data = json.loads(raw)
         return str(data.get("reasoning", "")), str(data.get("confidence", "medium"))
 
     except Exception as exc:
@@ -1184,20 +1675,20 @@ def _get_claude_reasoning(
 
 def _is_pass(asking_price: int, fmv: int) -> bool:
     """
-    PASS if: asking_price <= fmv + 500
-    FAIL if: asking_price >  fmv + 500
+    PASS if: asking_price <= fmv * 1.05  (at or below 5% above FMV)
+    FAIL if: asking_price >  fmv * 1.05
     There is NO lower limit — any price at or below FMV is always a PASS.
     """
-    return asking_price <= fmv + 500
+    return asking_price <= fmv * 1.05
 
 
 def _run_unit_tests() -> None:
     """Assert the PASS/FAIL rule against canonical examples."""
     assert _is_pass(2_800, 3_000) is True,  "£2,800 ask vs £3,000 FMV should PASS"
     assert _is_pass(3_000, 3_000) is True,  "£3,000 ask vs £3,000 FMV should PASS"
-    assert _is_pass(3_400, 3_000) is True,  "£3,400 ask vs £3,000 FMV should PASS (£400 above)"
-    assert _is_pass(3_500, 3_000) is True,  "£3,500 ask vs £3,000 FMV should PASS (exactly £500 above)"
-    assert _is_pass(3_600, 3_000) is False, "£3,600 ask vs £3,000 FMV should FAIL (£600 above)"
+    assert _is_pass(3_150, 3_000) is True,  "£3,150 ask vs £3,000 FMV should PASS (exactly 5% above)"
+    assert _is_pass(3_151, 3_000) is False, "£3,151 ask vs £3,000 FMV should FAIL (just over 5%)"
+    assert _is_pass(3_600, 3_000) is False, "£3,600 ask vs £3,000 FMV should FAIL (20% above)"
     logger.info("[fmv] ✅ All PASS/FAIL unit tests passed")
 
 
@@ -1267,6 +1758,8 @@ async def get_fmv_verdict(property_dict: dict) -> dict:
         verdict    = "PASS" if _is_pass(asking, fmv) else "FAIL"
         difference = asking - fmv
         bath_label = f"{subject_baths} bath" if subject_baths else "bath unknown"
+        own_count_c = cached.get("own_count", 0)
+        let_agreed_count_c = cached.get("let_agreed_count", 0)
         logger.info(
             "[fmv] CACHE HIT: %s | asking £%d | FMV £%d | diff %+d | %s",
             address[:40], asking, fmv, difference, verdict,
@@ -1276,48 +1769,72 @@ async def get_fmv_verdict(property_dict: dict) -> dict:
             "asking_price":     asking,
             "difference":       difference,
             "verdict":          verdict,
-            "confidence":       cached["confidence"],          # real confidence, not "cached"
+            "confidence":       cached.get("confidence", "medium"),
             "reasoning":        (
-                f"FMV of £{fmv:,}/mo based on {cached['comparable_count']} comparables "
-                f"and {cached['historical_count']} historical data points "
+                f"FMV of £{fmv:,}/mo based on {own_count_c} own-history records "
+                f"and {let_agreed_count_c} let-agreed comparables "
                 f"({area}, {bedrooms}-bed {subject_prop_type or 'property'}, {bath_label})."
             ),
-            "comparable_count": cached["comparable_count"],   # real count from original run
-            "historical_count": cached["historical_count"],   # real count from original run
-            "subject_baths":    subject_baths,
-            "subject_sqft":     subject_sqft,
-            "subject_prop_type": subject_prop_type,
+            "own_history_count":    own_count_c,
+            "let_agreed_count":     let_agreed_count_c,
+            "comparable_count":     let_agreed_count_c,
+            "historical_count":     own_count_c,
+            "subject_baths":        subject_baths,
+            "subject_sqft":         subject_sqft,
+            "subject_prop_type":    subject_prop_type,
         }
 
     # ── Fresh computation ─────────────────────────────────────────────────────
+    # FMV is based ONLY on:
+    #   (a) this property's own rental history (what it actually let for before)
+    #   (b) let-agreed prices of similar properties within 0.25 mile
+    # Asking prices from listings.json are intentionally excluded.
     import asyncio
 
-    historical_task  = asyncio.create_task(
-        get_historical_rents(address, area, bedrooms,
-                             baths=subject_baths,
-                             sqft=subject_sqft,
-                             prop_type=subject_prop_type)
+    all_historical = await get_historical_rents(
+        address, area, bedrooms,
+        baths=subject_baths,
+        sqft=subject_sqft,
+        prop_type=subject_prop_type,
+        listing_url=property_dict.get("url", ""),
     )
-    comparables_task = asyncio.create_task(
-        get_comparable_listings(area, bedrooms, asking)
-    )
-    historical_data, comparables = await asyncio.gather(historical_task, comparables_task)
+
+    # Split for reporting: own property history vs comparable let-agreed
+    own_history   = [p for p in all_historical
+                     if p.get("source") in ("zoopla_property_history", "rightmove_property_history")]
+    let_agreed    = [p for p in all_historical
+                     if p.get("source") not in ("zoopla_property_history", "rightmove_property_history")]
+
+    own_count    = len(own_history)
+    let_agreed_count = len(let_agreed)
+
+    # Build a comparables summary dict for Claude reasoning
+    let_agreed_prices = [p["price"] for p in let_agreed if p.get("price")]
+    comparables = {
+        "listings":    let_agreed,
+        "count":       let_agreed_count,
+        "avg":         round(statistics.mean(let_agreed_prices)) if let_agreed_prices else None,
+        "median":      round(statistics.median(let_agreed_prices)) if let_agreed_prices else None,
+        "min":         min(let_agreed_prices) if let_agreed_prices else None,
+        "max":         max(let_agreed_prices) if let_agreed_prices else None,
+        "price_range": (f"£{min(let_agreed_prices):,}–£{max(let_agreed_prices):,}"
+                        if let_agreed_prices else "no data"),
+    }
 
     fmv = calculate_fmv(
-        historical_data, comparables,
+        all_historical, {},          # empty comparables — all data already in all_historical
         subject_baths, subject_sqft, subject_prop_type,
     )
     if fmv is None or fmv == 0:
-        logger.warning("[fmv] No data for %s — defaulting to FAIL", address)
+        logger.warning("[fmv] No let-agreed data for %s — defaulting to FAIL", address)
         return _default_fail
 
     # ── Cache store ───────────────────────────────────────────────────────────
-    # Store fmv + the real counts so cache hits can report them accurately
     _FMV_CACHE[cache_key] = {
-        "fmv":              fmv,
-        "comparable_count": comparables.get("count", 0),
-        "historical_count": len(historical_data),
-        "confidence":       None,   # filled in after Claude reasoning below
+        "fmv":            fmv,
+        "own_count":      own_count,
+        "let_agreed_count": let_agreed_count,
+        "confidence":     None,
     }
 
     # ── PASS / FAIL ───────────────────────────────────────────────────────────
@@ -1329,16 +1846,16 @@ async def get_fmv_verdict(property_dict: dict) -> dict:
     reasoning, confidence = await loop.run_in_executor(
         None,
         _get_claude_reasoning,
-        property_dict, historical_data, comparables, fmv,
+        property_dict, all_historical, comparables, fmv,
         subject_baths, subject_sqft,
     )
-    # Now that we have the real confidence, update the cache entry
     _FMV_CACHE[cache_key]["confidence"] = confidence
 
     logger.info(
-        "[fmv] %s | asking £%d | FMV £%d | diff %+d | %s | %s | beds=%s baths=%s sqft=%s type=%s",
+        "[fmv] %s | asking £%d | FMV £%d | diff %+d | %s | %s | "
+        "own_history=%d let_agreed=%d | beds=%s baths=%s sqft=%s type=%s",
         address[:40], asking, fmv, difference, verdict, confidence,
-        bedrooms, subject_baths, subject_sqft, subject_prop_type,
+        own_count, let_agreed_count, bedrooms, subject_baths, subject_sqft, subject_prop_type,
     )
 
     return {
@@ -1348,9 +1865,11 @@ async def get_fmv_verdict(property_dict: dict) -> dict:
         "verdict":          verdict,
         "confidence":       confidence,
         "reasoning":        reasoning,
-        "comparable_count": comparables.get("count", 0),
-        "historical_count": len(historical_data),
-        "subject_baths":    subject_baths,
-        "subject_sqft":     subject_sqft,
-        "subject_prop_type": subject_prop_type,
+        "own_history_count":    own_count,
+        "let_agreed_count":     let_agreed_count,
+        "comparable_count":     let_agreed_count,   # kept for backward compat
+        "historical_count":     own_count,           # kept for backward compat
+        "subject_baths":        subject_baths,
+        "subject_sqft":         subject_sqft,
+        "subject_prop_type":    subject_prop_type,
     }

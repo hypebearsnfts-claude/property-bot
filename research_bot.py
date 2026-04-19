@@ -6,11 +6,17 @@ Commands:
   /start  - confirm bot is online
   /status - confirm scrapers are ready
   /run    - kick off a full property search (scrape + enrich + send results)
+
+Also exports:
+  run_research_pipeline(bot, chat_id)  — called by scheduler.py in automated mode.
+    Runs all scrapers, saves listings.json, sends a Telegram summary, returns count.
 """
 
 import asyncio
+import json
 import logging
 import os
+from pathlib import Path
 
 from dotenv import load_dotenv
 from telegram import Update
@@ -92,6 +98,76 @@ async def run(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     await update.message.reply_text(
         f"🏁 Done! Sent {len(to_send)} of {total} listings."
     )
+
+
+# ── Automated pipeline entry point (called by scheduler.py) ──────────────────
+
+LISTINGS_PATH = Path(__file__).parent / "listings.json"
+
+
+async def run_research_pipeline(bot, chat_id) -> int:
+    """
+    Scrape all sources, save listings.json, notify Telegram, return count.
+
+    Called by scheduler.py as step 1 of the automated daily pipeline.
+
+    Parameters
+    ----------
+    bot      : telegram.Bot instance
+    chat_id  : Telegram chat ID (str or int)
+
+    Returns
+    -------
+    int  Number of unique listings saved to listings.json (0 if none found).
+    """
+    chat_id = int(chat_id)
+    logger.info("[research] Automated pipeline started")
+
+    await bot.send_message(
+        chat_id=chat_id,
+        text="🔍 Research Bot: scraping Rightmove, Zoopla, OpenRent & OnTheMarket…",
+    )
+
+    try:
+        # Run all 4 scrapers with full deduplication (no enrichment here —
+        # that happens in filter_bot so we get accurate walk times per listing)
+        listings = await scheduler._run_scrapers()
+    except Exception as exc:
+        logger.error("[research] Scraping failed: %s", exc)
+        await bot.send_message(
+            chat_id=chat_id,
+            text=f"❌ Research scraping failed: {exc}",
+        )
+        return 0
+
+    if not listings:
+        await bot.send_message(
+            chat_id=chat_id,
+            text="⚠️ Research Bot: no listings found. Filter step skipped.",
+        )
+        return 0
+
+    # Save to listings.json for filter_bot to read
+    try:
+        LISTINGS_PATH.write_text(
+            json.dumps(listings, ensure_ascii=False, indent=2),
+            encoding="utf-8",
+        )
+        logger.info("[research] Saved %d listings to %s", len(listings), LISTINGS_PATH)
+    except Exception as exc:
+        logger.error("[research] Failed to write listings.json: %s", exc)
+        await bot.send_message(
+            chat_id=chat_id,
+            text=f"❌ Research Bot: failed to save listings — {exc}",
+        )
+        return 0
+
+    await bot.send_message(
+        chat_id=chat_id,
+        text=f"✅ Research complete — *{len(listings):,}* unique listings saved.",
+        parse_mode="Markdown",
+    )
+    return len(listings)
 
 
 # ── Entry point ──────────────────────────────────────────────────────────────

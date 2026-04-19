@@ -51,6 +51,8 @@ logging.basicConfig(
     format="%(asctime)s | %(levelname)s | %(name)s | %(message)s",
     level=logging.INFO,
 )
+# Suppress httpx request logs — they contain the full bot token in the URL
+logging.getLogger("httpx").setLevel(logging.WARNING)
 logger = logging.getLogger(__name__)
 
 # ── Agent blacklist ───────────────────────────────────────────────────────────
@@ -138,12 +140,16 @@ def _format_property_message(listing: dict, verdict: dict) -> str:
     else:
         diff_label = f"£{difference:,} above — within tolerance"
 
-    # Comparable / historical context
-    comp_count = verdict.get("comparable_count", 0)
-    hist_count = verdict.get("historical_count", 0)
-    hist_years = round(hist_count / 12) if hist_count > 12 else (1 if hist_count > 0 else 0)
-    confidence = verdict.get("confidence", "low").capitalize()
-    reasoning  = verdict.get("reasoning", "")
+    # Data sources context
+    own_history_count = verdict.get("own_history_count", verdict.get("historical_count", 0))
+    let_agreed_count  = verdict.get("let_agreed_count",  verdict.get("comparable_count", 0))
+    confidence        = verdict.get("confidence", "low").capitalize()
+    reasoning         = verdict.get("reasoning", "")
+
+    own_str = (f"{own_history_count} own\\-history record{'s' if own_history_count != 1 else ''}"
+               if own_history_count else "no own history found")
+    let_str = (f"{let_agreed_count} let\\-agreed comp{'s' if let_agreed_count != 1 else ''} \\(0\\.25mi\\)"
+               if let_agreed_count else "no let\\-agreed comps found")
 
     # Build message — escape all dynamic plain-text content
     lines = [
@@ -155,8 +161,8 @@ def _format_property_message(listing: dict, verdict: dict) -> str:
         f"✅ VERDICT: PASS  \\[{_esc(source)}\\]",
         f"🔗 [View listing]({url})",
         "\\-\\-\\-",
-        f"Comparables: {comp_count} properties",
-        f"Historical data: {hist_years} year{'s' if hist_years != 1 else ''}",
+        f"Own history: {own_str}",
+        f"Nearby let\\-agreed: {let_str}",
         f"Confidence: {_esc(confidence)}",
     ]
     if reasoning:
@@ -414,31 +420,45 @@ async def run_filter_pipeline_and_send(
     sent = 0
     for listing in to_send:
         verdict = listing.get("_verdict", {})
-        try:
-            msg = _format_property_message(listing, verdict)
-            await bot.send_message(
-                chat_id=chat_id,
-                text=msg,
-                parse_mode="MarkdownV2",
-                disable_web_page_preview=True,
-            )
-            mark_as_seen(listing)   # record so tomorrow's run skips it
-            sent += 1
-            await asyncio.sleep(0.5)
-        except Exception as exc:
-            logger.warning("[filter] Failed to send formatted listing: %s", exc)
+        for attempt in range(3):   # up to 3 tries per listing
             try:
-                plain = (
-                    f"{listing.get('area')} — £{verdict.get('asking_price', '?')}/mo\n"
-                    f"{listing.get('address')}\n"
-                    f"Walk: {listing.get('walk_mins')} min | FMV: £{verdict.get('fmv', '?')}/mo\n"
-                    f"{listing.get('url')}"
+                msg = _format_property_message(listing, verdict)
+                await bot.send_message(
+                    chat_id=chat_id,
+                    text=msg,
+                    parse_mode="MarkdownV2",
+                    disable_web_page_preview=True,
                 )
-                await bot.send_message(chat_id=chat_id, text=plain, disable_web_page_preview=True)
                 mark_as_seen(listing)
                 sent += 1
-            except Exception:
-                pass
+                await asyncio.sleep(2.5)   # ~24 msg/min — safely under Telegram's 30/min limit
+                break
+            except Exception as exc:
+                exc_str = str(exc)
+                # Telegram flood control — wait the requested time then retry
+                import re as _re
+                retry_m = _re.search(r"Retry in (\d+)", exc_str)
+                if retry_m:
+                    wait = int(retry_m.group(1)) + 2
+                    logger.info("[filter] Flood control — waiting %ds before retry", wait)
+                    await asyncio.sleep(wait)
+                    continue
+                # MarkdownV2 parse error — fall back to plain text
+                logger.warning("[filter] Send failed (attempt %d): %s", attempt + 1, exc)
+                try:
+                    plain = (
+                        f"{listing.get('area')} — £{verdict.get('asking_price', '?')}/mo\n"
+                        f"{listing.get('address')}\n"
+                        f"Walk: {listing.get('walk_mins')} min | FMV: £{verdict.get('fmv', '?')}/mo\n"
+                        f"{listing.get('url')}"
+                    )
+                    await bot.send_message(chat_id=chat_id, text=plain, disable_web_page_preview=True)
+                    mark_as_seen(listing)
+                    sent += 1
+                    await asyncio.sleep(2.5)
+                except Exception:
+                    pass
+                break
 
     await bot.send_message(
         chat_id=chat_id,

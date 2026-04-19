@@ -451,4 +451,6 @@ if __name__ == "__main__":
         format="%(asctime)s | %(levelname)s | %(name)s | %(message)s",
         level=logging.INFO,
     )
+    # Suppress httpx request logs — they contain the full bot token in the URL
+    logging.getLogger("httpx").setLevel(logging.WARNING)
     asyncio.run(run_pipeline())

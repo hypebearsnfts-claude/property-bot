@@ -1,0 +1,203 @@
+
+============================================================
+ZOOPLA — ALL LINES CONTAINING YEAR + £ PRICE
+============================================================
+  (none found)
+
+
+============================================================
+ZOOPLA — FULL PAGE TEXT (first 300 lines)
+============================================================
+    0: www.zoopla.co.uk
+    1: Performing security verification
+    2: This website uses a security service to protect against malicious bots. This page is displayed while the website verifies you are not a bot.
+    3: Ray ID: 9edeaab9fda64112
+    4: Performance and Security by Cloudflare
+    5: Privacy
+
+============================================================
+RIGHTMOVE — ALL LINES CONTAINING YEAR + £ PRICE
+============================================================
+  (none found)
+
+
+============================================================
+RIGHTMOVE — FULL PAGE TEXT (first 300 lines)
+============================================================
+    0: Skip to content
+    1: Buy
+    2: Rent
+    3: House Prices
+    4: Find Agent
+    5: Commercial
+    6: Inspire
+    7: Overseas
+    8: Sign in
+    9: Sign in
+   10: Buy
+   11: Property for sale
+   12: New homes for sale
+   13: Property valuation
+   14: Investors
+   15: Mortgages
+   16: Rent
+   17: Property to rent
+   18: Student property to rent
+   19: Find Agent
+   20: Find estate agents
+   21: House prices
+   22: Sold house prices
+   23: Instant online valuation
+   24: Commercial
+   25: Commercial property to rent
+   26: Commercial property for sale
+   27: Advertise
+   28: Inspire
+   29: Moving stories
+   30: Property news
+   31: Energy efficiency
+   32: Property guides
+   33: Housing trends
+   34: Overseas blog
+   35: Mortgage guides
+   36: Overseas
+   37: All countries
+   38: Spain
+   39: France
+   40: Portugal
+   41: Italy
+   42: Greece
+   43: Currency
+   44: Sell Overseas property
+   45: See similar properties
+   46: Property photo 1 of 11.
+   47: 1/11
+   48: 16 Christian Street, London, E1 1AW
+   49: £3,250 pcm
+   50: £750 pw
+   51: Tenancy info
+   52: Added on 04/04/2026
+   53: Letting details
+   54: Let available date: 20/05/2026
+   55: Deposit: Ask agent
+   56: Let type: Long term
+   57: Furnish type: Furnished or unfurnished, landlord is flexible
+   58: Council Tax: Ask agent
+   59: PROPERTY TYPE
+   60: Apartment
+   61: BEDROOMS
+   62: 2
+   63: BATHROOMS
+   64: 2
+   65: SIZE
+   66: Ask agent
+   67: No floorplan
+   68: +7
+   69: Key features
+   70: Modern DevelopmentBright-Open Plan Living Area2 Spacious Bedrooms ( 1 En-Suite )Private BalconySleek Fitted KitchenWooden Flooring ThroughoutBuilt-In Wardrobes & Ample StorageOn-Site GymExcellent Transport LinksMiele Amenities
+   71: Description
+   72: Set on the first floor of a modern development, this bright and spacious two-bedroom, two-bathroom apartment offers a stylish blend of contemporary living and practicality, perfect for professionals or families looking for comfort and convenience in the City.
+   73: The apartment features an open-plan living and dining area leading onto a private balcony — ideal for relaxing or entertaining. The modern fitted kitchen comes with integrated appliances, and wooden flooring throughout adds warmth and elegance. Both bedrooms are generously sized, with the master benefiting from an en-suite bathroom and built-in wardrobes. A sleek family bathroom and plentiful storage complete the space.
+   74: Residents can also enjoy the convenience of an on-site gym, making it easy to stay active without leaving home.
+   75: Location Highlights:
+   76: Walking distance to St Katharine Docks, Brick Lane, and Commercial Street
+   77: Excellent transport links: Tower Hill (Circle & District), Shadwell (Overground & DLR), Aldgate East (District & Hammersmith & City), Aldgate (District, Circle & Metropolitan)
+   78: Close to restaurants, shops, and cultural hotspots
+   79: Read full description
+   80: COUNCIL TAX
+   81: Band: TBC
+   82: PARKING
+   83: Ask agent
+   84: GARDEN
+   85: Ask agent
+   86: ACCESSIBILITY
+   87: Ask agent
+   88: Energy performance certificate - ask agent
+   89: Utilities, rights & restrictions
+   90: 16 Christian Street, London, E1 1AW
+   91: Open map
+   92: Street View
+   93: My places
+   94: Stations
+   95: Schools
+   96: Add an important place to see how long it'd take to get there from our property listings.
+   97: __mins
+   98: driving to your place
+   99: Broadband speed
+  100: About JS Estate Management, London
+  101: 1a Rotherhithe New Road, London, SE16 2AH
+  102: Industry affiliations:
+  103: Welcome to JS Estate Management Ltd
+  104: JS Estate Management Ltd in Canada Water has a wealth of local knowledge enabling us to help you find the right property, in the right location, at the right price. With many combined years experience in selling and letting properties, our friendly staff always make every effort possible to find properties that meet all of your individual requirements.
+  105: Read more
+  106: Notes
+  107: These notes are private, only you can see them.
+  108: Save note
+  109: MARKETED BY
+  110: JS Estate Management, London
+  111: 1a Rotherhithe New Road, London, SE16 2AH
+  112: More properties from this agent
+  113: Call agent
+  114: Request details
+  115: Staying secure when looking for property
+  116: Ensure you're up to date with our latest advice on how to avoid fraud or scams when looking for property online.
+  117: Visit our security centre to find out more
+  118: Disclaimer - Property reference 723711. The information displayed about this property comprises a property advertisement. Rightmove.co.uk makes no warranty as to the accuracy or completeness of the advertisement or any linked or associated information, and Rightmove has no control over the content. This property advertisement does not constitute property particulars. The information is provided and maintained by JS Estate Management, London. Please contact the selling agent or developer directly to obtain any information which may be available under the terms of The Energy Performance of Buildings (Certificates and Inspections) (England and Wales) Regulations 2007 or the Home Report if in relation to a residential property in Scotland.
+  119: *This is the average speed from the provider with the fastest broadband package available at this postcode. The average speed displayed is based on the download speeds of at least 50% of customers at peak time (8pm to 10pm). Fibre/cable services at the postcode are subject to availability and may differ between properties within a postcode. Speeds can be affected by a range of technical and environmental factors. The speed at the property may be lower than that listed above. You can check the estimated speed and confirm availability to a property prior to purchasing on the broadband provider's website. Providers may increase charges. The information is provided and maintained by Decision Technologies Limited.
+  120: **This is indicative only and based on a 2-person household with multiple devices and simultaneous usage. Broadband performance is affected by multiple factors including number of occupants and devices, simultaneous usage, router range etc. For more information speak to your broadband provider.
+  121: Map data ©OpenStreetMap contributors.
+  122: Download the Rightmove app
+  123: Resources
+  124: Stamp Duty Calculator
+  125: House Price Index
+  126: Property guides
+  127: Property news
+  128: Buyer guides
+  129: Seller guides
+  130: Renter guides
+  131: Landlord guides
+  132: Removals
+  133: Energy efficiency
+  134: Mortgage in Principle
+  135: Mortgage Calculator
+  136: Mortgage guides
+  137: Search
+  138: Search homes for sale
+  139: Search homes for rent
+  140: Commercial for sale
+  141: Commercial to rent
+  142: Overseas homes for sale
+  143: Search sold house prices
+  144: Find an agent
+  145: Student accommodation
+  146: Retirement homes
+  147: New homes
+  148: Locations
+  149: Major towns and cities in the UK
+  150: London
+  151: Cornwall
+  152: Glasgow
+  153: Cardiff
+  154: Edinburgh
+  155: Spain
+  156: France
+  157: Portugal
+  158: Rightmove
+  159: Tech blog
+  160: About
+  161: Press centre
+  162: Investor relations
+  163: Contact us
+  164: Careers
+  165: Sign in or create account
+  166: HomeViews
+  167: Professional
+  168: Rightmove Plus
+  169: Data Services
+  170: Advertise on Rightmove
+  171: Overseas agents and developers
+  172: Home and property related services
+  173: Advertise commercial property
+  174: HomeViews Business Hub
+  175: Site map Help Cookies Safety and Security Terms of Use Privacy Policy
+  176: Copyright © 2000-2026 Rightmove Group Limited. All rights reserved. Rightmove prohibits the scraping of its content. You can find further details here.

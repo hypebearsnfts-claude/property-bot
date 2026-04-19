@@ -5,7 +5,7 @@ from playwright.async_api import async_playwright, TimeoutError as PWTimeout
 logger = logging.getLogger(__name__)
 
 # Station slugs for Zoopla's /station/tube/ URL format — confirmed live 2026-04-17.
-# All use radius=0.25 miles, matching Rightmove STATION and OTM station searches.
+# All use radius=0.5 miles, matching Rightmove STATION and OTM station searches.
 # Soho has no tube station; Piccadilly Circus is the central Soho stop.
 # Tower Hill is the correct tube station (previously used broad "ec3" or "tower-bridge").
 AREAS = {
@@ -27,7 +27,7 @@ LISTING_SEL = "a[data-testid*='listing']"
 
 def _url(slug, pn=1):
     return (f"https://www.zoopla.co.uk/to-rent/property/station/tube/{slug}/"
-            f"?beds_min=2&furnished_state=furnished&radius=0.25&results_sort=newest_listings&pn={pn}")
+            f"?beds_min=2&price_max=15000&furnished_state=furnished&radius=0.5&results_sort=newest_listings&pn={pn}")
 
 async def _scrape_area(browser, area, slug):
     ctx = await browser.new_context(

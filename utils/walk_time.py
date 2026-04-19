@@ -4,9 +4,9 @@ utils/walk_time.py
 Returns the walk time from a property to the nearest tube/rail station.
 
 FREE APPROACH (no Google Maps API needed):
-  Every property is scraped within 0.25 miles (≤5 min walk) of its tube
-  station by design — the scrapers all use radius=0.25 miles.  We simply
-  return the station the property was scraped from and a walk time of 5 min.
+  Every property is scraped within 0.5 miles (≤10 min walk) of its tube
+  station by design — the scrapers all use radius=0.5 miles.  We simply
+  return the station the property was scraped from and a walk time of 10 min.
   This is accurate and costs nothing.
 
   GOOGLE_MAPS_API_KEY is still read from .env.  If it is set AND the Geocoding
@@ -36,7 +36,7 @@ _PLACES_URL  = "https://maps.googleapis.com/maps/api/place/nearbysearch/json"
 _MATRIX_URL  = "https://maps.googleapis.com/maps/api/distancematrix/json"
 
 # Known tube stations for each scraper area.
-# walk_mins is a conservative estimate assuming 0.25 mi radius ≈ 5 min walk.
+# walk_mins is a conservative estimate assuming 0.5 mi radius ≈ 10 min walk.
 _STATION_MAP: dict[str, str] = {
     "Covent Garden":   "Covent Garden",
     "Soho":            "Piccadilly Circus",
@@ -52,13 +52,13 @@ _STATION_MAP: dict[str, str] = {
     "Regent's Park":   "Regent's Park",
 }
 
-_DEFAULT_WALK_MINS = 5   # conservative for 0.25 mi radius
+_DEFAULT_WALK_MINS = 10  # conservative for 0.5 mi radius
 
 
 def _free_walk(listing: dict) -> tuple[str, int]:
     """
     Free fallback: look up the scraped station from the listing's 'area' field.
-    Every property was scraped within 0.25 mi of this station (≈ 5 min walk).
+    Every property was scraped within 0.5 mi of this station (≈ 10 min walk).
     """
     area    = listing.get("area", "")
     station = _STATION_MAP.get(area, "Nearest tube station")
