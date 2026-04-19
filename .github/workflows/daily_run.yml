@@ -2,7 +2,7 @@ name: Daily Property Scrape
 
 on:
   schedule:
-    - cron: "59 23 * * *"   # 23:59 UTC every day
+    - cron: "59 23 * * *"   # 23:59 UTC = 00:59 BST every day
   workflow_dispatch:         # allow manual trigger from GitHub UI
 
 jobs:
@@ -18,14 +18,6 @@ jobs:
         with:
           python-version: "3.11"
           cache: "pip"
-
-      - name: Restore seen_listings cache
-        uses: actions/cache@v4
-        with:
-          path: seen_listings.json
-          key: seen-listings-${{ github.run_id }}
-          restore-keys: |
-            seen-listings-
 
       - name: Install Python dependencies
         run: pip install -r requirements.txt
@@ -43,12 +35,14 @@ jobs:
           ANTHROPIC_API_KEY:           ${{ secrets.ANTHROPIC_API_KEY }}
         run: python scheduler.py
 
-      - name: Save seen_listings cache
-        if: always()   # save even if scheduler partially fails
-        uses: actions/cache@v4
-        with:
-          path: seen_listings.json
-          key: seen-listings-${{ github.run_id }}
+      - name: Commit updated seen_listings.json
+        if: always()
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add seen_listings.json || true
+          git diff --cached --quiet || git commit -m "chore: update seen_listings [skip ci]"
+          git push || true
 
       - name: Notify on failure
         if: failure()
@@ -60,6 +54,6 @@ jobs:
           import os, urllib.request, urllib.parse
           token = os.environ['TELEGRAM_BOT_TOKEN']
           chat  = os.environ['TELEGRAM_CHAT_ID']
-          data  = urllib.parse.urlencode({'chat_id': chat, 'text': '❌ Daily run failed. Check GitHub Actions logs.'}).encode()
+          data  = urllib.parse.urlencode({'chat_id': chat, 'text': '❌ Daily property run failed. Check: github.com/hypebearsnfts-claude/property-bot/actions'}).encode()
           urllib.request.urlopen(f'https://api.telegram.org/bot{token}/sendMessage', data=data)
           "

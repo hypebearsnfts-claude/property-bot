@@ -28,7 +28,7 @@ logs/
 *.sqlite
 *.db
 data/
-seen_listings.json
+# seen_listings.json is intentionally tracked so GitHub Actions remembers sent listings
 listings.json
 
 # ── Build & dist ──────────────────────────────────────────────────────────────
