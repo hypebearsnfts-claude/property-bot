@@ -17,6 +17,12 @@ URL format: station slugs with radius — e.g. /baker-street-station/?radius=0.5
   Confirmed 2026-04-17: OTM supports the same station-slug + radius pattern as
   Rightmove, giving the same tight station circles around each tube station.
   Previously used postcode district slugs (nw1, se1) which covered huge areas.
+
+Bot-detection fix 2026-04-20:
+  OTM (like Rightmove and Zoopla) detects reused Playwright browser contexts.
+  Each page now uses a fresh browser context to avoid the empty-results block.
+  Area-level retry (once, after 8 s) covers the case where even page 1 is
+  bot-detected (observed for West Kensington under concurrent scraping load).
 """
 
 import asyncio
@@ -159,53 +165,74 @@ _EXTRACT_JS = r"""
 """
 
 
-async def _scrape_area(browser, area: str, slug: str) -> list[dict]:
+async def _load_page(browser, area: str, slug: str, pn: int) -> list[dict]:
+    """
+    Load one OTM results page in a fresh browser context.
+
+    A fresh context is used for every page: OTM bot detection flags reused
+    Playwright contexts, causing article[data-component] to be absent on page 2+.
+
+    Returns list of raw card dicts (empty on bot-detection or end of results).
+    """
     ctx = await browser.new_context(
         user_agent=_UA,
         viewport={"width": 1280, "height": 900},
         locale="en-GB",
     )
     page = await ctx.new_page()
-    listings: list[dict] = []
-    seen: set[str] = set()
-    cookie_dismissed = False
-
     try:
+        try:
+            await page.goto(_url(slug, pn), wait_until="domcontentloaded", timeout=35_000)
+        except PWTimeout:
+            logger.warning("[otm] %s p%d: page load timeout", area, pn)
+            return []
+
+        # Give React time to hydrate and render listings
+        await page.wait_for_timeout(3_000)
+
+        # Dismiss Cookie Control banner (best-effort)
+        try:
+            await page.evaluate(
+                "const b = document.getElementById('ccc-recommended-settings'); if(b) b.click();"
+            )
+            await page.wait_for_timeout(1_500)
+        except Exception:
+            pass
+
+        # Wait for at least one card
+        try:
+            await page.wait_for_selector("article[data-component]", timeout=10_000)
+        except PWTimeout:
+            logger.info("[otm] %s p%d: no article[data-component] (bot-detected or end)", area, pn)
+            return []
+
+        cards_data = await page.evaluate(_EXTRACT_JS)
+        return cards_data or []
+
+    finally:
+        await ctx.close()
+
+
+async def _scrape_area(browser, area: str, slug: str) -> list[dict]:
+    """
+    Scrape all pages for one area, creating a fresh browser context per page.
+    Retries once (after a delay) if page 1 returns 0 listings.
+    """
+    for attempt in range(2):
+        listings: list[dict] = []
+        seen: set[str] = set()
+
         for pn in range(1, 20):
             if pn > 1:
                 await asyncio.sleep(random.uniform(2.5, 4.5))
 
             try:
-                await page.goto(_url(slug, pn), wait_until="domcontentloaded", timeout=35_000)
-            except PWTimeout:
-                logger.warning("[otm] %s p%d: page load timeout (slug=%s)", area, pn, slug)
+                cards_data = await _load_page(browser, area, slug, pn)
+            except Exception as exc:
+                logger.error("[otm] %s p%d error: %s", area, pn, exc)
                 break
-
-            # Give React time to hydrate and render listings
-            await page.wait_for_timeout(3_000)
-
-            # Dismiss Cookie Control banner (id=ccc) once — must do BEFORE listings render
-            if not cookie_dismissed:
-                try:
-                    await page.evaluate(
-                        "const b = document.getElementById('ccc-recommended-settings'); if(b) b.click();"
-                    )
-                    cookie_dismissed = True
-                    await page.wait_for_timeout(1_500)
-                except Exception:
-                    pass
-
-            # Wait for at least one card
-            try:
-                await page.wait_for_selector("article[data-component]", timeout=10_000)
-            except PWTimeout:
-                logger.info("[otm] %s p%d: no article[data-component] found — stopping", area, pn)
-                break
-
-            cards_data = await page.evaluate(_EXTRACT_JS)
 
             if not cards_data:
-                logger.info("[otm] %s p%d: extractor returned 0 — stopping", area, pn)
                 break
 
             new_on_page = 0
@@ -238,10 +265,11 @@ async def _scrape_area(browser, area: str, slug: str) -> list[dict]:
             if new_on_page == 0:
                 break
 
-    except Exception as exc:
-        logger.error("[otm] %s error: %s", area, exc)
-    finally:
-        await ctx.close()
+        if listings or attempt == 1:
+            break
+
+        logger.info("[otm] %s attempt 1 got 0 — retrying in 8s…", area)
+        await asyncio.sleep(8.0)
 
     logger.info("[otm] %s → %d listings", area, len(listings))
     return listings
