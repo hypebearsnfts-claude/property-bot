@@ -2,7 +2,8 @@ name: Daily Property Scrape
 
 on:
   schedule:
-    - cron: "59 23 * * *"   # 23:59 UTC = 00:59 BST every day
+    - cron: "0 12 * * *"    # 12:00 UTC = 13:00 BST (London summer time, Mar–Oct)
+                              #           = 12:00 GMT (London winter time, Oct–Mar, 1hr early)
   workflow_dispatch:         # allow manual trigger from GitHub UI
 
 jobs:
