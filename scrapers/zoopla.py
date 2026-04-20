@@ -1,6 +1,11 @@
 import asyncio, logging, random
 from urllib.parse import quote_plus
 from playwright.async_api import async_playwright, TimeoutError as PWTimeout
+try:
+    from playwright_stealth import stealth_async as _stealth_async
+    _STEALTH_AVAILABLE = True
+except ImportError:
+    _STEALTH_AVAILABLE = False
 
 logger = logging.getLogger(__name__)
 
@@ -34,8 +39,14 @@ async def _scrape_area(browser, area, slug):
         user_agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
         viewport={"width": 1280, "height": 900},
         locale="en-GB",
+        extra_http_headers={
+            "Accept-Language": "en-GB,en;q=0.9",
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+        },
     )
     page = await ctx.new_page()
+    if _STEALTH_AVAILABLE:
+        await _stealth_async(page)
     listings = []
     seen_this_area = set()
     accepted = False
@@ -135,7 +146,15 @@ async def scrape():
     async def _s(browser, area, term):
         async with sem: return await _scrape_area(browser, area, term)
     async with async_playwright() as pw:
-        browser = await pw.chromium.launch(headless=True)
+        browser = await pw.chromium.launch(
+            headless=True,
+            args=[
+                "--no-sandbox",
+                "--disable-setuid-sandbox",
+                "--disable-dev-shm-usage",
+                "--disable-blink-features=AutomationControlled",
+            ],
+        )
         results = await asyncio.gather(
             *[_s(browser, a, t) for a, t in AREAS.items()],
             return_exceptions=True,

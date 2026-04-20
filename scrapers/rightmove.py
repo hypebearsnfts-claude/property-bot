@@ -160,7 +160,11 @@ async def scrape():
     global _SEM
     _SEM = asyncio.Semaphore(4)   # max 4 concurrent browser contexts
     async with async_playwright() as pw:
-        browser = await pw.chromium.launch(headless=True)
+        browser = await pw.chromium.launch(
+            headless=True,
+            args=["--no-sandbox", "--disable-setuid-sandbox",
+                  "--disable-dev-shm-usage", "--disable-blink-features=AutomationControlled"],
+        )
         results = await asyncio.gather(
             *[_scrape_area(browser, a, l) for a, l in AREAS.items()],
             return_exceptions=True,

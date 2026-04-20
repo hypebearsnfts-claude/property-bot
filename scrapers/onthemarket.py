@@ -256,7 +256,11 @@ async def scrape() -> list[dict]:
             return await _scrape_area(browser, area, slug)
 
     async with async_playwright() as pw:
-        browser = await pw.chromium.launch(headless=True)
+        browser = await pw.chromium.launch(
+            headless=True,
+            args=["--no-sandbox", "--disable-setuid-sandbox",
+                  "--disable-dev-shm-usage", "--disable-blink-features=AutomationControlled"],
+        )
         results = await asyncio.gather(
             *[_guarded(browser, a, s) for a, s in AREAS.items()],
             return_exceptions=True,
