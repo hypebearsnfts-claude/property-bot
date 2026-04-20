@@ -28,11 +28,25 @@ _MAX_AGE_DAYS = 30
 
 
 def _load() -> dict[str, str]:
-    """Load seen_listings.json, returning {} on any error."""
+    """Load seen_listings.json, returning {} on any error or unexpected format.
+
+    Guards against the file containing a JSON list (e.g. produced by
+    ``echo '[]' > seen_listings.json``) instead of a JSON object.  A non-dict
+    value is treated as empty and the file is silently reset to ``{}``.
+    """
     if not _SEEN_PATH.exists():
         return {}
     try:
-        return json.loads(_SEEN_PATH.read_text(encoding="utf-8"))
+        data = json.loads(_SEEN_PATH.read_text(encoding="utf-8"))
+        if isinstance(data, dict):
+            return data
+        # File contains a list or other non-dict — reset it
+        logger.warning(
+            "[seen] seen_listings.json contained %s instead of dict — resetting to {}",
+            type(data).__name__,
+        )
+        _save({})
+        return {}
     except Exception as exc:
         logger.warning("[seen] Failed to load seen_listings.json: %s", exc)
         return {}

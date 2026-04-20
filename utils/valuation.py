@@ -969,17 +969,20 @@ async def _zoopla_stealth_context(pw):
 
 
 async def _zoopla_accept_cookies(page):
-    """Navigate to Zoopla homepage and accept cookies."""
+    """Accept cookies on whatever Zoopla page is currently loaded (inline, no extra navigation).
+
+    Previously this navigated to the homepage first, which used up the first page
+    load in the browser context.  Zoopla's bot-detection flags a Playwright context
+    after one navigation, so the actual search URL (the second load) returned no
+    listing cards.  Now we accept cookies directly on the target page instead.
+    """
     try:
-        await page.goto("https://www.zoopla.co.uk/", timeout=20_000,
-                        wait_until="domcontentloaded")
-        await page.wait_for_timeout(1_200)
         accept = page.locator(
             "button:has-text('Accept all'), button:has-text('Accept All'), "
             "#onetrust-accept-btn-handler"
         )
         if await accept.count() > 0:
-            await accept.first.click()
+            await accept.first.click(timeout=4_000)
             await page.wait_for_timeout(800)
     except Exception:
         pass
@@ -1006,11 +1009,37 @@ async def _scrape_zoopla_let_agreed(
     elif prop_type == "house":
         sub_type_param = "&property_sub_type=houses"
 
+    # Use a fresh browser context for EVERY page — Zoopla's bot-detection flags
+    # a Playwright context after the first navigation, so page 2+ return no cards
+    # when the same context is reused.
     async with async_playwright() as pw:
-        browser, ctx, page = await _zoopla_stealth_context(pw)
-        await _zoopla_accept_cookies(page)
+        browser = await pw.chromium.launch(
+            headless=True,
+            args=["--no-sandbox", "--disable-setuid-sandbox",
+                  "--disable-dev-shm-usage", "--disable-blink-features=AutomationControlled"],
+        )
 
         for pn in range(1, 7):
+            if pn > 1:
+                import asyncio as _asyncio
+                await _asyncio.sleep(2.0)
+
+            ctx = await browser.new_context(
+                user_agent=_UA,
+                locale="en-GB",
+                viewport={"width": 1280, "height": 900},
+                extra_http_headers={
+                    "Accept-Language": "en-GB,en;q=0.9",
+                    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+                },
+            )
+            page = await ctx.new_page()
+            try:
+                from playwright_stealth import stealth_async as _stealth
+                await _stealth(page)
+            except Exception:
+                pass
+
             url = (
                 f"https://www.zoopla.co.uk/to-rent/property/station/tube/{slug}/"
                 f"?beds_min={bedrooms}&beds_max={bedrooms}"
@@ -1019,44 +1048,54 @@ async def _scrape_zoopla_let_agreed(
                 f"&results_sort=newest_listings{sub_type_param}&pn={pn}"
             )
             try:
-                await page.goto(url, timeout=30_000, wait_until="domcontentloaded")
-                await page.wait_for_timeout(2_000)
+                await page.goto(url, timeout=35_000, wait_until="domcontentloaded")
+                await page.wait_for_timeout(1_500)
 
-                # Extract all listing data via JS in one pass
+                # Accept cookies inline (no homepage visit needed)
+                await _zoopla_accept_cookies(page)
+
+                # Scroll to trigger lazy load
+                await page.evaluate("window.scrollTo(0, 600)")
+                await page.wait_for_timeout(500)
+
+                # Use the same selector confirmed working in the listing scraper
+                try:
+                    from playwright.async_api import TimeoutError as _PWTimeout
+                    await page.wait_for_selector("a[data-testid*='listing']", timeout=12_000)
+                except Exception:
+                    logger.info("[fmv] Zoopla let-agreed p%d (%s): 0 cards — stopping", pn, slug)
+                    await ctx.close()
+                    break
+
+                # Extract card data using the proven selector
                 cards_data = await page.evaluate(r"""
                     () => {
-                        const cards = document.querySelectorAll(
-                            '[data-testid="search-result"], ' +
-                            '[class*="ListingCard"], [class*="listing-card"], ' +
-                            'article[class*="listing"]'
-                        );
-                        return Array.from(cards).map(card => {
-                            const priceEl = card.querySelector(
-                                '[data-testid="listing-price"], [class*="price"], .listing-results-price'
-                            );
-                            const addrEl = card.querySelector(
-                                '[data-testid="listing-description"], address, [class*="address"]'
-                            );
-                            if (!priceEl) return null;
-                            const text = card.innerText || '';
+                        const links = document.querySelectorAll("a[data-testid*='listing']");
+                        return Array.from(links).map(a => {
+                            if (!a.href || a.href.includes('/new-homes/')) return null;
+                            const price = a.querySelector('[data-testid*="price"], [class*="Price"], [class*="price"]');
+                            const addr  = a.querySelector('[data-testid*="address"], [class*="address"], [class*="Address"]');
+                            const text  = a.innerText || '';
                             const bathM = text.match(/(\d+)\s*bath/i);
-                            const sqftM = text.match(/([\d,]+)\s*sq\.?\s*ft/i);
-                            const sqmM  = text.match(/([\d,]+)\s*(?:sq\.?\s*m\b|sqm)/i);
+                            const sqftM = text.match(/([\d,]+)\s*sq\.?\s*ft/i)
+                                       || text.match(/([\d,]+)\s*sqft/i);
+                            const sqmM  = text.match(/([\d,]+)\s*(?:sq\.?\s*m(?!\w)|sqm)/i);
                             let sqft = null;
                             if (sqftM) sqft = parseInt(sqftM[1].replace(/,/g,''));
                             else if (sqmM) sqft = Math.round(parseInt(sqmM[1].replace(/,/g,'')) * 10.764);
                             return {
-                                price:   priceEl.innerText.trim(),
-                                address: addrEl ? addrEl.innerText.trim().replace(/\s+/g,' ') : '',
+                                price:   price ? price.innerText.trim() : '',
+                                address: addr  ? addr.innerText.trim().replace(/\s+/g,' ') : '',
                                 baths:   bathM ? parseInt(bathM[1]) : null,
                                 sqft:    sqft,
                             };
-                        }).filter(Boolean);
+                        }).filter(d => d && d.price);
                     }
                 """)
 
                 if not cards_data:
                     logger.info("[fmv] Zoopla let-agreed p%d (%s): 0 cards — stopping", pn, slug)
+                    await ctx.close()
                     break
 
                 for d in cards_data:
@@ -1087,9 +1126,11 @@ async def _scrape_zoopla_let_agreed(
 
             except Exception as exc:
                 logger.warning("[fmv] Zoopla let-agreed p%d (%s) failed: %s", pn, slug, exc)
+                await ctx.close()
                 break
 
-        await ctx.close()
+            await ctx.close()
+
         await browser.close()
 
     logger.info("[fmv] Zoopla let-agreed (%s, %d bed): %d total", slug, bedrooms, len(results))
