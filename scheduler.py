@@ -87,9 +87,6 @@ _OTM_VALID_POSTCODES: dict[str, list[str]] = {
     "Marylebone":      ["W1U", "W1G"],                  # Marylebone High St & Harley St
     "Regent's Park":   ["NW8", "NW1 4"],                # St John's Wood & Outer Circle
 }
-# Max OTM listings to keep per (area + normalised-street-name) group
-# Prevents 80+ copies of the same building when agents list every unit separately.
-_OTM_MAX_PER_BUILDING = 3
 
 
 def _otm_postcode_ok(listing: dict) -> bool:
@@ -250,25 +247,37 @@ async def _run_scrapers() -> list[dict]:
 
     # ── Pass 0b: OTM building dedup ──────────────────────────────────────────
     # OTM often lists the same building 20-80× (different agents, no street num).
-    # Keep at most _OTM_MAX_PER_BUILDING entries per (area + street + postcode).
-    building_counts: dict[str, int] = {}
-    filtered: list[dict] = []
-    otm_bld_removed = 0
+    # For each building key, keep only the single cheapest listing.
+    from utils.valuation import _parse_price_pcm as _ppcm
+    building_best: dict[str, dict] = {}   # bkey → cheapest listing so far
+    otm_no_key:    list[dict]      = []   # OTM listings with no building key (keep all)
+    non_otm:       list[dict]      = []   # non-OTM listings (untouched)
+
     for listing in all_listings:
-        if listing.get("source") == "onthemarket":
-            bkey = _otm_building_key(listing)
-            if bkey:
-                building_counts[bkey] = building_counts.get(bkey, 0) + 1
-                if building_counts[bkey] > _OTM_MAX_PER_BUILDING:
-                    otm_bld_removed += 1
-                    continue
-        filtered.append(listing)
-    all_listings = filtered
-    if otm_bld_removed:
+        if listing.get("source") != "onthemarket":
+            non_otm.append(listing)
+            continue
+        bkey = _otm_building_key(listing)
+        if not bkey:
+            otm_no_key.append(listing)
+            continue
+        price = _ppcm(listing.get("price", "")) or 999_999
+        existing = building_best.get(bkey)
+        if existing is None:
+            building_best[bkey] = listing
+        else:
+            existing_price = _ppcm(existing.get("price", "")) or 999_999
+            if price < existing_price:
+                building_best[bkey] = listing   # cheaper wins
+
+    otm_kept    = list(building_best.values()) + otm_no_key
+    otm_removed = sum(1 for l in all_listings if l.get("source") == "onthemarket") - len(otm_kept)
+    all_listings = non_otm + otm_kept
+    if otm_removed:
         logger.info(
-            "[scheduler] OTM building dedup: removed %d excess same-building listings "
-            "(kept max %d per building)",
-            otm_bld_removed, _OTM_MAX_PER_BUILDING,
+            "[scheduler] OTM building dedup: kept cheapest of each building group "
+            "(%d duplicates removed)",
+            otm_removed,
         )
 
     # ── Pass 1: URL dedup (same listing URL from the same platform) ──────────
