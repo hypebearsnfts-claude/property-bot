@@ -139,9 +139,11 @@ async def _load_page(browser, area, slug, pn):
 async def _scrape_area(browser, area, slug):
     """
     Scrape all pages for one area, creating a fresh browser context per page.
-    Retries once (after a delay) if page 1 returns 0 listings.
+    Retries up to 3 times with exponential backoff if page 1 returns 0 listings.
     """
-    for attempt in range(2):
+    _RETRY_DELAYS = [10, 22, 38]   # seconds before attempt 2, 3, 4
+
+    for attempt in range(4):
         listings       = []
         seen_this_area = set()
 
@@ -187,11 +189,12 @@ async def _scrape_area(browser, area, slug):
             if cnt == 0:
                 break
 
-        if listings or attempt == 1:
+        if listings or attempt == 3:
             break
 
-        logger.info("[zoopla] %s attempt 1 got 0 — retrying in 10s…", area)
-        await asyncio.sleep(10.0)
+        delay = _RETRY_DELAYS[attempt]
+        logger.info("[zoopla] %s attempt %d got 0 — retrying in %ds…", area, attempt + 1, delay)
+        await asyncio.sleep(delay)
 
     logger.info("[zoopla] %s -> %d listings", area, len(listings))
     return listings

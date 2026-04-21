@@ -143,7 +143,9 @@ async def _scrape_area_inner(browser, area, loc_id):
     # Stagger area starts to spread load across RM's servers
     await asyncio.sleep(random.uniform(0.5, 3.0))
 
-    for attempt in range(2):   # retry the whole area once if 0 on first page
+    _RETRY_DELAYS = [6, 15, 30]   # seconds to wait before attempt 2, 3, 4
+
+    for attempt in range(4):   # up to 4 attempts — handles brief network drops + bot detection
         listings  = []
         seen_urls = set()
         index     = 0
@@ -191,11 +193,12 @@ async def _scrape_area_inner(browser, area, loc_id):
             if total and index >= total:
                 break
 
-        if listings or attempt == 1:
+        if listings or attempt == 3:
             break
 
-        logger.info("[rightmove] %s attempt 1 got 0 — retrying in 6s…", area)
-        await asyncio.sleep(6.0)
+        delay = _RETRY_DELAYS[attempt]
+        logger.info("[rightmove] %s attempt %d got 0 — retrying in %ds…", area, attempt + 1, delay)
+        await asyncio.sleep(delay)
 
     logger.info("[rightmove] %s -> %d listings", area, len(listings))
     return listings
