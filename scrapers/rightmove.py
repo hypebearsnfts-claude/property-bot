@@ -143,13 +143,15 @@ async def _scrape_area_inner(browser, area, loc_id):
     # Stagger area starts to spread load across RM's servers
     await asyncio.sleep(random.uniform(0.5, 3.0))
 
-    _RETRY_DELAYS = [6, 15, 30]   # seconds to wait before attempt 2, 3, 4
+    _RETRY_DELAYS  = [6, 15, 30]   # seconds to wait before attempt 2, 3, 4
+    _RM_PAGE_SIZE  = 24            # Rightmove always returns exactly 24 per page
 
     for attempt in range(4):   # up to 4 attempts — handles brief network drops + bot detection
-        listings  = []
-        seen_urls = set()
-        index     = 0
-        total     = 0
+        listings      = []
+        seen_urls     = set()
+        index         = 0
+        total         = 0
+        pages_fetched = 0          # pages that returned at least 1 new listing
 
         for page_num in range(50):   # max ~1 200 listings (50 × 24)
             if page_num > 0:
@@ -183,6 +185,8 @@ async def _scrape_area_inner(browser, area, loc_id):
                     })
                     page_count += 1
 
+            if page_count > 0:
+                pages_fetched += 1
             logger.info("[rightmove] %s idx=%d +%d (total %d/%d)",
                         area, index, page_count, len(listings), total)
 
@@ -193,11 +197,19 @@ async def _scrape_area_inner(browser, area, loc_id):
             if total and index >= total:
                 break
 
-        if listings or attempt == 3:
+        # Retry if: got 0, OR stopped after 1 full page when total says there's more
+        # (page 2 bot-detected — same symptom as Tower Hill / Covent Garden getting exactly 24)
+        stopped_after_one_full_page = (
+            pages_fetched == 1
+            and len(listings) >= _RM_PAGE_SIZE
+            and (total == 0 or total > _RM_PAGE_SIZE)
+        )
+        if (listings and not stopped_after_one_full_page) or attempt == 3:
             break
 
         delay = _RETRY_DELAYS[attempt]
-        logger.info("[rightmove] %s attempt %d got 0 — retrying in %ds…", area, attempt + 1, delay)
+        reason = "0 listings" if not listings else f"only 1 page ({len(listings)}/{total}) — possible early bot-stop"
+        logger.info("[rightmove] %s attempt %d got %s — retrying in %ds…", area, attempt + 1, reason, delay)
         await asyncio.sleep(delay)
 
     logger.info("[rightmove] %s -> %d listings", area, len(listings))

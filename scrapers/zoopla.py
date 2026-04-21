@@ -141,11 +141,13 @@ async def _scrape_area(browser, area, slug):
     Scrape all pages for one area, creating a fresh browser context per page.
     Retries up to 3 times with exponential backoff if page 1 returns 0 listings.
     """
-    _RETRY_DELAYS = [10, 22, 38]   # seconds before attempt 2, 3, 4
+    _RETRY_DELAYS  = [10, 22, 38]   # seconds before attempt 2, 3, 4
+    _FULL_PAGE_MIN = 24             # Zoopla returns ~25-28 per page; ≥24 = full page
 
     for attempt in range(4):
         listings       = []
         seen_this_area = set()
+        pages_fetched  = 0          # pages that returned at least 1 new listing
 
         for pn in range(1, 51):
             if pn > 1:
@@ -184,16 +186,22 @@ async def _scrape_area(browser, area, slug):
                     })
                     cnt += 1
 
+            if cnt > 0:
+                pages_fetched += 1
             logger.info("[zoopla] %s p%d: +%d (total %d)", area, pn, cnt, len(listings))
 
             if cnt == 0:
                 break
 
-        if listings or attempt == 3:
+        # Retry if: got 0 listings, OR stopped after exactly 1 full page
+        # (page 2 bot-detected — same symptom as West Kensington / Knightsbridge)
+        stopped_after_one_full_page = (pages_fetched == 1 and len(listings) >= _FULL_PAGE_MIN)
+        if (listings and not stopped_after_one_full_page) or attempt == 3:
             break
 
         delay = _RETRY_DELAYS[attempt]
-        logger.info("[zoopla] %s attempt %d got 0 — retrying in %ds…", area, attempt + 1, delay)
+        reason = "0 listings" if not listings else f"only 1 page ({len(listings)} listings) — possible early bot-stop"
+        logger.info("[zoopla] %s attempt %d got %s — retrying in %ds…", area, attempt + 1, reason, delay)
         await asyncio.sleep(delay)
 
     logger.info("[zoopla] %s -> %d listings", area, len(listings))

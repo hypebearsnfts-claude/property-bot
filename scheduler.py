@@ -204,11 +204,23 @@ def _address_dedup_key(address: str) -> str | None:
             if w2 and w2.group(1) not in _SKIP:
                 street_word = w2.group(1)
 
-    # Need all three to be confident — two is too ambiguous across a city
-    if not (number and street_word and outward):
-        return None
+    # Need all three for a street-number key — two is too ambiguous across a city
+    if number and street_word and outward:
+        return f"{number}-{street_word}-{outward}"
 
-    return f"{number}-{street_word}-{outward}"
+    # Fallback for building-name addresses (no street number):
+    # use first meaningful building word + outward postcode.
+    # e.g. "Strathmore Court, Park Road, NW8 1JH" → "bldg-strathmore-nw8"
+    # Less strict skip list: keep court/house/gardens as they're distinctive building words
+    if not number and outward:
+        _BLDG_SKIP = {"road", "street", "avenue", "lane", "place", "close", "way",
+                      "drive", "london", "flat", "floor", "england", "the", "and",
+                      "area", "near", "for", "with"}
+        bwords = [w for w in re.findall(r'[a-z]{3,}', a_clean) if w not in _BLDG_SKIP]
+        if bwords:
+            return f"bldg-{bwords[0]}-{outward}"
+
+    return None
 
 
 async def _run_scrapers() -> list[dict]:
