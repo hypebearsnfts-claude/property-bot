@@ -4,7 +4,7 @@ filter_bot.py
 Pipeline:
   1. Read listings.json
   2. Walk-time filter  →  keep listings ≤ MAX_WALK_MINS from a tube/rail station
-  3. FMV verdict       →  keep listings where asking_price <= FMV + £500 (PASS)
+  3. FMV verdict       →  keep listings where asking_price <= FMV * 1.05 (≤5% above FMV)
   4. Send each passing property to Telegram in a rich formatted message
   5. Send a summary when done
 
@@ -479,7 +479,7 @@ def main() -> None:
     app.add_handler(CommandHandler("status", status))
     app.add_handler(CommandHandler("run",    run))
 
-    logger.info("Filter Bot starting (walk≤%d min, FMV+£500 rule) — polling…", MAX_WALK_MINS)
+    logger.info("Filter Bot starting (walk≤%d min, FMV×1.05 rule) — polling…", MAX_WALK_MINS)
     app.run_polling(allowed_updates=Update.ALL_TYPES)
 
 
