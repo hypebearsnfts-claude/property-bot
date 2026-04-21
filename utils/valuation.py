@@ -1716,19 +1716,19 @@ def _get_claude_reasoning(
 
 def _is_pass(asking_price: int, fmv: int) -> bool:
     """
-    PASS if: asking_price <= fmv * 1.05  (at or below 5% above FMV)
-    FAIL if: asking_price >  fmv * 1.05
+    PASS if: asking_price <= fmv + 500  (at or below £500 above FMV)
+    FAIL if: asking_price >  fmv + 500
     There is NO lower limit — any price at or below FMV is always a PASS.
     """
-    return asking_price <= fmv * 1.05
+    return asking_price <= fmv + 500
 
 
 def _run_unit_tests() -> None:
     """Assert the PASS/FAIL rule against canonical examples."""
     assert _is_pass(2_800, 3_000) is True,  "£2,800 ask vs £3,000 FMV should PASS"
     assert _is_pass(3_000, 3_000) is True,  "£3,000 ask vs £3,000 FMV should PASS"
-    assert _is_pass(3_150, 3_000) is True,  "£3,150 ask vs £3,000 FMV should PASS (exactly 5% above)"
-    assert _is_pass(3_151, 3_000) is False, "£3,151 ask vs £3,000 FMV should FAIL (just over 5%)"
+    assert _is_pass(3_500, 3_000) is True,  "£3,500 ask vs £3,000 FMV should PASS (exactly £500 above)"
+    assert _is_pass(3_501, 3_000) is False, "£3,501 ask vs £3,000 FMV should FAIL (just over £500)"
     assert _is_pass(3_600, 3_000) is False, "£3,600 ask vs £3,000 FMV should FAIL (20% above)"
     logger.info("[fmv] ✅ All PASS/FAIL unit tests passed")
 
