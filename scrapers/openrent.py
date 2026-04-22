@@ -12,42 +12,48 @@ logger = logging.getLogger(__name__)
 # radius=1 = 1 mile; bedrooms_min=2; furnishedType=1 = furnished only
 # We search by area name (their autocomplete accepts station/area names fine)
 AREAS = {
-    "Covent Garden":   "Covent Garden, London",
-    "Soho":            "Soho, London",
-    "Knightsbridge":   "Knightsbridge, London",
-    "West Kensington": "West Kensington, London",
-    "London Bridge":   "London Bridge, London",
-    "Tower Hill":      "Tower Hill, London",
-    "Baker Street":    "Baker Street, London",
-    "Bond Street":     "Bond Street, London",
-    "Marble Arch":     "Marble Arch, London",
-    "Oxford Circus":   "Oxford Circus, London",
-    "Marylebone":      "Marylebone, London",
-    "Regent's Park":   "Regent's Park, London",
+    "Covent Garden":   ("covent-garden-london",   "Covent Garden, London"),
+    "Soho":            ("soho-london",             "Soho, London"),
+    "Knightsbridge":   ("knightsbridge-london",    "Knightsbridge, London"),
+    "West Kensington": ("west-kensington-london",  "West Kensington, London"),
+    "London Bridge":   ("london-bridge-london",    "London Bridge, London"),
+    "Tower Hill":      ("tower-hill-london",       "Tower Hill, London"),
+    "Baker Street":    ("baker-street-london",     "Baker Street, London"),
+    "Bond Street":     ("bond-street-london",      "Bond Street, London"),
+    "Marble Arch":     ("marble-arch-london",      "Marble Arch, London"),
+    "Oxford Circus":   ("oxford-circus-london",    "Oxford Circus, London"),
+    "Marylebone":      ("marylebone-london",       "Marylebone, London"),
+    "Regent's Park":   ("regents-park-london",     "Regent's Park, London"),
 }
 
-def _search_url(term: str) -> str:
-    from urllib.parse import quote_plus
+def _search_url(slug: str, term: str) -> str:
+    from urllib.parse import quote
     return (
-        f"https://www.openrent.co.uk/properties-to-rent/london"
-        f"?term={quote_plus(term)}&bedrooms_min=2&max_rent=15000"
-        f"&furnishedType=1&isLive=true&radius=0.5"
+        f"https://www.openrent.co.uk/properties-to-rent/{slug}"
+        f"?term={quote(term)}&bedrooms_min=2&max_rent=15000"
+        f"&furnishedType=1&isLive=true&radius=2"
     )
 
 
-async def _scrape_area(browser, area, term):
+async def _scrape_area(browser, area, slug, term):
     ctx = await browser.new_context(
         user_agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
         viewport={"width": 1280, "height": 900},
         locale="en-GB",
-        extra_http_headers={"Accept-Language": "en-GB,en;q=0.9"},
+        extra_http_headers={
+            "Accept-Language": "en-GB,en;q=0.9",
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+            "Sec-Fetch-Dest": "document",
+            "Sec-Fetch-Mode": "navigate",
+            "Sec-Fetch-Site": "none",
+        },
     )
     page = await ctx.new_page()
     if _STEALTH_AVAILABLE:
         await _stealth_async(page)
     listings = []
     try:
-        url = _search_url(term)
+        url = _search_url(slug, term)
         await page.goto(url, wait_until="domcontentloaded", timeout=30_000)
         # Cookie banner
         try:
@@ -143,7 +149,7 @@ async def scrape():
             ],
         )
         results = await asyncio.gather(
-            *[_scrape_area(browser, a, t) for a, t in AREAS.items()],
+            *[_scrape_area(browser, a, slug, term) for a, (slug, term) in AREAS.items()],
             return_exceptions=True,
         )
         await browser.close()
