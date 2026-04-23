@@ -80,6 +80,30 @@ def _is_blacklisted(listing: dict) -> bool:
     return any(blocked in haystack for blocked in BLACKLISTED_AGENTS)
 
 
+# ── Keyword blacklist ─────────────────────────────────────────────────────────
+# Listings whose title, address, or description contain any of these phrases
+# are silently dropped. Case-insensitive. Add/remove phrases here as needed.
+
+BLACKLISTED_KEYWORDS = [
+    "24/7 concierge",
+    "24 hour concierge",
+    "24hr concierge",
+    "round-the-clock concierge",
+    "round the clock concierge",
+]
+
+
+def _has_blacklisted_keyword(listing: dict) -> bool:
+    """Return True if any blacklisted keyword appears anywhere in the listing text."""
+    haystack = " ".join([
+        listing.get("title", ""),
+        listing.get("address", ""),
+        listing.get("description", ""),
+        listing.get("summary", ""),
+    ]).lower()
+    return any(kw in haystack for kw in BLACKLISTED_KEYWORDS)
+
+
 # Walk filter uses dynamic nearest-station lookup (any tube/rail station)
 # via Google Maps Geocoding + Places Nearby — no hardcoded list needed.
 
@@ -210,7 +234,14 @@ async def run_pipeline(
         logger.info("[filter] Agent blacklist: removed %d listings (%s)",
                     blocked, ", ".join(BLACKLISTED_AGENTS))
 
-    # Step 2 — walk time filter
+    # Step 2 — keyword blacklist filter (e.g. 24/7 concierge)
+    before = len(raw)
+    raw = [l for l in raw if not _has_blacklisted_keyword(l)]
+    kw_blocked = before - len(raw)
+    if kw_blocked:
+        logger.info("[filter] Keyword blacklist: removed %d listings", kw_blocked)
+
+    # Step 4 — walk time filter
     loop = asyncio.get_event_loop()
     walk_passed: list[dict] = []
 
@@ -235,7 +266,7 @@ async def run_pipeline(
     walk_count = len(walk_passed)
     logger.info("[filter] Walk filter (≤%d min): %d/%d passed", max_walk, walk_count, len(raw))
 
-    # Step 3 — Duplicate filter (skip listings already sent in a previous run)
+    # Step 5 — Duplicate filter (skip listings already sent in a previous run)
     new_listings = [l for l in walk_passed if not is_duplicate(l)]
     dupes_skipped = walk_count - len(new_listings)
     if dupes_skipped:
@@ -243,7 +274,7 @@ async def run_pipeline(
                     dupes_skipped, len(new_listings))
     walk_passed = new_listings
 
-    # Step 4 — FMV verdict
+    # Step 6 — FMV verdict
     fmv_passed: list[dict] = []
 
     for i, listing in enumerate(walk_passed, 1):
