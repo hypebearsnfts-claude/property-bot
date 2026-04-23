@@ -9,8 +9,8 @@ except ImportError:
 logger = logging.getLogger(__name__)
 
 # OpenRent search URL — uses their /properties-to-rent search with a term + radius
-# radius=1 = 1 mile; bedrooms_min=2; furnishedType=1 = furnished only
-# We search by area name (their autocomplete accepts station/area names fine)
+# radius=0.5 = 0.5 miles (matches Rightmove, Zoopla, OTM — required for walk-time filter)
+# bedrooms_min=2; furnishedType=1 = furnished only
 AREAS = {
     "Covent Garden":   ("covent-garden-london",   "Covent Garden, London"),
     "Soho":            ("soho-london",             "Soho, London"),
@@ -31,7 +31,7 @@ def _search_url(slug: str, term: str) -> str:
     return (
         f"https://www.openrent.co.uk/properties-to-rent/{slug}"
         f"?term={quote(term)}&bedrooms_min=2&max_rent=15000"
-        f"&furnishedType=1&isLive=true&radius=2"
+        f"&furnishedType=1&isLive=true&radius=0.5"
     )
 
 
