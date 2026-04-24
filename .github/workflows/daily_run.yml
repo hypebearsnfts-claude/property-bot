@@ -45,6 +45,7 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add seen_listings.json
           git diff --cached --quiet && echo "No changes to seen_listings.json" || git commit -m "chore: update seen_listings [skip ci]"
+          git pull --rebase origin main
           git push origin HEAD:main
 
       - name: Notify on failure
