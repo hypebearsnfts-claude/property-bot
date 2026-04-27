@@ -1007,6 +1007,8 @@ async def _scrape_zoopla_let_agreed(
     if not _PLAYWRIGHT:
         return results
 
+    import asyncio as _asyncio
+
     sub_type_param = ""
     if prop_type == "flat":
         sub_type_param = "&property_sub_type=flats"
@@ -1025,7 +1027,6 @@ async def _scrape_zoopla_let_agreed(
 
         for pn in range(1, 51):   # up to 50 pages — stops naturally when results run out
             if pn > 1:
-                import asyncio as _asyncio
                 await _asyncio.sleep(2.0)
 
             ctx = await browser.new_context(

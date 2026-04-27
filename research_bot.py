@@ -53,8 +53,9 @@ async def status(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     await update.message.reply_text(
         "All scrapers ready ✅\n"
         "• Rightmove\n"
+        "• Zoopla\n"
         "• OpenRent\n"
-        "• Zoopla\n\n"
+        "• OnTheMarket\n\n"
         "Use /run to start a property search."
     )
 
@@ -62,7 +63,7 @@ async def status(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 async def run(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Run the full pipeline and send results to Telegram."""
     await update.message.reply_text(
-        "🔍 Starting property search across Rightmove, OpenRent & Zoopla…\n"
+        "🔍 Starting property search across Rightmove, Zoopla, OpenRent & OnTheMarket…\n"
         "This takes a few minutes — I'll send results as they're ready."
     )
     logger.info("Property search triggered by user %s", update.effective_user.id)
