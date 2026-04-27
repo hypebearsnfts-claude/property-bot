@@ -88,9 +88,9 @@ async def _scrape_area(browser, area, slug, term):
                 text = (await card.inner_text()).lower()
                 if "let agreed" in text:
                     continue
-                # Require at least 2 beds
-                beds_ok = any(int(w) >= 2 for w in re.findall(r'\d+', text))
-                if not beds_ok:
+                # Require at least 2 beds — match "X bed" pattern specifically
+                beds_m = re.search(r'(\d+)\s*bed', text, re.IGNORECASE)
+                if beds_m and int(beds_m.group(1)) < 2:
                     continue
                 href = await card.get_attribute("href") or ""
                 if not href:
