@@ -603,6 +603,10 @@ async def _history_from_zoopla_url(url: str, address: str, bedrooms: int) -> lis
                         '[class*="ListingCard"], article[class*="listing"]'
                     );
                     return Array.from(cards).map(card => {
+                        const cardText = card.innerText || '';
+                        // Only include let-agreed entries — active asking-price listings
+                        // are not historical rental data and must not be included
+                        if (!cardText.toLowerCase().includes('let agreed')) return null;
                         const priceEl = card.querySelector(
                             '[data-testid="listing-price"], [class*="price"]'
                         );
@@ -612,9 +616,9 @@ async def _history_from_zoopla_url(url: str, address: str, bedrooms: int) -> lis
                         return {
                             price:   priceEl ? priceEl.innerText.trim() : '',
                             address: addrEl  ? addrEl.innerText.trim().replace(/\s+/g,' ') : '',
-                            text:    card.innerText.slice(0, 400),
+                            text:    cardText.slice(0, 400),
                         };
-                    }).filter(d => d.price);
+                    }).filter(d => d && d.price);
                 }
             """)
 
@@ -1073,9 +1077,11 @@ async def _scrape_zoopla_let_agreed(
                         const links = document.querySelectorAll("a[data-testid*='listing']");
                         return Array.from(links).map(a => {
                             if (!a.href || a.href.includes('/new-homes/')) return null;
+                            const text  = a.innerText || '';
+                            // CRITICAL: only include let-agreed listings — skip active asking-price listings
+                            if (!text.toLowerCase().includes('let agreed')) return null;
                             const price = a.querySelector('[data-testid*="price"], [class*="Price"], [class*="price"]');
                             const addr  = a.querySelector('[data-testid*="address"], [class*="address"], [class*="Address"]');
-                            const text  = a.innerText || '';
                             const bathM = text.match(/(\d+)\s*bath/i);
                             const sqftM = text.match(/([\d,]+)\s*sq\.?\s*ft/i)
                                        || text.match(/([\d,]+)\s*sqft/i);
@@ -1188,6 +1194,10 @@ async def _scrape_rightmove_let_agreed(
                         '.l-searchResult, [class*="PropertyCard_propertyCardContainerWrapper"]'
                     );
                     return Array.from(cards).map(card => {
+                        const cardText  = card.innerText || '';
+                        // CRITICAL: only include let-agreed listings — skip active asking-price listings
+                        if (!cardText.toLowerCase().includes('let agreed')) return null;
+
                         const price_el = card.querySelector(
                             '.propertyCard-priceValue, [class*="Price_price"]'
                         );
@@ -1196,7 +1206,6 @@ async def _scrape_rightmove_let_agreed(
                         );
                         if (!price_el) return null;
 
-                        const cardText  = card.innerText || '';
                         const bathMatch = cardText.match(/(\d+)\s*bath/i);
                         const sqftMatch = cardText.match(/([\d,]+)\s*sq\.?\s*ft/i)
                                        || cardText.match(/([\d,]+)\s*sqft/i);
@@ -1292,6 +1301,8 @@ async def _scrape_otm_let_agreed(
                         const link = card.querySelector('a[href*="/details/"]');
                         if (!link) return null;
                         const cardText = card.innerText || '';
+                        // CRITICAL: only include let-agreed listings — skip active asking-price listings
+                        if (!cardText.toLowerCase().includes('let agreed')) return null;
                         // Price: look for pcm pattern
                         const priceMatch = cardText.match(/[\d,]+\s*pcm/i)
                                         || cardText.match(/£\s*[\d,]+/);
@@ -1521,6 +1532,7 @@ def calculate_fmv(
     subject_baths: Optional[int] = None,
     subject_sqft:  Optional[int] = None,
     subject_prop_type: Optional[str] = None,
+    asking_price: Optional[int] = None,
 ) -> Optional[int]:
     """
     Compute Fair Market Value using a two-tier approach.
@@ -1557,6 +1569,23 @@ def calculate_fmv(
                 "prop_type":  comp.get("prop_type"),
                 "source":     comp.get("source", "comparable"),
             })
+
+    # ── Asking-price band filter ─────────────────────────────────────────────
+    # When baths and prop_type are both unknown, ALL 2-beds in the area share
+    # the same cache key, mixing standard flats with luxury penthouses.
+    # If we know the asking price, filter comps to within ±60% of it to avoid
+    # luxury/budget outliers corrupting the FMV for a standard property.
+    if asking_price and asking_price > 0 and (subject_baths is None or subject_prop_type is None):
+        before = len(all_data)
+        all_data = [p for p in all_data
+                    if p.get("price") and
+                    0.4 * asking_price <= p["price"] <= 1.6 * asking_price]
+        removed = before - len(all_data)
+        if removed:
+            logger.info(
+                "[fmv] Asking-price band filter: dropped %d comps outside 0.4–1.6× asking (£%d)",
+                removed, asking_price,
+            )
 
     # ── Outlier removal ───────────────────────────────────────────────────────
     # Drop comps more than 2× or less than 0.5× the median price.
@@ -1881,6 +1910,7 @@ async def get_fmv_verdict(property_dict: dict) -> dict:
     fmv = calculate_fmv(
         all_historical, {},          # empty comparables — all data already in all_historical
         subject_baths, subject_sqft, subject_prop_type,
+        asking_price=asking,
     )
     if fmv is None or fmv == 0:
         logger.warning("[fmv] No let-agreed data for %s — defaulting to FAIL", address)
