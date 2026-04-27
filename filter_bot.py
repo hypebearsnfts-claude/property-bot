@@ -209,16 +209,16 @@ def _check_walk(listing: dict) -> tuple[Optional[str], Optional[int]]:
 
 async def run_pipeline(
     max_walk: int = MAX_WALK_MINS,
-) -> tuple[list[dict], int]:
+) -> tuple[list[dict], int, int, int]:
     """
-    Full pipeline: load → walk filter → FMV verdict.
+    Full pipeline: load → walk filter → dedup → FMV verdict.
 
-    Returns (passing_listings, total_walk_passed)
+    Returns (passing_listings, total_scraped, new_after_dedup, walk_count)
     Each passing listing has walk_station, walk_mins, and verdict dict attached.
     """
     if not LISTINGS_PATH.exists():
         logger.error("[filter] listings.json not found at %s", LISTINGS_PATH)
-        return [], 0
+        return [], 0, 0, 0
 
     # Clean seen_listings.json of entries older than 30 days
     clean_old_entries()
@@ -295,8 +295,10 @@ async def run_pipeline(
     # Sort by walk time (closest first)
     fmv_passed.sort(key=lambda l: l.get("walk_mins") or 999)
 
-    logger.info("[filter] FMV filter: %d/%d passed", len(fmv_passed), walk_count)
-    return fmv_passed, walk_count
+    total_scraped  = len(json.loads(LISTINGS_PATH.read_text(encoding="utf-8"))) if LISTINGS_PATH.exists() else 0
+    new_after_dedup = len(walk_passed)   # walk_passed was reassigned to new_listings after dedup
+    logger.info("[filter] FMV filter: %d/%d passed", len(fmv_passed), new_after_dedup)
+    return fmv_passed, total_scraped, new_after_dedup, walk_count
 
 
 # ── Telegram handlers ─────────────────────────────────────────────────────────
@@ -340,17 +342,20 @@ async def run(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     )
 
     try:
-        passing, walk_total = await run_pipeline(MAX_WALK_MINS)
+        passing, total_scraped, new_count, walk_count = await run_pipeline(MAX_WALK_MINS)
     except Exception as exc:
         logger.error("[filter] Pipeline failed: %s", exc, exc_info=True)
         await update.message.reply_text(f"❌ Pipeline failed: {exc}")
         return
 
+    dupes_skipped = walk_count - new_count
     if not passing:
         await update.message.reply_text(
-            f"No listings passed both filters\\.\n"
-            f"• {walk_total} passed the walk\\-time check\n"
-            f"• 0 passed the FMV check\n\n"
+            f"No listings passed all filters\\.\n"
+            f"• {total_scraped:,} scraped today\n"
+            f"• {dupes_skipped:,} already sent \\(skipped\\)\n"
+            f"• {new_count} new listings checked for FMV\n"
+            f"• 0 passed FMV\n\n"
             "Try raising MAX\\_WALK\\_MINS or checking that ANTHROPIC\\_API\\_KEY is set\\.",
             parse_mode="MarkdownV2",
         )
@@ -358,7 +363,7 @@ async def run(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
     to_send = passing[:MAX_SEND] if MAX_SEND > 0 else passing
     await update.message.reply_text(
-        f"✅ *{len(passing)}* listings passed both filters — sending {len(to_send)}…",
+        f"✅ *{len(passing)}* listings passed — sending {len(to_send)}…",
         parse_mode="Markdown",
     )
 
@@ -394,9 +399,10 @@ async def run(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     # Summary message
     await update.message.reply_text(
         f"🏁 *Filter complete\\.*\n"
-        f"• Listings checked: {len(json.loads(LISTINGS_PATH.read_text())) if LISTINGS_PATH.exists() else '?'}\n"
-        f"• Passed walk filter \\(≤{MAX_WALK_MINS} min\\): {walk_total}\n"
-        f"• Passed FMV check: {len(passing)}\n"
+        f"• Scraped today: {total_scraped:,}\n"
+        f"• Already sent \\(skipped\\): {dupes_skipped:,}\n"
+        f"• New listings checked for FMV: {new_count}\n"
+        f"• Passed FMV: {len(passing)}\n"
         f"• Sent: {sent}",
         parse_mode="MarkdownV2",
     )
@@ -429,16 +435,23 @@ async def run_filter_pipeline_and_send(
     )
 
     try:
-        passing, walk_total = await run_pipeline(MAX_WALK_MINS)
+        passing, total_scraped_now, new_count, walk_count = await run_pipeline(MAX_WALK_MINS)
     except Exception as exc:
         logger.error("[filter] Pipeline failed: %s", exc)
         await bot.send_message(chat_id=chat_id, text=f"❌ Filter pipeline failed: {exc}")
         return
 
+    dupes_skipped = walk_count - new_count
+
     if not passing:
         await bot.send_message(
             chat_id=chat_id,
-            text=f"✅ Done. 0 properties passed out of {walk_total:,} checked.",
+            text=(
+                f"✅ Done. 0 properties passed.\n"
+                f"• Scraped today: {total_scraped_now:,}\n"
+                f"• Already sent (skipped): {dupes_skipped:,}\n"
+                f"• New listings checked for FMV: {new_count:,}"
+            ),
         )
         return
 
@@ -494,10 +507,16 @@ async def run_filter_pipeline_and_send(
 
     await bot.send_message(
         chat_id=chat_id,
-        text=f"✅ Done. {len(passing):,} properties passed out of {walk_total:,} checked.",
+        text=(
+            f"✅ Done.\n"
+            f"• Scraped today: {total_scraped_now:,}\n"
+            f"• Already sent (skipped): {dupes_skipped:,}\n"
+            f"• New listings checked for FMV: {new_count:,}\n"
+            f"• Passed FMV & sent: {sent}"
+        ),
     )
-    logger.info("[filter] Automated pipeline complete — %d/%d passed, %d sent",
-                len(passing), walk_total, sent)
+    logger.info("[filter] Automated pipeline complete — %d/%d new passed, %d sent (dupes skipped: %d)",
+                len(passing), new_count, sent, dupes_skipped)
 
 
 # ── Entry point ───────────────────────────────────────────────────────────────
