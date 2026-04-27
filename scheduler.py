@@ -233,9 +233,20 @@ async def _run_scrapers() -> list[dict]:
     or_task = asyncio.create_task(openrent.scrape())
     otm_task = asyncio.create_task(onthemarket.scrape())
 
-    rm_listings, zo_listings, or_listings, otm_listings = await asyncio.gather(
-        rm_task, zo_task, or_task, otm_task
+    # return_exceptions=True ensures one scraper crash doesn't kill the whole run.
+    # Each result is either a list[dict] (success) or an Exception (failure).
+    results = await asyncio.gather(
+        rm_task, zo_task, or_task, otm_task,
+        return_exceptions=True,
     )
+    _NAMES = ["Rightmove", "Zoopla", "OpenRent", "OTM"]
+    rm_listings, zo_listings, or_listings, otm_listings = [
+        r if isinstance(r, list) else []
+        for r in results
+    ]
+    for name, result in zip(_NAMES, results):
+        if isinstance(result, Exception):
+            logger.error("[scheduler] %s scraper crashed: %s", name, result)
 
     all_listings = rm_listings + zo_listings + or_listings + otm_listings
     logger.info(

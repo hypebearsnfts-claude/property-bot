@@ -92,7 +92,7 @@ def mark_as_seen(listing: dict) -> None:
 
 def clean_old_entries() -> None:
     """
-    Remove entries older than 30 days and save.
+    Remove entries older than 7 days and save.
     Call this once at the start of each pipeline run.
     """
     seen = _load()

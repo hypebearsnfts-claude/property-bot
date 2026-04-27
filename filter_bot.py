@@ -241,7 +241,7 @@ async def run_pipeline(
     if kw_blocked:
         logger.info("[filter] Keyword blacklist: removed %d listings", kw_blocked)
 
-    # Step 4 — walk time filter
+    # Step 3 — walk time filter
     loop = asyncio.get_event_loop()
     walk_passed: list[dict] = []
 
@@ -266,7 +266,7 @@ async def run_pipeline(
     walk_count = len(walk_passed)
     logger.info("[filter] Walk filter (≤%d min): %d/%d passed", max_walk, walk_count, len(raw))
 
-    # Step 5 — Duplicate filter (skip listings already sent in a previous run)
+    # Step 4 — Duplicate filter (skip listings already sent in a previous run)
     new_listings = [l for l in walk_passed if not is_duplicate(l)]
     dupes_skipped = walk_count - len(new_listings)
     if dupes_skipped:
@@ -274,11 +274,11 @@ async def run_pipeline(
                     dupes_skipped, len(new_listings))
     walk_passed = new_listings
 
-    # Step 6 — FMV verdict
+    # Step 5 — FMV verdict
     fmv_passed: list[dict] = []
 
     for i, listing in enumerate(walk_passed, 1):
-        logger.info("[filter] FMV check %d/%d: %s", i, walk_count, listing.get("address", "")[:50])
+        logger.info("[filter] FMV check %d/%d: %s", i, len(walk_passed), listing.get("address", "")[:50])
         try:
             verdict = await get_fmv_verdict(listing)
             if verdict.get("verdict") == "PASS":
@@ -331,9 +331,10 @@ async def status(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 async def run(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     await update.message.reply_text(
         f"🔍 Starting filter pipeline…\n"
-        f"Step 1: Agent blacklist \\(removing GLP / Foxtons / Dexters\\)\n"
+        f"Step 1: Agent & keyword blacklist\n"
         f"Step 2: Walk time check \\(≤{MAX_WALK_MINS} min to station\\)\n"
-        f"Step 3: FMV verdict \\(asking ≤ FMV \\+ £500\\)\n"
+        f"Step 3: Duplicate filter \\(skip already\\-sent listings\\)\n"
+        f"Step 4: FMV verdict \\(asking ≤ FMV \\+ £500\\)\n"
         "This will take several minutes — results sent as they pass\\.",
         parse_mode="MarkdownV2",
     )

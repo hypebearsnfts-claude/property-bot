@@ -1023,7 +1023,7 @@ async def _scrape_zoopla_let_agreed(
                   "--disable-dev-shm-usage", "--disable-blink-features=AutomationControlled"],
         )
 
-        for pn in range(1, 7):
+        for pn in range(1, 51):   # up to 50 pages — stops naturally when results run out
             if pn > 1:
                 import asyncio as _asyncio
                 await _asyncio.sleep(2.0)
@@ -1153,16 +1153,19 @@ async def _scrape_rightmove_let_agreed(
     """
     Scrape Rightmove let-agreed listings with strict filters.
 
-    Uses STATION IDs with radius=0.5 (same as main scraper) for tight
-    geographic comparables. Passes bedrooms + baths + prop_type into URL.
-    Hard-filters results by size (±25%) after extraction.
+    Uses STATION IDs with radius=0.25 for tight geographic comparables.
+    Rightmove paginates by index (0, 24, 48…) — scrapes up to 3 pages (72 listings).
+    A fresh browser context is used per page: Rightmove bot-detection flags
+    reused Playwright contexts, same as the main scraper.
+    Only cards whose innerText contains 'let agreed' are kept.
     """
     results: list[dict] = []
     if not _PLAYWRIGHT:
         return results
 
-    # Build URL — Rightmove supports minBathrooms/maxBathrooms and propertyTypes.
-    # Use radius=0.25 for STATION identifiers — tight circle for FMV comparables.
+    import asyncio as _asyncio
+
+    # Build URL params — Rightmove supports minBathrooms/maxBathrooms and propertyTypes.
     bath_param   = f"&minBathrooms={baths}&maxBathrooms={baths}" if baths else ""
     radius_param = "&radius=0.25" if "STATION" in loc_id else ""
     if prop_type == "flat":
@@ -1172,80 +1175,115 @@ async def _scrape_rightmove_let_agreed(
     else:
         type_param = ""
 
+    _RM_CARD_JS = r"""
+        () => {
+            const cards = document.querySelectorAll(
+                '.l-searchResult, [class*="PropertyCard_propertyCardContainerWrapper"]'
+            );
+            return Array.from(cards).map(card => {
+                const cardText  = card.innerText || '';
+                // CRITICAL: only include let-agreed listings — skip active asking-price listings
+                if (!cardText.toLowerCase().includes('let agreed')) return null;
+
+                const price_el = card.querySelector(
+                    '.propertyCard-priceValue, [class*="Price_price"]'
+                );
+                const addr_el  = card.querySelector(
+                    '.propertyCard-address, [class*="Address_address"]'
+                );
+                if (!price_el) return null;
+
+                const bathMatch = cardText.match(/(\d+)\s*bath/i);
+                const sqftMatch = cardText.match(/([\d,]+)\s*sq\.?\s*ft/i)
+                               || cardText.match(/([\d,]+)\s*sqft/i);
+                const sqmMatch  = cardText.match(/([\d,]+)\s*(?:sq\.?\s*m\b|sqm|m²)/i);
+                let sqft = null;
+                if (sqftMatch) sqft = parseInt(sqftMatch[1].replace(/,/g,''));
+                else if (sqmMatch) sqft = Math.round(parseInt(sqmMatch[1].replace(/,/g,'')) * 10.764);
+
+                return {
+                    price:   price_el.innerText.trim(),
+                    address: addr_el ? addr_el.innerText.trim().replace(/\s+/g,' ') : '',
+                    baths:   bathMatch ? parseInt(bathMatch[1]) : null,
+                    sqft:    sqft,
+                };
+            }).filter(Boolean);
+        }
+    """
+
     async with async_playwright() as pw:
-        browser = await pw.chromium.launch(headless=True)
-        page    = await browser.new_page()
-        await page.set_extra_http_headers({"User-Agent": _UA})
-
-        url = (
-            f"https://www.rightmove.co.uk/property-to-rent/find.html"
-            f"?locationIdentifier={loc_id}"
-            f"&minBedrooms={bedrooms}&maxBedrooms={bedrooms}"
-            f"&furnishTypes=furnished&includeLetAgreed=true"
-            f"&sortType=6{radius_param}{bath_param}{type_param}"
+        browser = await pw.chromium.launch(
+            headless=True,
+            args=["--no-sandbox", "--disable-setuid-sandbox", "--disable-dev-shm-usage"],
         )
-        try:
-            await page.goto(url, timeout=30_000, wait_until="domcontentloaded")
-            await page.wait_for_timeout(2_000)
 
-            cards_data = await page.evaluate(r"""
-                () => {
-                    const cards = document.querySelectorAll(
-                        '.l-searchResult, [class*="PropertyCard_propertyCardContainerWrapper"]'
-                    );
-                    return Array.from(cards).map(card => {
-                        const cardText  = card.innerText || '';
-                        // CRITICAL: only include let-agreed listings — skip active asking-price listings
-                        if (!cardText.toLowerCase().includes('let agreed')) return null;
+        seen_urls: set[str] = set()
+        for page_num in range(50):   # up to 50 pages × 24 — stops naturally when results run out
+            index = page_num * 24
+            if page_num > 0:
+                await _asyncio.sleep(2.5)
 
-                        const price_el = card.querySelector(
-                            '.propertyCard-priceValue, [class*="Price_price"]'
-                        );
-                        const addr_el  = card.querySelector(
-                            '.propertyCard-address, [class*="Address_address"]'
-                        );
-                        if (!price_el) return null;
+            ctx  = await browser.new_context(user_agent=_UA, viewport={"width": 1280, "height": 900})
+            page = await ctx.new_page()
+            url = (
+                f"https://www.rightmove.co.uk/property-to-rent/find.html"
+                f"?locationIdentifier={loc_id}"
+                f"&minBedrooms={bedrooms}&maxBedrooms={bedrooms}"
+                f"&furnishTypes=furnished&includeLetAgreed=true"
+                f"&sortType=6&index={index}{radius_param}{bath_param}{type_param}"
+            )
+            try:
+                await page.goto(url, timeout=30_000, wait_until="domcontentloaded")
+                await page.wait_for_timeout(2_000)
 
-                        const bathMatch = cardText.match(/(\d+)\s*bath/i);
-                        const sqftMatch = cardText.match(/([\d,]+)\s*sq\.?\s*ft/i)
-                                       || cardText.match(/([\d,]+)\s*sqft/i);
-                        const sqmMatch  = cardText.match(/([\d,]+)\s*(?:sq\.?\s*m\b|sqm|m²)/i);
-                        let sqft = null;
-                        if (sqftMatch) sqft = parseInt(sqftMatch[1].replace(/,/g,''));
-                        else if (sqmMatch) sqft = Math.round(parseInt(sqmMatch[1].replace(/,/g,'')) * 10.764);
+                # Accept cookies (best-effort)
+                try:
+                    await page.locator("button#onetrust-accept-btn-handler").click(timeout=3_000)
+                except Exception:
+                    pass
 
-                        return {
-                            price:   price_el.innerText.trim(),
-                            address: addr_el ? addr_el.innerText.trim().replace(/\s+/g,' ') : '',
-                            baths:   bathMatch ? parseInt(bathMatch[1]) : null,
-                            sqft:    sqft,
-                        };
-                    }).filter(Boolean);
-                }
-            """)
+                cards_data = await page.evaluate(_RM_CARD_JS)
+                if not cards_data:
+                    await ctx.close()
+                    break  # no cards = end of let-agreed results
 
-            for d in cards_data:
-                price = _parse_price_pcm(d.get("price", ""))
-                if price and 500 <= price <= 50_000:
-                    comp_sqft = d.get("sqft")
-                    # Hard filter: size within ±25% (when both known)
-                    if subject_sqft and comp_sqft and subject_sqft > 0:
-                        if abs(subject_sqft - comp_sqft) / subject_sqft > 0.25:
-                            continue
-                    results.append({
-                        "date":       datetime.now().strftime("%Y-%m"),
-                        "price":      price,
-                        "bedrooms":   bedrooms,
-                        "baths":      d.get("baths"),
-                        "sqft":       comp_sqft,
-                        "prop_type":  prop_type,
-                        "address":    d.get("address", ""),
-                        "source":     "rightmove_let_agreed",
-                        "age_months": 0,
-                    })
+                new_on_page = 0
+                for d in cards_data:
+                    addr_key = d.get("address", "")[:60]
+                    if addr_key in seen_urls:
+                        continue
+                    seen_urls.add(addr_key)
+                    price = _parse_price_pcm(d.get("price", ""))
+                    if price and 500 <= price <= 50_000:
+                        comp_sqft = d.get("sqft")
+                        if subject_sqft and comp_sqft and subject_sqft > 0:
+                            if abs(subject_sqft - comp_sqft) / subject_sqft > 0.25:
+                                continue
+                        results.append({
+                            "date":       datetime.now().strftime("%Y-%m"),
+                            "price":      price,
+                            "bedrooms":   bedrooms,
+                            "baths":      d.get("baths"),
+                            "sqft":       comp_sqft,
+                            "prop_type":  prop_type,
+                            "address":    d.get("address", ""),
+                            "source":     "rightmove_let_agreed",
+                            "age_months": 0,
+                        })
+                        new_on_page += 1
 
-        except Exception as exc:
-            logger.warning("[fmv] Rightmove let-agreed failed (%s): %s", loc_id, exc)
+                logger.info("[fmv] Rightmove let-agreed p%d (%s): +%d (total %d)",
+                            page_num + 1, loc_id, new_on_page, len(results))
+                if new_on_page == 0:
+                    await ctx.close()
+                    break
+
+            except Exception as exc:
+                logger.warning("[fmv] Rightmove let-agreed p%d (%s) failed: %s", page_num + 1, loc_id, exc)
+                await ctx.close()
+                break
+
+            await ctx.close()
 
         await browser.close()
 
@@ -1262,96 +1300,132 @@ async def _scrape_otm_let_agreed(
     subject_sqft: Optional[int] = None,
 ) -> list[dict]:
     """Scrape OnTheMarket let-agreed listings with strict filters.
-    Uses article[data-component] selector confirmed by the main OTM scraper."""
+    Uses article[data-component] selector confirmed by the main OTM scraper.
+    Paginates up to 50 pages with a fresh context per page (bot-detection fix)."""
     results: list[dict] = []
     if not _PLAYWRIGHT:
         return results
 
+    import asyncio as _asyncio
+
+    _OTM_CARD_JS = r"""
+        () => {
+            const cards = document.querySelectorAll('article[data-component]');
+            return Array.from(cards).map(card => {
+                const link = card.querySelector('a[href*="/details/"]');
+                if (!link) return null;
+                const cardText = card.innerText || '';
+                // CRITICAL: only include let-agreed listings — skip active asking-price listings
+                if (!cardText.toLowerCase().includes('let agreed')) return null;
+                // Price: look for pcm pattern
+                const priceMatch = cardText.match(/[\d,]+\s*pcm/i)
+                                || cardText.match(/£\s*[\d,]+/);
+                const addrEl = card.querySelector('address');
+                const bathMatch = cardText.match(/(\d+)\s*bath/i);
+                const sqftMatch = cardText.match(/([\d,]+)\s*sq\.?\s*ft/i)
+                               || cardText.match(/([\d,]+)\s*sqft/i);
+                const sqmMatch  = cardText.match(/([\d,]+)\s*(?:sq\.?\s*m\b|sqm)/i);
+                let sqft = null;
+                if (sqftMatch) sqft = parseInt(sqftMatch[1].replace(/,/g,''));
+                else if (sqmMatch) sqft = Math.round(parseInt(sqmMatch[1].replace(/,/g,'')) * 10.764);
+                return {
+                    price:   priceMatch ? priceMatch[0].trim() : '',
+                    address: addrEl ? addrEl.innerText.trim().replace(/\s+/g,' ') : '',
+                    baths:   bathMatch ? parseInt(bathMatch[1]) : null,
+                    sqft:    sqft,
+                };
+            }).filter(d => d && d.price);
+        }
+    """
+
     async with async_playwright() as pw:
-        browser = await pw.chromium.launch(headless=True)
-        page    = await browser.new_page()
-        await page.set_extra_http_headers({"User-Agent": _UA})
-
-        url = (
-            f"https://www.onthemarket.com/to-rent/property/{slug}/"
-            f"?min-bedrooms={bedrooms}&max-bedrooms={bedrooms}"
-            f"&max-price=15000&furnishing=furnished"
-            f"&include-let-agreed=true&radius=0.25"
+        browser = await pw.chromium.launch(
+            headless=True,
+            args=["--no-sandbox", "--disable-setuid-sandbox", "--disable-dev-shm-usage"],
         )
-        try:
-            await page.goto(url, timeout=30_000, wait_until="domcontentloaded")
-            await page.wait_for_timeout(2_000)
 
-            # Dismiss cookie banner (OTM uses Cookie Control, id #ccc-recommended-settings)
+        seen_addrs: set[str] = set()
+        for pn in range(1, 51):   # up to 50 pages — stops naturally when results run out
+            if pn > 1:
+                await _asyncio.sleep(2.5)
+
+            ctx  = await browser.new_context(user_agent=_UA, viewport={"width": 1280, "height": 900})
+            page = await ctx.new_page()
+            url = (
+                f"https://www.onthemarket.com/to-rent/property/{slug}/"
+                f"?min-bedrooms={bedrooms}&max-bedrooms={bedrooms}"
+                f"&max-price=15000&furnishing=furnished"
+                f"&include-let-agreed=true&radius=0.25&page={pn}"
+            )
             try:
-                await page.locator(
-                    "#ccc-recommended-settings, "
-                    "button:has-text('Accept all'), button:has-text('Accept All'), "
-                    "#onetrust-accept-btn-handler"
-                ).first.click(timeout=4_000)
-                await page.wait_for_timeout(500)
-            except Exception:
-                pass
+                await page.goto(url, timeout=30_000, wait_until="domcontentloaded")
+                await page.wait_for_timeout(2_000)
 
-            # Use article[data-component] — confirmed by main OTM scraper (scrapers/onthemarket.py)
-            cards_data = await page.evaluate(r"""
-                () => {
-                    const cards = document.querySelectorAll('article[data-component]');
-                    return Array.from(cards).map(card => {
-                        const link = card.querySelector('a[href*="/details/"]');
-                        if (!link) return null;
-                        const cardText = card.innerText || '';
-                        // CRITICAL: only include let-agreed listings — skip active asking-price listings
-                        if (!cardText.toLowerCase().includes('let agreed')) return null;
-                        // Price: look for pcm pattern
-                        const priceMatch = cardText.match(/[\d,]+\s*pcm/i)
-                                        || cardText.match(/£\s*[\d,]+/);
-                        const addrEl = card.querySelector('address');
-                        const bathMatch = cardText.match(/(\d+)\s*bath/i);
-                        const sqftMatch = cardText.match(/([\d,]+)\s*sq\.?\s*ft/i)
-                                       || cardText.match(/([\d,]+)\s*sqft/i);
-                        const sqmMatch  = cardText.match(/([\d,]+)\s*(?:sq\.?\s*m\b|sqm)/i);
-                        let sqft = null;
-                        if (sqftMatch) sqft = parseInt(sqftMatch[1].replace(/,/g,''));
-                        else if (sqmMatch) sqft = Math.round(parseInt(sqmMatch[1].replace(/,/g,'')) * 10.764);
-                        return {
-                            price:   priceMatch ? priceMatch[0].trim() : '',
-                            address: addrEl ? addrEl.innerText.trim().replace(/\s+/g,' ') : '',
-                            baths:   bathMatch ? parseInt(bathMatch[1]) : null,
-                            sqft:    sqft,
-                            text:    cardText.slice(0, 300),
-                        };
-                    }).filter(d => d && d.price);
-                }
-            """)
+                # Dismiss cookie banner (OTM uses Cookie Control)
+                try:
+                    await page.locator(
+                        "#ccc-recommended-settings, "
+                        "button:has-text('Accept all'), button:has-text('Accept All'), "
+                        "#onetrust-accept-btn-handler"
+                    ).first.click(timeout=4_000)
+                    await page.wait_for_timeout(500)
+                except Exception:
+                    pass
 
-            for d in cards_data:
-                price = _parse_price_pcm(d.get("price", ""))
-                if price and 500 <= price <= 50_000:
-                    comp_baths = d.get("baths")
-                    comp_sqft  = d.get("sqft")
-                    # Hard filter: baths exact match when both known
-                    if baths is not None and comp_baths is not None:
-                        if comp_baths != baths:
+                # Wait for cards
+                try:
+                    from playwright.async_api import TimeoutError as _PWTimeout
+                    await page.wait_for_selector("article[data-component]", timeout=10_000)
+                except Exception:
+                    logger.info("[fmv] OTM let-agreed p%d (%s): no cards — stopping", pn, slug)
+                    await ctx.close()
+                    break
+
+                cards_data = await page.evaluate(_OTM_CARD_JS)
+                if not cards_data:
+                    logger.info("[fmv] OTM let-agreed p%d (%s): 0 let-agreed cards — stopping", pn, slug)
+                    await ctx.close()
+                    break
+
+                new_on_page = 0
+                for d in cards_data:
+                    addr_key = d.get("address", "")[:60]
+                    if addr_key in seen_addrs:
+                        continue
+                    seen_addrs.add(addr_key)
+                    price = _parse_price_pcm(d.get("price", ""))
+                    if price and 500 <= price <= 50_000:
+                        comp_baths = d.get("baths")
+                        comp_sqft  = d.get("sqft")
+                        if baths is not None and comp_baths is not None and comp_baths != baths:
                             continue
-                    # Hard filter: size within ±25% when both known
-                    if subject_sqft and comp_sqft and subject_sqft > 0:
-                        if abs(subject_sqft - comp_sqft) / subject_sqft > 0.25:
-                            continue
-                    results.append({
-                        "date":       datetime.now().strftime("%Y-%m"),
-                        "price":      price,
-                        "bedrooms":   bedrooms,
-                        "baths":      comp_baths,
-                        "sqft":       comp_sqft,
-                        "prop_type":  prop_type,
-                        "address":    d.get("address", ""),
-                        "source":     "otm_let_agreed",
-                        "age_months": 0,
-                    })
+                        if subject_sqft and comp_sqft and subject_sqft > 0:
+                            if abs(subject_sqft - comp_sqft) / subject_sqft > 0.25:
+                                continue
+                        results.append({
+                            "date":       datetime.now().strftime("%Y-%m"),
+                            "price":      price,
+                            "bedrooms":   bedrooms,
+                            "baths":      comp_baths,
+                            "sqft":       comp_sqft,
+                            "prop_type":  prop_type,
+                            "address":    d.get("address", ""),
+                            "source":     "otm_let_agreed",
+                            "age_months": 0,
+                        })
+                        new_on_page += 1
 
-        except Exception as exc:
-            logger.warning("[fmv] OTM let-agreed failed (%s): %s", slug, exc)
+                logger.info("[fmv] OTM let-agreed p%d (%s): +%d (total %d)", pn, slug, new_on_page, len(results))
+                if new_on_page == 0:
+                    await ctx.close()
+                    break
+
+            except Exception as exc:
+                logger.warning("[fmv] OTM let-agreed p%d (%s) failed: %s", pn, slug, exc)
+                await ctx.close()
+                break
+
+            await ctx.close()
 
         await browser.close()
 
