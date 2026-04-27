@@ -248,17 +248,18 @@ async def _scrape_area(browser, area: str, slug: str) -> list[dict]:
                 beds, baths, sqft, prop_type = _parse_card_text(card_text)
 
                 listings.append({
-                    "source":    "onthemarket",
-                    "area":      area,
-                    "title":     d.get("address", area),
-                    "price":     d.get("price", "Price N/A"),
-                    "address":   d.get("address", ""),
-                    "url":       url_str,
-                    "beds":      beds,
-                    "baths":     baths,
-                    "sqft":      sqft,
-                    "prop_type": prop_type,
-                    "agent":     d.get("agent", ""),
+                    "source":      "onthemarket",
+                    "area":        area,
+                    "title":       d.get("address", area),
+                    "price":       d.get("price", "Price N/A"),
+                    "address":     d.get("address", ""),
+                    "url":         url_str,
+                    "beds":        beds,
+                    "baths":       baths,
+                    "sqft":        sqft,
+                    "prop_type":   prop_type,
+                    "agent":       d.get("agent", ""),
+                    "description": card_text,
                 })
                 new_on_page += 1
 

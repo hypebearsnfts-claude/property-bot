@@ -1558,6 +1558,22 @@ def calculate_fmv(
                 "source":     comp.get("source", "comparable"),
             })
 
+    # ── Outlier removal ───────────────────────────────────────────────────────
+    # Drop comps more than 2× or less than 0.5× the median price.
+    # Prevents ultra-luxury outliers (e.g. £12k penthouses) from inflating the
+    # FMV for standard properties when baths/type are unknown and all 2-beds in
+    # an area share the same cache key.
+    prices = [p["price"] for p in all_data if p.get("price")]
+    if len(prices) >= 4:
+        median_p = statistics.median(prices)
+        before   = len(all_data)
+        all_data = [p for p in all_data
+                    if p.get("price") and 0.4 * median_p <= p["price"] <= 2.5 * median_p]
+        removed  = before - len(all_data)
+        if removed:
+            logger.info("[fmv] Outlier removal: dropped %d comps outside 0.4–2.5× median (£%d)",
+                        removed, int(median_p))
+
     def _weighted_avg(data: list[dict], strict: bool) -> Optional[int]:
         ws = wt = 0.0
         for point in data:

@@ -116,13 +116,14 @@ async def _load_page(browser, area, loc_id, index):
                     const agentEl = card.querySelector('[class*="ContactBlock_contactTitle"], [class*="agentLogo"], .propertyCard-contactsItem span, [data-test="agent-title"]');
                     const agent = agentEl ? agentEl.innerText.trim() : '';
                     return {
-                        url:     link.href || '',
-                        price:   price ? price.innerText.trim() : 'Price N/A',
-                        address: addr  ? addr.innerText.trim().replace(/\s+/g,' ') : '',
-                        title:   title ? title.innerText.trim() : 'Property',
-                        baths:   bathMatch ? parseInt(bathMatch[1]) : null,
-                        sqft:    sqft,
-                        agent:   agent,
+                        url:         link.href || '',
+                        price:       price ? price.innerText.trim() : 'Price N/A',
+                        address:     addr  ? addr.innerText.trim().replace(/\s+/g,' ') : '',
+                        title:       title ? title.innerText.trim() : 'Property',
+                        baths:       bathMatch ? parseInt(bathMatch[1]) : null,
+                        sqft:        sqft,
+                        agent:       agent,
+                        description: featText.slice(0, 600),
                     };
                 }).filter(Boolean);
             }
@@ -173,15 +174,16 @@ async def _scrape_area_inner(browser, area, loc_id):
                 if u and u not in seen_urls:
                     seen_urls.add(u)
                     listings.append({
-                        "source":  "rightmove",
-                        "area":    area,
-                        "title":   d["title"],
-                        "price":   d["price"],
-                        "address": d["address"],
-                        "url":     u,
-                        "baths":   d.get("baths"),
-                        "sqft":    d.get("sqft"),
-                        "agent":   d.get("agent", ""),
+                        "source":      "rightmove",
+                        "area":        area,
+                        "title":       d["title"],
+                        "price":       d["price"],
+                        "address":     d["address"],
+                        "url":         u,
+                        "baths":       d.get("baths"),
+                        "sqft":        d.get("sqft"),
+                        "agent":       d.get("agent", ""),
+                        "description": d.get("description", ""),
                     })
                     page_count += 1
 

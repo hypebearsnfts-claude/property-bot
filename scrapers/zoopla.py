@@ -118,13 +118,14 @@ async def _load_page(browser, area, slug, pn):
                     const agent = agentEl ? agentEl.innerText.trim() : '';
 
                     return {
-                        url:     a.href,
-                        price:   price ? price.innerText.trim() : 'Price N/A',
-                        address: addr  ? addr.innerText.trim().replace(/\s+/g,' ') : '',
-                        title:   title ? title.innerText.trim() : 'Property',
-                        baths:   bathMatch ? parseInt(bathMatch[1]) : null,
-                        sqft:    sqft,
-                        agent:   agent,
+                        url:         a.href,
+                        price:       price ? price.innerText.trim() : 'Price N/A',
+                        address:     addr  ? addr.innerText.trim().replace(/\s+/g,' ') : '',
+                        title:       title ? title.innerText.trim() : 'Property',
+                        baths:       bathMatch ? parseInt(bathMatch[1]) : null,
+                        sqft:        sqft,
+                        agent:       agent,
+                        description: featText.slice(0, 600),
                     };
                 }).filter(Boolean);
             }
@@ -174,15 +175,16 @@ async def _scrape_area(browser, area, slug):
                 if u and u not in seen_this_area:
                     seen_this_area.add(u)
                     listings.append({
-                        "source":  "zoopla",
-                        "area":    area,
-                        "title":   d["title"],
-                        "price":   d["price"],
-                        "address": d["address"],
-                        "url":     u,
-                        "baths":   d.get("baths"),
-                        "sqft":    d.get("sqft"),
-                        "agent":   d.get("agent", ""),
+                        "source":      "zoopla",
+                        "area":        area,
+                        "title":       d["title"],
+                        "price":       d["price"],
+                        "address":     d["address"],
+                        "url":         u,
+                        "baths":       d.get("baths"),
+                        "sqft":        d.get("sqft"),
+                        "agent":       d.get("agent", ""),
+                        "description": d.get("description", ""),
                     })
                     cnt += 1
 

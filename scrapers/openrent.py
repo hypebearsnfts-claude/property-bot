@@ -118,14 +118,15 @@ async def _scrape_area(browser, area, slug, term):
                     sqft = int(int(sqm_m.group(1).replace(",", "")) * 10.764)
 
                 listings.append({
-                    "source":  "openrent",
-                    "area":    area,
-                    "title":   title,
-                    "price":   price,
-                    "address": title,
-                    "url":     href,
-                    "baths":   int(bath_m.group(1)) if bath_m else None,
-                    "sqft":    sqft,
+                    "source":      "openrent",
+                    "area":        area,
+                    "title":       title,
+                    "price":       price,
+                    "address":     title,
+                    "url":         href,
+                    "baths":       int(bath_m.group(1)) if bath_m else None,
+                    "sqft":        sqft,
+                    "description": card_text[:600],
                 })
             except Exception:
                 continue
