@@ -11,7 +11,7 @@ Functions
 ---------
 is_duplicate(listing)     — True if this URL was already sent
 mark_as_seen(listing)     — Record URL + today's date, save immediately
-clean_old_entries()       — Remove entries older than 7 days (run at startup)
+clean_old_entries()       — Remove entries older than 30 days (run at startup)
 """
 
 from __future__ import annotations
@@ -24,7 +24,7 @@ from pathlib import Path
 logger = logging.getLogger(__name__)
 
 _SEEN_PATH  = Path(__file__).parent.parent / "seen_listings.json"
-_MAX_AGE_DAYS = 7
+_MAX_AGE_DAYS = 30
 
 
 def _load() -> dict[str, str]:
@@ -92,7 +92,7 @@ def mark_as_seen(listing: dict) -> None:
 
 def clean_old_entries() -> None:
     """
-    Remove entries older than 7 days and save.
+    Remove entries older than 30 days and save.
     Call this once at the start of each pipeline run.
     """
     seen = _load()
