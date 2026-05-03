@@ -63,6 +63,12 @@ BLACKLISTED_AGENTS = [
     "greater london properties",
     "foxtons",
     "dexters",
+    "ila",
+    "219baker",
+    "219 baker",
+    "blueground",
+    "cbre",
+    "glp",
 ]
 
 
