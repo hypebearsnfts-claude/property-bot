@@ -74,15 +74,16 @@ BLACKLISTED_AGENTS = [
 
 
 def _is_blacklisted(listing: dict) -> bool:
-    """Return True if the listing is from a blacklisted agent."""
-    agent = (listing.get("agent") or "").lower()
-    if agent:
-        return any(blocked in agent for blocked in BLACKLISTED_AGENTS)
-    # Fallback: check title + address for agent name leakage
+    """Return True if the listing is from a blacklisted agent.
+    Checks agent field + title + address + url + description so the agent
+    name is caught even when the scraper fails to extract it cleanly.
+    """
     haystack = " ".join([
+        listing.get("agent", ""),
         listing.get("title", ""),
         listing.get("address", ""),
         listing.get("url", ""),
+        listing.get("description", ""),
     ]).lower()
     return any(blocked in haystack for blocked in BLACKLISTED_AGENTS)
 
@@ -97,6 +98,13 @@ BLACKLISTED_KEYWORDS = [
     "24hr concierge",
     "round-the-clock concierge",
     "round the clock concierge",
+    # Agent names — belt-and-suspenders in case agent field isn't populated
+    "greater london properties",
+    "foxtons",
+    "dexters",
+    "blueground",
+    "219 baker",
+    "219baker",
 ]
 
 
