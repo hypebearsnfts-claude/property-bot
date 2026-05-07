@@ -38,13 +38,13 @@ jobs:
           ANTHROPIC_API_KEY:           ${{ secrets.ANTHROPIC_API_KEY }}
         run: python scheduler.py
 
-      - name: Commit updated seen_listings.json
+      - name: Commit updated seen_listings.json and enquiry_log.json
         if: always()
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add seen_listings.json
-          git diff --cached --quiet && echo "No changes to seen_listings.json" || git commit -m "chore: update seen_listings [skip ci]"
+          git add seen_listings.json enquiry_log.json 2>/dev/null || true
+          git diff --cached --quiet && echo "No changes to commit" || git commit -m "chore: update seen_listings + enquiry_log [skip ci]"
           git pull --rebase origin main
           git push origin HEAD:main
 

@@ -36,6 +36,7 @@ from telegram.ext import Application, CommandHandler, ContextTypes
 from utils.walk_time import nearest_walk_minutes
 from utils.valuation import get_fmv_verdict, _parse_price_pcm
 from utils.seen_listings import is_duplicate, mark_as_seen, clean_old_entries
+from enquiry_bot import submit_enquiries, enquiry_summary, already_enquired
 
 # ── Config ────────────────────────────────────────────────────────────────────
 
@@ -190,6 +191,7 @@ def _format_property_message(listing: dict, verdict: dict) -> str:
         f"🚶 {walk_mins} min walk to {_esc(station_fmt)}",
         f"✅ VERDICT: PASS  \\[{_esc(source)}\\]",
         f"🔗 [View listing]({url})",
+        *(["📱 *OpenRent — please contact manually*"] if listing.get("source") == "openrent" else []),
         "\\-\\-\\-",
         f"Own history: {own_str}",
         f"Nearby let\\-agreed: {let_str}",
@@ -523,6 +525,30 @@ async def run_filter_pipeline_and_send(
     )
     logger.info("[filter] Automated pipeline complete — %d/%d new passed, %d sent (dupes skipped: %d)",
                 len(passing), new_count, sent, dupes_skipped)
+
+    # ── Enquiry submission ────────────────────────────────────────────────────
+    # Auto-submit enquiry forms for Rightmove / Zoopla / OnTheMarket.
+    # OpenRent listings are flagged for manual contact.
+    if to_send:
+        try:
+            await bot.send_message(
+                chat_id=chat_id,
+                text="📨 Submitting enquiries…",
+            )
+            enq_results = await submit_enquiries(to_send)
+            summary_msg = enquiry_summary(enq_results, to_send)
+            await bot.send_message(
+                chat_id=chat_id,
+                text=summary_msg,
+                parse_mode="MarkdownV2",
+                disable_web_page_preview=True,
+            )
+        except Exception as exc:
+            logger.error("[filter] Enquiry submission failed: %s", exc)
+            await bot.send_message(
+                chat_id=chat_id,
+                text=f"⚠️ Enquiry submission encountered an error: {exc}",
+            )
 
 
 # ── Entry point ───────────────────────────────────────────────────────────────
