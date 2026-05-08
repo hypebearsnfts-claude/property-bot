@@ -534,14 +534,15 @@ async def run_filter_pipeline_and_send(
     logger.info("[filter] Automated pipeline complete — %d/%d new passed, %d sent (dupes skipped: %d)",
                 len(passing), new_count, sent, dupes_skipped)
 
-    # ── Enquiry submission ────────────────────────────────────────────────────
-    # Auto-submit enquiry forms for Rightmove / Zoopla / OnTheMarket.
-    # OpenRent listings are flagged for manual contact.
+    # ── Enquiry contact extraction ────────────────────────────────────────────
+    # Visit each listing page, extract agent phone number, send contact list.
+    # (Portal form submission requires login and is blocked — phone extraction
+    #  works without login and is fully reliable.)
     if to_send:
         try:
             await bot.send_message(
                 chat_id=chat_id,
-                text="📨 Submitting enquiries…",
+                text="📞 Fetching agent contact details…",
             )
             enq_results = await submit_enquiries(to_send)
             summary_msg = enquiry_summary(enq_results, to_send)
