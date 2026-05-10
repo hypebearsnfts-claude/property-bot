@@ -278,5 +278,30 @@
     "date": "2026-05-09",
     "status": "failed",
     "address": "Porchester Place, London"
+  },
+  "https://www.rightmove.co.uk/properties/88276899#/?channel=RES_LET": {
+    "date": "2026-05-10",
+    "status": "failed",
+    "address": "Kensington Apartments, 11 Commercial Street, Aldgate, London, E1"
+  },
+  "https://www.rightmove.co.uk/properties/88276881#/?channel=RES_LET": {
+    "date": "2026-05-10",
+    "status": "failed",
+    "address": "Crawford Building, 112 Whitechapel High Street, Aldgate, London, E1"
+  },
+  "https://www.rightmove.co.uk/properties/88196517#/?channel=RES_LET": {
+    "date": "2026-05-10",
+    "status": "failed",
+    "address": "Newcastle Place London W2"
+  },
+  "https://www.rightmove.co.uk/properties/88174500#/?channel=RES_LET": {
+    "date": "2026-05-10",
+    "status": "failed",
+    "address": "Edgware Road, London"
+  },
+  "https://www.onthemarket.com/details/19447260/": {
+    "date": "2026-05-10",
+    "status": "failed",
+    "address": "Tower Bridge Road"
   }
 }
