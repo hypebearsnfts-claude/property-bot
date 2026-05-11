@@ -1,39 +1,47 @@
 """
 enquiry_bot.py
 --------------
-Extracts agent phone numbers from passing listings and sends a compact
-contact list to Telegram so Ernest can call / WhatsApp each agent directly.
+Submits viewing enquiries for listings that passed all filters.
 
-Why not auto-submit portal forms?
-  Rightmove, Zoopla, and OnTheMarket now all require a logged-in account
-  before the enquiry form is shown. Without login the form is never rendered,
-  so 100 % of automated form submissions fail. Extracting the phone number
-  from the listing page does NOT require login and works reliably.
+Login strategy per portal
+─────────────────────────
+  Rightmove    →  standard email / password login
+  Zoopla       →  "Sign in with Google" (Gmail OAuth)
+  OnTheMarket  →  "Sign in with Google" (Gmail OAuth)
+  OpenRent     →  no automation; flagged in Telegram for manual contact
 
-Flow per listing:
-  1. Visit listing URL (fresh Playwright context, stealth mode)
-  2. Extract agent phone via <a href="tel:..."> link or text pattern
-  3. Extract agent name if possible
-  4. OpenRent  →  mark as manual (phone in card, contact via WhatsApp)
-  5. All others →  add to contact list
+A single authenticated browser context is created per portal at the start
+of the run and reused for every listing on that portal — one login, many
+enquiries, minimal Google bot-detection risk.
 
-Output:
-  enquiry_summary()  builds a Telegram MarkdownV2 message with one line
-  per listing:  Area — Agent — 📱 phone number (tappable)
+Contact details
+───────────────
+  Name    : Ernest Siow
+  Email   : ernest.slh@hotmail.com
+  Phone   : +6590673996
+  Message : see ENQUIRY_MESSAGE below
 
-Dedup:
-  enquiry_log.json  records which URLs have already been extracted so the
-  same listing is not processed again across daily runs.
+Credentials (from .env / GitHub Secrets)
+─────────────────────────────────────────
+  RIGHTMOVE_EMAIL / RIGHTMOVE_PASSWORD  — standard email login
+  ZOOPLA_EMAIL    / ZOOPLA_PASSWORD     — Google account (gmail)
+  OTM_EMAIL       / OTM_PASSWORD        — Google account (gmail)
+
+Dedup
+─────
+  enquiry_log.json records every processed URL so the same listing is
+  never enquired twice across daily runs.
 """
 
 import asyncio
 import json
 import logging
+import os
 import re
 from datetime import datetime
 from pathlib import Path
 
-from playwright.async_api import async_playwright, TimeoutError as PWTimeout
+from playwright.async_api import async_playwright, BrowserContext, Page, TimeoutError as PWTimeout
 
 try:
     from playwright_stealth import stealth_async as _stealth_async
@@ -43,7 +51,30 @@ except ImportError:
 
 logger = logging.getLogger(__name__)
 
+# ── Contact details ───────────────────────────────────────────────────────────
+
+CONTACT_FIRST   = "Ernest"
+CONTACT_LAST    = "Siow"
+CONTACT_NAME    = "Ernest Siow"
+CONTACT_EMAIL   = "ernest.slh@hotmail.com"
+CONTACT_PHONE   = "+6590673996"
+ENQUIRY_MESSAGE = (
+    "Hi there, I am very much interested in this property. "
+    "If you may, could you whatsapp me at +6590673996 so I can respond quickly? "
+    "Thank you in advance."
+)
+
+# ── Portal credentials (from .env / GitHub Secrets) ──────────────────────────
+
+_RM_EMAIL   = os.getenv("RIGHTMOVE_EMAIL",    "")
+_RM_PASS    = os.getenv("RIGHTMOVE_PASSWORD", "")
+_ZO_EMAIL   = os.getenv("ZOOPLA_EMAIL",       "")
+_ZO_PASS    = os.getenv("ZOOPLA_PASSWORD",    "")
+_OTM_EMAIL  = os.getenv("OTM_EMAIL",          "")
+_OTM_PASS   = os.getenv("OTM_PASSWORD",       "")
+
 # ── Enquiry log ───────────────────────────────────────────────────────────────
+
 _LOG_PATH = Path(__file__).parent / "enquiry_log.json"
 
 
@@ -71,8 +102,7 @@ def already_enquired(listing: dict) -> bool:
     return bool(url) and url in _load_log()
 
 
-def mark_enquired(listing: dict, status: str = "contact_sent",
-                   phone: str = "") -> None:
+def mark_enquired(listing: dict, status: str = "sent") -> None:
     url = listing.get("url", "").strip()
     if not url:
         return
@@ -80,7 +110,6 @@ def mark_enquired(listing: dict, status: str = "contact_sent",
     log[url] = {
         "date":    datetime.now().strftime("%Y-%m-%d"),
         "status":  status,
-        "phone":   phone,
         "address": listing.get("address", ""),
     }
     _save_log(log)
@@ -88,29 +117,37 @@ def mark_enquired(listing: dict, status: str = "contact_sent",
 
 # ── Browser helpers ───────────────────────────────────────────────────────────
 
-async def _new_ctx(browser):
-    ctx = await browser.new_context(
-        user_agent=(
-            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
-            "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
-        ),
+_UA = (
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+    "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+)
+
+
+async def _new_page(ctx: BrowserContext) -> Page:
+    page = await ctx.new_page()
+    if _STEALTH:
+        await _stealth_async(page)
+    return page
+
+
+async def _new_ctx(browser) -> BrowserContext:
+    return await browser.new_context(
+        user_agent=_UA,
         viewport={"width": 1280, "height": 900},
         locale="en-GB",
         extra_http_headers={"Accept-Language": "en-GB,en;q=0.9"},
     )
-    page = await ctx.new_page()
-    if _STEALTH:
-        await _stealth_async(page)
-    return ctx, page
 
 
-async def _dismiss_cookies(page):
+async def _dismiss_cookies(page: Page) -> None:
     for sel in [
         "button#onetrust-accept-btn-handler",
         "button:has-text('Accept all')",
         "button:has-text('Accept cookies')",
         "button#ccc-recommended-settings",
         "button:has-text('I agree')",
+        "button:has-text('OK')",
+        "[aria-label='Accept all']",
     ]:
         try:
             await page.locator(sel).first.click(timeout=2_500)
@@ -120,78 +157,495 @@ async def _dismiss_cookies(page):
             continue
 
 
-# ── Phone extraction ──────────────────────────────────────────────────────────
-
-_PHONE_JS = """
-() => {
-    // 1. Prefer explicit tel: links
-    const telLinks = Array.from(document.querySelectorAll('a[href^="tel:"]'))
-        .map(a => a.href.replace('tel:', '').replace(/\s/g, '').trim())
-        .filter(t => t.length >= 7);
-    if (telLinks.length > 0) return telLinks[0];
-
-    // 2. Fallback: scan visible text for UK / SG phone patterns
-    const text = document.body.innerText || '';
-    const m = text.match(
-        /(?:\+44[\s\-]?(?:\d[\s\-]?){9,10}|0\d{3,4}[\s\-]?\d{3,4}[\s\-]?\d{3,4})/
-    );
-    return m ? m[0].replace(/\s+/g, ' ').trim() : null;
-}
-"""
-
-_AGENT_JS = """
-() => {
-    const selectors = [
-        '[data-testid="agent-name"]', '[data-testid="brandName"]',
-        '.agent-name', '.agency-name', '[class*="agentName"]',
-        '[class*="AgentName"]', '[class*="brandName"]',
-        '.propertyAgency', '.agency', '.branch-name',
-    ];
-    for (const sel of selectors) {
-        const el = document.querySelector(sel);
-        if (el) {
-            const t = el.innerText.trim();
-            if (t.length > 2 && t.length < 80) return t;
-        }
-    }
-    return null;
-}
-"""
+async def _safe_fill(page: Page, selectors: list[str], value: str,
+                     timeout: int = 5_000) -> bool:
+    for sel in selectors:
+        try:
+            loc = page.locator(sel).first
+            await loc.wait_for(state="visible", timeout=timeout)
+            await loc.fill(value)
+            return True
+        except Exception:
+            continue
+    return False
 
 
-async def _extract_contact(browser, listing: dict) -> dict:
+async def _safe_click(page: Page, selectors: list[str],
+                      timeout: int = 8_000) -> bool:
+    for sel in selectors:
+        try:
+            await page.locator(sel).first.click(timeout=timeout)
+            return True
+        except Exception:
+            continue
+    return False
+
+
+# ── Google OAuth helper ───────────────────────────────────────────────────────
+# Called on the accounts.google.com popup page after clicking
+# "Continue with Google" / "Sign in with Google" on a portal.
+
+async def _google_oauth(google_page: Page, email: str, password: str) -> bool:
     """
-    Visit listing page and return {phone, agent_name, url}.
-    Returns phone=None if not found.
+    Complete a Google sign-in on the given popup/redirect page.
+    Returns True if login appeared successful.
     """
-    ctx, page = await _new_ctx(browser)
+    try:
+        # Step 1: email
+        await google_page.wait_for_load_state("domcontentloaded", timeout=15_000)
+        await google_page.wait_for_timeout(1_500)
+
+        email_filled = await _safe_fill(google_page, [
+            "input[type='email']",
+            "input[name='identifier']",
+            "#identifierId",
+        ], email, timeout=10_000)
+
+        if not email_filled:
+            logger.warning("[enquiry] Google OAuth: email field not found")
+            return False
+
+        await _safe_click(google_page, [
+            "#identifierNext",
+            "button:has-text('Next')",
+            "[data-idom-class*='next' i]",
+        ])
+        await google_page.wait_for_timeout(2_500)
+
+        # Step 2: password
+        pwd_filled = await _safe_fill(google_page, [
+            "input[type='password']",
+            "input[name='Passwd']",
+        ], password, timeout=10_000)
+
+        if not pwd_filled:
+            logger.warning("[enquiry] Google OAuth: password field not found")
+            return False
+
+        await _safe_click(google_page, [
+            "#passwordNext",
+            "button:has-text('Next')",
+        ])
+        await google_page.wait_for_timeout(3_000)
+
+        # Step 3: handle "Allow" / permissions screen if shown
+        try:
+            await _safe_click(google_page, [
+                "button:has-text('Allow')",
+                "button:has-text('Continue')",
+                "[data-action='consent']",
+            ], timeout=4_000)
+            await google_page.wait_for_timeout(2_000)
+        except Exception:
+            pass  # Not always shown
+
+        # Check for errors (wrong password, verification required, etc.)
+        content = (await google_page.content()).lower()
+        if any(m in content for m in [
+            "wrong password", "couldn't find your google account",
+            "verify it's you", "confirm your recovery",
+            "unusual activity", "this browser or app may not be secure",
+        ]):
+            logger.warning("[enquiry] Google OAuth: blocked or wrong credentials")
+            return False
+
+        logger.info("[enquiry] Google OAuth: completed successfully")
+        return True
+
+    except Exception as exc:
+        logger.warning("[enquiry] Google OAuth exception: %s", exc)
+        return False
+
+
+# ── Rightmove login ───────────────────────────────────────────────────────────
+
+async def _build_rightmove_ctx(browser) -> tuple[BrowserContext | None, bool]:
+    """
+    Create an authenticated Rightmove browser context.
+    Returns (ctx, True) on success, (None, False) on failure.
+    """
+    if not (_RM_EMAIL and _RM_PASS):
+        logger.info("[enquiry] Rightmove: no credentials in env")
+        return None, False
+
+    ctx = await _new_ctx(browser)
+    page = await _new_page(ctx)
+    try:
+        await page.goto(
+            "https://www.rightmove.co.uk/user/login.html",
+            wait_until="domcontentloaded", timeout=30_000,
+        )
+        await page.wait_for_timeout(2_000)
+        await _dismiss_cookies(page)
+
+        await _safe_fill(page, [
+            "input[name='email']", "input[type='email']",
+            "input[id*='email' i]",
+        ], _RM_EMAIL)
+        await _safe_fill(page, [
+            "input[name='password']", "input[type='password']",
+        ], _RM_PASS)
+
+        await _safe_click(page, [
+            "button[type='submit']",
+            "button:has-text('Log in')",
+            "button:has-text('Sign in')",
+        ])
+        await page.wait_for_timeout(3_500)
+
+        content = (await page.content()).lower()
+        if "log out" in content or "my rightmove" in content or "saved properties" in content:
+            logger.info("[enquiry] Rightmove: logged in ✓")
+            await page.close()
+            return ctx, True
+
+        logger.warning("[enquiry] Rightmove: login may have failed (no logout link found)")
+        await page.close()
+        return ctx, False  # keep ctx, attempt anyway
+
+    except Exception as exc:
+        logger.warning("[enquiry] Rightmove login exception: %s", exc)
+        try:
+            await page.close()
+        except Exception:
+            pass
+        return ctx, False
+
+
+# ── Zoopla login (Google OAuth) ───────────────────────────────────────────────
+
+async def _build_zoopla_ctx(browser) -> tuple[BrowserContext | None, bool]:
+    if not (_ZO_EMAIL and _ZO_PASS):
+        logger.info("[enquiry] Zoopla: no credentials in env")
+        return None, False
+
+    ctx = await _new_ctx(browser)
+    page = await _new_page(ctx)
+    try:
+        await page.goto(
+            "https://www.zoopla.co.uk/login/",
+            wait_until="domcontentloaded", timeout=30_000,
+        )
+        await page.wait_for_timeout(2_000)
+        await _dismiss_cookies(page)
+
+        # Click "Continue with Google"
+        google_btn_clicked = False
+        async with page.expect_popup(timeout=12_000) as popup_info:
+            clicked = await _safe_click(page, [
+                "button:has-text('Continue with Google')",
+                "button:has-text('Sign in with Google')",
+                "a:has-text('Continue with Google')",
+                "[data-testid*='google' i]",
+            ], timeout=10_000)
+            if not clicked:
+                logger.warning("[enquiry] Zoopla: Google button not found")
+                await page.close()
+                return None, False
+            google_btn_clicked = True
+
+        if google_btn_clicked:
+            google_page = await popup_info.value
+            oauth_ok = await _google_oauth(google_page, _ZO_EMAIL, _ZO_PASS)
+            # Popup closes automatically after successful login
+            try:
+                await google_page.wait_for_close(timeout=15_000)
+            except Exception:
+                pass
+            await page.wait_for_timeout(3_000)
+
+            if not oauth_ok:
+                await page.close()
+                return None, False
+
+        content = (await page.content()).lower()
+        logged_in = (
+            "sign out" in content or "log out" in content
+            or "my profile" in content or "saved properties" in content
+        )
+        logger.info("[enquiry] Zoopla: login %s", "✓" if logged_in else "uncertain")
+        await page.close()
+        return ctx, logged_in
+
+    except Exception as exc:
+        logger.warning("[enquiry] Zoopla login exception: %s", exc)
+        try:
+            await page.close()
+        except Exception:
+            pass
+        return None, False
+
+
+# ── OnTheMarket login (Google OAuth) ─────────────────────────────────────────
+
+async def _build_otm_ctx(browser) -> tuple[BrowserContext | None, bool]:
+    if not (_OTM_EMAIL and _OTM_PASS):
+        logger.info("[enquiry] OTM: no credentials in env")
+        return None, False
+
+    ctx = await _new_ctx(browser)
+    page = await _new_page(ctx)
+    try:
+        await page.goto(
+            "https://www.onthemarket.com/accounts/login/",
+            wait_until="domcontentloaded", timeout=30_000,
+        )
+        await page.wait_for_timeout(2_000)
+        await _dismiss_cookies(page)
+
+        # Click "Sign in with Google"
+        google_btn_found = False
+        try:
+            async with page.expect_popup(timeout=12_000) as popup_info:
+                clicked = await _safe_click(page, [
+                    "button:has-text('Sign in with Google')",
+                    "button:has-text('Continue with Google')",
+                    "a:has-text('Sign in with Google')",
+                    "[data-provider='google']",
+                    "[class*='google' i]",
+                ], timeout=10_000)
+                if not clicked:
+                    raise Exception("Google button not found")
+                google_btn_found = True
+
+            google_page = await popup_info.value
+            oauth_ok = await _google_oauth(google_page, _OTM_EMAIL, _OTM_PASS)
+            try:
+                await google_page.wait_for_close(timeout=15_000)
+            except Exception:
+                pass
+            await page.wait_for_timeout(3_000)
+
+            if not oauth_ok:
+                await page.close()
+                return None, False
+
+        except Exception:
+            if not google_btn_found:
+                # Fallback: try standard email/password on OTM (some accounts use this)
+                logger.info("[enquiry] OTM: trying standard email login")
+                await _safe_fill(page, [
+                    "input[type='email']", "input[name='email']",
+                    "input[name='username']",
+                ], _OTM_EMAIL)
+                await _safe_fill(page, [
+                    "input[type='password']", "input[name='password']",
+                ], _OTM_PASS)
+                await _safe_click(page, [
+                    "button[type='submit']",
+                    "button:has-text('Sign in')",
+                    "button:has-text('Log in')",
+                ])
+                await page.wait_for_timeout(3_000)
+
+        content = (await page.content()).lower()
+        logged_in = (
+            "sign out" in content or "log out" in content
+            or "my account" in content or "saved searches" in content
+        )
+        logger.info("[enquiry] OTM: login %s", "✓" if logged_in else "uncertain")
+        await page.close()
+        return ctx, logged_in
+
+    except Exception as exc:
+        logger.warning("[enquiry] OTM login exception: %s", exc)
+        try:
+            await page.close()
+        except Exception:
+            pass
+        return None, False
+
+
+# ── Per-listing enquiry submitters ────────────────────────────────────────────
+
+async def _submit_rightmove(ctx: BrowserContext, listing: dict) -> str:
+    page = await _new_page(ctx)
     url = listing["url"]
-    result = {"phone": None, "agent_name": listing.get("agent", ""), "url": url}
     try:
         await page.goto(url, wait_until="domcontentloaded", timeout=30_000)
-        await page.wait_for_timeout(2_500)
+        await page.wait_for_timeout(3_000)
         await _dismiss_cookies(page)
-        await page.wait_for_timeout(800)
 
-        phone = await page.evaluate(_PHONE_JS)
-        if phone:
-            # Normalise spacing
-            phone = re.sub(r"\s+", " ", phone).strip()
-            result["phone"] = phone
+        # Click "Email agent" to open the enquiry modal
+        await _safe_click(page, [
+            "[data-test='contactAgentButton']",
+            "button:has-text('Email agent')",
+            "button:has-text('Contact agent')",
+            "a:has-text('Email agent')",
+            "[data-testid*='contact' i]",
+            "button:has-text('Request details')",
+        ])
+        await page.wait_for_timeout(1_500)
 
-        agent = await page.evaluate(_AGENT_JS)
-        if agent:
-            result["agent_name"] = agent
+        # Rightmove pre-fills from account; still try to fill all fields
+        await _safe_fill(page, [
+            "input[name='firstName']", "input[id*='firstName' i]",
+            "input[placeholder*='first name' i]",
+        ], CONTACT_FIRST)
+        await _safe_fill(page, [
+            "input[name='lastName']", "input[id*='lastName' i]",
+            "input[placeholder*='last name' i]",
+        ], CONTACT_LAST)
+        await _safe_fill(page, [
+            "input[name='email']", "input[type='email']",
+        ], CONTACT_EMAIL)
+        await _safe_fill(page, [
+            "input[name='phone']", "input[type='tel']",
+            "input[name='telephone']",
+        ], CONTACT_PHONE)
+        await _safe_fill(page, ["textarea"], ENQUIRY_MESSAGE)
 
-        logger.info(
-            "[enquiry] %s → phone=%s agent=%s",
-            url[:60], result["phone"] or "none", result["agent_name"] or "none",
-        )
+        clicked = await _safe_click(page, [
+            "button:has-text('Send enquiry')",
+            "button:has-text('Send message')",
+            "button[type='submit']:has-text('Send')",
+            "button[type='submit']",
+        ])
+        if not clicked:
+            return "failed"
+
+        await page.wait_for_timeout(3_000)
+        logger.info("[enquiry] ✅ Rightmove submitted: %s", url[:80])
+        return "sent"
+
     except Exception as exc:
-        logger.warning("[enquiry] Contact extraction failed for %s: %s", url[:60], exc)
+        logger.warning("[enquiry] Rightmove submit failed (%s): %s", url[:60], exc)
+        return "failed"
     finally:
-        await ctx.close()
-    return result
+        await page.close()
+
+
+async def _submit_zoopla(ctx: BrowserContext, listing: dict) -> str:
+    page = await _new_page(ctx)
+    url = listing["url"]
+    try:
+        await page.goto(url, wait_until="domcontentloaded", timeout=30_000)
+        await page.wait_for_timeout(3_000)
+        await _dismiss_cookies(page)
+
+        # Open enquiry form
+        await _safe_click(page, [
+            "[data-testid='enquiry-button']",
+            "button:has-text('Enquire')",
+            "button:has-text('Get in touch')",
+            "button:has-text('Email agent')",
+            "button:has-text('Contact agent')",
+            "a:has-text('Enquire')",
+        ])
+        await page.wait_for_timeout(1_500)
+
+        await _safe_fill(page, [
+            "input[name='firstName']", "input[id*='firstName' i]",
+            "input[placeholder*='first name' i]",
+        ], CONTACT_FIRST)
+        await _safe_fill(page, [
+            "input[name='lastName']", "input[id*='lastName' i]",
+            "input[placeholder*='last name' i]",
+        ], CONTACT_LAST)
+        await _safe_fill(page, [
+            "input[type='email']", "input[name='email']",
+        ], CONTACT_EMAIL)
+        await _safe_fill(page, [
+            "input[type='tel']", "input[name='phone']",
+            "input[name='telephone']",
+        ], CONTACT_PHONE)
+        await _safe_fill(page, ["textarea"], ENQUIRY_MESSAGE)
+
+        clicked = await _safe_click(page, [
+            "button:has-text('Send message')",
+            "button:has-text('Send enquiry')",
+            "button[type='submit']",
+        ])
+        if not clicked:
+            return "failed"
+
+        await page.wait_for_timeout(3_000)
+        logger.info("[enquiry] ✅ Zoopla submitted: %s", url[:80])
+        return "sent"
+
+    except Exception as exc:
+        logger.warning("[enquiry] Zoopla submit failed (%s): %s", url[:60], exc)
+        return "failed"
+    finally:
+        await page.close()
+
+
+async def _submit_otm(ctx: BrowserContext, listing: dict) -> str:
+    page = await _new_page(ctx)
+    url = listing["url"]
+    try:
+        await page.goto(url, wait_until="domcontentloaded", timeout=35_000)
+        await page.wait_for_timeout(3_000)
+        await _dismiss_cookies(page)
+
+        # OTM may have the form inline or behind a button
+        form_open = False
+        for btn_sel in [
+            "button:has-text('Email agent')",
+            "button:has-text('Enquire')",
+            "button:has-text('Contact agent')",
+            "a:has-text('Email agent')",
+            "[data-testid*='contact' i]",
+            "button:has-text('Request viewing')",
+        ]:
+            try:
+                await page.locator(btn_sel).first.click(timeout=4_000)
+                await page.wait_for_timeout(1_200)
+                form_open = True
+                break
+            except Exception:
+                continue
+
+        # Fill name
+        first_ok = await _safe_fill(page, [
+            "input[name='first_name']", "input[name='firstName']",
+            "input[id*='first' i]", "input[placeholder*='first name' i]",
+        ], CONTACT_FIRST)
+        await _safe_fill(page, [
+            "input[name='last_name']", "input[name='lastName']",
+            "input[id*='last' i]", "input[placeholder*='last name' i]",
+        ], CONTACT_LAST)
+        if not first_ok:
+            await _safe_fill(page, [
+                "input[name='name']", "input[id*='name' i]",
+                "input[placeholder*='your name' i]",
+            ], CONTACT_NAME)
+
+        email_ok = await _safe_fill(page, [
+            "input[type='email']", "input[name='email']", "input[id*='email' i]",
+        ], CONTACT_EMAIL)
+        if not email_ok:
+            logger.warning("[enquiry] OTM: email field not found at %s", url[:60])
+            return "failed"
+
+        await _safe_fill(page, [
+            "input[type='tel']", "input[name='phone']",
+            "input[name='telephone']", "input[id*='phone' i]",
+        ], CONTACT_PHONE)
+        await _safe_fill(page, [
+            "textarea[name='message']", "textarea[id*='message' i]", "textarea",
+        ], ENQUIRY_MESSAGE)
+
+        clicked = await _safe_click(page, [
+            "button[type='submit']:has-text('Send')",
+            "button:has-text('Send enquiry')",
+            "button:has-text('Send message')",
+            "button:has-text('Submit enquiry')",
+            "button[type='submit']",
+            "input[type='submit']",
+        ])
+        if not clicked:
+            return "failed"
+
+        await page.wait_for_timeout(3_000)
+        logger.info("[enquiry] ✅ OTM submitted: %s", url[:80])
+        return "sent"
+
+    except Exception as exc:
+        logger.warning("[enquiry] OTM submit failed (%s): %s", url[:60], exc)
+        return "failed"
+    finally:
+        await page.close()
 
 
 # ── Main dispatcher ───────────────────────────────────────────────────────────
@@ -201,26 +655,24 @@ _MANUAL_SOURCES = {"openrent"}
 
 async def submit_enquiries(listings: list[dict]) -> dict:
     """
-    Extract agent contact details for all new listings.
+    Submit enquiries for all new listings.
 
-    Returns dict mapping URL → contact info dict:
+    Returns dict mapping URL → result dict:
       {
-        "status":     "contact_sent" | "no_phone" | "manual" | "skipped",
-        "phone":      "020 XXXX XXXX" or None,
-        "agent_name": "Knight Frank" or "",
-        "address":    "...",
-        "area":       "...",
-        "price":      "...",
+        "status":  "sent" | "failed" | "login_required" | "manual" | "skipped",
+        "area":    str,
+        "price":   str,
+        "address": str,
       }
     """
     results: dict[str, dict] = {}
 
+    # Split listings
     to_process = []
     for lst in listings:
         url = lst.get("url", "")
         if already_enquired(lst):
             results[url] = {"status": "skipped"}
-            logger.debug("[enquiry] Already processed: %s", url[:60])
         else:
             to_process.append(lst)
 
@@ -228,29 +680,30 @@ async def submit_enquiries(listings: list[dict]) -> dict:
         logger.info("[enquiry] All listings already processed")
         return results
 
-    # Separate manual (OpenRent) from auto
-    manual, auto = [], []
+    # Mark OpenRent as manual immediately
+    auto = []
     for lst in to_process:
-        if lst.get("source", "").lower() in _MANUAL_SOURCES:
-            manual.append(lst)
+        source = lst.get("source", "").lower()
+        url    = lst.get("url", "")
+        if source in _MANUAL_SOURCES:
+            mark_enquired(lst, status="manual")
+            results[url] = {
+                "status":  "manual",
+                "area":    lst.get("area", ""),
+                "price":   lst.get("price", ""),
+                "address": lst.get("address", ""),
+            }
         else:
             auto.append(lst)
 
-    # Mark OpenRent as manual immediately
-    for lst in manual:
-        url = lst.get("url", "")
-        mark_enquired(lst, status="manual", phone="")
-        results[url] = {
-            "status":     "manual",
-            "phone":      None,
-            "agent_name": lst.get("agent", ""),
-            "address":    lst.get("address", ""),
-            "area":       lst.get("area", ""),
-            "price":      lst.get("price", ""),
-        }
-
     if not auto:
         return results
+
+    # Group by source
+    by_source: dict[str, list[dict]] = {}
+    for lst in auto:
+        src = lst.get("source", "").lower()
+        by_source.setdefault(src, []).append(lst)
 
     async with async_playwright() as pw:
         browser = await pw.chromium.launch(
@@ -262,35 +715,79 @@ async def submit_enquiries(listings: list[dict]) -> dict:
             ],
         )
 
-        for lst in auto:
-            url = lst.get("url", "")
-            try:
-                info = await _extract_contact(browser, lst)
-                status = "contact_sent" if info["phone"] else "no_phone"
-                mark_enquired(lst, status=status, phone=info["phone"] or "")
-                results[url] = {
-                    "status":     status,
-                    "phone":      info["phone"],
-                    "agent_name": info["agent_name"],
-                    "address":    lst.get("address", ""),
-                    "area":       lst.get("area", ""),
-                    "price":      lst.get("price", ""),
-                }
-            except Exception as exc:
-                logger.error("[enquiry] Unexpected error for %s: %s", url[:60], exc)
-                mark_enquired(lst, status="failed", phone="")
-                results[url] = {"status": "failed"}
+        # Build one authenticated context per portal
+        ctx_map: dict[str, BrowserContext | None] = {}
 
-            await asyncio.sleep(2)
+        if "rightmove" in by_source:
+            ctx_map["rightmove"], _ = await _build_rightmove_ctx(browser)
+
+        if "zoopla" in by_source:
+            ctx_map["zoopla"], _ = await _build_zoopla_ctx(browser)
+
+        if "onthemarket" in by_source:
+            ctx_map["onthemarket"], _ = await _build_otm_ctx(browser)
+
+        # Submit per listing using the authenticated context
+        for source, listings_grp in by_source.items():
+            ctx = ctx_map.get(source)
+
+            if ctx is None:
+                # No credentials / login failed — mark all as login_required
+                for lst in listings_grp:
+                    url = lst.get("url", "")
+                    mark_enquired(lst, status="login_required")
+                    results[url] = {
+                        "status":  "login_required",
+                        "area":    lst.get("area", ""),
+                        "price":   lst.get("price", ""),
+                        "address": lst.get("address", ""),
+                    }
+                continue
+
+            for lst in listings_grp:
+                url = lst.get("url", "")
+                try:
+                    if source == "rightmove":
+                        status = await _submit_rightmove(ctx, lst)
+                    elif source == "zoopla":
+                        status = await _submit_zoopla(ctx, lst)
+                    elif source == "onthemarket":
+                        status = await _submit_otm(ctx, lst)
+                    else:
+                        status = "failed"
+
+                    mark_enquired(lst, status=status)
+                    results[url] = {
+                        "status":  status,
+                        "area":    lst.get("area", ""),
+                        "price":   lst.get("price", ""),
+                        "address": lst.get("address", ""),
+                    }
+                except Exception as exc:
+                    logger.error("[enquiry] Unexpected error for %s: %s", url[:60], exc)
+                    mark_enquired(lst, status="failed")
+                    results[url] = {"status": "failed", "area": lst.get("area", ""),
+                                    "price": lst.get("price", ""), "address": ""}
+
+                await asyncio.sleep(2)
+
+        # Close all authenticated contexts
+        for ctx in ctx_map.values():
+            if ctx:
+                try:
+                    await ctx.close()
+                except Exception:
+                    pass
 
         await browser.close()
 
-    found  = sum(1 for v in results.values() if v.get("status") == "contact_sent")
-    no_ph  = sum(1 for v in results.values() if v.get("status") == "no_phone")
-    manual_c = sum(1 for v in results.values() if v.get("status") == "manual")
+    sent  = sum(1 for v in results.values() if v.get("status") == "sent")
+    fail  = sum(1 for v in results.values() if v.get("status") == "failed")
+    login = sum(1 for v in results.values() if v.get("status") == "login_required")
+    man   = sum(1 for v in results.values() if v.get("status") == "manual")
     logger.info(
-        "[enquiry] Done — phone found: %d, no phone: %d, manual: %d",
-        found, no_ph, manual_c,
+        "[enquiry] Done — sent: %d, failed: %d, login_required: %d, manual: %d",
+        sent, fail, login, man,
     )
     return results
 
@@ -298,57 +795,40 @@ async def submit_enquiries(listings: list[dict]) -> dict:
 # ── Telegram summary builder ──────────────────────────────────────────────────
 
 def _esc(text: str) -> str:
-    """Escape MarkdownV2 special characters."""
     special = r'\_*[]()~`>#+=|{}.!-'
     return "".join(f"\\{c}" if c in special else c for c in str(text))
 
 
 def enquiry_summary(results: dict, listings: list[dict]) -> str:
-    """
-    Build a compact MarkdownV2 Telegram message listing agent phone numbers.
-    Grouped into: phones found / no phone / OpenRent manual.
-    """
-    with_phone  = [(url, v) for url, v in results.items()
-                   if v.get("status") == "contact_sent" and v.get("phone")]
-    no_phone    = [(url, v) for url, v in results.items()
-                   if v.get("status") == "no_phone"]
-    manual      = [(url, v) for url, v in results.items()
-                   if v.get("status") == "manual"]
+    """Build a compact MarkdownV2 Telegram message summarising enquiry results."""
+    sent      = [(u, v) for u, v in results.items() if v.get("status") == "sent"]
+    failed    = [(u, v) for u, v in results.items() if v.get("status") == "failed"]
+    login_req = [(u, v) for u, v in results.items() if v.get("status") == "login_required"]
+    manual    = [(u, v) for u, v in results.items() if v.get("status") == "manual"]
 
-    lines = ["📞 *Agent contacts*"]
+    lines = ["📨 *Enquiries*"]
 
-    if with_phone:
-        lines.append("")
-        for url, v in with_phone:
-            area    = _esc(v.get("area", ""))
-            agent   = _esc(v.get("agent_name", "Agent") or "Agent")
-            phone   = v.get("phone", "")
-            price   = _esc(v.get("price", ""))
-            # Format phone as tappable tel: link
-            phone_clean = re.sub(r"[^\d+]", "", phone)
-            lines.append(
-                f"🏠 *{area}* — {price}\n"
-                f"  {agent}\n"
-                f"  📱 [{_esc(phone)}](tel:{phone_clean})"
-            )
+    if sent:
+        lines.append(f"\n✅ *Submitted \\({len(sent)}\\)*")
+        for url, v in sent:
+            lines.append(f"  • [{_esc(v.get('area',''))} — {_esc(v.get('price',''))}]({url})")
 
-    if no_phone:
-        lines.append("")
-        lines.append("*No phone found — view listing directly:*")
-        for url, v in no_phone:
-            area  = _esc(v.get("area", ""))
-            price = _esc(v.get("price", ""))
-            lines.append(f"  • [{area} — {price}]({url})")
+    if failed:
+        lines.append(f"\n❌ *Failed \\({len(failed)}\\)*")
+        for url, v in failed:
+            lines.append(f"  • [{_esc(v.get('area',''))} — {_esc(v.get('price',''))}]({url})")
+
+    if login_req:
+        lines.append(f"\n🔐 *Login failed — enquire manually \\({len(login_req)}\\)*")
+        for url, v in login_req:
+            lines.append(f"  • [{_esc(v.get('area',''))} — {_esc(v.get('price',''))}]({url})")
 
     if manual:
-        lines.append("")
-        lines.append("*OpenRent — contact manually:*")
+        lines.append(f"\n📱 *OpenRent — send your own message \\({len(manual)}\\)*")
         for url, v in manual:
-            area  = _esc(v.get("area", ""))
-            price = _esc(v.get("price", ""))
-            lines.append(f"  • [{area} — {price}]({url})")
+            lines.append(f"  • [{_esc(v.get('area',''))} — {_esc(v.get('price',''))}]({url})")
 
-    if not (with_phone or no_phone or manual):
-        return "📞 *No new agent contacts to process\\.*"
+    if not (sent or failed or login_req or manual):
+        return "📨 *No new enquiries to process\\.*"
 
     return "\n".join(lines)

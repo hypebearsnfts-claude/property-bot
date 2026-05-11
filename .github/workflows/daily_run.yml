@@ -36,6 +36,14 @@ jobs:
           TELEGRAM_FILTER_CHAT_ID:     ${{ secrets.TELEGRAM_CHAT_ID }}
           GOOGLE_MAPS_API_KEY:         ${{ secrets.GOOGLE_MAPS_API_KEY }}
           ANTHROPIC_API_KEY:           ${{ secrets.ANTHROPIC_API_KEY }}
+          # Portal credentials for automated enquiry form submission.
+          # Add these as GitHub Secrets under Settings → Secrets and variables → Actions.
+          RIGHTMOVE_EMAIL:             ${{ secrets.RIGHTMOVE_EMAIL }}
+          RIGHTMOVE_PASSWORD:          ${{ secrets.RIGHTMOVE_PASSWORD }}
+          ZOOPLA_EMAIL:                ${{ secrets.ZOOPLA_EMAIL }}
+          ZOOPLA_PASSWORD:             ${{ secrets.ZOOPLA_PASSWORD }}
+          OTM_EMAIL:                   ${{ secrets.OTM_EMAIL }}
+          OTM_PASSWORD:                ${{ secrets.OTM_PASSWORD }}
         run: python scheduler.py
 
       - name: Commit updated seen_listings.json and enquiry_log.json
