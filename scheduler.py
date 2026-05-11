@@ -172,8 +172,9 @@ def _address_dedup_key(address: str) -> str | None:
         return None
     a = address.lower()
 
-    # Outward postcode (e.g. "W1D" from "W1D 4DH")
-    pc = re.search(r'\b([a-z]{1,2}\d[a-z\d]?)\s*\d[a-z]{2}\b', a)
+    # Outward postcode — accept full ("W1D 4DH") or partial ("W1D") format.
+    # OTM often omits the inward sector, so we make it optional.
+    pc = re.search(r'\b([a-z]{1,2}\d[a-z\d]?)(?:\s*\d[a-z]{2})?\b', a)
     outward = pc.group(1) if pc else None
 
     # Strip unit-level prefixes (flat/apartment/floor etc.) before finding street number
