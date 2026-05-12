@@ -453,5 +453,240 @@
     "date": "2026-05-11",
     "status": "failed",
     "address": "Cormorant Lodge, 10 Thomas More Street, London"
+  },
+  "https://www.rightmove.co.uk/properties/88333956#/?channel=RES_LET": {
+    "date": "2026-05-12",
+    "status": "failed",
+    "address": "Ensign Court, Ensign Street, London E1 8BJ"
+  },
+  "https://www.rightmove.co.uk/properties/88329219#/?channel=RES_LET": {
+    "date": "2026-05-12",
+    "status": "failed",
+    "address": "177 Gloucester Place, London, England, NW1 6DX"
+  },
+  "https://www.rightmove.co.uk/properties/88329075#/?channel=RES_LET": {
+    "date": "2026-05-12",
+    "status": "failed",
+    "address": "104 Frampton Street LONDON NW8 8NB"
+  },
+  "https://www.onthemarket.com/details/17588785/": {
+    "date": "2026-05-12",
+    "status": "failed",
+    "address": "169 Gloucester Place, London, NW1 6DX"
+  },
+  "https://www.onthemarket.com/details/18639775/": {
+    "date": "2026-05-12",
+    "status": "failed",
+    "address": "175 Gloucester Place, London, Greater London, NW1 6DX"
+  },
+  "https://www.rightmove.co.uk/properties/88335237#/?channel=RES_LET": {
+    "date": "2026-05-12",
+    "status": "failed",
+    "address": "Basil Street, SW3"
+  },
+  "https://www.rightmove.co.uk/properties/88291845#/?channel=RES_LET": {
+    "date": "2026-05-12",
+    "status": "failed",
+    "address": "Beckford Close, Warwick Road, London, W14"
+  },
+  "https://www.rightmove.co.uk/properties/88331865#/?channel=RES_LET": {
+    "date": "2026-05-12",
+    "status": "failed",
+    "address": "Leathermarket Court, London,SE1"
+  },
+  "https://www.rightmove.co.uk/properties/88331157#/?channel=RES_LET": {
+    "date": "2026-05-12",
+    "status": "failed",
+    "address": "Glenrose Court, London, SE1"
+  },
+  "https://www.rightmove.co.uk/properties/161888189#/?channel=RES_LET": {
+    "date": "2026-05-12",
+    "status": "failed",
+    "address": "Lovat Lane, Monument, London, EC3R"
+  },
+  "https://www.rightmove.co.uk/properties/88344594#/?channel=RES_LET": {
+    "date": "2026-05-12",
+    "status": "failed",
+    "address": "3 Merino Gardens, E1W"
+  },
+  "https://www.rightmove.co.uk/properties/88322727#/?channel=RES_LET": {
+    "date": "2026-05-12",
+    "status": "failed",
+    "address": "23 Gauging Square, LONDON, E1W"
+  },
+  "https://www.rightmove.co.uk/properties/88364454#/?channel=RES_LET": {
+    "date": "2026-05-12",
+    "status": "failed",
+    "address": "Weymouth Street, Marylebone, London, W1W"
+  },
+  "https://www.rightmove.co.uk/properties/88356645#/?channel=RES_LET": {
+    "date": "2026-05-12",
+    "status": "failed",
+    "address": "Dorset Square, Marylebone, London, NW1"
+  },
+  "https://www.rightmove.co.uk/properties/88349310#/?channel=RES_LET": {
+    "date": "2026-05-12",
+    "status": "failed",
+    "address": "Lisson Grove, Marylebone, London, NW1"
+  },
+  "https://www.rightmove.co.uk/properties/88331880#/?channel=RES_LET": {
+    "date": "2026-05-12",
+    "status": "failed",
+    "address": "Lisson House 51 Lisson Street, LONDON, NW1"
+  },
+  "https://www.rightmove.co.uk/properties/88322424#/?channel=RES_LET": {
+    "date": "2026-05-12",
+    "status": "failed",
+    "address": "Harewood Avenue, Marylebone, London, NW1"
+  },
+  "https://www.rightmove.co.uk/properties/88321995#/?channel=RES_LET": {
+    "date": "2026-05-12",
+    "status": "failed",
+    "address": "New Cavendish Street, Marylebone, London, W1G"
+  },
+  "https://www.rightmove.co.uk/properties/88321614#/?channel=RES_LET": {
+    "date": "2026-05-12",
+    "status": "failed",
+    "address": "Marylebone Road, Marylebone, London, NW1"
+  },
+  "https://www.rightmove.co.uk/properties/88355544#/?channel=RES_LET": {
+    "date": "2026-05-12",
+    "status": "failed",
+    "address": "Marylebone Road, Marylebone, London, NW1"
+  },
+  "https://www.rightmove.co.uk/properties/88354722#/?channel=RES_LET": {
+    "date": "2026-05-12",
+    "status": "failed",
+    "address": "Castlereagh Street, Marylebone, London, W1H"
+  },
+  "https://www.rightmove.co.uk/properties/88351893#/?channel=RES_LET": {
+    "date": "2026-05-12",
+    "status": "failed",
+    "address": "Baker Street, Marylebone, London, W1U"
+  },
+  "https://www.rightmove.co.uk/properties/88351467#/?channel=RES_LET": {
+    "date": "2026-05-12",
+    "status": "failed",
+    "address": "Margaret Street, Fitzrovia, London, W1W"
+  },
+  "https://www.rightmove.co.uk/properties/88366764#/?channel=RES_LET": {
+    "date": "2026-05-12",
+    "status": "failed",
+    "address": "George Street, Marylebone, London, W1H"
+  },
+  "https://www.rightmove.co.uk/properties/88358409#/?channel=RES_LET": {
+    "date": "2026-05-12",
+    "status": "failed",
+    "address": "601, W1H"
+  },
+  "https://www.rightmove.co.uk/properties/88348743#/?channel=RES_LET": {
+    "date": "2026-05-12",
+    "status": "failed",
+    "address": "Harrowby Street, Marylebone, London, W1H"
+  },
+  "https://www.rightmove.co.uk/properties/88334490#/?channel=RES_LET": {
+    "date": "2026-05-12",
+    "status": "failed",
+    "address": "The Water Gardens, Hyde Park"
+  },
+  "https://www.rightmove.co.uk/properties/88268991#/?channel=RES_LET": {
+    "date": "2026-05-12",
+    "status": "failed",
+    "address": "The Water Gardens, W2"
+  },
+  "https://www.rightmove.co.uk/properties/88354470#/?channel=RES_LET": {
+    "date": "2026-05-12",
+    "status": "failed",
+    "address": "Nutford Place, Marylebone, London, W1H"
+  },
+  "https://www.rightmove.co.uk/properties/88353744#/?channel=RES_LET": {
+    "date": "2026-05-12",
+    "status": "failed",
+    "address": "Furnival Mansions, Wells Street, W1T"
+  },
+  "https://www.rightmove.co.uk/properties/88350669#/?channel=RES_LET": {
+    "date": "2026-05-12",
+    "status": "failed",
+    "address": "Cleveland Street, Fitzrovia, London, W1T"
+  },
+  "https://www.rightmove.co.uk/properties/88344177#/?channel=RES_LET": {
+    "date": "2026-05-12",
+    "status": "failed",
+    "address": "Belvedere Heights, Lisson Grove, NW8"
+  },
+  "https://www.rightmove.co.uk/properties/88179522#/?channel=RES_LET": {
+    "date": "2026-05-12",
+    "status": "failed",
+    "address": "Park Road, St John's Wood, London, NW8"
+  },
+  "https://www.rightmove.co.uk/properties/88133154#/?channel=RES_LET": {
+    "date": "2026-05-12",
+    "status": "failed",
+    "address": "Fisherton Street, London, NW8"
+  },
+  "https://www.rightmove.co.uk/properties/88091139#/?channel=RES_LET": {
+    "date": "2026-05-12",
+    "status": "failed",
+    "address": "Frampton Street, Edgware Rd NW8"
+  },
+  "https://www.rightmove.co.uk/properties/87969996#/?channel=RES_LET": {
+    "date": "2026-05-12",
+    "status": "failed",
+    "address": "St. Michaels Street Paddington W2"
+  },
+  "https://www.rightmove.co.uk/properties/88367679#/?channel=RES_LET": {
+    "date": "2026-05-12",
+    "status": "failed",
+    "address": "Triton Building, Brock Street, London, NW1"
+  },
+  "https://www.onthemarket.com/details/16873027/": {
+    "date": "2026-05-12",
+    "status": "failed",
+    "address": "Queens Club Gardens, W14"
+  },
+  "https://www.onthemarket.com/details/19139559/": {
+    "date": "2026-05-12",
+    "status": "failed",
+    "address": "Castletown Road, London, W14"
+  },
+  "https://www.onthemarket.com/details/19462227/": {
+    "date": "2026-05-12",
+    "status": "failed",
+    "address": "Hammersmith Road"
+  },
+  "https://www.onthemarket.com/details/19456389/": {
+    "date": "2026-05-12",
+    "status": "failed",
+    "address": "Philbeach Gardens, Earls Court"
+  },
+  "https://www.onthemarket.com/details/19458632/": {
+    "date": "2026-05-12",
+    "status": "failed",
+    "address": "Tower Bridge Road"
+  },
+  "https://www.onthemarket.com/details/15027327/": {
+    "date": "2026-05-12",
+    "status": "failed",
+    "address": "SE1"
+  },
+  "https://www.onthemarket.com/details/9639591/": {
+    "date": "2026-05-12",
+    "status": "failed",
+    "address": "Bryanston Court, George Street"
+  },
+  "https://www.onthemarket.com/details/11972114/": {
+    "date": "2026-05-12",
+    "status": "failed",
+    "address": "The Water Gardens, Hyde Park"
+  },
+  "https://www.onthemarket.com/details/16461218/": {
+    "date": "2026-05-12",
+    "status": "failed",
+    "address": "Belvedere Heights, London"
+  },
+  "https://www.onthemarket.com/details/19418314/": {
+    "date": "2026-05-12",
+    "status": "failed",
+    "address": "Carrick Yard, 3 Fisherton Street, London"
   }
 }
