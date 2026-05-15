@@ -224,6 +224,38 @@ def _address_dedup_key(address: str) -> str | None:
     return None
 
 
+def _loose_dedup_key(listing: dict) -> str | None:
+    """
+    Cross-portal fallback key: area-slug + first distinctive street word.
+
+    Used when _address_dedup_key() returns None (e.g. OTM address has no
+    postcode).  Matches listings like:
+      OTM  "Lennox Gardens, London"              area "Knightsbridge"
+      RM   "12 Lennox Gardens, SW3 2JX"          area "Knightsbridge"
+    Both → "knightsbridge-lennox"
+
+    Less precise than the strict key so it is only checked across different
+    portal sources to avoid wrongly collapsing two distinct same-portal listings.
+    """
+    area    = listing.get("area", "").lower().strip()
+    address = listing.get("address", "").lower()
+    if not area or not address:
+        return None
+
+    _SKIP = {
+        "road", "street", "avenue", "lane", "place", "close", "gardens",
+        "way", "drive", "court", "house", "london", "flat", "floor",
+        "england", "the", "and", "chelsea", "kensington", "westminster",
+        "city", "mayfair", "belgravia", "marylebone", "soho", "bloomsbury",
+    }
+    words = [w for w in re.findall(r'[a-z]{3,}', address) if w not in _SKIP]
+    if not words:
+        return None
+
+    area_slug = re.sub(r'[^a-z]', '_', area)
+    return f"{area_slug}-{words[0]}"
+
+
 async def _run_scrapers() -> list[dict]:
     """Run all scrapers concurrently and return deduplicated listings."""
     logger.info("[scheduler] Starting all scrapers…")
@@ -316,27 +348,64 @@ async def _run_scrapers() -> list[dict]:
     before_addr = len(url_unique)
 
     # ── Pass 2: Cross-platform address dedup ─────────────────────────────────
-    # Same physical property listed on Rightmove AND Zoopla gets one entry.
-    # We keep the version from the highest-priority source (OpenRent > Rightmove
-    # > Zoopla > OTM) since OpenRent is typically the direct-landlord listing.
-    addr_best: dict[str, dict] = {}   # dedup_key → best listing so far
-    no_key: list[dict] = []           # listings with no reliable address key (keep all)
+    # Same physical property listed on Rightmove AND OTM/Zoopla gets one entry.
+    # Two-tier key system:
+    #   strict_key  = number-street-postcode  (precise; same-portal or cross-portal)
+    #   loose_key   = area-streetword         (fuzzy; cross-portal only, handles
+    #                 OTM addresses that lack a postcode, e.g. "Lennox Gardens, London")
+    # Priority: OpenRent > Rightmove > Zoopla > OTM
+    addr_strict: dict[str, dict] = {}   # strict_key → best listing
+    addr_loose:  dict[str, dict] = {}   # loose_key  → best listing (cross-portal)
+    no_key:      list[dict]      = []   # no key at all → keep unconditionally
+
+    def _pri(lst: dict) -> int:
+        return _SOURCE_PRIORITY.get(lst.get("source", ""), 99)
 
     for listing in url_unique:
-        key = _address_dedup_key(listing.get("address", ""))
-        if not key:
-            no_key.append(listing)
-            continue
-        if key not in addr_best:
-            addr_best[key] = listing
-        else:
-            # Keep whichever source has higher priority
-            cur_pri = _SOURCE_PRIORITY.get(addr_best[key].get("source", ""), 99)
-            new_pri = _SOURCE_PRIORITY.get(listing.get("source", ""), 99)
-            if new_pri < cur_pri:
-                addr_best[key] = listing
+        sk  = _address_dedup_key(listing.get("address", ""))
+        lk  = _loose_dedup_key(listing)
+        src = listing.get("source", "")
+        matched = False
 
-    unique = list(addr_best.values()) + no_key
+        # 1. Strict key — reliable match, any portal
+        if sk and sk in addr_strict:
+            if _pri(listing) < _pri(addr_strict[sk]):
+                addr_strict[sk] = listing
+                if lk:
+                    addr_loose[lk] = listing
+            matched = True
+
+        # 2. Loose key — cross-portal fallback only
+        if not matched and lk and lk in addr_loose:
+            existing = addr_loose[lk]
+            if existing.get("source") != src:          # different portal → dedup
+                winner = listing if _pri(listing) < _pri(existing) else existing
+                addr_loose[lk] = winner
+                # Also update strict map if the winner has a strict key
+                winner_sk = _address_dedup_key(winner.get("address", ""))
+                if winner_sk:
+                    addr_strict[winner_sk] = winner
+                matched = True
+
+        if not matched:
+            if sk:
+                addr_strict[sk] = listing
+            if lk:
+                addr_loose[lk] = listing
+            if not sk and not lk:
+                no_key.append(listing)
+
+    # Collect results; de-dup by URL since a listing may appear in both maps
+    _seen_urls: set[str] = set()
+    unique: list[dict] = []
+    for lst in list(addr_strict.values()) + list(addr_loose.values()) + no_key:
+        url = lst.get("url", "")
+        if url and url in _seen_urls:
+            continue
+        if url:
+            _seen_urls.add(url)
+        unique.append(lst)
+
     cross_removed = before_addr - len(unique)
 
     logger.info(
