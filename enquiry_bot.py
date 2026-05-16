@@ -459,45 +459,25 @@ async def _build_otm_ctx(browser) -> tuple[BrowserContext | None, bool]:
 # ── Per-listing enquiry submitters ────────────────────────────────────────────
 
 async def _submit_rightmove(ctx: BrowserContext, listing: dict) -> str:
-    """
-    Navigate directly to Rightmove's contact form page and submit.
-
-    When the shared context is authenticated (login succeeded), Rightmove
-    pre-fills the user's name / email / phone — we just add a message and
-    click 'Send email'.  If the context is a guest session the same form
-    shows plain text inputs which we fill manually.
-
-    The contact form lives at a separate URL:
-      /property-to-rent/contactBranch.html?propertyId=<id>
-    We construct that URL from the listing URL so we never need to navigate
-    to the listing page itself (avoids the extra round-trip + click).
-    """
     page = await _new_page(ctx)
-    url  = listing["url"]
+    url = listing["url"]
     try:
-        # Extract numeric property ID from URL  (e.g. /properties/88493235)
-        m = re.search(r'/properties/(\d+)', url)
-        if not m:
-            logger.warning("[enquiry] Rightmove: cannot extract property ID from %s", url[:60])
-            return "failed"
-        prop_id     = m.group(1)
-        contact_url = (
-            "https://www.rightmove.co.uk/property-to-rent/contactBranch.html"
-            f"?propertyId={prop_id}&backToPropertyURL=%2Fproperties%2F{prop_id}"
-        )
-
-        await page.goto(contact_url, wait_until="domcontentloaded", timeout=30_000)
-        await page.wait_for_timeout(2_500)
+        await page.goto(url, wait_until="domcontentloaded", timeout=30_000)
+        await page.wait_for_timeout(3_000)
         await _dismiss_cookies(page)
 
-        # Confirm we're on the contact form (not a 404 / redirect to login)
-        page_url = page.url
-        if "contactBranch" not in page_url and "contact" not in page_url:
-            logger.warning("[enquiry] Rightmove: redirected away from contact form for %s → %s",
-                           prop_id, page_url[:80])
-            return "failed"
+        # Click "Email agent" to open the enquiry modal
+        await _safe_click(page, [
+            "[data-test='contactAgentButton']",
+            "button:has-text('Email agent')",
+            "button:has-text('Contact agent')",
+            "a:has-text('Email agent')",
+            "[data-testid*='contact' i]",
+            "button:has-text('Request details')",
+        ])
+        await page.wait_for_timeout(1_500)
 
-        # ── Personal details (guest form only; pre-filled when logged in) ──
+        # Rightmove pre-fills from account; still try to fill all fields
         await _safe_fill(page, [
             "input[name='firstName']", "input[id*='firstName' i]",
             "input[placeholder*='first name' i]",
@@ -507,54 +487,25 @@ async def _submit_rightmove(ctx: BrowserContext, listing: dict) -> str:
             "input[placeholder*='last name' i]",
         ], CONTACT_LAST)
         await _safe_fill(page, [
-            "input[name='email']", "input[type='email']", "input[id*='email' i]",
+            "input[name='email']", "input[type='email']",
         ], CONTACT_EMAIL)
         await _safe_fill(page, [
             "input[name='phone']", "input[type='tel']",
-            "input[name='telephone']", "input[id*='phone' i]",
+            "input[name='telephone']",
         ], CONTACT_PHONE)
+        await _safe_fill(page, ["textarea"], ENQUIRY_MESSAGE)
 
-        # ── Message textarea (optional on RM, but we include our WhatsApp ask) ──
-        await _safe_fill(page, [
-            "textarea[placeholder*='work' i]",
-            "textarea[placeholder*='viewing' i]",
-            "textarea",
-        ], ENQUIRY_MESSAGE)
-
-        # ── Submit — Rightmove's button says "Send email" ──
         clicked = await _safe_click(page, [
-            "button:has-text('Send email')",
             "button:has-text('Send enquiry')",
             "button:has-text('Send message')",
+            "button[type='submit']:has-text('Send')",
             "button[type='submit']",
         ])
         if not clicked:
-            logger.warning("[enquiry] Rightmove: submit button not found for property %s", prop_id)
             return "failed"
 
-        await page.wait_for_timeout(4_000)
-
-        # ── Confirm success ──
-        final = (await page.content()).lower()
-        if any(s in final for s in [
-            "thank you", "enquiry sent", "email has been sent",
-            "message sent", "successfully sent", "we'll be in touch",
-        ]):
-            logger.info("[enquiry] ✅ Rightmove submitted: %s", url[:80])
-            return "sent"
-
-        # If page redirected away from the form, treat as sent
-        if "contactBranch" not in page.url:
-            logger.info("[enquiry] ✅ Rightmove submitted (redirect): %s", url[:80])
-            return "sent"
-
-        # Explicit error on page → failed
-        if any(e in final for e in ["error", "please fill", "required field", "captcha problem"]):
-            logger.warning("[enquiry] Rightmove: submission error detected for %s", prop_id)
-            return "failed"
-
-        # No confirmation but no obvious error — assume sent
-        logger.info("[enquiry] ✅ Rightmove submitted (assumed): %s", url[:80])
+        await page.wait_for_timeout(3_000)
+        logger.info("[enquiry] ✅ Rightmove submitted: %s", url[:80])
         return "sent"
 
     except Exception as exc:
@@ -620,62 +571,46 @@ async def _submit_zoopla(ctx: BrowserContext, listing: dict) -> str:
 
 
 async def _submit_otm(ctx: BrowserContext, listing: dict) -> str:
-    """
-    OTM contact form — no login required.
-
-    The contact form lives at a separate URL:
-      /agents/contact/<property_id>/?form-name=details-contact
-
-    Form fields (confirmed from live page inspection):
-      • radio  "to view a property" / "more details"
-      • input  type=text   — full name
-      • input  type=email  — email address
-      • input  type=tel    — phone number
-      • select             — country (defaults to UK, leave as-is)
-      • textarea           — message (optional, placeholder contains "useful details")
-      • button type=submit text="Submit"
-    """
     page = await _new_page(ctx)
-    url  = listing["url"]
+    url = listing["url"]
     try:
-        # Extract numeric property ID from OTM URL  (e.g. /details/15716375/)
-        m = re.search(r'/details/(\d+)', url)
-        if not m:
-            logger.warning("[enquiry] OTM: cannot extract property ID from %s", url[:60])
-            return "failed"
-        prop_id     = m.group(1)
-        contact_url = (
-            f"https://www.onthemarket.com/agents/contact/{prop_id}/"
-            "?form-name=details-contact"
-        )
-
-        await page.goto(contact_url, wait_until="domcontentloaded", timeout=35_000)
-        await page.wait_for_timeout(2_500)
+        await page.goto(url, wait_until="domcontentloaded", timeout=35_000)
+        await page.wait_for_timeout(3_000)
         await _dismiss_cookies(page)
 
-        # Confirm we landed on the form (not a redirect or error page)
-        if "agents/contact" not in page.url:
-            logger.warning("[enquiry] OTM: redirected away from contact form for %s → %s",
-                           prop_id, page.url[:80])
-            return "failed"
+        # OTM may have the form inline or behind a button
+        form_open = False
+        for btn_sel in [
+            "button:has-text('Email agent')",
+            "button:has-text('Enquire')",
+            "button:has-text('Contact agent')",
+            "a:has-text('Email agent')",
+            "[data-testid*='contact' i]",
+            "button:has-text('Request viewing')",
+        ]:
+            try:
+                await page.locator(btn_sel).first.click(timeout=4_000)
+                await page.wait_for_timeout(1_200)
+                form_open = True
+                break
+            except Exception:
+                continue
 
-        # ── Intent radio button (prefer "more details") ──
-        await _safe_click(page, [
-            "input[type='radio'][value*='more' i]",
-            "label:has-text('more details') input",
-            "label:has-text('more details')",
-        ], timeout=3_000)
+        # Fill name
+        first_ok = await _safe_fill(page, [
+            "input[name='first_name']", "input[name='firstName']",
+            "input[id*='first' i]", "input[placeholder*='first name' i]",
+        ], CONTACT_FIRST)
+        await _safe_fill(page, [
+            "input[name='last_name']", "input[name='lastName']",
+            "input[id*='last' i]", "input[placeholder*='last name' i]",
+        ], CONTACT_LAST)
+        if not first_ok:
+            await _safe_fill(page, [
+                "input[name='name']", "input[id*='name' i]",
+                "input[placeholder*='your name' i]",
+            ], CONTACT_NAME)
 
-        # ── Full name (single text input — not split first/last on OTM) ──
-        name_ok = await _safe_fill(page, [
-            "input[type='text']",
-            "input[name='name']", "input[name='full_name']",
-            "input[id*='name' i]", "input[placeholder*='name' i]",
-        ], CONTACT_NAME)
-        if not name_ok:
-            logger.warning("[enquiry] OTM: name field not found at %s", url[:60])
-
-        # ── Email ──
         email_ok = await _safe_fill(page, [
             "input[type='email']", "input[name='email']", "input[id*='email' i]",
         ], CONTACT_EMAIL)
@@ -683,51 +618,27 @@ async def _submit_otm(ctx: BrowserContext, listing: dict) -> str:
             logger.warning("[enquiry] OTM: email field not found at %s", url[:60])
             return "failed"
 
-        # ── Phone ──
         await _safe_fill(page, [
             "input[type='tel']", "input[name='phone']",
             "input[name='telephone']", "input[id*='phone' i]",
         ], CONTACT_PHONE)
-
-        # ── Message (optional on OTM, placeholder contains "useful details") ──
         await _safe_fill(page, [
-            "textarea[placeholder*='useful' i]",
-            "textarea[placeholder*='detail' i]",
-            "textarea",
+            "textarea[name='message']", "textarea[id*='message' i]", "textarea",
         ], ENQUIRY_MESSAGE)
 
-        # ── Submit — OTM's button text is "Submit" ──
         clicked = await _safe_click(page, [
-            "button:has-text('Submit')",
+            "button[type='submit']:has-text('Send')",
+            "button:has-text('Send enquiry')",
+            "button:has-text('Send message')",
+            "button:has-text('Submit enquiry')",
             "button[type='submit']",
             "input[type='submit']",
         ])
         if not clicked:
-            logger.warning("[enquiry] OTM: submit button not found for property %s", prop_id)
             return "failed"
 
-        await page.wait_for_timeout(4_000)
-
-        # ── Confirm success ──
-        final = (await page.content()).lower()
-        if any(s in final for s in [
-            "thank you", "enquiry sent", "message sent",
-            "successfully sent", "we've received", "we will be in touch",
-        ]):
-            logger.info("[enquiry] ✅ OTM submitted: %s", url[:80])
-            return "sent"
-
-        # Redirect away from form → likely success
-        if "agents/contact" not in page.url:
-            logger.info("[enquiry] ✅ OTM submitted (redirect): %s", url[:80])
-            return "sent"
-
-        if any(e in final for e in ["error", "please fill", "required", "invalid"]):
-            logger.warning("[enquiry] OTM: submission error detected for %s", prop_id)
-            return "failed"
-
-        # No clear confirmation but no error either
-        logger.info("[enquiry] ✅ OTM submitted (assumed): %s", url[:80])
+        await page.wait_for_timeout(3_000)
+        logger.info("[enquiry] ✅ OTM submitted: %s", url[:80])
         return "sent"
 
     except Exception as exc:
@@ -739,23 +650,12 @@ async def _submit_otm(ctx: BrowserContext, listing: dict) -> str:
 
 # ── Main dispatcher ───────────────────────────────────────────────────────────
 
-# Sources handled manually (no automated enquiry attempted)
 _MANUAL_SOURCES = {"openrent"}
-
-# Zoopla requires Google OAuth which is blocked in headless CI — treat as manual
-_LOGIN_REQUIRED_SOURCES = {"zoopla"}
 
 
 async def submit_enquiries(listings: list[dict]) -> dict:
     """
     Submit enquiries for all new listings.
-
-    Portal strategy (as of 2026):
-      • Rightmove    — navigate directly to contactBranch.html; login attempted
-                       (pre-fills details); guest form also works.
-      • OnTheMarket  — navigate directly to /agents/contact/{id}/; no login needed.
-      • Zoopla       — Google OAuth only; blocked in headless CI → manual.
-      • OpenRent     — direct landlord contact; flagged for manual follow-up.
 
     Returns dict mapping URL → result dict:
       {
@@ -767,7 +667,7 @@ async def submit_enquiries(listings: list[dict]) -> dict:
     """
     results: dict[str, dict] = {}
 
-    # Split into already-done vs to-process
+    # Split listings
     to_process = []
     for lst in listings:
         url = lst.get("url", "")
@@ -780,7 +680,7 @@ async def submit_enquiries(listings: list[dict]) -> dict:
         logger.info("[enquiry] All listings already processed")
         return results
 
-    # Handle manual / login-required sources immediately (no browser needed)
+    # Mark OpenRent as manual immediately
     auto = []
     for lst in to_process:
         source = lst.get("source", "").lower()
@@ -789,14 +689,6 @@ async def submit_enquiries(listings: list[dict]) -> dict:
             mark_enquired(lst, status="manual")
             results[url] = {
                 "status":  "manual",
-                "area":    lst.get("area", ""),
-                "price":   lst.get("price", ""),
-                "address": lst.get("address", ""),
-            }
-        elif source in _LOGIN_REQUIRED_SOURCES:
-            mark_enquired(lst, status="login_required")
-            results[url] = {
-                "status":  "login_required",
                 "area":    lst.get("area", ""),
                 "price":   lst.get("price", ""),
                 "address": lst.get("address", ""),
@@ -823,27 +715,24 @@ async def submit_enquiries(listings: list[dict]) -> dict:
             ],
         )
 
-        # Rightmove: build one authenticated context (pre-fills contact details)
-        # OTM: uses a fresh anonymous context per listing (guest form, no login)
-        rm_ctx: BrowserContext | None = None
+        # Build one authenticated context per portal
+        ctx_map: dict[str, BrowserContext | None] = {}
+
         if "rightmove" in by_source:
-            rm_ctx, _ = await _build_rightmove_ctx(browser)
+            ctx_map["rightmove"], _ = await _build_rightmove_ctx(browser)
 
-        # Shared anonymous context for OTM (avoids re-launching browser per listing)
-        otm_ctx: BrowserContext | None = None
+        if "zoopla" in by_source:
+            ctx_map["zoopla"], _ = await _build_zoopla_ctx(browser)
+
         if "onthemarket" in by_source:
-            otm_ctx = await _new_ctx(browser)
+            ctx_map["onthemarket"], _ = await _build_otm_ctx(browser)
 
-        # Submit per listing
+        # Submit per listing using the authenticated context
         for source, listings_grp in by_source.items():
-            if source == "rightmove":
-                ctx = rm_ctx
-            elif source == "onthemarket":
-                ctx = otm_ctx
-            else:
-                ctx = None
+            ctx = ctx_map.get(source)
 
             if ctx is None:
+                # No credentials / login failed — mark all as login_required
                 for lst in listings_grp:
                     url = lst.get("url", "")
                     mark_enquired(lst, status="login_required")
@@ -860,6 +749,8 @@ async def submit_enquiries(listings: list[dict]) -> dict:
                 try:
                     if source == "rightmove":
                         status = await _submit_rightmove(ctx, lst)
+                    elif source == "zoopla":
+                        status = await _submit_zoopla(ctx, lst)
                     elif source == "onthemarket":
                         status = await _submit_otm(ctx, lst)
                     else:
@@ -875,17 +766,13 @@ async def submit_enquiries(listings: list[dict]) -> dict:
                 except Exception as exc:
                     logger.error("[enquiry] Unexpected error for %s: %s", url[:60], exc)
                     mark_enquired(lst, status="failed")
-                    results[url] = {
-                        "status":  "failed",
-                        "area":    lst.get("area", ""),
-                        "price":   lst.get("price", ""),
-                        "address": lst.get("address", ""),
-                    }
+                    results[url] = {"status": "failed", "area": lst.get("area", ""),
+                                    "price": lst.get("price", ""), "address": ""}
 
                 await asyncio.sleep(2)
 
-        # Clean up contexts
-        for ctx in [rm_ctx, otm_ctx]:
+        # Close all authenticated contexts
+        for ctx in ctx_map.values():
             if ctx:
                 try:
                     await ctx.close()
@@ -932,7 +819,7 @@ def enquiry_summary(results: dict, listings: list[dict]) -> str:
             lines.append(f"  • [{_esc(v.get('area',''))} — {_esc(v.get('price',''))}]({url})")
 
     if login_req:
-        lines.append(f"\n🔐 *Zoopla — enquire manually \\({len(login_req)}\\)*")
+        lines.append(f"\n🔐 *Login failed — enquire manually \\({len(login_req)}\\)*")
         for url, v in login_req:
             lines.append(f"  • [{_esc(v.get('area',''))} — {_esc(v.get('price',''))}]({url})")
 
