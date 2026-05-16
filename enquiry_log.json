@@ -3,5 +3,115 @@
     "date": "2026-05-11",
     "status": "sent",
     "address": "Test"
+  },
+  "https://www.rightmove.co.uk/properties/88495695#/?channel=RES_LET": {
+    "date": "2026-05-16",
+    "status": "failed",
+    "address": "Monmouth Street, Seven Dials WC2"
+  },
+  "https://www.rightmove.co.uk/properties/174974882#/?channel=RES_LET": {
+    "date": "2026-05-16",
+    "status": "failed",
+    "address": "101-103 New Oxford Street, Oxford Street, London, WC1A"
+  },
+  "https://www.rightmove.co.uk/properties/88047078#/?channel=RES_LET": {
+    "date": "2026-05-16",
+    "status": "failed",
+    "address": "Chapter House, 25-37 Parker Street, Camden, London, WC2B"
+  },
+  "https://www.rightmove.co.uk/properties/87995262#/?channel=RES_LET": {
+    "date": "2026-05-16",
+    "status": "failed",
+    "address": "Parker Street, WC2B"
+  },
+  "https://www.rightmove.co.uk/properties/174938702#/?channel=RES_LET": {
+    "date": "2026-05-16",
+    "status": "failed",
+    "address": "Charing Cross Road, London, WC2H"
+  },
+  "https://www.rightmove.co.uk/properties/174750725#/?channel=RES_LET": {
+    "date": "2026-05-16",
+    "status": "failed",
+    "address": "Garrick House, St Martin's Lane, Covent Garden, Holborn, Leicester Square, London, WC2"
+  },
+  "https://www.rightmove.co.uk/properties/88582638#/?channel=RES_LET": {
+    "date": "2026-05-16",
+    "status": "failed",
+    "address": "Princes Gate, Kensington, London, SW7"
+  },
+  "https://www.rightmove.co.uk/properties/172549451#/?channel=RES_LET": {
+    "date": "2026-05-16",
+    "status": "failed",
+    "address": "Knightsbridge, Parkside Knightsbridge, SW1X"
+  },
+  "https://www.rightmove.co.uk/properties/88496079#/?channel=RES_LET": {
+    "date": "2026-05-16",
+    "status": "failed",
+    "address": "North End Road, London, W14"
+  },
+  "https://www.rightmove.co.uk/properties/88493235#/?channel=RES_LET": {
+    "date": "2026-05-16",
+    "status": "failed",
+    "address": "Lime Close, Wapping, E1W"
+  },
+  "https://www.rightmove.co.uk/properties/88575159#/?channel=RES_LET": {
+    "date": "2026-05-16",
+    "status": "failed",
+    "address": "Cosway Street, Marylebone, London, NW1"
+  },
+  "https://www.rightmove.co.uk/properties/88549242#/?channel=RES_LET": {
+    "date": "2026-05-16",
+    "status": "failed",
+    "address": "Dorset Square, London, NW1"
+  },
+  "https://www.rightmove.co.uk/properties/88533114#/?channel=RES_LET": {
+    "date": "2026-05-16",
+    "status": "failed",
+    "address": "Ivor Court, Gloucester Place, NW1"
+  },
+  "https://www.rightmove.co.uk/properties/88529979#/?channel=RES_LET": {
+    "date": "2026-05-16",
+    "status": "failed",
+    "address": "Farley Court, Allsop Place, Marylebone, London, NW1"
+  },
+  "https://www.rightmove.co.uk/properties/88499199#/?channel=RES_LET": {
+    "date": "2026-05-16",
+    "status": "failed",
+    "address": "Forset Court, Edgware Road, W2"
+  },
+  "https://www.rightmove.co.uk/properties/88547088#/?channel=RES_LET": {
+    "date": "2026-05-16",
+    "status": "failed",
+    "address": "Fisherton Street, London, NW8"
+  },
+  "https://www.rightmove.co.uk/properties/88504182#/?channel=RES_LET": {
+    "date": "2026-05-16",
+    "status": "failed",
+    "address": "Grafton Way, Bloomsbury, WC1E"
+  },
+  "https://www.rightmove.co.uk/properties/88502196#/?channel=RES_LET": {
+    "date": "2026-05-16",
+    "status": "failed",
+    "address": "Englefield, Clarence Gardens, London NW1"
+  },
+  "https://www.rightmove.co.uk/properties/88499937#/?channel=RES_LET": {
+    "date": "2026-05-16",
+    "status": "failed",
+    "address": "Gratton Road, West Kensington"
+  },
+  "https://www.rightmove.co.uk/properties/88524318#/?channel=RES_LET": {
+    "date": "2026-05-16",
+    "status": "failed",
+    "address": "Neroli House, Piazza Walk, Tower Hamlets, London"
+  },
+  "https://www.onthemarket.com/details/19490817/": {
+    "date": "2026-05-16",
+    "status": "failed",
+    "address": "Cambridge Square, London"
+  },
+  "https://www.onthemarket.com/details/14172892/": {
+    "date": "2026-05-16",
+    "status": "failed",
+    "address": "Nassau Street, London"
   }
 }
