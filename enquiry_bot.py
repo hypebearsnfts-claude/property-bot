@@ -99,7 +99,14 @@ def _save_log(data: dict) -> None:
 
 def already_enquired(listing: dict) -> bool:
     url = listing.get("url", "").strip()
-    return bool(url) and url in _load_log()
+    if not url:
+        return False
+    entry = _load_log().get(url)
+    if not entry:
+        return False
+    # Only skip listings that were successfully sent or manually handled.
+    # Re-attempt anything that previously failed or required login.
+    return entry.get("status") in ("sent", "manual")
 
 
 def mark_enquired(listing: dict, status: str = "sent") -> None:
@@ -462,46 +469,47 @@ async def _submit_rightmove(ctx: BrowserContext, listing: dict) -> str:
     page = await _new_page(ctx)
     url = listing["url"]
     try:
-        await page.goto(url, wait_until="domcontentloaded", timeout=30_000)
-        await page.wait_for_timeout(3_000)
+        # Extract property ID and navigate directly to the contact form URL.
+        # This avoids the unreliable "Email agent" link-click + navigation race.
+        m = re.search(r'/properties/(\d+)', url)
+        if not m:
+            logger.warning("[enquiry] Rightmove: cannot extract property ID from %s", url)
+            return "failed"
+        prop_id = m.group(1)
+        contact_url = (
+            "https://www.rightmove.co.uk/property-to-rent/contactBranch.html"
+            f"?propertyId={prop_id}&backToPropertyURL=%2Fproperties%2F{prop_id}"
+        )
+        await page.goto(contact_url, wait_until="domcontentloaded", timeout=30_000)
+        await page.wait_for_timeout(2_000)
         await _dismiss_cookies(page)
 
-        # Click "Email agent" to open the enquiry modal
-        await _safe_click(page, [
-            "[data-test='contactAgentButton']",
-            "button:has-text('Email agent')",
-            "button:has-text('Contact agent')",
-            "a:has-text('Email agent')",
-            "[data-testid*='contact' i]",
-            "button:has-text('Request details')",
-        ])
-        await page.wait_for_timeout(1_500)
+        # When logged in, personal details are pre-filled (shown as text with Edit buttons,
+        # not standard inputs). Answer the two required questionnaire fields that are
+        # NOT pre-saved from the account and will block submission if left blank.
+        await _safe_click(page, ["input[name='incomeSatisfactory'][value='YES']"],    timeout=4_000)
+        await _safe_click(page, ["input[name='adverseCredit'][value='NO_ADVERSE_CREDIT']"], timeout=4_000)
 
-        # Rightmove pre-fills from account; still try to fill all fields
-        await _safe_fill(page, [
-            "input[name='firstName']", "input[id*='firstName' i]",
-            "input[placeholder*='first name' i]",
-        ], CONTACT_FIRST)
-        await _safe_fill(page, [
-            "input[name='lastName']", "input[id*='lastName' i]",
-            "input[placeholder*='last name' i]",
-        ], CONTACT_LAST)
-        await _safe_fill(page, [
-            "input[name='email']", "input[type='email']",
-        ], CONTACT_EMAIL)
-        await _safe_fill(page, [
-            "input[name='phone']", "input[type='tel']",
-            "input[name='telephone']",
-        ], CONTACT_PHONE)
-        await _safe_fill(page, ["textarea"], ENQUIRY_MESSAGE)
+        # Fill the message textarea
+        filled = await _safe_fill(page, [
+            "#comments",
+            "textarea[name='comments']",
+            "textarea[placeholder*='viewing' i]",
+            "textarea[placeholder*='work' i]",
+            "textarea",
+        ], ENQUIRY_MESSAGE)
+        if not filled:
+            logger.warning("[enquiry] Rightmove: message textarea not found at %s", url[:60])
+            return "failed"
 
+        # The submit button says "Send email" — NOT "Send enquiry" or "Send message"
         clicked = await _safe_click(page, [
-            "button:has-text('Send enquiry')",
-            "button:has-text('Send message')",
-            "button[type='submit']:has-text('Send')",
+            "button:has-text('Send email')",
+            "button.dsrm_primary[type='submit']",
             "button[type='submit']",
         ])
         if not clicked:
+            logger.warning("[enquiry] Rightmove: submit button not found at %s", url[:60])
             return "failed"
 
         await page.wait_for_timeout(3_000)
@@ -574,67 +582,46 @@ async def _submit_otm(ctx: BrowserContext, listing: dict) -> str:
     page = await _new_page(ctx)
     url = listing["url"]
     try:
-        await page.goto(url, wait_until="domcontentloaded", timeout=35_000)
-        await page.wait_for_timeout(3_000)
+        # Navigate directly to the contact form URL (no login required for OTM).
+        m = re.search(r'/details/(\d+)', url)
+        if not m:
+            logger.warning("[enquiry] OTM: cannot extract property ID from %s", url)
+            return "failed"
+        prop_id = m.group(1)
+        contact_url = f"https://www.onthemarket.com/agents/contact/{prop_id}/?form-name=details-contact"
+
+        await page.goto(contact_url, wait_until="domcontentloaded", timeout=35_000)
+        await page.wait_for_timeout(2_000)
         await _dismiss_cookies(page)
 
-        # OTM may have the form inline or behind a button
-        form_open = False
-        for btn_sel in [
-            "button:has-text('Email agent')",
-            "button:has-text('Enquire')",
-            "button:has-text('Contact agent')",
-            "a:has-text('Email agent')",
-            "[data-testid*='contact' i]",
-            "button:has-text('Request viewing')",
-        ]:
-            try:
-                await page.locator(btn_sel).first.click(timeout=4_000)
-                await page.wait_for_timeout(1_200)
-                form_open = True
-                break
-            except Exception:
-                continue
-
-        # Fill name
-        first_ok = await _safe_fill(page, [
-            "input[name='first_name']", "input[name='firstName']",
-            "input[id*='first' i]", "input[placeholder*='first name' i]",
-        ], CONTACT_FIRST)
-        await _safe_fill(page, [
-            "input[name='last_name']", "input[name='lastName']",
-            "input[id*='last' i]", "input[placeholder*='last name' i]",
-        ], CONTACT_LAST)
-        if not first_ok:
-            await _safe_fill(page, [
-                "input[name='name']", "input[id*='name' i]",
-                "input[placeholder*='your name' i]",
-            ], CONTACT_NAME)
+        # OTM uses a single "Full name" field (id="name"), not split first/last.
+        await _safe_fill(page, ["#name", "input[name='name']"], CONTACT_NAME)
 
         email_ok = await _safe_fill(page, [
-            "input[type='email']", "input[name='email']", "input[id*='email' i]",
+            "#email", "input[type='email']", "input[name='email']",
         ], CONTACT_EMAIL)
         if not email_ok:
             logger.warning("[enquiry] OTM: email field not found at %s", url[:60])
             return "failed"
 
         await _safe_fill(page, [
-            "input[type='tel']", "input[name='phone']",
-            "input[name='telephone']", "input[id*='phone' i]",
+            "#telephone", "input[type='tel']", "input[name='telephone']",
         ], CONTACT_PHONE)
-        await _safe_fill(page, [
-            "textarea[name='message']", "textarea[id*='message' i]", "textarea",
-        ], ENQUIRY_MESSAGE)
 
+        msg_filled = await _safe_fill(page, [
+            "#message", "textarea[name='message']", "textarea",
+        ], ENQUIRY_MESSAGE)
+        if not msg_filled:
+            logger.warning("[enquiry] OTM: message textarea not found at %s", url[:60])
+            return "failed"
+
+        # The submit button text is "Submit"
         clicked = await _safe_click(page, [
-            "button[type='submit']:has-text('Send')",
-            "button:has-text('Send enquiry')",
-            "button:has-text('Send message')",
-            "button:has-text('Submit enquiry')",
+            "button:has-text('Submit')",
             "button[type='submit']",
-            "input[type='submit']",
         ])
         if not clicked:
+            logger.warning("[enquiry] OTM: submit button not found at %s", url[:60])
             return "failed"
 
         await page.wait_for_timeout(3_000)
