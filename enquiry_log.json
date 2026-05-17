@@ -113,5 +113,30 @@
     "date": "2026-05-16",
     "status": "failed",
     "address": "Nassau Street, London"
+  },
+  "https://www.rightmove.co.uk/properties/88332852#/?channel=RES_LET": {
+    "date": "2026-05-17",
+    "status": "failed",
+    "address": "Hans Crescent Knightsbridge SW1X"
+  },
+  "https://www.rightmove.co.uk/properties/88589883#/?channel=RES_LET": {
+    "date": "2026-05-17",
+    "status": "failed",
+    "address": "Kensington Apartments,, 11 Commercial Street, Aldgate, London, E1"
+  },
+  "https://www.rightmove.co.uk/properties/88589832#/?channel=RES_LET": {
+    "date": "2026-05-17",
+    "status": "failed",
+    "address": "Kingwood Gardens, 1 Chaucer Gardens, Goodman's Fields, Aldgate, E1"
+  },
+  "https://www.rightmove.co.uk/properties/88572255#/?channel=RES_LET": {
+    "date": "2026-05-17",
+    "status": "failed",
+    "address": "Back Church Lane, London, E1"
+  },
+  "https://www.rightmove.co.uk/properties/88547847#/?channel=RES_LET": {
+    "date": "2026-05-17",
+    "status": "failed",
+    "address": "York Street, Marlybone, W1U"
   }
 }
