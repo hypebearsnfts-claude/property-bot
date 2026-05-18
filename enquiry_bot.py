@@ -531,27 +531,29 @@ async def _submit_rightmove(ctx: BrowserContext, listing: dict) -> str:
         # When logged in: those details are pre-filled text with no editable inputs.
         # We try to fill guest fields unconditionally — _safe_fill silently skips
         # selectors that don't match, so there's no harm if already logged in.
+        # Guest-form fields: 1 s timeout so we fail fast when logged in
+        # (logged-in form has no input fields for these — they're pre-filled text).
         await _safe_fill(page, [
             "input[name='firstName']",
             "input[id='firstName']",
             "input[placeholder*='first name' i]",
-        ], CONTACT_FIRST, timeout=3_000)
+        ], CONTACT_FIRST, timeout=1_000)
         await _safe_fill(page, [
             "input[name='lastName']",
             "input[id='lastName']",
             "input[placeholder*='last name' i]",
-        ], CONTACT_LAST, timeout=3_000)
+        ], CONTACT_LAST, timeout=1_000)
         await _safe_fill(page, [
             "input[name='email']",
             "input[type='email']",
             "input[id='email']",
-        ], CONTACT_EMAIL, timeout=3_000)
+        ], CONTACT_EMAIL, timeout=1_000)
         await _safe_fill(page, [
             "input[name='telephone']",
             "input[name='phone']",
             "input[type='tel']",
             "input[id='telephone']",
-        ], CONTACT_PHONE, timeout=3_000)
+        ], CONTACT_PHONE, timeout=1_000)
 
         # ── Required radio buttons ──────────────────────────────────────────────
         # These are NOT pre-saved from the account and must be answered on every
