@@ -368,7 +368,7 @@ async def _build_zoopla_ctx(browser) -> tuple[BrowserContext | None, bool]:
             if not clicked:
                 logger.warning("[enquiry] Zoopla: Google button not found")
                 await page.close()
-                return None, False
+                return None, False  # Zoopla genuinely needs login
             google_btn_clicked = True
 
         if google_btn_clicked:
@@ -406,11 +406,14 @@ async def _build_zoopla_ctx(browser) -> tuple[BrowserContext | None, bool]:
 # ── OnTheMarket login (Google OAuth) ─────────────────────────────────────────
 
 async def _build_otm_ctx(browser) -> tuple[BrowserContext | None, bool]:
-    if not (_OTM_EMAIL and _OTM_PASS):
-        logger.info("[enquiry] OTM: no credentials in env")
-        return None, False
-
+    # OTM's /agents/contact/ form works without login — always return a valid ctx.
+    # We attempt login only if credentials are present; failure is non-fatal.
     ctx = await _new_ctx(browser)
+
+    if not (_OTM_EMAIL and _OTM_PASS):
+        logger.info("[enquiry] OTM: no credentials — using guest context")
+        return ctx, False  # ctx is valid; guest form will be used
+
     page = await _new_page(ctx)
     try:
         await page.goto(
@@ -444,8 +447,10 @@ async def _build_otm_ctx(browser) -> tuple[BrowserContext | None, bool]:
             await page.wait_for_timeout(3_000)
 
             if not oauth_ok:
+                # OAuth failed but ctx is still valid — fall through to guest form
+                logger.warning("[enquiry] OTM: OAuth failed — will use guest form")
                 await page.close()
-                return None, False
+                return ctx, False
 
         except Exception:
             if not google_btn_found:
@@ -480,7 +485,7 @@ async def _build_otm_ctx(browser) -> tuple[BrowserContext | None, bool]:
             await page.close()
         except Exception:
             pass
-        return None, False
+        return ctx, False  # ctx is valid; guest form will be used
 
 
 # ── Per-listing enquiry submitters ────────────────────────────────────────────
