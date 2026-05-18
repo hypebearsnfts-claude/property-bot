@@ -278,14 +278,21 @@ async def _build_rightmove_ctx(browser) -> tuple[BrowserContext | None, bool]:
     ctx = await _new_ctx(browser)
     page = await _new_page(ctx)
     try:
-        await page.goto(
-            "https://www.rightmove.co.uk/user/login.html",
-            wait_until="domcontentloaded", timeout=30_000,
-        )
+        try:
+            await page.goto(
+                "https://www.rightmove.co.uk/user/login.html",
+                wait_until="networkidle", timeout=35_000,
+            )
+        except Exception:
+            await page.goto(
+                "https://www.rightmove.co.uk/user/login.html",
+                wait_until="load", timeout=30_000,
+            )
         await page.wait_for_timeout(2_000)
         await _dismiss_cookies(page)
+        await page.wait_for_timeout(500)
 
-        await _safe_fill(page, [
+        email_ok = await _safe_fill(page, [
             "input[name='email']", "input[type='email']",
             "input[id*='email' i]",
         ], _RM_EMAIL)
@@ -293,22 +300,35 @@ async def _build_rightmove_ctx(browser) -> tuple[BrowserContext | None, bool]:
             "input[name='password']", "input[type='password']",
         ], _RM_PASS)
 
+        if not email_ok:
+            logger.warning("[enquiry] Rightmove: email input not found on login page")
+            await page.close()
+            return ctx, False
+
         await _safe_click(page, [
             "button[type='submit']",
             "button:has-text('Log in')",
             "button:has-text('Sign in')",
         ])
-        await page.wait_for_timeout(3_500)
+
+        # Wait for page to navigate/render after login
+        await page.wait_for_timeout(4_000)
+        try:
+            await page.wait_for_load_state("networkidle", timeout=10_000)
+        except Exception:
+            pass
 
         content = (await page.content()).lower()
-        if "log out" in content or "my rightmove" in content or "saved properties" in content:
+        logged_in = any(kw in content for kw in [
+            "log out", "logout", "sign out", "my rightmove",
+            "saved properties", "my account",
+        ])
+        if logged_in:
             logger.info("[enquiry] Rightmove: logged in ✓")
-            await page.close()
-            return ctx, True
-
-        logger.warning("[enquiry] Rightmove: login may have failed (no logout link found)")
+        else:
+            logger.warning("[enquiry] Rightmove: login may have failed — will attempt as guest")
         await page.close()
-        return ctx, False  # keep ctx, attempt anyway
+        return ctx, logged_in
 
     except Exception as exc:
         logger.warning("[enquiry] Rightmove login exception: %s", exc)
@@ -470,7 +490,6 @@ async def _submit_rightmove(ctx: BrowserContext, listing: dict) -> str:
     url = listing["url"]
     try:
         # Extract property ID and navigate directly to the contact form URL.
-        # This avoids the unreliable "Email agent" link-click + navigation race.
         m = re.search(r'/properties/(\d+)', url)
         if not m:
             logger.warning("[enquiry] Rightmove: cannot extract property ID from %s", url)
@@ -480,39 +499,88 @@ async def _submit_rightmove(ctx: BrowserContext, listing: dict) -> str:
             "https://www.rightmove.co.uk/property-to-rent/contactBranch.html"
             f"?propertyId={prop_id}&backToPropertyURL=%2Fproperties%2F{prop_id}"
         )
-        await page.goto(contact_url, wait_until="domcontentloaded", timeout=30_000)
-        await page.wait_for_timeout(2_000)
+
+        # Use networkidle so JavaScript-rendered form fields are ready before we interact.
+        try:
+            await page.goto(contact_url, wait_until="networkidle", timeout=35_000)
+        except Exception:
+            # networkidle can timeout on slow/ad-heavy pages — fall back to load
+            try:
+                await page.goto(contact_url, wait_until="load", timeout=35_000)
+            except Exception:
+                await page.goto(contact_url, wait_until="domcontentloaded", timeout=30_000)
+
+        await page.wait_for_timeout(2_500)
         await _dismiss_cookies(page)
+        await page.wait_for_timeout(1_000)
 
-        # When logged in, personal details are pre-filled (shown as text with Edit buttons,
-        # not standard inputs). Answer the two required questionnaire fields that are
-        # NOT pre-saved from the account and will block submission if left blank.
-        await _safe_click(page, ["input[name='incomeSatisfactory'][value='YES']"],    timeout=4_000)
-        await _safe_click(page, ["input[name='adverseCredit'][value='NO_ADVERSE_CREDIT']"], timeout=4_000)
+        # Abort if redirected to login page
+        current_url = page.url
+        logger.info("[enquiry] Rightmove: contact page loaded — %s", current_url[:80])
+        if "login" in current_url.lower() or "sign-in" in current_url.lower():
+            logger.warning("[enquiry] Rightmove: redirected to login for %s", url[:60])
+            return "failed"
 
-        # Fill the message textarea
+        # ── Guest-form detection ────────────────────────────────────────────────
+        # When NOT logged in: standard <input> fields for name/email/phone are visible.
+        # When logged in: those details are pre-filled text with no editable inputs.
+        # We try to fill guest fields unconditionally — _safe_fill silently skips
+        # selectors that don't match, so there's no harm if already logged in.
+        await _safe_fill(page, [
+            "input[name='firstName']",
+            "input[id='firstName']",
+            "input[placeholder*='first name' i]",
+        ], CONTACT_FIRST, timeout=3_000)
+        await _safe_fill(page, [
+            "input[name='lastName']",
+            "input[id='lastName']",
+            "input[placeholder*='last name' i]",
+        ], CONTACT_LAST, timeout=3_000)
+        await _safe_fill(page, [
+            "input[name='email']",
+            "input[type='email']",
+            "input[id='email']",
+        ], CONTACT_EMAIL, timeout=3_000)
+        await _safe_fill(page, [
+            "input[name='telephone']",
+            "input[name='phone']",
+            "input[type='tel']",
+            "input[id='telephone']",
+        ], CONTACT_PHONE, timeout=3_000)
+
+        # ── Required radio buttons ──────────────────────────────────────────────
+        # These are NOT pre-saved from the account and must be answered on every
+        # submission, regardless of logged-in state.
+        await _safe_click(page, ["input[name='incomeSatisfactory'][value='YES']"],           timeout=5_000)
+        await _safe_click(page, ["input[name='adverseCredit'][value='NO_ADVERSE_CREDIT']"],  timeout=5_000)
+
+        # ── Message textarea ────────────────────────────────────────────────────
         filled = await _safe_fill(page, [
             "#comments",
             "textarea[name='comments']",
+            "textarea[id='comments']",
+            "textarea[placeholder*='message' i]",
             "textarea[placeholder*='viewing' i]",
             "textarea[placeholder*='work' i]",
             "textarea",
-        ], ENQUIRY_MESSAGE)
+        ], ENQUIRY_MESSAGE, timeout=7_000)
         if not filled:
             logger.warning("[enquiry] Rightmove: message textarea not found at %s", url[:60])
             return "failed"
 
-        # The submit button says "Send email" — NOT "Send enquiry" or "Send message"
+        # ── Submit ──────────────────────────────────────────────────────────────
+        # Rightmove's submit button text is "Send email" (not "Send enquiry").
         clicked = await _safe_click(page, [
             "button:has-text('Send email')",
             "button.dsrm_primary[type='submit']",
+            "input[type='submit'][value*='Send' i]",
             "button[type='submit']",
         ])
         if not clicked:
             logger.warning("[enquiry] Rightmove: submit button not found at %s", url[:60])
             return "failed"
 
-        await page.wait_for_timeout(3_000)
+        await page.wait_for_timeout(4_000)
         logger.info("[enquiry] ✅ Rightmove submitted: %s", url[:80])
         return "sent"
 
@@ -590,12 +658,22 @@ async def _submit_otm(ctx: BrowserContext, listing: dict) -> str:
         prop_id = m.group(1)
         contact_url = f"https://www.onthemarket.com/agents/contact/{prop_id}/?form-name=details-contact"
 
-        await page.goto(contact_url, wait_until="domcontentloaded", timeout=35_000)
-        await page.wait_for_timeout(2_000)
+        try:
+            await page.goto(contact_url, wait_until="networkidle", timeout=40_000)
+        except Exception:
+            try:
+                await page.goto(contact_url, wait_until="load", timeout=35_000)
+            except Exception:
+                await page.goto(contact_url, wait_until="domcontentloaded", timeout=30_000)
+
+        await page.wait_for_timeout(2_500)
         await _dismiss_cookies(page)
+        await page.wait_for_timeout(500)
+
+        logger.info("[enquiry] OTM: contact page loaded — %s", page.url[:80])
 
         # OTM uses a single "Full name" field (id="name"), not split first/last.
-        await _safe_fill(page, ["#name", "input[name='name']"], CONTACT_NAME)
+        await _safe_fill(page, ["#name", "input[name='name']", "input[placeholder*='name' i]"], CONTACT_NAME)
 
         email_ok = await _safe_fill(page, [
             "#email", "input[type='email']", "input[name='email']",
