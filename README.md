@@ -94,6 +94,12 @@ Go to your repo → **Settings → Secrets and variables → Actions → New rep
 - `TELEGRAM_FILTER_CHAT_ID`
 - `GOOGLE_MAPS_API_KEY`
 - `ANTHROPIC_API_KEY`
+- `RIGHTMOVE_EMAIL` — your Rightmove account email
+- `RIGHTMOVE_PASSWORD` — your Rightmove account password
+- `ZOOPLA_EMAIL` — Gmail address used for Zoopla (login not automated, see below)
+- `ZOOPLA_PASSWORD` — Gmail password (login not automated, see below)
+- `OTM_EMAIL` — email for OnTheMarket (optional, guest form works without it)
+- `OTM_PASSWORD` — password for OnTheMarket (optional)
 
 ### 5. Enable GitHub Actions write permissions
 
@@ -105,6 +111,28 @@ Go to repo → **Settings → Actions → General → Workflow permissions** →
 source .venv/bin/activate
 python scheduler.py
 ```
+
+---
+
+## Automated enquiry submissions
+
+After each daily scrape, `enquiry_bot.py` automatically submits viewing enquiries for every new listing that passed filters.
+
+| Portal | Method | Notes |
+|---|---|---|
+| Rightmove | Email/password login → contact form | Logs in with `RIGHTMOVE_EMAIL` / `RIGHTMOVE_PASSWORD`. Falls back to guest form if login fails. |
+| OnTheMarket | Guest form (no login needed) | Navigates directly to `/agents/contact/{id}/`. Works without credentials. |
+| Zoopla | ❌ Manual | Requires Google OAuth which can't run headlessly. Listed in Telegram under 🔐 — contact those agents yourself. |
+| OpenRent | ❌ Manual | No form automation. Listed in Telegram under 📱 — WhatsApp the landlord directly. |
+
+**Contact details used in all enquiries:**
+- Name: Ernest Siow
+- Email: ernest.slh@hotmail.com
+- Phone: +6590673996
+
+**Dedup:** `enquiry_log.json` tracks every processed URL. Listings with status `sent` or `manual` are never re-attempted. Listings with status `failed` or `login_required` are automatically retried on the next run.
+
+**Re-creating from scratch:** `enquiry_log.json` is committed to the repo by GitHub Actions after each run, so all history is preserved. If you want to reset and re-enquire everything: `echo '{}' > enquiry_log.json && git add enquiry_log.json && git commit -m "reset enquiry log" && git push`
 
 ---
 
