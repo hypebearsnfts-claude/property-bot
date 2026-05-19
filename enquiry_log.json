@@ -228,5 +228,110 @@
     "date": "2026-05-18",
     "status": "sent",
     "address": "Gibbs Green, W14"
+  },
+  "https://www.rightmove.co.uk/properties/88608450#/?channel=RES_LET": {
+    "date": "2026-05-19",
+    "status": "sent",
+    "address": "St. Giles High Street, Central St Giles, WC2H"
+  },
+  "https://www.rightmove.co.uk/properties/88031001#/?channel=RES_LET": {
+    "date": "2026-05-19",
+    "status": "failed",
+    "address": "Cheval Place, Knightsbridge, SW7"
+  },
+  "https://www.rightmove.co.uk/properties/88674147#/?channel=RES_LET": {
+    "date": "2026-05-19",
+    "status": "failed",
+    "address": "Liberty House | Ensign Street | Near Tower Bridge | E1"
+  },
+  "https://www.rightmove.co.uk/properties/88644384#/?channel=RES_LET": {
+    "date": "2026-05-19",
+    "status": "sent",
+    "address": "Crawford Building, 112 Whitechapel High Street, Aldgate, London, E1"
+  },
+  "https://www.rightmove.co.uk/properties/88683273#/?channel=RES_LET": {
+    "date": "2026-05-19",
+    "status": "failed",
+    "address": "George Street, Marylebone, London, W1H"
+  },
+  "https://www.rightmove.co.uk/properties/88682433#/?channel=RES_LET": {
+    "date": "2026-05-19",
+    "status": "failed",
+    "address": "Glentworth Street Marylebone, London NW1"
+  },
+  "https://www.rightmove.co.uk/properties/88682220#/?channel=RES_LET": {
+    "date": "2026-05-19",
+    "status": "failed",
+    "address": "Baker Street, Marylebone, London, NW1"
+  },
+  "https://www.rightmove.co.uk/properties/88679313#/?channel=RES_LET": {
+    "date": "2026-05-19",
+    "status": "failed",
+    "address": "Hawcroft Court, York Street, London, W1U"
+  },
+  "https://www.rightmove.co.uk/properties/88670316#/?channel=RES_LET": {
+    "date": "2026-05-19",
+    "status": "failed",
+    "address": "Manchester Street, London, W1U"
+  },
+  "https://www.rightmove.co.uk/properties/88684272#/?channel=RES_LET": {
+    "date": "2026-05-19",
+    "status": "failed",
+    "address": "Hill Street, Mayfair, London, W1J"
+  },
+  "https://www.rightmove.co.uk/properties/88655349#/?channel=RES_LET": {
+    "date": "2026-05-19",
+    "status": "failed",
+    "address": "Hill Street, Mayfair, London W1"
+  },
+  "https://www.rightmove.co.uk/properties/88687728#/?channel=RES_LET": {
+    "date": "2026-05-19",
+    "status": "sent",
+    "address": "Balderton Street, London, W1K"
+  },
+  "https://www.rightmove.co.uk/properties/88663443#/?channel=RES_LET": {
+    "date": "2026-05-19",
+    "status": "sent",
+    "address": "Nutford Place, London W1H"
+  },
+  "https://www.rightmove.co.uk/properties/88639143#/?channel=RES_LET": {
+    "date": "2026-05-19",
+    "status": "sent",
+    "address": "Portsea Place, London, W2"
+  },
+  "https://www.rightmove.co.uk/properties/174422042#/?channel=RES_LET": {
+    "date": "2026-05-19",
+    "status": "sent",
+    "address": "Tower Bridge Road, London Bridge"
+  },
+  "https://www.rightmove.co.uk/properties/88646760#/?channel=RES_LET": {
+    "date": "2026-05-19",
+    "status": "failed",
+    "address": "Glentworth Street, Marylebone"
+  },
+  "https://www.rightmove.co.uk/properties/88674882#/?channel=RES_LET": {
+    "date": "2026-05-19",
+    "status": "sent",
+    "address": "Farm Street, Mayfair"
+  },
+  "https://www.rightmove.co.uk/properties/88687992#/?channel=RES_LET": {
+    "date": "2026-05-19",
+    "status": "failed",
+    "address": "Edgware Road, Hyde Park"
+  },
+  "https://www.onthemarket.com/details/19514313/": {
+    "date": "2026-05-19",
+    "status": "sent",
+    "address": "Ann's Close, London, SW1X"
+  },
+  "https://www.onthemarket.com/details/19520203/": {
+    "date": "2026-05-19",
+    "status": "sent",
+    "address": "Castletown Road, W14"
+  },
+  "https://www.onthemarket.com/details/14232363/": {
+    "date": "2026-05-19",
+    "status": "sent",
+    "address": "Marlborough Court, Pembroke Road, London"
   }
 }
