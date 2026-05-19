@@ -529,106 +529,160 @@ async def _build_otm_ctx(browser) -> tuple[BrowserContext | None, bool]:
 
 # ── Per-listing enquiry submitters ────────────────────────────────────────────
 
+async def _fill_and_submit_rm_form(page: Page, url: str) -> str:
+    """
+    Fill and submit the Rightmove contact form on whatever page is currently loaded.
+    Handles both the guest (unauthenticated) and logged-in form variants.
+    Returns "sent" on success, "failed" otherwise.
+    """
+    current_url = page.url
+    logger.info("[enquiry] Rightmove: filling form at %s", current_url[:80])
+
+    # Abort if on login page
+    if "login" in current_url.lower() or "sign-in" in current_url.lower():
+        logger.warning("[enquiry] Rightmove: on login page — aborting for %s", url[:60])
+        return "failed"
+
+    # Wait for the form to be rendered (JS-rendered — must wait for load to settle)
+    await page.wait_for_timeout(2_500)
+
+    # ── Guest fields (short timeout — skipped silently when logged in) ──────────
+    await _safe_fill(page, [
+        "input[name='firstName']", "input[id='firstName']",
+        "input[placeholder*='first name' i]",
+    ], CONTACT_FIRST, timeout=2_000)
+    await _safe_fill(page, [
+        "input[name='lastName']", "input[id='lastName']",
+        "input[placeholder*='last name' i]",
+    ], CONTACT_LAST, timeout=2_000)
+    await _safe_fill(page, [
+        "input[name='email']", "input[type='email']", "input[id='email']",
+    ], CONTACT_EMAIL, timeout=2_000)
+    await _safe_fill(page, [
+        "input[name='telephone']", "input[name='phone']",
+        "input[type='tel']", "input[id='telephone']",
+    ], CONTACT_PHONE, timeout=2_000)
+
+    # ── Required radio buttons ──────────────────────────────────────────────────
+    await _safe_click(page, ["input[name='incomeSatisfactory'][value='YES']"],           timeout=5_000)
+    await _safe_click(page, ["input[name='adverseCredit'][value='NO_ADVERSE_CREDIT']"],  timeout=5_000)
+
+    # ── Message textarea ────────────────────────────────────────────────────────
+    filled = await _safe_fill(page, [
+        "#comments", "textarea[name='comments']", "textarea[id='comments']",
+        "textarea[placeholder*='message' i]", "textarea[placeholder*='viewing' i]",
+        "textarea[placeholder*='work' i]", "textarea",
+    ], ENQUIRY_MESSAGE, timeout=7_000)
+    if not filled:
+        logger.warning("[enquiry] Rightmove: message textarea not found at %s", url[:60])
+        return "failed"
+
+    # ── Submit ──────────────────────────────────────────────────────────────────
+    clicked = await _safe_click(page, [
+        "button:has-text('Send email')",
+        "button.dsrm_primary[type='submit']",
+        "input[type='submit'][value*='Send' i]",
+        "button[type='submit']",
+    ])
+    if not clicked:
+        logger.warning("[enquiry] Rightmove: submit button not found at %s", url[:60])
+        return "failed"
+
+    await page.wait_for_timeout(4_000)
+    logger.info("[enquiry] ✅ Rightmove submitted: %s", url[:80])
+    return "sent"
+
+
 async def _submit_rightmove(ctx: BrowserContext, listing: dict) -> str:
     page = await _new_page(ctx)
     url = listing["url"]
     try:
-        # Extract property ID and navigate directly to the contact form URL.
         m = re.search(r'/properties/(\d+)', url)
         if not m:
             logger.warning("[enquiry] Rightmove: cannot extract property ID from %s", url)
             return "failed"
         prop_id = m.group(1)
-        contact_url = (
-            "https://www.rightmove.co.uk/property-to-rent/contactBranch.html"
-            f"?propertyId={prop_id}&backToPropertyURL=%2Fproperties%2F{prop_id}"
-        )
 
-        # Use networkidle so JavaScript-rendered form fields are ready before we interact.
+        # ── Step 1: Navigate to the listing page ─────────────────────────────────
+        # Going via the listing page first ensures proper Referer headers are set
+        # when Rightmove redirects us to contactBranch.html — without this many
+        # agents' contact forms redirect to the login page instead of the form.
+        listing_url = f"https://www.rightmove.co.uk/properties/{prop_id}"
         try:
-            await page.goto(contact_url, wait_until="networkidle", timeout=35_000)
+            await page.goto(listing_url, wait_until="domcontentloaded", timeout=30_000)
         except Exception:
-            # networkidle can timeout on slow/ad-heavy pages — fall back to load
             try:
-                await page.goto(contact_url, wait_until="load", timeout=35_000)
+                await page.goto(listing_url, wait_until="load", timeout=30_000)
             except Exception:
-                await page.goto(contact_url, wait_until="domcontentloaded", timeout=30_000)
+                pass  # Best effort — continue and try to find the button
 
-        await page.wait_for_timeout(2_500)
+        await page.wait_for_timeout(2_000)
         await _dismiss_cookies(page)
         await page.wait_for_timeout(1_000)
 
-        # Abort if redirected to login page
-        current_url = page.url
-        logger.info("[enquiry] Rightmove: contact page loaded — %s", current_url[:80])
-        if "login" in current_url.lower() or "sign-in" in current_url.lower():
-            logger.warning("[enquiry] Rightmove: redirected to login for %s", url[:60])
-            return "failed"
+        # ── Step 2: Find & click "Request details" / "Email agent" button ────────
+        # This sets the proper Referer and may navigate to contactBranch.html
+        # or open a modal — we handle both below.
+        contact_selectors = [
+            "a[href*='contactBranch']",
+            "button:has-text('Request details')",
+            "a:has-text('Request details')",
+            "button:has-text('Email agent')",
+            "a:has-text('Email agent')",
+            "button:has-text('Contact agent')",
+            "a:has-text('Contact agent')",
+            "[data-testid*='email-agent' i]",
+            "[data-testid*='contact-agent' i]",
+            "[class*='contactAgent' i]",
+            "[class*='contact-agent' i]",
+        ]
 
-        # ── Guest-form detection ────────────────────────────────────────────────
-        # When NOT logged in: standard <input> fields for name/email/phone are visible.
-        # When logged in: those details are pre-filled text with no editable inputs.
-        # We try to fill guest fields unconditionally — _safe_fill silently skips
-        # selectors that don't match, so there's no harm if already logged in.
-        # Guest-form fields: 1 s timeout so we fail fast when logged in
-        # (logged-in form has no input fields for these — they're pre-filled text).
-        await _safe_fill(page, [
-            "input[name='firstName']",
-            "input[id='firstName']",
-            "input[placeholder*='first name' i]",
-        ], CONTACT_FIRST, timeout=1_000)
-        await _safe_fill(page, [
-            "input[name='lastName']",
-            "input[id='lastName']",
-            "input[placeholder*='last name' i]",
-        ], CONTACT_LAST, timeout=1_000)
-        await _safe_fill(page, [
-            "input[name='email']",
-            "input[type='email']",
-            "input[id='email']",
-        ], CONTACT_EMAIL, timeout=1_000)
-        await _safe_fill(page, [
-            "input[name='telephone']",
-            "input[name='phone']",
-            "input[type='tel']",
-            "input[id='telephone']",
-        ], CONTACT_PHONE, timeout=1_000)
+        # Capture navigation if clicking causes a page change
+        button_clicked = False
+        try:
+            async with page.expect_navigation(wait_until="domcontentloaded", timeout=10_000):
+                button_clicked = await _safe_click(page, contact_selectors, timeout=8_000)
+                if not button_clicked:
+                    raise Exception("button not found")
+        except Exception:
+            # Either button not found, or click opened a modal (no navigation) —
+            # both are handled: fall through to direct URL if still on listing page.
+            if not button_clicked:
+                logger.info("[enquiry] Rightmove: contact button not found — trying direct URL for %s", url[:60])
 
-        # ── Required radio buttons ──────────────────────────────────────────────
-        # These are NOT pre-saved from the account and must be answered on every
-        # submission, regardless of logged-in state.
-        await _safe_click(page, ["input[name='incomeSatisfactory'][value='YES']"],           timeout=5_000)
-        await _safe_click(page, ["input[name='adverseCredit'][value='NO_ADVERSE_CREDIT']"],  timeout=5_000)
+        await page.wait_for_timeout(2_000)
 
-        # ── Message textarea ────────────────────────────────────────────────────
-        filled = await _safe_fill(page, [
-            "#comments",
-            "textarea[name='comments']",
-            "textarea[id='comments']",
-            "textarea[placeholder*='message' i]",
-            "textarea[placeholder*='viewing' i]",
-            "textarea[placeholder*='work' i]",
-            "textarea",
-        ], ENQUIRY_MESSAGE, timeout=7_000)
-        if not filled:
-            logger.warning("[enquiry] Rightmove: message textarea not found at %s", url[:60])
-            return "failed"
+        # ── Step 3: If still on listing page (modal opened OR button not found),
+        #            fall back to direct contactBranch URL ─────────────────────────
+        on_contact_page = "contactBranch" in page.url or "login" in page.url
+        on_listing_page  = str(prop_id) in page.url and "contactBranch" not in page.url
 
-        # ── Submit ──────────────────────────────────────────────────────────────
-        # Rightmove's submit button text is "Send email" (not "Send enquiry").
-        clicked = await _safe_click(page, [
-            "button:has-text('Send email')",
-            "button.dsrm_primary[type='submit']",
-            "input[type='submit'][value*='Send' i]",
-            "button[type='submit']",
-        ])
-        if not clicked:
-            logger.warning("[enquiry] Rightmove: submit button not found at %s", url[:60])
-            return "failed"
+        if on_listing_page:
+            # Modal may have opened on the listing page — check for form fields first
+            has_textarea = False
+            try:
+                await page.locator("textarea").first.wait_for(state="visible", timeout=3_000)
+                has_textarea = True
+            except Exception:
+                pass
 
-        await page.wait_for_timeout(4_000)
-        logger.info("[enquiry] ✅ Rightmove submitted: %s", url[:80])
-        return "sent"
+            if not has_textarea:
+                # No modal form visible — navigate directly to contactBranch
+                contact_url = (
+                    "https://www.rightmove.co.uk/property-to-rent/contactBranch.html"
+                    f"?propertyId={prop_id}&backToPropertyURL=%2Fproperties%2F{prop_id}"
+                )
+                try:
+                    await page.goto(contact_url, wait_until="networkidle", timeout=35_000)
+                except Exception:
+                    try:
+                        await page.goto(contact_url, wait_until="load", timeout=30_000)
+                    except Exception:
+                        await page.goto(contact_url, wait_until="domcontentloaded", timeout=25_000)
+                await page.wait_for_timeout(2_000)
+
+        # ── Step 4: Fill and submit the form ─────────────────────────────────────
+        return await _fill_and_submit_rm_form(page, url)
 
     except Exception as exc:
         logger.warning("[enquiry] Rightmove submit failed (%s): %s", url[:60], exc)
@@ -757,6 +811,37 @@ async def _submit_otm(ctx: BrowserContext, listing: dict) -> str:
         return "failed"
     finally:
         await page.close()
+
+
+# ── Retry helper ─────────────────────────────────────────────────────────────
+
+def get_failed_enquiry_listings() -> list[dict]:
+    """
+    Return minimal listing dicts for every previously-failed enquiry so they
+    can be passed back to submit_enquiries() for retry.
+
+    Only includes portals that support automated submission (Rightmove, OTM).
+    Zoopla and OpenRent are excluded — they require manual contact.
+    """
+    log = _load_log()
+    retry = []
+    for url, entry in log.items():
+        if entry.get("status") != "failed":
+            continue
+        if "rightmove.co.uk" in url:
+            src = "rightmove"
+        elif "onthemarket.com" in url:
+            src = "onthemarket"
+        else:
+            continue  # Zoopla / OpenRent — cannot be automated
+        retry.append({
+            "url":     url,
+            "source":  src,
+            "address": entry.get("address", ""),
+            "area":    "",
+            "price":   "",
+        })
+    return retry
 
 
 # ── Main dispatcher ───────────────────────────────────────────────────────────

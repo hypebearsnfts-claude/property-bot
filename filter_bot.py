@@ -36,7 +36,7 @@ from telegram.ext import Application, CommandHandler, ContextTypes
 from utils.walk_time import nearest_walk_minutes
 from utils.valuation import get_fmv_verdict, _parse_price_pcm
 from utils.seen_listings import is_duplicate, mark_as_seen, clean_old_entries
-from enquiry_bot import submit_enquiries, enquiry_summary, already_enquired
+from enquiry_bot import submit_enquiries, enquiry_summary, already_enquired, get_failed_enquiry_listings
 
 # ── Config ────────────────────────────────────────────────────────────────────
 
@@ -540,12 +540,19 @@ async def run_filter_pipeline_and_send(
     #  works without login and is fully reliable.)
     if to_send:
         try:
+            # Combine today's new listings with any previously-failed enquiries.
+            # Failed listings are already in seen_listings so they never re-appear
+            # in to_send — we must add them explicitly for retry.
+            failed_retries = get_failed_enquiry_listings()
+            all_for_enquiry = to_send + failed_retries
+            retry_count = len(failed_retries)
+            status_note = f" (+{retry_count} retry)" if retry_count else ""
             await bot.send_message(
                 chat_id=chat_id,
-                text="📞 Fetching agent contact details…",
+                text=f"📞 Submitting enquiries{status_note}…",
             )
-            enq_results = await submit_enquiries(to_send)
-            summary_msg = enquiry_summary(enq_results, to_send)
+            enq_results = await submit_enquiries(all_for_enquiry)
+            summary_msg = enquiry_summary(enq_results, all_for_enquiry)
             await bot.send_message(
                 chat_id=chat_id,
                 text=summary_msg,
