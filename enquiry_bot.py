@@ -66,12 +66,13 @@ ENQUIRY_MESSAGE = (
 
 # ── Portal credentials (from .env / GitHub Secrets) ──────────────────────────
 
-_RM_EMAIL   = os.getenv("RIGHTMOVE_EMAIL",    "")
-_RM_PASS    = os.getenv("RIGHTMOVE_PASSWORD", "")
-_ZO_EMAIL   = os.getenv("ZOOPLA_EMAIL",       "")
-_ZO_PASS    = os.getenv("ZOOPLA_PASSWORD",    "")
-_OTM_EMAIL  = os.getenv("OTM_EMAIL",          "")
-_OTM_PASS   = os.getenv("OTM_PASSWORD",       "")
+_RM_EMAIL    = os.getenv("RIGHTMOVE_EMAIL",    "")
+_RM_PASS     = os.getenv("RIGHTMOVE_PASSWORD", "")
+_RM_COOKIES  = os.getenv("RIGHTMOVE_COOKIES",  "")   # JSON cookie array (preferred over password login)
+_ZO_EMAIL    = os.getenv("ZOOPLA_EMAIL",       "")
+_ZO_PASS     = os.getenv("ZOOPLA_PASSWORD",    "")
+_OTM_EMAIL   = os.getenv("OTM_EMAIL",          "")
+_OTM_PASS    = os.getenv("OTM_PASSWORD",       "")
 
 # ── Enquiry log ───────────────────────────────────────────────────────────────
 
@@ -269,13 +270,55 @@ async def _google_oauth(google_page: Page, email: str, password: str) -> bool:
 async def _build_rightmove_ctx(browser) -> tuple[BrowserContext | None, bool]:
     """
     Create an authenticated Rightmove browser context.
-    Returns (ctx, True) on success, (None, False) on failure.
-    """
-    if not (_RM_EMAIL and _RM_PASS):
-        logger.info("[enquiry] Rightmove: no credentials in env")
-        return None, False
 
+    Strategy (in order of preference):
+      1. Cookie-based auth  — load saved session cookies from RIGHTMOVE_COOKIES env var.
+                              These come from a real Chrome login and bypass bot detection entirely.
+      2. Email/password     — fallback headless login (may be blocked by Rightmove bot detection).
+      3. Guest ctx          — no auth, attempt form as guest (limited functionality).
+
+    Returns (ctx, True) on confirmed login, (ctx, False) if uncertain but worth trying,
+    (None, False) only when there is no context at all.
+    """
     ctx = await _new_ctx(browser)
+
+    # ── Strategy 1: Cookie-based auth ────────────────────────────────────────
+    if _RM_COOKIES:
+        try:
+            cookies = json.loads(_RM_COOKIES)
+            await ctx.add_cookies(cookies)
+            logger.info("[enquiry] Rightmove: loaded %d saved cookies", len(cookies))
+
+            # Quick verification — visit account page and check for logout link
+            page = await _new_page(ctx)
+            try:
+                await page.goto(
+                    "https://www.rightmove.co.uk/user/login.html",
+                    wait_until="load", timeout=25_000,
+                )
+                await page.wait_for_timeout(2_000)
+                content = (await page.content()).lower()
+                logged_in = any(kw in content for kw in [
+                    "log out", "logout", "sign out", "my rightmove", "saved properties",
+                ])
+                await page.close()
+                if logged_in:
+                    logger.info("[enquiry] Rightmove: cookie auth ✓")
+                    return ctx, True
+                logger.warning("[enquiry] Rightmove: cookies loaded but session may have expired")
+                return ctx, False  # Still worth trying — contact form may work
+            except Exception:
+                await page.close()
+                return ctx, False
+        except Exception as exc:
+            logger.warning("[enquiry] Rightmove: failed to load cookies: %s", exc)
+            # Fall through to password login
+
+    # ── Strategy 2: Email/password login ─────────────────────────────────────
+    if not (_RM_EMAIL and _RM_PASS):
+        logger.info("[enquiry] Rightmove: no credentials — will attempt as guest")
+        return ctx, False
+
     page = await _new_page(ctx)
     try:
         try:
@@ -293,15 +336,14 @@ async def _build_rightmove_ctx(browser) -> tuple[BrowserContext | None, bool]:
         await page.wait_for_timeout(500)
 
         email_ok = await _safe_fill(page, [
-            "input[name='email']", "input[type='email']",
-            "input[id*='email' i]",
+            "input[name='email']", "input[type='email']", "input[id*='email' i]",
         ], _RM_EMAIL)
         await _safe_fill(page, [
             "input[name='password']", "input[type='password']",
         ], _RM_PASS)
 
         if not email_ok:
-            logger.warning("[enquiry] Rightmove: email input not found on login page")
+            logger.warning("[enquiry] Rightmove: email input not found — bot detection likely")
             await page.close()
             return ctx, False
 
@@ -310,8 +352,6 @@ async def _build_rightmove_ctx(browser) -> tuple[BrowserContext | None, bool]:
             "button:has-text('Log in')",
             "button:has-text('Sign in')",
         ])
-
-        # Wait for page to navigate/render after login
         await page.wait_for_timeout(4_000)
         try:
             await page.wait_for_load_state("networkidle", timeout=10_000)
@@ -320,13 +360,12 @@ async def _build_rightmove_ctx(browser) -> tuple[BrowserContext | None, bool]:
 
         content = (await page.content()).lower()
         logged_in = any(kw in content for kw in [
-            "log out", "logout", "sign out", "my rightmove",
-            "saved properties", "my account",
+            "log out", "logout", "sign out", "my rightmove", "saved properties", "my account",
         ])
         if logged_in:
-            logger.info("[enquiry] Rightmove: logged in ✓")
+            logger.info("[enquiry] Rightmove: password login ✓")
         else:
-            logger.warning("[enquiry] Rightmove: login may have failed — will attempt as guest")
+            logger.warning("[enquiry] Rightmove: password login failed — will attempt as guest")
         await page.close()
         return ctx, logged_in
 

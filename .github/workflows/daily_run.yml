@@ -40,6 +40,7 @@ jobs:
           # Add these as GitHub Secrets under Settings → Secrets and variables → Actions.
           RIGHTMOVE_EMAIL:             ${{ secrets.RIGHTMOVE_EMAIL }}
           RIGHTMOVE_PASSWORD:          ${{ secrets.RIGHTMOVE_PASSWORD }}
+          RIGHTMOVE_COOKIES:           ${{ secrets.RIGHTMOVE_COOKIES }}
           ZOOPLA_EMAIL:                ${{ secrets.ZOOPLA_EMAIL }}
           ZOOPLA_PASSWORD:             ${{ secrets.ZOOPLA_PASSWORD }}
           OTM_EMAIL:                   ${{ secrets.OTM_EMAIL }}
