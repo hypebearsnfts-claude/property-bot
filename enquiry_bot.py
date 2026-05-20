@@ -603,26 +603,34 @@ async def _submit_rightmove(ctx: BrowserContext, listing: dict) -> str:
             return "failed"
         prop_id = m.group(1)
 
-        # ── Step 1: Navigate to the listing page ─────────────────────────────────
-        # Going via the listing page first ensures proper Referer headers are set
-        # when Rightmove redirects us to contactBranch.html — without this many
-        # agents' contact forms redirect to the login page instead of the form.
+        contact_url = (
+            "https://www.rightmove.co.uk/property-to-rent/contactBranch.html"
+            f"?propertyId={prop_id}&backToPropertyURL=%2Fproperties%2F{prop_id}"
+        )
+
+        # ── Step 1: Navigate to listing page to set Referer header ───────────────
+        # Rightmove requires a Referer from the listing page; going direct to
+        # contactBranch.html without it redirects many agents to the login wall.
         listing_url = f"https://www.rightmove.co.uk/properties/{prop_id}"
         try:
             await page.goto(listing_url, wait_until="domcontentloaded", timeout=30_000)
         except Exception:
             try:
-                await page.goto(listing_url, wait_until="load", timeout=30_000)
+                await page.goto(listing_url, wait_until="load", timeout=25_000)
             except Exception:
-                pass  # Best effort — continue and try to find the button
-
+                pass
         await page.wait_for_timeout(2_000)
         await _dismiss_cookies(page)
-        await page.wait_for_timeout(1_000)
+        await page.wait_for_timeout(500)
 
-        # ── Step 2: Find & click "Request details" / "Email agent" button ────────
-        # This sets the proper Referer and may navigate to contactBranch.html
-        # or open a modal — we handle both below.
+        # If the listing is gone (redirected away from /properties/ID), skip
+        if prop_id not in page.url:
+            logger.info("[enquiry] Rightmove: listing no longer available — %s", url[:60])
+            return "failed"
+
+        # ── Step 2: Click "Request details" / "Email agent" ──────────────────────
+        # Simple click — no expect_navigation wrapper (causes 10s timeout on modals).
+        # After clicking we inspect page.url to see what happened.
         contact_selectors = [
             "a[href*='contactBranch']",
             "button:has-text('Request details')",
@@ -633,45 +641,37 @@ async def _submit_rightmove(ctx: BrowserContext, listing: dict) -> str:
             "a:has-text('Contact agent')",
             "[data-testid*='email-agent' i]",
             "[data-testid*='contact-agent' i]",
-            "[class*='contactAgent' i]",
-            "[class*='contact-agent' i]",
         ]
+        await _safe_click(page, contact_selectors, timeout=8_000)
 
-        # Capture navigation if clicking causes a page change
-        button_clicked = False
-        try:
-            async with page.expect_navigation(wait_until="domcontentloaded", timeout=10_000):
-                button_clicked = await _safe_click(page, contact_selectors, timeout=8_000)
-                if not button_clicked:
-                    raise Exception("button not found")
-        except Exception:
-            # Either button not found, or click opened a modal (no navigation) —
-            # both are handled: fall through to direct URL if still on listing page.
-            if not button_clicked:
-                logger.info("[enquiry] Rightmove: contact button not found — trying direct URL for %s", url[:60])
+        # Give the page time to navigate or open a modal
+        await page.wait_for_timeout(3_000)
 
-        await page.wait_for_timeout(2_000)
-
-        # ── Step 3: If still on listing page (modal opened OR button not found),
-        #            fall back to direct contactBranch URL ─────────────────────────
-        on_contact_page = "contactBranch" in page.url or "login" in page.url
-        on_listing_page  = str(prop_id) in page.url and "contactBranch" not in page.url
-
-        if on_listing_page:
-            # Modal may have opened on the listing page — check for form fields first
-            has_textarea = False
+        # ── Step 3: Decide where we ended up ─────────────────────────────────────
+        cur = page.url
+        if "login" in cur or "sign-in" in cur:
+            # Still needs auth — try direct contact URL (may work as guest)
+            logger.info("[enquiry] Rightmove: click led to login — trying direct URL")
             try:
-                await page.locator("textarea").first.wait_for(state="visible", timeout=3_000)
-                has_textarea = True
+                await page.goto(contact_url, wait_until="networkidle", timeout=35_000)
+            except Exception:
+                await page.goto(contact_url, wait_until="load", timeout=30_000)
+            await page.wait_for_timeout(2_000)
+
+        elif "contactBranch" not in cur:
+            # Still on the listing page — either a modal opened or button wasn't found.
+            # Check for visible form fields; if absent, go direct.
+            has_form = False
+            try:
+                await page.locator("textarea, input[name='firstName']").first.wait_for(
+                    state="visible", timeout=3_000
+                )
+                has_form = True
             except Exception:
                 pass
 
-            if not has_textarea:
-                # No modal form visible — navigate directly to contactBranch
-                contact_url = (
-                    "https://www.rightmove.co.uk/property-to-rent/contactBranch.html"
-                    f"?propertyId={prop_id}&backToPropertyURL=%2Fproperties%2F{prop_id}"
-                )
+            if not has_form:
+                logger.info("[enquiry] Rightmove: no modal — navigating direct to contact form")
                 try:
                     await page.goto(contact_url, wait_until="networkidle", timeout=35_000)
                 except Exception:
@@ -681,7 +681,7 @@ async def _submit_rightmove(ctx: BrowserContext, listing: dict) -> str:
                         await page.goto(contact_url, wait_until="domcontentloaded", timeout=25_000)
                 await page.wait_for_timeout(2_000)
 
-        # ── Step 4: Fill and submit the form ─────────────────────────────────────
+        # ── Step 4: Fill and submit ───────────────────────────────────────────────
         return await _fill_and_submit_rm_form(page, url)
 
     except Exception as exc:
