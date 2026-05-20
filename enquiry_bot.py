@@ -642,7 +642,9 @@ async def _submit_rightmove(ctx: BrowserContext, listing: dict) -> str:
             "[data-testid*='email-agent' i]",
             "[data-testid*='contact-agent' i]",
         ]
-        await _safe_click(page, contact_selectors, timeout=8_000)
+        # 2 s per selector — button is either visible right away or not there at all.
+        # (8 s default × 9 selectors = 72 s wasted on expired/unavailable listings)
+        await _safe_click(page, contact_selectors, timeout=2_000)
 
         # Give the page time to navigate or open a modal
         await page.wait_for_timeout(3_000)
@@ -995,6 +997,18 @@ def _esc(text: str) -> str:
     return "".join(f"\\{c}" if c in special else c for c in str(text))
 
 
+def _listing_label(v: dict) -> str:
+    """One-line display label for a listing result — falls back to address for retries."""
+    area  = v.get("area", "").strip()
+    price = v.get("price", "").strip()
+    addr  = v.get("address", "").strip()
+    if area and price:
+        return f"{_esc(area)} — {_esc(price)}"
+    if addr:
+        return _esc(addr[:60])
+    return "unknown"
+
+
 def enquiry_summary(results: dict, listings: list[dict]) -> str:
     """Build a compact MarkdownV2 Telegram message summarising enquiry results."""
     sent      = [(u, v) for u, v in results.items() if v.get("status") == "sent"]
@@ -1007,22 +1021,22 @@ def enquiry_summary(results: dict, listings: list[dict]) -> str:
     if sent:
         lines.append(f"\n✅ *Submitted \\({len(sent)}\\)*")
         for url, v in sent:
-            lines.append(f"  • [{_esc(v.get('area',''))} — {_esc(v.get('price',''))}]({url})")
+            lines.append(f"  • [{_listing_label(v)}]({url})")
 
     if failed:
         lines.append(f"\n❌ *Failed \\({len(failed)}\\)*")
         for url, v in failed:
-            lines.append(f"  • [{_esc(v.get('area',''))} — {_esc(v.get('price',''))}]({url})")
+            lines.append(f"  • [{_listing_label(v)}]({url})")
 
     if login_req:
         lines.append(f"\n🔐 *Login failed — enquire manually \\({len(login_req)}\\)*")
         for url, v in login_req:
-            lines.append(f"  • [{_esc(v.get('area',''))} — {_esc(v.get('price',''))}]({url})")
+            lines.append(f"  • [{_listing_label(v)}]({url})")
 
     if manual:
         lines.append(f"\n📱 *OpenRent — send your own message \\({len(manual)}\\)*")
         for url, v in manual:
-            lines.append(f"  • [{_esc(v.get('area',''))} — {_esc(v.get('price',''))}]({url})")
+            lines.append(f"  • [{_listing_label(v)}]({url})")
 
     if not (sent or failed or login_req or manual):
         return "📨 *No new enquiries to process\\.*"
