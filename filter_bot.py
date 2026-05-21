@@ -29,6 +29,7 @@ import re
 from pathlib import Path
 from typing import Optional
 
+import aiohttp
 from dotenv import load_dotenv
 from telegram import Update
 from telegram.ext import Application, CommandHandler, ContextTypes
@@ -117,6 +118,63 @@ def _has_blacklisted_keyword(listing: dict) -> bool:
         listing.get("summary", ""),
     ]).lower()
     return any(kw in haystack for kw in BLACKLISTED_KEYWORDS)
+
+
+_FETCH_UA = (
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+    "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+)
+_FETCH_HEADERS = {
+    "User-Agent": _FETCH_UA,
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    "Accept-Language": "en-GB,en;q=0.9",
+}
+
+
+async def _full_page_has_keyword(session: aiohttp.ClientSession, listing: dict) -> bool:
+    """
+    Fetch the individual listing page and check the full HTML for blacklisted keywords.
+
+    This is the definitive fix for concierge listings slipping through: the scraper
+    captures only 600 chars of card text from search-results pages, but "concierge"
+    (and similar service-level keywords) only appear in the full listing description
+    on the individual property page.
+
+    Returns True if the listing should be BLOCKED, False if it's clean.
+    Falls back to False (allow) on any fetch error so listings aren't wrongly dropped.
+    """
+    url = listing.get("url", "")
+    if not url:
+        return False
+
+    # Only Rightmove listings need this — OTM/Zoopla scrapers tend to capture more text
+    if "rightmove.co.uk" not in url:
+        return False
+
+    # Clean the URL (strip hash fragment Rightmove sometimes appends)
+    clean_url = url.split("#")[0]
+
+    try:
+        async with session.get(
+            clean_url,
+            headers=_FETCH_HEADERS,
+            timeout=aiohttp.ClientTimeout(total=15),
+            allow_redirects=True,
+        ) as resp:
+            if resp.status != 200:
+                return False
+            html = await resp.text(encoding="utf-8", errors="ignore")
+            html_lower = html.lower()
+            for kw in BLACKLISTED_KEYWORDS:
+                if kw in html_lower:
+                    logger.info(
+                        "[filter] Full-page keyword block: '%s' in %s",
+                        kw, clean_url[:70],
+                    )
+                    return True
+    except Exception as exc:
+        logger.debug("[filter] Full-page keyword check skipped for %s: %s", clean_url[:60], exc)
+    return False
 
 
 # Walk filter uses dynamic nearest-station lookup (any tube/rail station)
@@ -290,6 +348,26 @@ async def run_pipeline(
                     dupes_skipped, len(new_listings))
     walk_passed = new_listings
 
+    # Step 4.5 — Full-page keyword check (catches keywords not on the search-results card)
+    # The scraper captures only 600 chars of card text; "concierge" and similar service-level
+    # keywords only appear in the full listing description on the individual listing page.
+    # We fetch each Rightmove listing page concurrently (aiohttp, ~15s timeout) and drop
+    # any that contain a blacklisted keyword. Falls back to "allow" on any fetch error.
+    if walk_passed:
+        async with aiohttp.ClientSession() as _kw_session:
+            kw_checks = await asyncio.gather(
+                *[_full_page_has_keyword(_kw_session, l) for l in walk_passed],
+                return_exceptions=True,
+            )
+        before_kw = len(walk_passed)
+        walk_passed = [
+            l for l, blocked in zip(walk_passed, kw_checks)
+            if not (isinstance(blocked, bool) and blocked)
+        ]
+        kw_full_blocked = before_kw - len(walk_passed)
+        if kw_full_blocked:
+            logger.info("[filter] Full-page keyword check: removed %d listings", kw_full_blocked)
+
     # Step 5 — FMV verdict
     fmv_passed: list[dict] = []
 
@@ -312,7 +390,7 @@ async def run_pipeline(
     fmv_passed.sort(key=lambda l: l.get("walk_mins") or 999)
 
     total_scraped  = len(json.loads(LISTINGS_PATH.read_text(encoding="utf-8"))) if LISTINGS_PATH.exists() else 0
-    new_after_dedup = len(walk_passed)   # walk_passed was reassigned to new_listings after dedup
+    new_after_dedup = len(walk_passed)   # after dedup + full-page keyword check — fed into FMV
     logger.info("[filter] FMV filter: %d/%d passed", len(fmv_passed), new_after_dedup)
     return fmv_passed, total_scraped, new_after_dedup, walk_count
 
