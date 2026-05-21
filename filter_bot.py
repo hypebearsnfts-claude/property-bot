@@ -93,11 +93,11 @@ def _is_blacklisted(listing: dict) -> bool:
 # are silently dropped. Case-insensitive. Add/remove phrases here as needed.
 
 BLACKLISTED_KEYWORDS = [
-    "24/7 concierge",
-    "24 hour concierge",
-    "24hr concierge",
-    "round-the-clock concierge",
-    "round the clock concierge",
+    # Concierge buildings — all variants covered by matching "concierge" alone.
+    # Previous specific phrases ("24 hour concierge", "24/7 concierge", etc.)
+    # missed "24-hour concierge" (hyphen) and any mention beyond the first 600
+    # chars of the scraped description.
+    "concierge",
     # Agent names — belt-and-suspenders in case agent field isn't populated
     "greater london properties",
     "foxtons",
