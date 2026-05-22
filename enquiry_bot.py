@@ -68,9 +68,7 @@ ENQUIRY_MESSAGE = (
 
 _RM_EMAIL    = os.getenv("RIGHTMOVE_EMAIL",    "")
 _RM_PASS     = os.getenv("RIGHTMOVE_PASSWORD", "")
-_RM_COOKIES  = os.getenv("RIGHTMOVE_COOKIES",  "")   # JSON cookie array (preferred over password login)
-_ZO_EMAIL    = os.getenv("ZOOPLA_EMAIL",       "")
-_ZO_PASS     = os.getenv("ZOOPLA_PASSWORD",    "")
+_RM_COOKIES  = os.getenv("RIGHTMOVE_COOKIES",  "")   # JSON cookie array — preferred auth method
 _OTM_EMAIL   = os.getenv("OTM_EMAIL",          "")
 _OTM_PASS    = os.getenv("OTM_PASSWORD",       "")
 
@@ -381,66 +379,14 @@ async def _build_rightmove_ctx(browser) -> tuple[BrowserContext | None, bool]:
 
 # ── Zoopla login (Google OAuth) ───────────────────────────────────────────────
 
-async def _build_zoopla_ctx(browser) -> tuple[BrowserContext | None, bool]:
-    if not (_ZO_EMAIL and _ZO_PASS):
-        logger.info("[enquiry] Zoopla: no credentials in env")
-        return None, False
-
+async def _build_zoopla_ctx(browser) -> tuple[BrowserContext, bool]:
+    """
+    Zoopla does not require login — 'Email agent' form is available to guests.
+    Just return a plain browser context ready to go.
+    """
     ctx = await _new_ctx(browser)
-    page = await _new_page(ctx)
-    try:
-        await page.goto(
-            "https://www.zoopla.co.uk/login/",
-            wait_until="domcontentloaded", timeout=30_000,
-        )
-        await page.wait_for_timeout(2_000)
-        await _dismiss_cookies(page)
-
-        # Click "Continue with Google"
-        google_btn_clicked = False
-        async with page.expect_popup(timeout=12_000) as popup_info:
-            clicked = await _safe_click(page, [
-                "button:has-text('Continue with Google')",
-                "button:has-text('Sign in with Google')",
-                "a:has-text('Continue with Google')",
-                "[data-testid*='google' i]",
-            ], timeout=10_000)
-            if not clicked:
-                logger.warning("[enquiry] Zoopla: Google button not found")
-                await page.close()
-                return None, False  # Zoopla genuinely needs login
-            google_btn_clicked = True
-
-        if google_btn_clicked:
-            google_page = await popup_info.value
-            oauth_ok = await _google_oauth(google_page, _ZO_EMAIL, _ZO_PASS)
-            # Popup closes automatically after successful login
-            try:
-                await google_page.wait_for_close(timeout=15_000)
-            except Exception:
-                pass
-            await page.wait_for_timeout(3_000)
-
-            if not oauth_ok:
-                await page.close()
-                return None, False
-
-        content = (await page.content()).lower()
-        logged_in = (
-            "sign out" in content or "log out" in content
-            or "my profile" in content or "saved properties" in content
-        )
-        logger.info("[enquiry] Zoopla: login %s", "✓" if logged_in else "uncertain")
-        await page.close()
-        return ctx, logged_in
-
-    except Exception as exc:
-        logger.warning("[enquiry] Zoopla login exception: %s", exc)
-        try:
-            await page.close()
-        except Exception:
-            pass
-        return None, False
+    logger.info("[enquiry] Zoopla: using guest context (no login needed)")
+    return ctx, False
 
 
 # ── OnTheMarket login (Google OAuth) ─────────────────────────────────────────
@@ -743,17 +689,22 @@ async def _submit_zoopla(ctx: BrowserContext, listing: dict) -> str:
         await page.wait_for_timeout(3_000)
         await _dismiss_cookies(page)
 
-        # Open enquiry form
-        await _safe_click(page, [
+        # Click "Email agent" / enquiry button to open the guest form
+        clicked = await _safe_click(page, [
+            "button:has-text('Email agent')",
+            "a:has-text('Email agent')",
             "[data-testid='enquiry-button']",
             "button:has-text('Enquire')",
             "button:has-text('Get in touch')",
-            "button:has-text('Email agent')",
             "button:has-text('Contact agent')",
             "a:has-text('Enquire')",
         ])
-        await page.wait_for_timeout(1_500)
+        if not clicked:
+            logger.warning("[enquiry] Zoopla: email agent button not found — %s", url[:60])
+            return "failed"
+        await page.wait_for_timeout(2_000)
 
+        # Fill guest form fields
         await _safe_fill(page, [
             "input[name='firstName']", "input[id*='firstName' i]",
             "input[placeholder*='first name' i]",
@@ -769,19 +720,41 @@ async def _submit_zoopla(ctx: BrowserContext, listing: dict) -> str:
             "input[type='tel']", "input[name='phone']",
             "input[name='telephone']",
         ], CONTACT_PHONE)
-        await _safe_fill(page, ["textarea"], ENQUIRY_MESSAGE)
+
+        msg_filled = await _safe_fill(page, ["textarea"], ENQUIRY_MESSAGE)
+        if not msg_filled:
+            logger.warning("[enquiry] Zoopla: message field not found — %s", url[:60])
+            return "failed"
 
         clicked = await _safe_click(page, [
             "button:has-text('Send message')",
             "button:has-text('Send enquiry')",
+            "button:has-text('Submit')",
             "button[type='submit']",
         ])
         if not clicked:
+            logger.warning("[enquiry] Zoopla: submit button not found — %s", url[:60])
             return "failed"
 
         await page.wait_for_timeout(3_000)
-        logger.info("[enquiry] ✅ Zoopla submitted: %s", url[:80])
-        return "sent"
+
+        # Verify success
+        confirm_text = (await page.inner_text("body")).lower()
+        success_phrases = [
+            "thank you", "message sent", "enquiry sent", "we'll be in touch",
+            "agent has been notified", "your message has been sent",
+        ]
+        if any(p in confirm_text for p in success_phrases):
+            logger.info("[enquiry] ✅ Zoopla confirmed sent: %s", url[:80])
+            return "sent"
+
+        # Form gone = also a success indicator
+        if await page.locator("textarea").count() == 0:
+            logger.info("[enquiry] ✅ Zoopla sent (form gone): %s", url[:80])
+            return "sent"
+
+        logger.warning("[enquiry] Zoopla: no success confirmation — %s", url[:60])
+        return "failed"
 
     except Exception as exc:
         logger.warning("[enquiry] Zoopla submit failed (%s): %s", url[:60], exc)
