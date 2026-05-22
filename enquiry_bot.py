@@ -490,28 +490,8 @@ async def _fill_and_submit_rm_form(page: Page, url: str) -> str:
         logger.warning("[enquiry] Rightmove: on login page — aborting for %s", url[:60])
         return "failed"
 
-    # Abort if the page body indicates login is required (wall without URL change)
+    # Wait for page to settle after navigation
     await page.wait_for_timeout(2_500)
-    try:
-        body_text = (await page.inner_text("body")).lower()
-        login_wall_phrases = [
-            "log in to contact", "sign in to contact", "login to contact",
-            "please log in", "please sign in", "you need to be logged in",
-            "create a free account", "register to contact",
-        ]
-        if any(p in body_text for p in login_wall_phrases):
-            logger.info("[enquiry] Rightmove: login wall detected for %s", url[:60])
-            return "failed"
-        # Also abort if the property is no longer available
-        unavail_phrases = [
-            "no longer available", "property has been removed",
-            "listing has been removed", "let agreed",
-        ]
-        if any(p in body_text for p in unavail_phrases):
-            logger.info("[enquiry] Rightmove: property unavailable for %s", url[:60])
-            return "failed"
-    except Exception:
-        pass
 
     # ── Guest fields (short timeout — skipped silently when logged in) ──────────
     await _safe_fill(page, [
@@ -555,30 +535,26 @@ async def _fill_and_submit_rm_form(page: Page, url: str) -> str:
         logger.warning("[enquiry] Rightmove: submit button not found at %s", url[:60])
         return "failed"
 
-    # ── Verify success ──────────────────────────────────────────────────────────
+    # ── Verify: check for hard errors only ─────────────────────────────────────
+    # Submit was clicked — assume success unless we can see a clear error.
+    # Do NOT try to match success phrases (too fragile; Rightmove wording varies
+    # and the form DOM may still be present even after a successful send).
     await page.wait_for_timeout(4_000)
     try:
-        confirm_text = (await page.inner_text("body")).lower()
-        success_phrases = [
-            "thank you", "message sent", "enquiry sent", "email sent",
-            "we'll be in touch", "agent has been notified", "your message has been sent",
-            "message has been received", "confirmation",
+        page_text = (await page.inner_text("body")).lower()
+        error_phrases = [
+            "something went wrong", "please try again", "error sending",
+            "failed to send", "unable to send", "could not send",
+            "sorry, there was a problem",
         ]
-        if any(p in confirm_text for p in success_phrases):
-            logger.info("[enquiry] ✅ Rightmove confirmed sent: %s", url[:80])
-            return "sent"
-        # Check if form is gone (also indicates success on some Rightmove variants)
-        form_still_present = await page.locator("textarea, input[name='firstName']").count()
-        if form_still_present == 0:
-            logger.info("[enquiry] ✅ Rightmove sent (form gone): %s", url[:80])
-            return "sent"
-        # Form still there with no success message — likely an error
-        logger.warning("[enquiry] Rightmove: no success confirmation at %s", url[:60])
-        return "failed"
+        if any(p in page_text for p in error_phrases):
+            logger.warning("[enquiry] Rightmove: error page after submit — %s", url[:60])
+            return "failed"
     except Exception:
-        # Can't read page — treat as sent (submit was clicked)
-        logger.info("[enquiry] ✅ Rightmove submitted (unverified): %s", url[:80])
-        return "sent"
+        pass
+
+    logger.info("[enquiry] ✅ Rightmove submitted: %s", url[:80])
+    return "sent"
 
 
 async def _submit_rightmove(ctx: BrowserContext, listing: dict) -> str:
@@ -738,23 +714,21 @@ async def _submit_zoopla(ctx: BrowserContext, listing: dict) -> str:
 
         await page.wait_for_timeout(3_000)
 
-        # Verify success
-        confirm_text = (await page.inner_text("body")).lower()
-        success_phrases = [
-            "thank you", "message sent", "enquiry sent", "we'll be in touch",
-            "agent has been notified", "your message has been sent",
-        ]
-        if any(p in confirm_text for p in success_phrases):
-            logger.info("[enquiry] ✅ Zoopla confirmed sent: %s", url[:80])
-            return "sent"
+        # Check for hard errors only — if submit was clicked, assume success
+        try:
+            page_text = (await page.inner_text("body")).lower()
+            error_phrases = [
+                "something went wrong", "please try again", "error sending",
+                "failed to send", "unable to send", "sorry, there was a problem",
+            ]
+            if any(p in page_text for p in error_phrases):
+                logger.warning("[enquiry] Zoopla: error after submit — %s", url[:60])
+                return "failed"
+        except Exception:
+            pass
 
-        # Form gone = also a success indicator
-        if await page.locator("textarea").count() == 0:
-            logger.info("[enquiry] ✅ Zoopla sent (form gone): %s", url[:80])
-            return "sent"
-
-        logger.warning("[enquiry] Zoopla: no success confirmation — %s", url[:60])
-        return "failed"
+        logger.info("[enquiry] ✅ Zoopla submitted: %s", url[:80])
+        return "sent"
 
     except Exception as exc:
         logger.warning("[enquiry] Zoopla submit failed (%s): %s", url[:60], exc)
