@@ -208,5 +208,161 @@
     "date": "2026-05-21",
     "status": "sent",
     "address": "Pied Bull Court, Galen Place, London"
+  },
+  "https://www.rightmove.co.uk/properties/88828977#/?channel=RES_LET": {
+    "date": "2026-05-22",
+    "status": "failed",
+    "address": "Ennismore Gardens Knightsbridge SW7",
+    "source": "rightmove"
+  },
+  "https://www.rightmove.co.uk/properties/88777710#/?channel=RES_LET": {
+    "date": "2026-05-22",
+    "status": "failed",
+    "address": "Princes Gate, South Kensington, SW7",
+    "source": "rightmove"
+  },
+  "https://www.rightmove.co.uk/properties/88828986#/?channel=RES_LET": {
+    "date": "2026-05-22",
+    "status": "failed",
+    "address": "Martin Lane, London, EC4R.",
+    "source": "rightmove"
+  },
+  "https://www.rightmove.co.uk/properties/88829001#/?channel=RES_LET": {
+    "date": "2026-05-22",
+    "status": "failed",
+    "address": "Lavender Place, Royal Mint Street, E1",
+    "source": "rightmove"
+  },
+  "https://www.rightmove.co.uk/properties/88827378#/?channel=RES_LET": {
+    "date": "2026-05-22",
+    "status": "failed",
+    "address": "Gainsford Street, London SE1",
+    "source": "rightmove"
+  },
+  "https://www.rightmove.co.uk/properties/88821528#/?channel=RES_LET": {
+    "date": "2026-05-22",
+    "status": "failed",
+    "address": "Sapphire Court, London, E1",
+    "source": "rightmove"
+  },
+  "https://www.rightmove.co.uk/properties/88811403#/?channel=RES_LET": {
+    "date": "2026-05-22",
+    "status": "failed",
+    "address": "Commercial Street, Kensington, E1",
+    "source": "rightmove"
+  },
+  "https://www.rightmove.co.uk/properties/88765368#/?channel=RES_LET": {
+    "date": "2026-05-22",
+    "status": "failed",
+    "address": "Kensington Apartments, 11 Commercial Street, Aldgate, London E1",
+    "source": "rightmove"
+  },
+  "https://www.rightmove.co.uk/properties/88742358#/?channel=RES_LET": {
+    "date": "2026-05-22",
+    "status": "failed",
+    "address": "Catalina House, Canter Way, E1",
+    "source": "rightmove"
+  },
+  "https://www.rightmove.co.uk/properties/88834056#/?channel=RES_LET": {
+    "date": "2026-05-22",
+    "status": "failed",
+    "address": "Gloucester Place, Marylebone, London, NW1",
+    "source": "rightmove"
+  },
+  "https://www.rightmove.co.uk/properties/88833576#/?channel=RES_LET": {
+    "date": "2026-05-22",
+    "status": "failed",
+    "address": "Lisson Grove, Marylebone, London, NW1",
+    "source": "rightmove"
+  },
+  "https://www.rightmove.co.uk/properties/88823736#/?channel=RES_LET": {
+    "date": "2026-05-22",
+    "status": "failed",
+    "address": "Nottingham Place Marylebone W1U",
+    "source": "rightmove"
+  },
+  "https://www.rightmove.co.uk/properties/88832766#/?channel=RES_LET": {
+    "date": "2026-05-22",
+    "status": "failed",
+    "address": "Chiltern Street, Marylebone, London, W1U",
+    "source": "rightmove"
+  },
+  "https://www.rightmove.co.uk/properties/88819926#/?channel=RES_LET": {
+    "date": "2026-05-22",
+    "status": "failed",
+    "address": "Hill Street, Mayfair, London, W1J",
+    "source": "rightmove"
+  },
+  "https://www.rightmove.co.uk/properties/88727439#/?channel=RES_LET": {
+    "date": "2026-05-22",
+    "status": "failed",
+    "address": "39 HILL STREET, London, W1J",
+    "source": "rightmove"
+  },
+  "https://www.rightmove.co.uk/properties/88798269#/?channel=RES_LET": {
+    "date": "2026-05-22",
+    "status": "failed",
+    "address": "15 Portman Square, Marylebone, W1",
+    "source": "rightmove"
+  },
+  "https://www.rightmove.co.uk/properties/88831281#/?channel=RES_LET": {
+    "date": "2026-05-22",
+    "status": "failed",
+    "address": "The Water Gardens, Connaught Village, W2",
+    "source": "rightmove"
+  },
+  "https://www.rightmove.co.uk/properties/88840014#/?channel=RES_LET": {
+    "date": "2026-05-22",
+    "status": "failed",
+    "address": "Great Titchfield Street, London, W1W",
+    "source": "rightmove"
+  },
+  "https://www.rightmove.co.uk/properties/88801227#/?channel=RES_LET": {
+    "date": "2026-05-22",
+    "status": "failed",
+    "address": "New Cavendish Street, London, W1W",
+    "source": "rightmove"
+  },
+  "https://www.rightmove.co.uk/properties/88822266#/?channel=RES_LET": {
+    "date": "2026-05-22",
+    "status": "failed",
+    "address": "St Michaels Street, London, W2,",
+    "source": "rightmove"
+  },
+  "https://www.rightmove.co.uk/properties/88832601#/?channel=RES_LET": {
+    "date": "2026-05-22",
+    "status": "failed",
+    "address": "Frampton Street, St John's Wood, London, NW8",
+    "source": "rightmove"
+  },
+  "https://www.rightmove.co.uk/properties/87816825#/?channel=RES_LET": {
+    "date": "2026-05-22",
+    "status": "failed",
+    "address": "Conway Street, London, W1T",
+    "source": "rightmove"
+  },
+  "https://www.rightmove.co.uk/properties/88816278#/?channel=RES_LET": {
+    "date": "2026-05-22",
+    "status": "failed",
+    "address": "Neroli House, Piazza Walk, Tower Hamlets, London",
+    "source": "rightmove"
+  },
+  "https://www.rightmove.co.uk/properties/88840773#/?channel=RES_LET": {
+    "date": "2026-05-22",
+    "status": "failed",
+    "address": "Rossmore Court, London",
+    "source": "rightmove"
+  },
+  "https://www.rightmove.co.uk/properties/88836255#/?channel=RES_LET": {
+    "date": "2026-05-22",
+    "status": "failed",
+    "address": "Colosseum Terrace, Regent's Park, London",
+    "source": "rightmove"
+  },
+  "https://www.onthemarket.com/details/19521095/": {
+    "date": "2026-05-22",
+    "status": "sent",
+    "address": "Barons Court Road",
+    "source": "onthemarket"
   }
 }
