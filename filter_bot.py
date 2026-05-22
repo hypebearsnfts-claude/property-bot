@@ -36,7 +36,7 @@ from telegram.ext import Application, CommandHandler, ContextTypes
 from utils.walk_time import nearest_walk_minutes
 from utils.valuation import get_fmv_verdict, _parse_price_pcm
 from utils.seen_listings import is_duplicate, mark_as_seen, clean_old_entries
-from enquiry_bot import submit_enquiries, enquiry_summary, already_enquired, get_failed_enquiry_listings
+from enquiry_bot import submit_enquiries, enquiry_summary, already_enquired
 
 # ── Config ────────────────────────────────────────────────────────────────────
 
@@ -534,27 +534,17 @@ async def run_filter_pipeline_and_send(
     logger.info("[filter] Automated pipeline complete — %d/%d new passed, %d sent (dupes skipped: %d)",
                 len(passing), new_count, sent, dupes_skipped)
 
-    # ── Enquiry contact extraction ────────────────────────────────────────────
-    # Visit each listing page, extract agent phone number, send contact list.
-    # (Portal form submission requires login and is blocked — phone extraction
-    #  works without login and is fully reliable.)
-    # Always run enquiries — even if no new listings passed today, we still
-    # need to retry previously-failed enquiries from earlier runs.
-    failed_retries  = get_failed_enquiry_listings()
-    all_for_enquiry = to_send + failed_retries
-    if all_for_enquiry:
+    # ── Enquiry submission — new listings only ────────────────────────────────
+    # Only submit enquiries for listings that passed filters today.
+    # Old failed enquiries are NOT retried — each day starts fresh.
+    if to_send:
         try:
-            retry_count = len(failed_retries)
-            new_count_e = len(to_send)
-            parts = []
-            if new_count_e: parts.append(f"{new_count_e} new")
-            if retry_count:  parts.append(f"{retry_count} retry")
             await bot.send_message(
                 chat_id=chat_id,
-                text=f"📞 Submitting enquiries ({', '.join(parts)})…",
+                text=f"📞 Submitting enquiries ({len(to_send)} new)…",
             )
-            enq_results = await submit_enquiries(all_for_enquiry)
-            summary_msg = enquiry_summary(enq_results, all_for_enquiry)
+            enq_results = await submit_enquiries(to_send)
+            summary_msg = enquiry_summary(enq_results, to_send)
             await bot.send_message(
                 chat_id=chat_id,
                 text=summary_msg,

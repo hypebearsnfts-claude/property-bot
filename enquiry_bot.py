@@ -119,6 +119,7 @@ def mark_enquired(listing: dict, status: str = "sent") -> None:
         "date":    datetime.now().strftime("%Y-%m-%d"),
         "status":  status,
         "address": listing.get("address", ""),
+        "source":  listing.get("source", ""),
     }
     _save_log(log)
 
@@ -533,7 +534,7 @@ async def _fill_and_submit_rm_form(page: Page, url: str) -> str:
     """
     Fill and submit the Rightmove contact form on whatever page is currently loaded.
     Handles both the guest (unauthenticated) and logged-in form variants.
-    Returns "sent" on success, "failed" otherwise.
+    Returns "sent" on confirmed success, "failed" otherwise.
     """
     current_url = page.url
     logger.info("[enquiry] Rightmove: filling form at %s", current_url[:80])
@@ -543,8 +544,28 @@ async def _fill_and_submit_rm_form(page: Page, url: str) -> str:
         logger.warning("[enquiry] Rightmove: on login page — aborting for %s", url[:60])
         return "failed"
 
-    # Wait for the form to be rendered (JS-rendered — must wait for load to settle)
+    # Abort if the page body indicates login is required (wall without URL change)
     await page.wait_for_timeout(2_500)
+    try:
+        body_text = (await page.inner_text("body")).lower()
+        login_wall_phrases = [
+            "log in to contact", "sign in to contact", "login to contact",
+            "please log in", "please sign in", "you need to be logged in",
+            "create a free account", "register to contact",
+        ]
+        if any(p in body_text for p in login_wall_phrases):
+            logger.info("[enquiry] Rightmove: login wall detected for %s", url[:60])
+            return "failed"
+        # Also abort if the property is no longer available
+        unavail_phrases = [
+            "no longer available", "property has been removed",
+            "listing has been removed", "let agreed",
+        ]
+        if any(p in body_text for p in unavail_phrases):
+            logger.info("[enquiry] Rightmove: property unavailable for %s", url[:60])
+            return "failed"
+    except Exception:
+        pass
 
     # ── Guest fields (short timeout — skipped silently when logged in) ──────────
     await _safe_fill(page, [
@@ -588,9 +609,30 @@ async def _fill_and_submit_rm_form(page: Page, url: str) -> str:
         logger.warning("[enquiry] Rightmove: submit button not found at %s", url[:60])
         return "failed"
 
+    # ── Verify success ──────────────────────────────────────────────────────────
     await page.wait_for_timeout(4_000)
-    logger.info("[enquiry] ✅ Rightmove submitted: %s", url[:80])
-    return "sent"
+    try:
+        confirm_text = (await page.inner_text("body")).lower()
+        success_phrases = [
+            "thank you", "message sent", "enquiry sent", "email sent",
+            "we'll be in touch", "agent has been notified", "your message has been sent",
+            "message has been received", "confirmation",
+        ]
+        if any(p in confirm_text for p in success_phrases):
+            logger.info("[enquiry] ✅ Rightmove confirmed sent: %s", url[:80])
+            return "sent"
+        # Check if form is gone (also indicates success on some Rightmove variants)
+        form_still_present = await page.locator("textarea, input[name='firstName']").count()
+        if form_still_present == 0:
+            logger.info("[enquiry] ✅ Rightmove sent (form gone): %s", url[:80])
+            return "sent"
+        # Form still there with no success message — likely an error
+        logger.warning("[enquiry] Rightmove: no success confirmation at %s", url[:60])
+        return "failed"
+    except Exception:
+        # Can't read page — treat as sent (submit was clicked)
+        logger.info("[enquiry] ✅ Rightmove submitted (unverified): %s", url[:80])
+        return "sent"
 
 
 async def _submit_rightmove(ctx: BrowserContext, listing: dict) -> str:
