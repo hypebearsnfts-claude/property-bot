@@ -243,11 +243,21 @@ BLACKLISTED_KEYWORDS = [
 
 def _has_blacklisted_keyword(listing: dict) -> bool:
     """Return True if any blacklisted keyword appears anywhere in the listing text."""
+    # Include features/amenities fields — concierge, gym etc. often only appear there
+    features = listing.get("features", [])
+    if isinstance(features, list):
+        features_str = " ".join(features)
+    else:
+        features_str = str(features)
+
     haystack = " ".join([
         listing.get("title", ""),
         listing.get("address", ""),
         listing.get("description", ""),
         listing.get("summary", ""),
+        features_str,
+        listing.get("amenities", ""),
+        listing.get("key_features", ""),
     ]).lower()
     return any(kw in haystack for kw in BLACKLISTED_KEYWORDS)
 

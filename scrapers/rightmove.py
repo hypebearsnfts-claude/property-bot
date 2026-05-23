@@ -115,6 +115,9 @@ async def _load_page(browser, area, loc_id, index):
                     else if (sqmMatch) sqft = Math.round(parseInt(sqmMatch[1].replace(/,/g,'')) * 10.764);
                     const agentEl = card.querySelector('[class*="ContactBlock_contactTitle"], [class*="agentLogo"], .propertyCard-contactsItem span, [data-test="agent-title"]');
                     const agent = agentEl ? agentEl.innerText.trim() : '';
+                    // Extract key features bullet points specifically so they are never cut off
+                    const featureEls = card.querySelectorAll('li, [class*="feature"], [class*="tag"], [class*="badge"]');
+                    const features = Array.from(featureEls).map(el => el.innerText.trim()).filter(Boolean);
                     return {
                         url:         link.href || '',
                         price:       price ? price.innerText.trim() : 'Price N/A',
@@ -123,7 +126,8 @@ async def _load_page(browser, area, loc_id, index):
                         baths:       bathMatch ? parseInt(bathMatch[1]) : null,
                         sqft:        sqft,
                         agent:       agent,
-                        description: featText.slice(0, 600),
+                        description: featText.slice(0, 1200),
+                        features:    features,
                     };
                 }).filter(Boolean);
             }
@@ -184,6 +188,7 @@ async def _scrape_area_inner(browser, area, loc_id):
                         "sqft":        d.get("sqft"),
                         "agent":       d.get("agent", ""),
                         "description": d.get("description", ""),
+                        "features":    d.get("features", []),
                     })
                     page_count += 1
 

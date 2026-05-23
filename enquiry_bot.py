@@ -37,6 +37,7 @@ import asyncio
 import json
 import logging
 import os
+import random
 import re
 from datetime import datetime
 from pathlib import Path
@@ -285,20 +286,47 @@ async def _build_rightmove_ctx(browser) -> tuple[BrowserContext | None, bool]:
     if _RM_COOKIES:
         try:
             cookies = json.loads(_RM_COOKIES)
-            await ctx.add_cookies(cookies)
-            logger.info("[enquiry] Rightmove: loaded %d saved cookies", len(cookies))
 
-            # Quick verification — visit account page and check for logout link
+            # Playwright only accepts a strict set of cookie fields.
+            # Build clean dicts and load one-by-one so a single bad cookie
+            # doesn't prevent the rest from being set.
+            loaded = 0
+            for raw in cookies:
+                clean: dict = {
+                    "name":     str(raw.get("name",  "")),
+                    "value":    str(raw.get("value", "")),
+                    "domain":   str(raw.get("domain", "")),
+                    "path":     str(raw.get("path",   "/")),
+                    "secure":   bool(raw.get("secure",   False)),
+                    "httpOnly": bool(raw.get("httpOnly", False)),
+                }
+                # Skip cookies with empty name or domain
+                if not clean["name"] or not clean["domain"]:
+                    continue
+                # Strip control characters from value (CDP rejects them)
+                clean["value"] = "".join(
+                    ch for ch in clean["value"] if ch >= " " or ch == "\t"
+                )
+                try:
+                    await ctx.add_cookies([clean])
+                    loaded += 1
+                except Exception:
+                    pass  # skip this individual cookie
+
+            logger.info("[enquiry] Rightmove: loaded %d/%d cookies", loaded, len(cookies))
+
+            # Quick verification — visit dashboard and check for logged-in indicators
             page = await _new_page(ctx)
             try:
                 await page.goto(
-                    "https://www.rightmove.co.uk/user/login.html",
+                    "https://www.rightmove.co.uk/login.html",
                     wait_until="load", timeout=25_000,
                 )
                 await page.wait_for_timeout(2_000)
                 content = (await page.content()).lower()
                 logged_in = any(kw in content for kw in [
-                    "log out", "logout", "sign out", "my rightmove", "saved properties",
+                    "log out", "logout", "sign out", "my rightmove",
+                    "saved properties", "hello ", "myrightmove", "sign in or create",
                 ])
                 await page.close()
                 if logged_in:
@@ -956,7 +984,11 @@ async def submit_enquiries(listings: list[dict]) -> dict:
                     results[url] = {"status": "failed", "area": lst.get("area", ""),
                                     "price": lst.get("price", ""), "address": ""}
 
-                await asyncio.sleep(2)
+                # Random delay between submissions to avoid triggering reCAPTCHA.
+                # Rightmove flags rapid-fire requests; 30-90s mimics human pacing.
+                delay = random.uniform(30, 90)
+                logger.info("[enquiry] Waiting %.0fs before next submission…", delay)
+                await asyncio.sleep(delay)
 
         # Close all authenticated contexts
         for ctx in ctx_map.values():
