@@ -364,5 +364,89 @@
     "status": "sent",
     "address": "Barons Court Road",
     "source": "onthemarket"
+  },
+  "https://www.rightmove.co.uk/properties/88853400#/?channel=RES_LET": {
+    "date": "2026-05-23",
+    "status": "sent",
+    "address": "Turner House, 6 Exchange Court, WC2R",
+    "source": "rightmove"
+  },
+  "https://www.rightmove.co.uk/properties/88800831#/?channel=RES_LET": {
+    "date": "2026-05-23",
+    "status": "failed",
+    "address": "Charing Cross Road, Covent Garden, London, WC2H",
+    "source": "rightmove"
+  },
+  "https://www.rightmove.co.uk/properties/88855284#/?channel=RES_LET": {
+    "date": "2026-05-23",
+    "status": "failed",
+    "address": "Sinclair Road London W14",
+    "source": "rightmove"
+  },
+  "https://www.rightmove.co.uk/properties/88854495#/?channel=RES_LET": {
+    "date": "2026-05-23",
+    "status": "sent",
+    "address": "Milson Road, West Kensington, London, W14",
+    "source": "rightmove"
+  },
+  "https://www.rightmove.co.uk/properties/88866117#/?channel=RES_LET": {
+    "date": "2026-05-23",
+    "status": "failed",
+    "address": "London Dock, Tower Hill, E1W",
+    "source": "rightmove"
+  },
+  "https://www.rightmove.co.uk/properties/88832295#/?channel=RES_LET": {
+    "date": "2026-05-23",
+    "status": "failed",
+    "address": "Park Road, Marylebone, London, NW1",
+    "source": "rightmove"
+  },
+  "https://www.rightmove.co.uk/properties/88831989#/?channel=RES_LET": {
+    "date": "2026-05-23",
+    "status": "failed",
+    "address": "Charles Street, Mayfair, London, W1J",
+    "source": "rightmove"
+  },
+  "https://www.rightmove.co.uk/properties/88663437#/?channel=RES_LET": {
+    "date": "2026-05-23",
+    "status": "sent",
+    "address": "Nutford Place, London W1H",
+    "source": "rightmove"
+  },
+  "https://www.rightmove.co.uk/properties/88853421#/?channel=RES_LET": {
+    "date": "2026-05-23",
+    "status": "sent",
+    "address": "Fisherton Street, London, NW8",
+    "source": "rightmove"
+  },
+  "https://www.rightmove.co.uk/properties/88850496#/?channel=RES_LET": {
+    "date": "2026-05-23",
+    "status": "sent",
+    "address": "Lisson Grove, London, NW8",
+    "source": "rightmove"
+  },
+  "https://www.rightmove.co.uk/properties/88684854#/?channel=RES_LET": {
+    "date": "2026-05-23",
+    "status": "failed",
+    "address": "Park Road, St John's Wood, London, NW8",
+    "source": "rightmove"
+  },
+  "https://www.rightmove.co.uk/properties/88750941#/?channel=RES_LET": {
+    "date": "2026-05-23",
+    "status": "sent",
+    "address": "Sinclair Road, Brook Green, London",
+    "source": "rightmove"
+  },
+  "https://www.rightmove.co.uk/properties/88354533#/?channel=RES_LET": {
+    "date": "2026-05-23",
+    "status": "sent",
+    "address": "Thomas More Street, Wapping",
+    "source": "rightmove"
+  },
+  "https://www.onthemarket.com/details/19557616/": {
+    "date": "2026-05-23",
+    "status": "sent",
+    "address": "Queens Club Gardens, London, W14",
+    "source": "onthemarket"
   }
 }
