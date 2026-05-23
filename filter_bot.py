@@ -196,7 +196,10 @@ def _dedupe_cross_portal(listings: list[dict]) -> list[dict]:
 BLACKLISTED_AGENTS = [
     "greater london properties",
     "foxtons",
+    "savills",
+    "chestertons",
     "dexters",
+    "tavistock bow",
     "ila",
     "219baker",
     "219 baker",
