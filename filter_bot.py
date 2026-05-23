@@ -56,6 +56,139 @@ logging.basicConfig(
 logging.getLogger("httpx").setLevel(logging.WARNING)
 logger = logging.getLogger(__name__)
 
+# ── Portal preference (cross-portal dedup) ───────────────────────────────────
+# When the same physical property appears on multiple portals we keep only the
+# highest-priority version so we don't end up with a Rightmove enquiry for a
+# property that is already covered by OTM or Zoopla (whose forms are simpler).
+#
+# Priority: OnTheMarket > Zoopla > Rightmove > everything else.
+
+_PORTAL_PRIORITY: list[str] = ["onthemarket", "zoopla", "rightmove"]
+
+
+def _addr_tokens(addr: str) -> list[str]:
+    """Normalise an address string into a list of meaningful lowercase tokens."""
+    a = addr.lower()
+    # Remove full UK postcodes  (e.g. "SW1A 2AA", "E1 6JG")
+    a = re.sub(r'\b[a-z]{1,2}\d{1,2}[a-z]?\s+\d[a-z]{2}\b', '', a)
+    # Remove "flat N" / "apartment 3B" etc.
+    a = re.sub(r'\b(flat|apartment|apt|unit)\s*[\d\w]+\b', '', a)
+    # Remove punctuation
+    a = re.sub(r'[^\w\s]', ' ', a)
+    _NOISE = {'the', 'a', 'of', 'and', 'in', 'at', 'london'}
+    _NUM_RE = re.compile(r'^\d+[a-z]?$')
+    # Keep numeric tokens regardless of length; drop short non-numeric noise words
+    return [
+        t for t in a.split()
+        if t not in _NOISE and (_NUM_RE.match(t) or len(t) > 2)
+    ]
+
+
+def _address_match(addr1: str, addr2: str) -> bool:
+    """
+    Return True if two address strings almost certainly describe the same
+    physical property.  Conservative — prefers false negatives over false
+    positives so we never silently drop a valid listing.
+
+    Rules
+    ─────
+    • If both addresses start with a street number → numbers must match, then
+      at least one non-generic street token (not "street", "road", etc.) must
+      match.
+    • Otherwise (building-name addresses) → the first two significant tokens
+      must match exactly (e.g. "sapphire court" == "sapphire court").
+    """
+    t1 = _addr_tokens(addr1)
+    t2 = _addr_tokens(addr2)
+    if not t1 or not t2:
+        return False
+
+    _NUM_RE = re.compile(r'^\d+[a-z]?$')
+    # Generic suffixes that can't distinguish two different streets on their own
+    _GENERIC = {
+        'street', 'road', 'avenue', 'lane', 'place', 'close', 'court',
+        'gardens', 'garden', 'square', 'terrace', 'way', 'drive', 'grove',
+        'crescent', 'mews', 'walk', 'row', 'hill', 'park',
+    }
+
+    def get_num(tokens: list[str]) -> Optional[str]:
+        for t in tokens:
+            if _NUM_RE.match(t):
+                return t
+        return None
+
+    num1 = get_num(t1)
+    num2 = get_num(t2)
+
+    if num1 and num2:
+        # Both have street numbers — numbers must agree, then at least one
+        # non-generic token (the actual street name) must also match.
+        if num1 != num2:
+            return False
+        rest1 = {t for t in t1 if t != num1 and t not in _GENERIC}
+        rest2 = {t for t in t2 if t != num2 and t not in _GENERIC}
+        return bool(rest1 & rest2)
+
+    else:
+        # Building-name addresses — first two tokens must match
+        # (e.g. "sapphire court" vs "kings court" — "court" alone is not enough)
+        if len(t1) < 2 or len(t2) < 2:
+            return False
+        return t1[0] == t2[0] and t1[1] == t2[1]
+
+
+def _dedupe_cross_portal(listings: list[dict]) -> list[dict]:
+    """
+    Group listings that appear to be the same physical property across portals
+    and keep only the highest-priority portal version.
+
+    Example: Rightmove + OTM versions of the same flat → keep OTM only.
+    """
+    def portal_rank(lst: dict) -> int:
+        src = lst.get("source", "").lower()
+        try:
+            return _PORTAL_PRIORITY.index(src)
+        except ValueError:
+            return len(_PORTAL_PRIORITY)   # unknown portals ranked last
+
+    kept: list[dict] = []
+    used = [False] * len(listings)
+
+    for i, l1 in enumerate(listings):
+        if used[i]:
+            continue
+        group = [i]
+        addr1 = l1.get("address", "")
+
+        for j in range(i + 1, len(listings)):
+            if used[j]:
+                continue
+            l2 = listings[j]
+            # Only merge across portals — same portal/URL is handled by seen_listings
+            if l1.get("source", "") == l2.get("source", ""):
+                continue
+            if _address_match(addr1, l2.get("address", "")):
+                group.append(j)
+                used[j] = True
+
+        # Pick the highest-priority portal in the group
+        best = min((listings[k] for k in group), key=portal_rank)
+        kept.append(best)
+        used[i] = True
+
+        if len(group) > 1:
+            others = [
+                f"{listings[k].get('source', '?')} — {listings[k].get('address', '')[:40]}"
+                for k in group if listings[k] is not best
+            ]
+            logger.info(
+                "[filter] Cross-portal dedup: keeping %s (%s), dropping: %s",
+                best.get("source"), best.get("address", "")[:40], " | ".join(others),
+            )
+
+    return kept
+
+
 # ── Agent blacklist ───────────────────────────────────────────────────────────
 # Listings from these agents are silently dropped before any other processing.
 # Case-insensitive. Add/remove names here as needed.
@@ -289,6 +422,18 @@ async def run_pipeline(
         logger.info("[filter] Duplicate filter: skipped %d already-sent listings (%d new)",
                     dupes_skipped, len(new_listings))
     walk_passed = new_listings
+
+    # Step 4.5 — Cross-portal dedup: when the same property appears on Rightmove
+    # AND on OTM/Zoopla, keep only the higher-priority portal version so we avoid
+    # Rightmove's finicky enquiry form whenever a better alternative exists.
+    before_xp = len(walk_passed)
+    walk_passed = _dedupe_cross_portal(walk_passed)
+    xp_removed = before_xp - len(walk_passed)
+    if xp_removed:
+        logger.info(
+            "[filter] Cross-portal dedup: dropped %d Rightmove duplicate(s) covered by OTM/Zoopla",
+            xp_removed,
+        )
 
     # Step 5 — FMV verdict
     fmv_passed: list[dict] = []
