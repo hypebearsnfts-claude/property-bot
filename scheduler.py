@@ -55,12 +55,13 @@ _DESTINATIONS: list[str] = [
 _SCORE_MIN = int(os.getenv("SCORE_MIN", "0"))   # filter: only send listings >= this score
 
 # Source priority for cross-platform dedup (lower = preferred)
-# OpenRent = direct landlord, usually best price. Rightmove/Zoopla = agent listings.
+# Zoopla/OTM tend to have more direct agent contact and better listing detail.
+# Rightmove is fallback. OpenRent is lowest — manual contact only.
 _SOURCE_PRIORITY: dict[str, int] = {
-    "openrent":     0,
-    "rightmove":    1,
-    "zoopla":       2,
-    "onthemarket":  3,
+    "zoopla":       0,
+    "onthemarket":  1,
+    "rightmove":    2,
+    "openrent":     3,
 }
 
 # OTM scrapes by postcode district/sub-district slug. Even specific slugs (e.g. nw1)
