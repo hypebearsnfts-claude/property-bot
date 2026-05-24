@@ -42,8 +42,8 @@ _DEFAULT_DESTINATIONS = [
     "Baker Street Underground Station, London",
     "Marylebone Station, London",
     "Covent Garden Underground Station, London",
-    "London Bridge Station, London",
-    "Knightsbridge Underground Station, London",
+    "Farringdon Station, London",
+    "Angel Underground Station, London",
 ]
 
 _DESTINATIONS: list[str] = [
@@ -74,18 +74,21 @@ _SOURCE_PRIORITY: dict[str, int] = {
 # Deliberately tight — if a listing can't be confirmed inside the target area it
 # is dropped. The walk-time filter still catches anything that slips through.
 _OTM_VALID_POSTCODES: dict[str, list[str]] = {
-    "Covent Garden":   ["WC2H", "WC2E"],               # Covent Garden & Strand only
-    "Soho":            ["W1D", "W1F"],                  # Soho core (no Oxford St sprawl)
-    "Knightsbridge":   ["SW1X", "SW3"],                 # Knightsbridge & Beauchamp Place
-    "West Kensington": ["W14"],                         # West Kensington only
-    "London Bridge":   ["SE1"],                         # SE1 is tightly London Bridge
-    "Tower Hill":      ["EC3N", "EC3M"],                # Tower Hill & Monument
-    "Baker Street":    ["NW1 5", "NW1 6"],              # Baker St sectors (not Camden/KX)
-    "Bond Street":     ["W1K", "W1J"],                  # Bond St & Mayfair
-    "Marble Arch":     ["W1H", "W2 1", "W2 2"],         # Marble Arch & edge of W2
-    "Oxford Circus":   ["W1B", "W1F"],                  # Oxford Circus & Carnaby St
-    "Marylebone":      ["W1U", "W1G"],                  # Marylebone High St & Harley St
-    "Regent's Park":   ["NW8", "NW1 4"],                # St John's Wood & Outer Circle
+    "Covent Garden":      ["WC2H", "WC2E"],             # Covent Garden & Strand only
+    "Soho":               ["W1D", "W1F"],               # Soho core (no Oxford St sprawl)
+    "Baker Street":       ["NW1 5", "NW1 6"],           # Baker St sectors (not Camden/KX)
+    "Bond Street":        ["W1K", "W1J"],               # Bond St & Mayfair
+    "Marble Arch":        ["W1H", "W2 1", "W2 2"],      # Marble Arch & edge of W2
+    "Oxford Circus":      ["W1B", "W1F"],               # Oxford Circus & Carnaby St
+    "Marylebone":         ["W1U", "W1G"],               # Marylebone High St & Harley St
+    "Regent's Park":      ["NW8", "NW1 4"],             # St John's Wood & Outer Circle
+    "Kensington Olympia": ["W14"],                      # Olympia & West Kensington
+    "Holborn":            ["WC2B", "WC1V"],             # Holborn core
+    "Chancery Lane":      ["WC2A", "EC4A"],             # Chancery Lane & Temple
+    "Farringdon":         ["EC1A", "EC1M"],             # Farringdon & Barbican fringe
+    "Angel":              ["N1"],                       # Angel & Islington
+    "Old Street":         ["EC1V", "EC1Y"],             # Old Street & Shoreditch fringe
+    "Charing Cross":      ["WC2N"],                     # Charing Cross & Embankment
 }
 
 

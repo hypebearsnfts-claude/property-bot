@@ -22,7 +22,7 @@ Bot-detection fix 2026-04-20:
   OTM (like Rightmove and Zoopla) detects reused Playwright browser contexts.
   Each page now uses a fresh browser context to avoid the empty-results block.
   Area-level retry (once, after 8 s) covers the case where even page 1 is
-  bot-detected (observed for West Kensington under concurrent scraping load).
+  bot-detected (observed under concurrent scraping load).
 """
 
 import asyncio

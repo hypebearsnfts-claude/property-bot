@@ -959,7 +959,7 @@ async def submit_enquiries(listings: list[dict]) -> dict:
                     }
                 continue
 
-            for lst in listings_grp:
+            for i, lst in enumerate(listings_grp):
                 url = lst.get("url", "")
                 try:
                     if source == "rightmove":
@@ -985,10 +985,11 @@ async def submit_enquiries(listings: list[dict]) -> dict:
                                     "price": lst.get("price", ""), "address": ""}
 
                 # Random delay between submissions to avoid triggering reCAPTCHA.
-                # Rightmove flags rapid-fire requests; 30-90s mimics human pacing.
-                delay = random.uniform(30, 90)
-                logger.info("[enquiry] Waiting %.0fs before next submission…", delay)
-                await asyncio.sleep(delay)
+                # Skip delay after the final listing in the group.
+                if i < len(listings_grp) - 1:
+                    delay = random.uniform(30, 90)
+                    logger.info("[enquiry] Waiting %.0fs before next submission…", delay)
+                    await asyncio.sleep(delay)
 
         # Close all authenticated contexts
         for ctx in ctx_map.values():

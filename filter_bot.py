@@ -260,8 +260,8 @@ def _has_blacklisted_keyword(listing: dict) -> bool:
         listing.get("description", ""),
         listing.get("summary", ""),
         features_str,
-        listing.get("amenities", ""),
-        listing.get("key_features", ""),
+        listing.get("amenities") or "",
+        listing.get("key_features") or "",
     ]).lower()
     return any(kw in haystack for kw in BLACKLISTED_KEYWORDS)
 

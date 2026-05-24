@@ -11,7 +11,6 @@ logger = logging.getLogger(__name__)
 # Station slugs for Zoopla's /station/tube/ URL format — confirmed live 2026-04-17.
 # All use radius=0.5 miles, matching Rightmove STATION and OTM station searches.
 # Soho has no tube station; Piccadilly Circus is the central Soho stop.
-# Tower Hill is the correct tube station (previously used broad "ec3" or "tower-bridge").
 AREAS = {
     "Covent Garden":      "covent-garden",
     "Soho":               "piccadilly-circus",
@@ -199,7 +198,7 @@ async def _scrape_area(browser, area, slug):
                 break
 
         # Retry if: got 0 listings, OR stopped after exactly 1 full page
-        # (page 2 bot-detected — same symptom as West Kensington / Knightsbridge)
+        # (page 2 bot-detected — retry logic handles this)
         stopped_after_one_full_page = (pages_fetched == 1 and len(listings) >= _FULL_PAGE_MIN)
         if (listings and not stopped_after_one_full_page) or attempt == 3:
             break
