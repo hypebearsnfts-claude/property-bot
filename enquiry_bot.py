@@ -97,6 +97,9 @@ def _save_log(data: dict) -> None:
         logger.warning("[enquiry] Failed to save enquiry_log.json: %s", exc)
 
 
+_MAX_FAIL_RETRIES = 3   # auto-escalate to "manual" after this many failures
+
+
 def already_enquired(listing: dict) -> bool:
     url = listing.get("url", "").strip()
     if not url:
@@ -114,13 +117,70 @@ def mark_enquired(listing: dict, status: str = "sent") -> None:
     if not url:
         return
     log = _load_log()
+    existing = log.get(url, {})
+
+    # Track consecutive failure count; reset on any non-failed outcome
+    if status == "failed":
+        fail_count = existing.get("fail_count", 0) + 1
+        if fail_count >= _MAX_FAIL_RETRIES:
+            logger.info(
+                "[enquiry] %s failed %d times — escalating to manual", url[:60], fail_count
+            )
+            status = "manual"
+            fail_count = 0
+    else:
+        fail_count = 0
+
     log[url] = {
-        "date":    datetime.now().strftime("%Y-%m-%d"),
-        "status":  status,
-        "address": listing.get("address", ""),
-        "source":  listing.get("source", ""),
+        "date":       datetime.now().strftime("%Y-%m-%d"),
+        "status":     status,
+        "address":    listing.get("address", ""),
+        "source":     listing.get("source", ""),
+        "price":      listing.get("price", existing.get("price", "")),
+        "fail_count": fail_count,
     }
     _save_log(log)
+
+
+def check_price_changes(listings: list[dict]) -> list[dict]:
+    """
+    Compare each scraped listing's price against what was stored when we
+    first enquired. Returns a list of dicts describing price drops, each with:
+      url, address, old_price, new_price
+    Only fires for listings already marked 'sent' — i.e. we already enquired.
+    """
+    log = _load_log()
+    drops = []
+    for lst in listings:
+        url = lst.get("url", "").strip()
+        if not url:
+            continue
+        entry = log.get(url)
+        if not entry or entry.get("status") != "sent":
+            continue
+        old_price = entry.get("price", "")
+        new_price = lst.get("price", "")
+        if not old_price or not new_price or old_price == new_price:
+            continue
+        # Parse £ amounts for comparison — only report genuine drops
+        def _parse_price(p: str) -> int | None:
+            import re as _re
+            m = _re.search(r"[\d,]+", p.replace(",", ""))
+            return int(m.group().replace(",", "")) if m else None
+        old_val = _parse_price(old_price)
+        new_val  = _parse_price(new_price)
+        if old_val and new_val and new_val < old_val:
+            drops.append({
+                "url":       url,
+                "address":   entry.get("address", lst.get("address", "")),
+                "old_price": old_price,
+                "new_price": new_price,
+            })
+            # Update stored price so we don't re-alert on the same drop
+            log[url]["price"] = new_price
+    if drops:
+        _save_log(log)
+    return drops
 
 
 # ── Browser helpers ───────────────────────────────────────────────────────────

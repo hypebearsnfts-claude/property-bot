@@ -36,7 +36,7 @@ from telegram.ext import Application, CommandHandler, ContextTypes
 from utils.walk_time import nearest_walk_minutes
 from utils.valuation import get_fmv_verdict, _parse_price_pcm
 from utils.seen_listings import is_duplicate, mark_as_seen, clean_old_entries
-from enquiry_bot import submit_enquiries, enquiry_summary, already_enquired
+from enquiry_bot import submit_enquiries, enquiry_summary, already_enquired, check_price_changes
 
 # ── Config ────────────────────────────────────────────────────────────────────
 
@@ -389,6 +389,11 @@ async def run_pipeline(
     raw: list[dict] = json.loads(LISTINGS_PATH.read_text(encoding="utf-8"))
     logger.info("[filter] Loaded %d listings", len(raw))
 
+    # Step 0 — price change detection (runs on full scraped set before any filtering)
+    price_drops = check_price_changes(raw)
+    if price_drops:
+        logger.info("[filter] Price drops detected: %d", len(price_drops))
+
     # Step 1 — agent blacklist filter
     before = len(raw)
     raw = [l for l in raw if not _is_blacklisted(l)]
@@ -692,6 +697,31 @@ async def run_filter_pipeline_and_send(
     )
     logger.info("[filter] Automated pipeline complete — %d/%d new passed, %d sent (dupes skipped: %d)",
                 len(passing), new_count, sent, dupes_skipped)
+
+    # ── Price drop alerts ─────────────────────────────────────────────────────
+    passing_urls = {l.get("url") for l in (passing or [])}
+    all_raw: list[dict] = []
+    try:
+        all_raw = json.loads(LISTINGS_PATH.read_text(encoding="utf-8"))
+    except Exception:
+        pass
+    price_drops = check_price_changes(all_raw)
+    for drop in price_drops:
+        drop_msg = (
+            f"💰 *Price drop!*\n"
+            f"{drop['address']}\n"
+            f"~~{drop['old_price']}~~ → *{drop['new_price']}*\n"
+            f"{drop['url']}"
+        )
+        try:
+            await bot.send_message(
+                chat_id=chat_id,
+                text=drop_msg,
+                parse_mode="Markdown",
+                disable_web_page_preview=True,
+            )
+        except Exception:
+            pass
 
     # ── Enquiry submission — new listings only ────────────────────────────────
     # Only submit enquiries for listings that passed filters today.
