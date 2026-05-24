@@ -144,42 +144,48 @@ def mark_enquired(listing: dict, status: str = "sent") -> None:
 
 def check_price_changes(listings: list[dict]) -> list[dict]:
     """
-    Compare each scraped listing's price against what was stored when we
-    first enquired. Returns a list of dicts describing price drops, each with:
+    Compare each scraped listing's price against what was stored when it was
+    first sent to Telegram (seen_listings.json). Returns price-drop dicts:
       url, address, old_price, new_price
-    Only fires for listings already marked 'sent' — i.e. we already enquired.
+
+    Uses seen_listings as the source of truth so ALL listings you've been
+    shown trigger alerts — not just ones where an enquiry was submitted.
     """
-    log = _load_log()
+    from utils.seen_listings import get_seen_price, _load as _load_seen, _save as _save_seen
+
+    seen = _load_seen()
     drops = []
+
+    def _parse_price(p: str) -> int | None:
+        m = re.search(r"[\d,]+", p.replace(",", ""))
+        return int(m.group().replace(",", "")) if m else None
+
     for lst in listings:
         url = lst.get("url", "").strip()
-        if not url:
+        if not url or url not in seen:
             continue
-        entry = log.get(url)
-        if not entry or entry.get("status") != "sent":
-            continue
-        old_price = entry.get("price", "")
-        new_price = lst.get("price", "")
+        old_price = get_seen_price(url)
+        new_price = lst.get("price", "").strip()
         if not old_price or not new_price or old_price == new_price:
             continue
-        # Parse £ amounts for comparison — only report genuine drops
-        def _parse_price(p: str) -> int | None:
-            import re as _re
-            m = _re.search(r"[\d,]+", p.replace(",", ""))
-            return int(m.group().replace(",", "")) if m else None
         old_val = _parse_price(old_price)
         new_val  = _parse_price(new_price)
         if old_val and new_val and new_val < old_val:
             drops.append({
                 "url":       url,
-                "address":   entry.get("address", lst.get("address", "")),
+                "address":   lst.get("address", ""),
                 "old_price": old_price,
                 "new_price": new_price,
             })
             # Update stored price so we don't re-alert on the same drop
-            log[url]["price"] = new_price
+            entry = seen[url]
+            if isinstance(entry, dict):
+                seen[url]["price"] = new_price
+            else:
+                seen[url] = {"date": entry, "price": new_price}
+
     if drops:
-        _save_log(log)
+        _save_seen(seen)
     return drops
 
 

@@ -393,6 +393,8 @@ async def run_pipeline(
     price_drops = check_price_changes(raw)
     if price_drops:
         logger.info("[filter] Price drops detected: %d", len(price_drops))
+    else:
+        price_drops = []
 
     # Step 1 — agent blacklist filter
     before = len(raw)
@@ -478,7 +480,7 @@ async def run_pipeline(
     total_scraped  = len(json.loads(LISTINGS_PATH.read_text(encoding="utf-8"))) if LISTINGS_PATH.exists() else 0
     new_after_dedup = len(walk_passed)   # walk_passed was reassigned to new_listings after dedup
     logger.info("[filter] FMV filter: %d/%d passed", len(fmv_passed), new_after_dedup)
-    return fmv_passed, total_scraped, new_after_dedup, walk_count
+    return fmv_passed, total_scraped, new_after_dedup, walk_count, price_drops
 
 
 # ── Telegram handlers ─────────────────────────────────────────────────────────
@@ -615,13 +617,30 @@ async def run_filter_pipeline_and_send(
     )
 
     try:
-        passing, total_scraped_now, new_count, walk_count = await run_pipeline(MAX_WALK_MINS)
+        passing, total_scraped_now, new_count, walk_count, price_drops = await run_pipeline(MAX_WALK_MINS)
     except Exception as exc:
         logger.error("[filter] Pipeline failed: %s", exc)
         await bot.send_message(chat_id=chat_id, text=f"❌ Filter pipeline failed: {exc}")
         return
 
     dupes_skipped = walk_count - new_count
+
+    # ── Price drop alerts — listings you've already seen that got cheaper ─────
+    for drop in (price_drops or []):
+        try:
+            await bot.send_message(
+                chat_id=chat_id,
+                text=(
+                    f"💰 *Price drop!*\n"
+                    f"{drop['address']}\n"
+                    f"~~{drop['old_price']}~~ → *{drop['new_price']}*\n"
+                    f"{drop['url']}"
+                ),
+                parse_mode="Markdown",
+                disable_web_page_preview=True,
+            )
+        except Exception as exc:
+            logger.warning("[filter] Failed to send price drop alert: %s", exc)
 
     if not passing:
         await bot.send_message(
@@ -697,31 +716,6 @@ async def run_filter_pipeline_and_send(
     )
     logger.info("[filter] Automated pipeline complete — %d/%d new passed, %d sent (dupes skipped: %d)",
                 len(passing), new_count, sent, dupes_skipped)
-
-    # ── Price drop alerts ─────────────────────────────────────────────────────
-    passing_urls = {l.get("url") for l in (passing or [])}
-    all_raw: list[dict] = []
-    try:
-        all_raw = json.loads(LISTINGS_PATH.read_text(encoding="utf-8"))
-    except Exception:
-        pass
-    price_drops = check_price_changes(all_raw)
-    for drop in price_drops:
-        drop_msg = (
-            f"💰 *Price drop!*\n"
-            f"{drop['address']}\n"
-            f"~~{drop['old_price']}~~ → *{drop['new_price']}*\n"
-            f"{drop['url']}"
-        )
-        try:
-            await bot.send_message(
-                chat_id=chat_id,
-                text=drop_msg,
-                parse_mode="Markdown",
-                disable_web_page_preview=True,
-            )
-        except Exception:
-            pass
 
     # ── Enquiry submission — new listings only ────────────────────────────────
     # Only submit enquiries for listings that passed filters today.
