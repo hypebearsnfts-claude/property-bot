@@ -12,18 +12,21 @@ logger = logging.getLogger(__name__)
 # radius=0.5 = 0.5 miles (matches Rightmove, Zoopla, OTM — required for walk-time filter)
 # bedrooms_min=2; furnishedType=1 = furnished only
 AREAS = {
-    "Covent Garden":   ("covent-garden-london",   "Covent Garden, London"),
-    "Soho":            ("soho-london",             "Soho, London"),
-    "Knightsbridge":   ("knightsbridge-london",    "Knightsbridge, London"),
-    "West Kensington": ("west-kensington-london",  "West Kensington, London"),
-    "London Bridge":   ("london-bridge-london",    "London Bridge, London"),
-    "Tower Hill":      ("tower-hill-london",       "Tower Hill, London"),
-    "Baker Street":    ("baker-street-london",     "Baker Street, London"),
-    "Bond Street":     ("bond-street-london",      "Bond Street, London"),
-    "Marble Arch":     ("marble-arch-london",      "Marble Arch, London"),
-    "Oxford Circus":   ("oxford-circus-london",    "Oxford Circus, London"),
-    "Marylebone":      ("marylebone-london",       "Marylebone, London"),
-    "Regent's Park":   ("regents-park-london",     "Regent's Park, London"),
+    "Covent Garden":      ("covent-garden-london",      "Covent Garden, London"),
+    "Soho":               ("soho-london",               "Soho, London"),
+    "Baker Street":       ("baker-street-london",       "Baker Street, London"),
+    "Bond Street":        ("bond-street-london",        "Bond Street, London"),
+    "Marble Arch":        ("marble-arch-london",        "Marble Arch, London"),
+    "Oxford Circus":      ("oxford-circus-london",      "Oxford Circus, London"),
+    "Marylebone":         ("marylebone-london",         "Marylebone, London"),
+    "Regent's Park":      ("regents-park-london",       "Regent's Park, London"),
+    "Kensington Olympia": ("kensington-olympia-london", "Kensington Olympia, London"),
+    "Holborn":            ("holborn-london",             "Holborn, London"),
+    "Chancery Lane":      ("chancery-lane-london",      "Chancery Lane, London"),
+    "Farringdon":         ("farringdon-london",         "Farringdon, London"),
+    "Angel":              ("angel-london",              "Angel, London"),
+    "Old Street":         ("old-street-london",         "Old Street, London"),
+    "Charing Cross":      ("charing-cross-london",      "Charing Cross, London"),
 }
 
 def _search_url(slug: str, term: str) -> str:

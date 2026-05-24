@@ -198,6 +198,7 @@ BLACKLISTED_AGENTS = [
     "foxtons",
     "savills",
     "chestertons",
+    "knight frank",
     "dexters",
     "tavistock bow",
     "ila",

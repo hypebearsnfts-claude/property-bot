@@ -8,18 +8,23 @@ logger = logging.getLogger(__name__)
 _SEM: asyncio.Semaphore | None = None
 
 AREAS = {
-    "Covent Garden":      "REGION%5E87501",
-    "Soho":               "REGION%5E87529",
-    "Knightsbridge":      "REGION%5E85242",
-    "West Kensington":    "STATION%5E5054",
-    "London Bridge":      "STATION%5E5792",
-    "Tower Hill":         "STATION%5E9290",
-    "Baker Street":       "STATION%5E488",
-    "Bond Street":        "STATION%5E1166",
-    "Marble Arch":        "STATION%5E6032",
-    "Oxford Circus":      "STATION%5E6953",
-    "Marylebone":         "STATION%5E6095",
-    "Regent's Park":      "STATION%5E7658",
+    # Neighbourhoods (region boundary)
+    "Covent Garden":        "REGION%5E87501",
+    "Soho":                 "REGION%5E87529",
+    # Stations (0.5 mile radius)
+    "Baker Street":         "STATION%5E488",
+    "Bond Street":          "STATION%5E1166",
+    "Marble Arch":          "STATION%5E6032",
+    "Oxford Circus":        "STATION%5E6953",
+    "Marylebone":           "STATION%5E6095",
+    "Regent's Park":        "STATION%5E7658",
+    "Kensington Olympia":   "STATION%5E5011",
+    "Holborn":              "STATION%5E4668",
+    "Chancery Lane":        "STATION%5E1920",
+    "Farringdon":           "STATION%5E3552",
+    "Angel":                "STATION%5E339",
+    "Old Street":           "STATION%5E6855",
+    "Charing Cross":        "STATION%5E1936",
 }
 
 BASE     = "https://www.rightmove.co.uk/property-to-rent/find.html"
@@ -118,6 +123,9 @@ async def _load_page(browser, area, loc_id, index):
                     // Extract key features bullet points specifically so they are never cut off
                     const featureEls = card.querySelectorAll('li, [class*="feature"], [class*="tag"], [class*="badge"]');
                     const features = Array.from(featureEls).map(el => el.innerText.trim()).filter(Boolean);
+                    // Capture "Added on DD/MM/YYYY" or "Reduced on DD/MM/YYYY" date
+                    const dateMatch = featText.match(/(?:Added|Reduced)\s+on\s+(\d{2}\/\d{2}\/\d{4})/i);
+                    const listedDate = dateMatch ? dateMatch[1] : null;
                     return {
                         url:         link.href || '',
                         price:       price ? price.innerText.trim() : 'Price N/A',
@@ -128,6 +136,7 @@ async def _load_page(browser, area, loc_id, index):
                         agent:       agent,
                         description: featText.slice(0, 1200),
                         features:    features,
+                        listed_date: listedDate,
                     };
                 }).filter(Boolean);
             }
@@ -189,6 +198,7 @@ async def _scrape_area_inner(browser, area, loc_id):
                         "agent":       d.get("agent", ""),
                         "description": d.get("description", ""),
                         "features":    d.get("features", []),
+                        "listed_date": d.get("listed_date"),
                     })
                     page_count += 1
 

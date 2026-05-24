@@ -37,18 +37,21 @@ logger = logging.getLogger(__name__)
 # Same 0.5-mile radius as Rightmove STATION searches.
 # Soho: no "Soho station" exists; Piccadilly Circus is the central Soho tube stop.
 AREAS = {
-    "Covent Garden":   "covent-garden-station",
-    "Soho":            "piccadilly-circus-station",
-    "Knightsbridge":   "knightsbridge-station",
-    "West Kensington": "west-kensington-station",
-    "London Bridge":   "london-bridge-station",
-    "Tower Hill":      "tower-hill-station",
-    "Baker Street":    "baker-street-station",
-    "Bond Street":     "bond-street-station",
-    "Marble Arch":     "marble-arch-station",
-    "Oxford Circus":   "oxford-circus-station",
-    "Marylebone":      "marylebone-station",
-    "Regent's Park":   "regents-park-station",
+    "Covent Garden":      "covent-garden-station",
+    "Soho":               "piccadilly-circus-station",
+    "Baker Street":       "baker-street-station",
+    "Bond Street":        "bond-street-station",
+    "Marble Arch":        "marble-arch-station",
+    "Oxford Circus":      "oxford-circus-station",
+    "Marylebone":         "marylebone-station",
+    "Regent's Park":      "regents-park-station",
+    "Kensington Olympia": "kensington-olympia-station",
+    "Holborn":            "holborn-station",
+    "Chancery Lane":      "chancery-lane-station",
+    "Farringdon":         "farringdon-station",
+    "Angel":              "angel-station",
+    "Old Street":         "old-street-station",
+    "Charing Cross":      "charing-cross-station",
 }
 
 BASE = "https://www.onthemarket.com/to-rent/property/{slug}/"

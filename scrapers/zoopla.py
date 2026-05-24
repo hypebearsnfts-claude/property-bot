@@ -13,18 +13,21 @@ logger = logging.getLogger(__name__)
 # Soho has no tube station; Piccadilly Circus is the central Soho stop.
 # Tower Hill is the correct tube station (previously used broad "ec3" or "tower-bridge").
 AREAS = {
-    "Covent Garden":   "covent-garden",
-    "Soho":            "piccadilly-circus",
-    "Knightsbridge":   "knightsbridge",
-    "West Kensington": "west-kensington",
-    "London Bridge":   "london-bridge",
-    "Tower Hill":      "tower-hill",
-    "Baker Street":    "baker-street",
-    "Bond Street":     "bond-street",
-    "Marble Arch":     "marble-arch",
-    "Oxford Circus":   "oxford-circus",
-    "Marylebone":      "marylebone",
-    "Regent's Park":   "regents-park",
+    "Covent Garden":      "covent-garden",
+    "Soho":               "piccadilly-circus",
+    "Baker Street":       "baker-street",
+    "Bond Street":        "bond-street",
+    "Marble Arch":        "marble-arch",
+    "Oxford Circus":      "oxford-circus",
+    "Marylebone":         "marylebone",
+    "Regent's Park":      "regents-park",
+    "Kensington Olympia": "kensington-olympia",
+    "Holborn":            "holborn",
+    "Chancery Lane":      "chancery-lane",
+    "Farringdon":         "farringdon",
+    "Angel":              "angel",
+    "Old Street":         "old-street",
+    "Charing Cross":      "charing-cross",
 }
 
 LISTING_SEL = "a[data-testid*='listing']"
