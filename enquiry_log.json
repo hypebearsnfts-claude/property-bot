@@ -900,5 +900,117 @@
     "status": "sent",
     "address": "London, NW1 5RH",
     "source": "onthemarket"
+  },
+  "https://www.onthemarket.com/details/19277383/": {
+    "date": "2026-05-25",
+    "status": "sent",
+    "address": "Marshall Street, Soho, London, W1F",
+    "source": "onthemarket",
+    "price": "3,185 pcm (£735 pw)",
+    "fail_count": 0
+  },
+  "https://www.onthemarket.com/details/18910798/": {
+    "date": "2026-05-25",
+    "status": "sent",
+    "address": "George Street, London, W1H",
+    "source": "onthemarket",
+    "price": "6,478 pcm (£1,495 pw)",
+    "fail_count": 0
+  },
+  "https://www.onthemarket.com/details/12979382/": {
+    "date": "2026-05-25",
+    "status": "sent",
+    "address": "Hampden Gurney Street, London, W1H",
+    "source": "onthemarket",
+    "price": "5,500 pcm (£1,269 pw)",
+    "fail_count": 0
+  },
+  "https://www.onthemarket.com/details/18842173/": {
+    "date": "2026-05-25",
+    "status": "sent",
+    "address": "Burwood Place",
+    "source": "onthemarket",
+    "price": "3,683 pcm (£850 pw)",
+    "fail_count": 0
+  },
+  "https://www.onthemarket.com/details/19192017/": {
+    "date": "2026-05-25",
+    "status": "sent",
+    "address": "Stourcliffe Close, Stourcliffe Street, W1H",
+    "source": "onthemarket",
+    "price": "2,995 pcm (£691 pw)",
+    "fail_count": 0
+  },
+  "https://www.onthemarket.com/details/19512941/": {
+    "date": "2026-05-25",
+    "status": "sent",
+    "address": "Kingsway, London",
+    "source": "onthemarket",
+    "price": "4,983 pcm (£1,150 pw)",
+    "fail_count": 0
+  },
+  "https://www.onthemarket.com/details/19137960/": {
+    "date": "2026-05-25",
+    "status": "sent",
+    "address": "Endell Street",
+    "source": "onthemarket",
+    "price": "4,996 pcm (£1,153 pw)",
+    "fail_count": 0
+  },
+  "https://www.onthemarket.com/details/19544293/": {
+    "date": "2026-05-25",
+    "status": "sent",
+    "address": "Bickenhall Mansions, Bickenhall Street, Marylebone, London",
+    "source": "onthemarket",
+    "price": "3,683 pcm (£850 pw)",
+    "fail_count": 0
+  },
+  "https://www.onthemarket.com/details/17624921/": {
+    "date": "2026-05-25",
+    "status": "sent",
+    "address": "The Water Gardens, Burwood Place",
+    "source": "onthemarket",
+    "price": "4,767 pcm (£1,100 pw)",
+    "fail_count": 0
+  },
+  "https://www.onthemarket.com/details/19490815/": {
+    "date": "2026-05-25",
+    "status": "sent",
+    "address": "Portsea Place, London",
+    "source": "onthemarket",
+    "price": "3,900 pcm (£900 pw)",
+    "fail_count": 0
+  },
+  "https://www.onthemarket.com/details/19282001/": {
+    "date": "2026-05-25",
+    "status": "sent",
+    "address": "Harrowby Street, London",
+    "source": "onthemarket",
+    "price": "6,478 pcm (£1,495 pw)",
+    "fail_count": 0
+  },
+  "https://www.onthemarket.com/details/19501228/": {
+    "date": "2026-05-25",
+    "status": "sent",
+    "address": "Goodge Street, Fitzrovia, London",
+    "source": "onthemarket",
+    "price": "3,500 pcm (£808 pw)",
+    "fail_count": 0
+  },
+  "https://www.onthemarket.com/details/19491955/": {
+    "date": "2026-05-25",
+    "status": "sent",
+    "address": "Lincoin Square, 18 Portugal Street, London",
+    "source": "onthemarket",
+    "price": "6,500 pcm (£1,500 pw)",
+    "fail_count": 0
+  },
+  "https://www.rightmove.co.uk/properties/174288653#/?channel=RES_LET": {
+    "date": "2026-05-25",
+    "status": "failed",
+    "address": "Bryanston Court I, George Street, Marylebone W1H",
+    "source": "rightmove",
+    "price": "£5,750 pcm\n£1,327 pw",
+    "fail_count": 1
   }
 }
