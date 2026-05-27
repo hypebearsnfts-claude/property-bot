@@ -1260,5 +1260,77 @@
     "source": "onthemarket",
     "price": "9,885 pcm (£2,281 pw)",
     "fail_count": 0
+  },
+  "https://www.rightmove.co.uk/properties/88985409#/?channel=RES_LET": {
+    "date": "2026-05-27",
+    "status": "failed",
+    "address": "Harewood Avenue, Marylebone, London, NW1",
+    "source": "rightmove",
+    "price": "£3,467 pcm\n£800 pw",
+    "fail_count": 1
+  },
+  "https://www.rightmove.co.uk/properties/88983063#/?channel=RES_LET": {
+    "date": "2026-05-27",
+    "status": "sent",
+    "address": "Lisson Grove, London, NW1",
+    "source": "rightmove",
+    "price": "£4,200 pcm\n£969 pw",
+    "fail_count": 0
+  },
+  "https://www.rightmove.co.uk/properties/88960161#/?channel=RES_LET": {
+    "date": "2026-05-27",
+    "status": "sent",
+    "address": "Rossmore Road, London, NW1",
+    "source": "rightmove",
+    "price": "£4,500 pcm\n£1,038 pw",
+    "fail_count": 0
+  },
+  "https://www.rightmove.co.uk/properties/88957704#/?channel=RES_LET": {
+    "date": "2026-05-27",
+    "status": "failed",
+    "address": "Gloucester Place, Marylebone, W1U",
+    "source": "rightmove",
+    "price": "£3,397 pcm\n£784 pw",
+    "fail_count": 1
+  },
+  "https://www.rightmove.co.uk/properties/88938852#/?channel=RES_LET": {
+    "date": "2026-05-27",
+    "status": "failed",
+    "address": "Chiltern Street, Marylebone, London, W1U",
+    "source": "rightmove",
+    "price": "£2,990 pcm\n£690 pw",
+    "fail_count": 1
+  },
+  "https://www.rightmove.co.uk/properties/88983690#/?channel=RES_LET": {
+    "date": "2026-05-27",
+    "status": "failed",
+    "address": "Riding House Street, London, W1W",
+    "source": "rightmove",
+    "price": "£3,142 pcm\n£725 pw",
+    "fail_count": 1
+  },
+  "https://www.rightmove.co.uk/properties/88945845#/?channel=RES_LET": {
+    "date": "2026-05-27",
+    "status": "sent",
+    "address": "Lisson Grove, St Johns Wood, NW8",
+    "source": "rightmove",
+    "price": "£3,500 pcm\n£808 pw",
+    "fail_count": 0
+  },
+  "https://www.rightmove.co.uk/properties/148711868#/?channel=RES_LET": {
+    "date": "2026-05-27",
+    "status": "failed",
+    "address": "Nottingham Place, Marylebone",
+    "source": "rightmove",
+    "price": "£6,933 pcm\n£1,600 pw",
+    "fail_count": 1
+  },
+  "https://www.onthemarket.com/details/15422557/": {
+    "date": "2026-05-27",
+    "status": "sent",
+    "address": "Deanery Street, London W1K",
+    "source": "onthemarket",
+    "price": "4,500 pcm (£1,038 pw)",
+    "fail_count": 0
   }
 }
