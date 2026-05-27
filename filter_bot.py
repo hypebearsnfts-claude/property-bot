@@ -31,7 +31,7 @@ from typing import Optional
 
 from dotenv import load_dotenv
 from telegram import Update
-from telegram.ext import Application, CommandHandler, ContextTypes
+from telegram.ext import Application, CommandHandler, ContextTypes, MessageHandler, filters as tg_filters
 
 from utils.walk_time import nearest_walk_minutes
 from utils.valuation import get_fmv_verdict, _parse_price_pcm
@@ -230,11 +230,10 @@ def _is_blacklisted(listing: dict) -> bool:
 # are silently dropped. Case-insensitive. Add/remove phrases here as needed.
 
 BLACKLISTED_KEYWORDS = [
-    "24/7 concierge",
-    "24 hour concierge",
-    "24hr concierge",
-    "round-the-clock concierge",
-    "round the clock concierge",
+    # Any concierge service — catches 24h, 24/7, 24hr, part-time, building concierge etc.
+    # OTM and Rightmove list this as a bullet-point feature so it won't always appear
+    # in the short card description — the catch-all term is the most reliable guard.
+    "concierge",
     # Agent names — belt-and-suspenders in case agent field isn't populated
     "greater london properties",
     "foxtons",
@@ -524,13 +523,28 @@ async def run(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     )
 
     try:
-        passing, total_scraped, new_count, walk_count = await run_pipeline(MAX_WALK_MINS)
+        passing, total_scraped, new_count, walk_count, price_drops = await run_pipeline(MAX_WALK_MINS)
     except Exception as exc:
         logger.error("[filter] Pipeline failed: %s", exc, exc_info=True)
         await update.message.reply_text(f"❌ Pipeline failed: {exc}")
         return
 
     dupes_skipped = walk_count - new_count
+
+    # ── Price drop alerts ─────────────────────────────────────────────────────
+    for drop in (price_drops or []):
+        try:
+            await update.message.reply_text(
+                f"💰 *Price drop!*\n"
+                f"{drop['address']}\n"
+                f"~~{drop['old_price']}~~ → *{drop['new_price']}*\n"
+                f"{drop['url']}",
+                parse_mode="Markdown",
+                disable_web_page_preview=True,
+            )
+        except Exception as exc:
+            logger.warning("[filter] Failed to send price drop alert: %s", exc)
+
     if not passing:
         await update.message.reply_text(
             f"No listings passed all filters\\.\n"
@@ -717,29 +731,92 @@ async def run_filter_pipeline_and_send(
     logger.info("[filter] Automated pipeline complete — %d/%d new passed, %d sent (dupes skipped: %d)",
                 len(passing), new_count, sent, dupes_skipped)
 
-    # ── Enquiry submission — new listings only ────────────────────────────────
-    # Only submit enquiries for listings that passed filters today.
-    # Old failed enquiries are NOT retried — each day starts fresh.
-    if to_send:
-        try:
-            await bot.send_message(
-                chat_id=chat_id,
-                text=f"📞 Submitting enquiries ({len(to_send)} new)…",
-            )
-            enq_results = await submit_enquiries(to_send)
-            summary_msg = enquiry_summary(enq_results, to_send)
-            await bot.send_message(
-                chat_id=chat_id,
-                text=summary_msg,
-                parse_mode="MarkdownV2",
-                disable_web_page_preview=True,
-            )
-        except Exception as exc:
-            logger.error("[filter] Enquiry submission failed: %s", exc)
-            await bot.send_message(
-                chat_id=chat_id,
-                text=f"⚠️ Enquiry submission encountered an error: {exc}",
-            )
+    # Auto-enquiry removed — send enquiries by pasting links into Telegram chat.
+
+
+# ── Manual enquiry handler — paste links to trigger enquiries ────────────────
+
+_PORTAL_PATTERNS = [
+    (re.compile(r"https?://(?:www\.)?rightmove\.co\.uk/properties/(\d+)"),    "rightmove"),
+    (re.compile(r"https?://(?:www\.)?zoopla\.co\.uk/to-rent/details/(\d+)"),  "zoopla"),
+    (re.compile(r"https?://(?:www\.)?onthemarket\.com/details/(\d+)"),         "onthemarket"),
+    (re.compile(r"https?://(?:www\.)?openrent\.co\.uk/property-to-rent/\S+"), "openrent"),
+]
+
+def _extract_listings_from_text(text: str) -> list[dict]:
+    """Parse property URLs out of a free-form text message."""
+    listings = []
+    seen = set()
+    for pattern, source in _PORTAL_PATTERNS:
+        for m in pattern.finditer(text):
+            url = m.group(0).split("?")[0].split("#")[0].strip()
+            if url in seen:
+                continue
+            seen.add(url)
+            listings.append({"url": url, "source": source, "address": "", "area": "", "price": ""})
+    return listings
+
+
+async def enquire_links(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    """
+    Triggered when the user sends a message containing property URLs.
+    Submits enquiries for every valid Rightmove / Zoopla / OTM link found.
+    OpenRent links are flagged as manual-only.
+    """
+    msg  = update.message
+    text = msg.text or ""
+    chat_id = msg.chat_id
+
+    listings = _extract_listings_from_text(text)
+    if not listings:
+        return  # no property URLs found — ignore message
+
+    manual  = [l for l in listings if l["source"] == "openrent"]
+    to_send = [l for l in listings if l["source"] != "openrent"]
+
+    reply_parts = []
+    if manual:
+        reply_parts.append(
+            f"ℹ️ {len(manual)} OpenRent link(s) — contact landlord directly (no auto-enquiry)."
+        )
+
+    if not to_send:
+        if reply_parts:
+            await msg.reply_text("\n".join(reply_parts))
+        return
+
+    if manual:
+        await msg.reply_text("\n".join(reply_parts))
+
+    await msg.reply_text(
+        f"📞 Submitting enquiries for {len(to_send)} listing(s)…\n"
+        f"_(I'll confirm each one as it goes — allow ~1 min per listing)_",
+        parse_mode="Markdown",
+    )
+
+    sent_count = failed_count = 0
+    try:
+        results = await submit_enquiries(to_send)
+        for url, result in results.items():
+            status  = result.get("status", "unknown")
+            address = result.get("address") or url.split("/")[-1]
+            if status == "sent":
+                sent_count += 1
+                await msg.reply_text(f"✅ Sent: {address}\n{url}", disable_web_page_preview=True)
+            elif status == "manual":
+                await msg.reply_text(f"📋 Manual needed: {address}\n{url}", disable_web_page_preview=True)
+            elif status == "skipped":
+                await msg.reply_text(f"⏭️ Already enquired: {address}", disable_web_page_preview=True)
+            else:
+                failed_count += 1
+                await msg.reply_text(f"❌ Failed: {address}\n{url}", disable_web_page_preview=True)
+
+        await msg.reply_text(
+            f"🏁 Done — {sent_count} sent, {failed_count} failed out of {len(to_send)} listings."
+        )
+    except Exception as exc:
+        logger.error("[enquire_links] Submission error: %s", exc)
+        await msg.reply_text(f"⚠️ Enquiry error: {exc}")
 
 
 # ── Entry point ───────────────────────────────────────────────────────────────
@@ -752,6 +829,8 @@ def main() -> None:
     app.add_handler(CommandHandler("start",  start))
     app.add_handler(CommandHandler("status", status))
     app.add_handler(CommandHandler("run",    run))
+    # Paste property links → auto-submit enquiries
+    app.add_handler(MessageHandler(tg_filters.TEXT & ~tg_filters.COMMAND, enquire_links))
 
     logger.info("Filter Bot starting (walk≤%d min, FMV+£500 rule) — polling…", MAX_WALK_MINS)
     app.run_polling(allowed_updates=Update.ALL_TYPES)
