@@ -230,10 +230,12 @@ def _is_blacklisted(listing: dict) -> bool:
 # are silently dropped. Case-insensitive. Add/remove phrases here as needed.
 
 BLACKLISTED_KEYWORDS = [
-    # Any concierge service — catches 24h, 24/7, 24hr, part-time, building concierge etc.
-    # OTM and Rightmove list this as a bullet-point feature so it won't always appear
-    # in the short card description — the catch-all term is the most reliable guard.
+    # Any concierge/porter service — catches 24h, 24/7, 24hr, building concierge/porter etc.
     "concierge",
+    "portered",       # "portered building", "portered mansion block", "portered development"
+    "hour porter",    # "24 hour porter", "24-hour porter", "24hr porter"
+    # Unfurnished — scrapers request furnished but portals sometimes return miscategorised listings
+    "unfurnished",
     # Agent names — belt-and-suspenders in case agent field isn't populated
     "greater london properties",
     "foxtons",
