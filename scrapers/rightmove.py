@@ -134,7 +134,7 @@ async def _load_page(browser, area, loc_id, index):
                         baths:       bathMatch ? parseInt(bathMatch[1]) : null,
                         sqft:        sqft,
                         agent:       agent,
-                        description: featText.slice(0, 1200),
+                        description: featText.slice(0, 5000),
                         features:    features,
                         listed_date: listedDate,
                     };

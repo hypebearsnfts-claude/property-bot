@@ -230,12 +230,14 @@ def _is_blacklisted(listing: dict) -> bool:
 # are silently dropped. Case-insensitive. Add/remove phrases here as needed.
 
 BLACKLISTED_KEYWORDS = [
-    # Any concierge/porter service — catches 24h, 24/7, 24hr, building concierge/porter etc.
+    # Any concierge/porter service — all variants caught by the root words
     "concierge",
-    "portered",       # "portered building", "portered mansion block", "portered development"
-    "hour porter",    # "24 hour porter", "24-hour porter", "24hr porter"
+    "porter",         # catches "24 hour porter", "porter service", "portered", "porterage"
     # Unfurnished — scrapers request furnished but portals sometimes return miscategorised listings
     "unfurnished",
+    # Student-only lettings — Rightmove STU_LET listings sometimes appear in regular rental searches
+    "student property",
+    "student accommodation",
     # Agent names — belt-and-suspenders in case agent field isn't populated
     "greater london properties",
     "foxtons",

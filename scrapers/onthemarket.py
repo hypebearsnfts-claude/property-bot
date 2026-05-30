@@ -161,7 +161,11 @@ _EXTRACT_JS = r"""
             });
         const agent = agentEl ? agentEl.innerText.trim() : '';
 
-        results.push({ url, price, address, cardText: cardText.substring(0, 400), agent });
+        // Extract feature bullet points from <li> elements in the card
+        const featureEls = card.querySelectorAll('li');
+        const features = Array.from(featureEls).map(el => el.innerText.trim()).filter(Boolean);
+
+        results.push({ url, price, address, cardText: cardText.substring(0, 5000), agent, features });
     }
     return results;
 }
@@ -263,6 +267,7 @@ async def _scrape_area(browser, area: str, slug: str) -> list[dict]:
                     "prop_type":   prop_type,
                     "agent":       d.get("agent", ""),
                     "description": card_text,
+                    "features":    d.get("features", []),
                 })
                 new_on_page += 1
 
