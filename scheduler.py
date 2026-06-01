@@ -230,20 +230,20 @@ def _address_dedup_key(address: str) -> str | None:
 
 def _loose_dedup_key(listing: dict) -> str | None:
     """
-    Cross-portal fallback key: area-slug + first distinctive street word.
+    Cross-portal fallback key for deduplicating the same physical property
+    listed under different area labels or without a postcode.
 
-    Used when _address_dedup_key() returns None (e.g. OTM address has no
-    postcode).  Matches listings like:
-      OTM  "Lennox Gardens, London"              area "Knightsbridge"
-      RM   "12 Lennox Gardens, SW3 2JX"          area "Knightsbridge"
-    Both → "knightsbridge-lennox"
+    Key format (in preference order):
+      1. outward_postcode + first_distinctive_word  — area-independent, reliable
+         e.g. "nw1-rossmore" matches "Rossmore Court NW1" on both RM and OTM
+      2. area_slug + first_distinctive_word          — fallback when no postcode
 
-    Less precise than the strict key so it is only checked across different
-    portal sources to avoid wrongly collapsing two distinct same-portal listings.
+    Only applied across different portal sources to avoid collapsing distinct
+    same-portal listings.
     """
-    area    = listing.get("area", "").lower().strip()
     address = listing.get("address", "").lower()
-    if not area or not address:
+    area    = listing.get("area", "").lower().strip()
+    if not address:
         return None
 
     _SKIP = {
@@ -256,8 +256,17 @@ def _loose_dedup_key(listing: dict) -> str | None:
     if not words:
         return None
 
-    area_slug = re.sub(r'[^a-z]', '_', area)
-    return f"{area_slug}-{words[0]}"
+    # Prefer postcode-based key — works even when area labels differ across portals
+    pc = re.search(r'\b([a-z]{1,2}\d[a-z\d]?)(?:\s*\d[a-z]{2})?\b', address)
+    if pc:
+        return f"{pc.group(1)}-{words[0]}"
+
+    # Fallback: area-based key
+    if area:
+        area_slug = re.sub(r'[^a-z]', '_', area)
+        return f"{area_slug}-{words[0]}"
+
+    return None
 
 
 async def _run_scrapers() -> list[dict]:

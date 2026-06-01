@@ -42,9 +42,10 @@ from enquiry_bot import submit_enquiries, enquiry_summary, already_enquired, che
 
 load_dotenv()
 
-TOKEN         = os.getenv("TELEGRAM_FILTER_BOT_TOKEN")
-MAX_WALK_MINS = int(os.getenv("MAX_WALK_MINS", "10"))
-MAX_SEND      = int(os.getenv("MAX_LISTINGS_SEND", "0"))   # 0 = no limit
+TOKEN          = os.getenv("TELEGRAM_FILTER_BOT_TOKEN")
+MAX_WALK_MINS  = int(os.getenv("MAX_WALK_MINS", "10"))
+MAX_SEND       = int(os.getenv("MAX_LISTINGS_SEND", "0"))   # 0 = no limit
+MAX_PRICE_PCM  = int(os.getenv("MAX_PRICE_PCM", "7000"))    # hard price ceiling regardless of FMV
 
 LISTINGS_PATH = Path(__file__).parent / "listings.json"
 
@@ -459,7 +460,18 @@ async def run_pipeline(
             xp_removed,
         )
 
-    # Step 5 — FMV verdict
+    # Step 5 — Hard price ceiling (skip FMV check entirely for overpriced listings)
+    if MAX_PRICE_PCM > 0:
+        before_price = len(walk_passed)
+        walk_passed = [
+            l for l in walk_passed
+            if (pcm := _parse_price_pcm(l.get("price", ""))) is None or pcm <= MAX_PRICE_PCM
+        ]
+        price_removed = before_price - len(walk_passed)
+        if price_removed:
+            logger.info("[filter] Price ceiling (≤£%d/mo): removed %d listings", MAX_PRICE_PCM, price_removed)
+
+    # Step 6 — FMV verdict
     fmv_passed: list[dict] = []
 
     for i, listing in enumerate(walk_passed, 1):
