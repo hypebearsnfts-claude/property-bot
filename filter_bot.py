@@ -325,9 +325,9 @@ def _format_property_message(listing: dict, verdict: dict) -> str:
     source  = listing.get("source", "").capitalize()
 
     # Price
-    asking     = verdict.get("asking_price") or listing.get("price_pcm", 0)
-    fmv        = verdict.get("fmv", 0)
-    difference = verdict.get("difference", 0)   # asking - fmv
+    asking     = verdict.get("asking_price") or listing.get("price_pcm", 0) or 0
+    fmv        = verdict.get("fmv")          # may be None for low-confidence passes
+    difference = verdict.get("difference")   # may be None when fmv is None
 
     # Walk
     station     = listing.get("walk_station", "nearest station")
@@ -340,13 +340,17 @@ def _format_property_message(listing: dict, verdict: dict) -> str:
     prop_type = listing.get("prop_type") or "property"
     bed_str   = f"{beds} bed " if beds else ""
 
-    # FMV label (plain text — will be escaped)
-    if difference < 0:
-        diff_label = f"£{abs(difference):,} below FMV — great deal"
-    elif difference == 0:
-        diff_label = "exactly at FMV"
+    # FMV line — handle None gracefully for low-confidence/no-data passes
+    if fmv is not None and difference is not None:
+        if difference < 0:
+            diff_label = f"£{abs(difference):,} below FMV — great deal"
+        elif difference == 0:
+            diff_label = "exactly at FMV"
+        else:
+            diff_label = f"£{difference:,} above — within tolerance"
+        fmv_line = f"📊 FMV: £{fmv:,}/month \\({_esc(diff_label)}\\)"
     else:
-        diff_label = f"£{difference:,} above — within tolerance"
+        fmv_line = "📊 FMV: unverified \\(no comparables — check value manually\\)"
 
     # Data sources context
     own_history_count = verdict.get("own_history_count", verdict.get("historical_count", 0))
@@ -364,7 +368,7 @@ def _format_property_message(listing: dict, verdict: dict) -> str:
         f"🏠 *{_esc(bed_str)}{_esc(prop_type)} \\- {_esc(area)}*",
         f"📍 {_esc(address)}",
         f"💰 Asking: £{asking:,}/month",
-        f"📊 FMV: £{fmv:,}/month \\({_esc(diff_label)}\\)",
+        fmv_line,
         f"🚶 {walk_mins} min walk to {_esc(station_fmt)}",
         f"✅ VERDICT: PASS  \\[{_esc(source)}\\]",
         f"🔗 [View listing]({url})",
@@ -375,7 +379,6 @@ def _format_property_message(listing: dict, verdict: dict) -> str:
         f"Confidence: {_esc(confidence)}",
     ]
     if reasoning:
-        # Escape reasoning for italic display
         lines.append(f"_{_esc(reasoning)}_")
 
     return "\n".join(lines)
@@ -743,10 +746,12 @@ async def run_filter_pipeline_and_send(
                 # MarkdownV2 parse error — fall back to plain text
                 logger.warning("[filter] Send failed (attempt %d): %s", attempt + 1, exc)
                 try:
+                    fmv_val = verdict.get('fmv')
+                    fmv_str = f"£{fmv_val:,}" if fmv_val else "unverified"
                     plain = (
-                        f"{listing.get('area')} — £{verdict.get('asking_price', '?')}/mo\n"
+                        f"{listing.get('area')} — £{verdict.get('asking_price', '?'):,}/mo\n"
                         f"{listing.get('address')}\n"
-                        f"Walk: {listing.get('walk_mins')} min | FMV: £{verdict.get('fmv', '?')}/mo\n"
+                        f"Walk: {listing.get('walk_mins')} min | FMV: {fmv_str}/mo\n"
                         f"{listing.get('url')}"
                     )
                     await bot.send_message(chat_id=chat_id, text=plain, disable_web_page_preview=True)

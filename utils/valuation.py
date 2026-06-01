@@ -2036,21 +2036,12 @@ async def get_fmv_verdict(property_dict: dict) -> dict:
         except Exception as exc:
             logger.warning("[fmv] Local proxy fallback failed: %s", exc)
 
-    # ── Final fallback: pass with low confidence rather than silently reject ──
-    # If no data at all (very sparse area or every scraper blocked), sending the
-    # listing for manual review is better than a blind FAIL. Price cap and all
-    # other filters have already run before we get here.
+    # ── Final fallback: FAIL when no comparables at all ──────────────────────
+    # If neither live scraping nor local proxy returned enough data, reject.
+    # Better to miss a listing than send one with no price verification.
     if fmv is None or fmv == 0:
-        logger.warning("[fmv] No comparables at all for %s — passing for manual review", address)
-        return {
-            **_default_fail,
-            "verdict":    "PASS",
-            "confidence": "low",
-            "reasoning":  (
-                "No let-agreed comparables found (bot detection likely blocked live scraping). "
-                "Passing for manual review — please check value directly."
-            ),
-        }
+        logger.warning("[fmv] No comparables at all for %s — rejecting (FAIL)", address)
+        return _default_fail
 
     # ── Cache store ───────────────────────────────────────────────────────────
     _FMV_CACHE[cache_key] = {
