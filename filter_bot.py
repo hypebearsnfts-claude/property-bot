@@ -234,8 +234,13 @@ def _is_blacklisted(listing: dict) -> bool:
 BLACKLISTED_KEYWORDS = [
     # Any concierge service — "concierge" is safe as substring (no common false positives)
     "concierge",
-    # Unfurnished — scrapers request furnished but portals sometimes return miscategorised listings
-    "unfurnished",
+    # Unfurnished / flexible furnishing — scrapers filter for furnished but portals
+    # sometimes return "furnished or unfurnished" listings in furnished searches.
+    # Rightmove cards often include the letting detail text within the card body.
+    "unfurnished",              # catches "unfurnished", "furnished or unfurnished"
+    "landlord is flexible",     # Rightmove's exact phrase for flexible furnishing
+    "part furnished",           # part-furnished slipping through furnished filter
+    "part-furnished",
     # Student-only lettings — Rightmove STU_LET listings sometimes appear in regular rental searches
     "student property",
     "student accommodation",
@@ -252,8 +257,9 @@ BLACKLISTED_KEYWORDS = [
 # "porter" must be whole-word: "reporter", "supporter", "transporter" all contain
 # "porter" as a substring and would cause false positives if matched naively.
 _BLACKLISTED_WHOLE_WORDS = [
-    "porter",    # catches "24 hour porter", "porter service", "portered", "porterage"
-                 # but NOT "reporter", "supporter", "transporter"
+    "porter",       # catches "24 hour porter", "porter service", "portered", "porterage"
+                    # but NOT "reporter", "supporter", "transporter"
+    "unfurnished",  # catches "unfurnished", "furnished or unfurnished", "unfurnished basis"
 ]
 
 _WHOLE_WORD_RE = re.compile(
