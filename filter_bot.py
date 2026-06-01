@@ -232,9 +232,8 @@ def _is_blacklisted(listing: dict) -> bool:
 # are silently dropped. Case-insensitive. Add/remove phrases here as needed.
 
 BLACKLISTED_KEYWORDS = [
-    # Any concierge/porter service — all variants caught by the root words
+    # Any concierge service — "concierge" is safe as substring (no common false positives)
     "concierge",
-    "porter",         # catches "24 hour porter", "porter service", "portered", "porterage"
     # Unfurnished — scrapers request furnished but portals sometimes return miscategorised listings
     "unfurnished",
     # Student-only lettings — Rightmove STU_LET listings sometimes appear in regular rental searches
@@ -249,15 +248,24 @@ BLACKLISTED_KEYWORDS = [
     "219baker",
 ]
 
+# Keywords that must match as whole words only (not substrings).
+# "porter" must be whole-word: "reporter", "supporter", "transporter" all contain
+# "porter" as a substring and would cause false positives if matched naively.
+_BLACKLISTED_WHOLE_WORDS = [
+    "porter",    # catches "24 hour porter", "porter service", "portered", "porterage"
+                 # but NOT "reporter", "supporter", "transporter"
+]
+
+_WHOLE_WORD_RE = re.compile(
+    r'\b(?:' + '|'.join(re.escape(w) for w in _BLACKLISTED_WHOLE_WORDS) + r')',
+    re.IGNORECASE,
+)
+
 
 def _has_blacklisted_keyword(listing: dict) -> bool:
     """Return True if any blacklisted keyword appears anywhere in the listing text."""
-    # Include features/amenities fields — concierge, gym etc. often only appear there
     features = listing.get("features", [])
-    if isinstance(features, list):
-        features_str = " ".join(features)
-    else:
-        features_str = str(features)
+    features_str = " ".join(features) if isinstance(features, list) else str(features)
 
     haystack = " ".join([
         listing.get("title", ""),
@@ -268,7 +276,16 @@ def _has_blacklisted_keyword(listing: dict) -> bool:
         listing.get("amenities") or "",
         listing.get("key_features") or "",
     ]).lower()
-    return any(kw in haystack for kw in BLACKLISTED_KEYWORDS)
+
+    # Substring check for most keywords
+    if any(kw in haystack for kw in BLACKLISTED_KEYWORDS):
+        return True
+
+    # Whole-word check for porter (avoids false positives like reporter/supporter)
+    if _WHOLE_WORD_RE.search(haystack):
+        return True
+
+    return False
 
 
 # Walk filter uses dynamic nearest-station lookup (any tube/rail station)
