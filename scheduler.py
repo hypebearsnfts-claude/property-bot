@@ -371,13 +371,22 @@ async def _run_scrapers() -> list[dict]:
         src = listing.get("source", "")
         matched = False
 
-        # For building-name keys (no street number), append bed count so that
-        # different flats in the same building are NOT collapsed together.
-        # e.g. "Rossmore Court, 2 bed" and "Rossmore Court, 4 bed" are different
-        # flats and should both be sent.  Same building + same beds = same flat.
+        # For building-name keys (no street number), append beds + price bucket so
+        # that different flats in the same building are NOT collapsed.
+        #
+        # Same building + same beds + same price (±£100) = same physical flat
+        # listed by different agents on different portals → dedup.
+        #
+        # Same building + same beds + different price = different flat → keep both.
+        # Same building + different beds = different flat → keep both.
+        #
+        # Price is rounded to nearest £100 to absorb minor portal price differences
+        # (e.g. one portal shows £3,500, another £3,495 for the same flat).
         beds = listing.get("beds")
         if sk and sk.startswith("bldg-") and beds:
-            sk = f"{sk}-{beds}b"
+            pcm          = _ppcm(listing.get("price", "")) or 0
+            price_bucket = round(pcm / 100) * 100   # nearest £100
+            sk           = f"{sk}-{beds}b-{price_bucket}"
 
         # 1. Strict key — reliable match, any portal
         if sk and sk in addr_strict:
