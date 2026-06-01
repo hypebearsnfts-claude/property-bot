@@ -1452,8 +1452,10 @@ async def get_historical_rents(
       3. Rightmove let-agreed (live)   — filtered by beds + baths + prop_type + size
       4. OnTheMarket let-agreed (live) — filtered by beds + baths + size
 
-    NOTE: listings.json is intentionally excluded — those are current ASKING prices,
-    not let-agreed rents. Including them would corrupt the FMV baseline.
+    NOTE: listings.json is excluded here — those are current ASKING prices, not
+    let-agreed rents. They are only used as a last-resort fallback proxy in
+    get_fmv_verdict() when ALL live scraping is blocked (which is typical on
+    GitHub Actions IPs). A 3% discount is applied there to approximate let-agreed.
 
     Returns list of dicts: date, price, bedrooms, baths, sqft, prop_type, source, age_months
     """
@@ -1946,10 +1948,12 @@ async def get_fmv_verdict(property_dict: dict) -> dict:
         }
 
     # ── Fresh computation ─────────────────────────────────────────────────────
-    # FMV is based ONLY on:
+    # FMV is based on:
     #   (a) this property's own rental history (what it actually let for before)
-    #   (b) let-agreed prices of similar properties within 0.25 mile
-    # Asking prices from listings.json are intentionally excluded.
+    #   (b) live let-agreed prices of similar properties within 0.25 mile
+    #   (c) FALLBACK: today's scraped active listings as market-rate proxies
+    #       (used when live let-agreed scraping is blocked by bot detection,
+    #        which is almost always on GitHub Actions data-centre IPs)
     import asyncio
 
     all_historical = await get_historical_rents(
@@ -1966,7 +1970,7 @@ async def get_fmv_verdict(property_dict: dict) -> dict:
     let_agreed    = [p for p in all_historical
                      if p.get("source") not in ("zoopla_property_history", "rightmove_property_history")]
 
-    own_count    = len(own_history)
+    own_count        = len(own_history)
     let_agreed_count = len(let_agreed)
 
     # Build a comparables summary dict for Claude reasoning
@@ -1983,13 +1987,70 @@ async def get_fmv_verdict(property_dict: dict) -> dict:
     }
 
     fmv = calculate_fmv(
-        all_historical, {},          # empty comparables — all data already in all_historical
+        all_historical, {},
         subject_baths, subject_sqft, subject_prop_type,
         asking_price=asking,
     )
+
+    # ── Fallback Tier 3: use today's scraped listings as market proxies ───────
+    # Live let-agreed scraping almost always fails from GitHub Actions IP addresses
+    # (blocked by Rightmove/Zoopla bot detection). When that happens fmv is None.
+    # We fall back to today's listings.json: same area + same bed count = current
+    # market asking prices. These are active listings (not let-agreed), so we
+    # apply a 3% discount to approximate the let-agreed price.
+    # The subject listing is excluded to avoid circular self-comparison.
+    if (fmv is None or fmv == 0) and LISTINGS_PATH.exists():
+        try:
+            subject_url  = property_dict.get("url", "")
+            all_scraped  = json.loads(LISTINGS_PATH.read_text(encoding="utf-8"))
+            proxy_comps  = []
+            for l in all_scraped:
+                if l.get("url", "") == subject_url:
+                    continue   # exclude the subject itself
+                if l.get("area") != area:
+                    continue
+                if l.get("beds") != bedrooms:
+                    continue
+                p = _parse_price_pcm(l.get("price", ""))
+                if p and 500 <= p <= 30_000:
+                    proxy_comps.append({
+                        "price":      int(p * 0.97),   # 3% discount: asking → let-agreed
+                        "age_months": 0,
+                        "baths":      l.get("baths"),
+                        "sqft":       l.get("sqft"),
+                        "prop_type":  l.get("prop_type"),
+                        "source":     "local_listing_proxy",
+                    })
+            if proxy_comps:
+                fmv = calculate_fmv(
+                    proxy_comps, {},
+                    subject_baths, subject_sqft, subject_prop_type,
+                    asking_price=asking,
+                )
+                if fmv:
+                    logger.info(
+                        "[fmv] Fallback proxy FMV for %s: £%d from %d local listings",
+                        address[:40], fmv, len(proxy_comps),
+                    )
+                    let_agreed_count += len(proxy_comps)
+        except Exception as exc:
+            logger.warning("[fmv] Local proxy fallback failed: %s", exc)
+
+    # ── Final fallback: pass with low confidence rather than silently reject ──
+    # If no data at all (very sparse area or every scraper blocked), sending the
+    # listing for manual review is better than a blind FAIL. Price cap and all
+    # other filters have already run before we get here.
     if fmv is None or fmv == 0:
-        logger.warning("[fmv] No let-agreed data for %s — defaulting to FAIL", address)
-        return _default_fail
+        logger.warning("[fmv] No comparables at all for %s — passing for manual review", address)
+        return {
+            **_default_fail,
+            "verdict":    "PASS",
+            "confidence": "low",
+            "reasoning":  (
+                "No let-agreed comparables found (bot detection likely blocked live scraping). "
+                "Passing for manual review — please check value directly."
+            ),
+        }
 
     # ── Cache store ───────────────────────────────────────────────────────────
     _FMV_CACHE[cache_key] = {
