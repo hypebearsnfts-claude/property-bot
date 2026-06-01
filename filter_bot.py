@@ -45,7 +45,8 @@ load_dotenv()
 TOKEN          = os.getenv("TELEGRAM_FILTER_BOT_TOKEN")
 MAX_WALK_MINS  = int(os.getenv("MAX_WALK_MINS", "10"))
 MAX_SEND       = int(os.getenv("MAX_LISTINGS_SEND", "0"))   # 0 = no limit
-MAX_PRICE_PCM  = int(os.getenv("MAX_PRICE_PCM", "7000"))    # hard price ceiling regardless of FMV
+MAX_PRICE_PCM  = int(os.getenv("MAX_PRICE_PCM", "9000"))    # hard ceiling for 3+ bed listings
+MAX_PRICE_2BED = int(os.getenv("MAX_PRICE_2BED", "6000"))   # stricter ceiling for 2-bed listings
 
 LISTINGS_PATH = Path(__file__).parent / "listings.json"
 
@@ -460,16 +461,21 @@ async def run_pipeline(
             xp_removed,
         )
 
-    # Step 5 — Hard price ceiling (skip FMV check entirely for overpriced listings)
-    if MAX_PRICE_PCM > 0:
-        before_price = len(walk_passed)
-        walk_passed = [
-            l for l in walk_passed
-            if (pcm := _parse_price_pcm(l.get("price", ""))) is None or pcm <= MAX_PRICE_PCM
-        ]
-        price_removed = before_price - len(walk_passed)
-        if price_removed:
-            logger.info("[filter] Price ceiling (≤£%d/mo): removed %d listings", MAX_PRICE_PCM, price_removed)
+    # Step 5 — Hard price ceiling by bed count (skip FMV for overpriced listings)
+    def _over_price_cap(listing: dict) -> bool:
+        pcm = _parse_price_pcm(listing.get("price", ""))
+        if not pcm:
+            return False
+        beds = listing.get("beds")
+        cap  = MAX_PRICE_2BED if beds == 2 else MAX_PRICE_PCM
+        return pcm > cap
+
+    before_price = len(walk_passed)
+    walk_passed  = [l for l in walk_passed if not _over_price_cap(l)]
+    price_removed = before_price - len(walk_passed)
+    if price_removed:
+        logger.info("[filter] Price ceiling (2-bed ≤£%d, 3+bed ≤£%d): removed %d listings",
+                    MAX_PRICE_2BED, MAX_PRICE_PCM, price_removed)
 
     # Step 6 — FMV verdict
     fmv_passed: list[dict] = []
