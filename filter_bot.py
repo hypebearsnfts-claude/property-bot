@@ -47,8 +47,8 @@ load_dotenv()
 TOKEN          = os.getenv("TELEGRAM_FILTER_BOT_TOKEN")
 MAX_WALK_MINS  = int(os.getenv("MAX_WALK_MINS", "10"))
 MAX_SEND       = int(os.getenv("MAX_LISTINGS_SEND", "0"))   # 0 = no limit
-MAX_PRICE_PCM  = int(os.getenv("MAX_PRICE_PCM", "9000"))    # hard ceiling for 3+ bed listings
-MAX_PRICE_2BED = int(os.getenv("MAX_PRICE_2BED", "6000"))   # stricter ceiling for 2-bed listings
+MAX_PRICE_PCM  = int(os.getenv("MAX_PRICE_PCM", "0"))       # 0 = no cap for 3+ bed listings
+MAX_PRICE_2BED = int(os.getenv("MAX_PRICE_2BED", "5500"))   # hard ceiling for 2-bed listings
 
 LISTINGS_PATH = Path(__file__).parent / "listings.json"
 
@@ -558,8 +558,10 @@ async def run_pipeline(
         if not pcm:
             return False
         beds = listing.get("beds")
-        cap  = MAX_PRICE_2BED if beds == 2 else MAX_PRICE_PCM
-        return pcm > cap
+        if beds == 2:
+            return pcm > MAX_PRICE_2BED
+        # 3+ bed: only cap if MAX_PRICE_PCM > 0 (0 = no cap)
+        return MAX_PRICE_PCM > 0 and pcm > MAX_PRICE_PCM
 
     before_price = len(walk_passed)
     walk_passed  = [l for l in walk_passed if not _over_price_cap(l)]
