@@ -250,7 +250,6 @@ BLACKLISTED_AGENTS = [
     "foxtons",
     "savills",
     "chestertons",
-    "knight frank",
     "dexters",
     "tavistock bow",
     "ila",
@@ -288,9 +287,6 @@ BLACKLISTED_KEYWORDS = [
     # sometimes return "furnished or unfurnished" listings in furnished searches.
     # Rightmove cards often include the letting detail text within the card body.
     "unfurnished",              # catches "unfurnished", "furnished or unfurnished"
-    "landlord is flexible",     # Rightmove's exact phrase for flexible furnishing
-    "part furnished",           # part-furnished slipping through furnished filter
-    "part-furnished",
     # Student-only lettings — Rightmove STU_LET listings sometimes appear in regular rental searches
     "student property",
     "student accommodation",
