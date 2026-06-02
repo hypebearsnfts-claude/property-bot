@@ -26,6 +26,8 @@ import json
 import logging
 import os
 import re
+import urllib.request as _urllib_req
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from typing import Optional
 
@@ -189,6 +191,54 @@ def _dedupe_cross_portal(listings: list[dict]) -> list[dict]:
             )
 
     return kept
+
+
+# ── Detail-page keyword checker ──────────────────────────────────────────────
+# Key features like "24 Hour Porter" or "24 Hr Concierge" only appear in the
+# Key Features section on the listing detail page — NOT on search results cards.
+# These functions fetch each surviving listing's detail page via plain HTTP and
+# re-run the keyword blacklist on the full page text.
+
+_DETAIL_UA = (
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+    "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+)
+
+
+def _fetch_detail_text(url: str) -> str:
+    """
+    Fetch a listing detail page via plain HTTP and return stripped plain text.
+    Returns empty string on any error — caller treats that as 'not blocked'.
+    """
+    try:
+        clean_url = url.split('#')[0]   # strip Rightmove fragment #/?channel=...
+        req = _urllib_req.Request(
+            clean_url,
+            headers={
+                'User-Agent':      _DETAIL_UA,
+                'Accept-Language': 'en-GB,en;q=0.9',
+                'Accept':          'text/html,application/xhtml+xml,*/*',
+            }
+        )
+        with _urllib_req.urlopen(req, timeout=15) as resp:
+            html = resp.read().decode('utf-8', errors='ignore')
+        text = re.sub(r'<[^>]+>', ' ', html)
+        text = re.sub(r'\s+', ' ', text)
+        return text.lower()
+    except Exception:
+        return ""   # fetch failed — pass the listing through, don't block it
+
+
+def _detail_has_blocked_keyword(url: str) -> bool:
+    """Return True if the listing detail page contains a blacklisted keyword."""
+    text = _fetch_detail_text(url)
+    if not text:
+        return False
+    if any(kw in text for kw in BLACKLISTED_KEYWORDS):
+        return True
+    if _WHOLE_WORD_RE.search(text):
+        return True
+    return False
 
 
 # ── Agent blacklist ───────────────────────────────────────────────────────────
@@ -486,6 +536,25 @@ async def run_pipeline(
             "[filter] Cross-portal dedup: dropped %d Rightmove duplicate(s) covered by OTM/Zoopla",
             xp_removed,
         )
+
+    # Step 4.7 — Detail-page keyword check (runs on the small post-dedup set)
+    # Key features like "24 Hour Porter" / "24 Hr Concierge" only appear on the
+    # listing detail page, not the search results card — so the card-level keyword
+    # check in Steps 1-2 misses them. Here we fetch each surviving listing's detail
+    # page via plain HTTP (8 concurrent workers) and re-run the keyword blacklist.
+    # If a fetch fails the listing is passed through, not blocked.
+    if walk_passed:
+        with ThreadPoolExecutor(max_workers=8) as _pool:
+            detail_flags = await asyncio.gather(
+                *[loop.run_in_executor(_pool, _detail_has_blocked_keyword, l.get("url", ""))
+                  for l in walk_passed]
+            )
+        before_detail = len(walk_passed)
+        walk_passed   = [l for l, blocked in zip(walk_passed, detail_flags) if not blocked]
+        detail_removed = before_detail - len(walk_passed)
+        if detail_removed:
+            logger.info("[filter] Detail-page keyword check: blocked %d listings "
+                        "(porter/concierge/unfurnished in key features)", detail_removed)
 
     # Step 5 — Hard price ceiling by bed count (skip FMV for overpriced listings)
     def _over_price_cap(listing: dict) -> bool:
