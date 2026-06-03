@@ -308,9 +308,10 @@ BLACKLISTED_KEYWORDS = [
 # "porter" must be whole-word: "reporter", "supporter", "transporter" all contain
 # "porter" as a substring and would cause false positives if matched naively.
 _BLACKLISTED_WHOLE_WORDS = [
-    "porter",       # catches "24 hour porter", "porter service", "portered", "porterage"
-                    # but NOT "reporter", "supporter", "transporter"
-    "unfurnished",  # catches "unfurnished", "furnished or unfurnished", "unfurnished basis"
+    "porter",   # catches "24 hour porter", "porter service", "portered", "porterage"
+                # but NOT "reporter", "supporter", "transporter"
+    # Note: "unfurnished" is already in BLACKLISTED_KEYWORDS as a safe substring match
+    # (no English word ends in "unfurnished") so whole-word matching is not needed.
 ]
 
 _WHOLE_WORD_RE = re.compile(
@@ -454,7 +455,7 @@ def _check_walk(listing: dict) -> tuple[Optional[str], Optional[int]]:
 
 async def run_pipeline(
     max_walk: int = MAX_WALK_MINS,
-) -> tuple[list[dict], int, int, int]:
+) -> tuple[list[dict], int, int, int, list[dict]]:
     """
     Full pipeline: load → walk filter → dedup → FMV verdict.
 
