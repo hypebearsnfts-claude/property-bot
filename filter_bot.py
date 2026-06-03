@@ -222,6 +222,11 @@ def _fetch_detail_text(url: str) -> str:
         )
         with _urllib_req.urlopen(req, timeout=15) as resp:
             html = resp.read().decode('utf-8', errors='ignore')
+        # Only check the first 25,000 chars of HTML — key features and listing
+        # description appear early in the page; footer/navigation (which contains
+        # "Student property to rent", "Student accommodation" etc.) appears at the
+        # very end and would cause false positives on EVERY listing.
+        html = html[:25000]
         text = re.sub(r'<[^>]+>', ' ', html)
         text = re.sub(r'\s+', ' ', text)
         return text.lower()
