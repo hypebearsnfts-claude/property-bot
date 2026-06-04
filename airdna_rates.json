@@ -1,0 +1,27 @@
+{
+  "last_updated": "2026-06-03",
+  "currency": "GBP",
+  "filters_applied": {
+    "property_type": "Entire Place only",
+    "market": "Central London (London, GB)",
+    "guest_ranges": {
+      "1": "1-4 guests",
+      "2": "1-6 guests",
+      "3": "1-8 guests",
+      "4": "1-10 guests",
+      "5": "1-12 guests",
+      "6": "1-14 guests",
+      "7": "1-16 guests"
+    },
+    "note": "Update daily via AirDNA Rates page — Entire Place filter, each bedroom count separately"
+  },
+  "by_bedrooms": {
+    "1": 175,
+    "2": 267,
+    "3": 392,
+    "4": 396,
+    "5": 479,
+    "6": 550,
+    "7": 650
+  }
+}

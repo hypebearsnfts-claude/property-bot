@@ -48,7 +48,62 @@ MAX_SEND       = int(os.getenv("MAX_LISTINGS_SEND", "0"))   # 0 = no limit
 MAX_PRICE_PCM  = int(os.getenv("MAX_PRICE_PCM", "0"))       # 0 = no cap for 3+ bed listings
 MAX_PRICE_2BED = int(os.getenv("MAX_PRICE_2BED", "5500"))   # hard ceiling for 2-bed listings
 
-LISTINGS_PATH = Path(__file__).parent / "listings.json"
+LISTINGS_PATH     = Path(__file__).parent / "listings.json"
+AIRDNA_RATES_PATH = Path(__file__).parent / "airdna_rates.json"
+STR_MAX_ABOVE_ADR = int(os.getenv("STR_MAX_ABOVE_ADR", "50"))  # £ tolerance above AirDNA ADR
+
+
+def _load_airdna_rates() -> dict:
+    """Load AirDNA nightly rates by bedroom count from airdna_rates.json."""
+    try:
+        if AIRDNA_RATES_PATH.exists():
+            return json.loads(AIRDNA_RATES_PATH.read_text(encoding="utf-8"))
+    except Exception as exc:
+        logger.warning("[str] Failed to load airdna_rates.json: %s", exc)
+    return {}
+
+
+def _str_not_viable(listing: dict) -> bool:
+    """
+    Return True if the listing's STR (Airbnb) potential doesn't cover the
+    long-term rental cost — i.e. it would need to charge too much per night.
+
+    Formula (Ernest's rule):
+      required_nightly = asking_pcm × 1.5 ÷ 21
+      airdna_avg       = AirDNA ADR for same bed count, Entire Place, GBP
+      Remove if: required_nightly > airdna_avg + £50
+
+    AirDNA guest ranges used for comparables:
+      1 bed → 1–4 guests   |  2 bed → 1–6 guests   |  3 bed → 1–8 guests
+      4 bed → 1–10 guests  |  5 bed → 1–12 guests  |  6 bed → 1–14 guests
+      7 bed → 1–16 guests
+
+    Returns False (keep listing) if AirDNA data is unavailable.
+    """
+    asking_pcm = _parse_price_pcm(listing.get("price", ""))
+    beds       = listing.get("beds")
+    if not asking_pcm or not beds:
+        return False   # can't compute — keep listing
+
+    rates = _load_airdna_rates()
+    by_beds = rates.get("by_bedrooms", {})
+    airdna_avg = by_beds.get(str(beds)) or by_beds.get(str(int(beds)))
+    if not airdna_avg:
+        return False   # no AirDNA data for this bed count — keep listing
+
+    required_nightly = (asking_pcm * 1.5) / 21
+    margin = required_nightly - airdna_avg
+
+    if margin > STR_MAX_ABOVE_ADR:
+        logger.info(
+            "[str] STR not viable: %s | asking £%d/mo → requires £%.0f/night "
+            "but AirDNA %d-bed avg is £%d/night (over by £%.0f)",
+            listing.get("address", "")[:40], asking_pcm,
+            required_nightly, beds, airdna_avg, margin,
+        )
+        return True
+
+    return False
 
 logging.basicConfig(
     format="%(asctime)s | %(levelname)s | %(name)s | %(message)s",
@@ -587,7 +642,17 @@ async def run_pipeline(
             logger.info("[filter] Detail-page Playwright check: blocked %d listings "
                         "(porter/concierge/unfurnished hidden in key features)", detail_removed)
 
-    # Step 5 — Hard price ceiling by bed count (skip FMV for overpriced listings)
+    # Step 5 — STR viability check (AirDNA)
+    # Remove listings where the required Airbnb nightly rate (asking × 1.5 ÷ 21)
+    # exceeds the AirDNA average by more than £50 — not worth it as an STR investment.
+    before_str = len(walk_passed)
+    walk_passed = [l for l in walk_passed if not _str_not_viable(l)]
+    str_removed = before_str - len(walk_passed)
+    if str_removed:
+        logger.info("[filter] STR viability (AirDNA): removed %d listings "
+                    "(required nightly > AirDNA avg + £%d)", str_removed, STR_MAX_ABOVE_ADR)
+
+    # Step 6 — Hard price ceiling by bed count (skip FMV for overpriced listings)
     def _over_price_cap(listing: dict) -> bool:
         pcm = _parse_price_pcm(listing.get("price", ""))
         if not pcm:
