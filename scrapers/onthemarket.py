@@ -49,9 +49,15 @@ AREAS = {
     "Holborn":            "holborn-station",
     "Chancery Lane":      "chancery-lane-station",
     "Farringdon":         "farringdon-station",
-    "Angel":              "angel-station",
-    "Old Street":         "old-street-station",
-    "Charing Cross":      "charing-cross-station",
+    "Angel":                    "angel-station",
+    "Old Street":               "old-street-station",
+    "Charing Cross":            "charing-cross-station",
+    "Victoria":                 "victoria-station",
+    "King's Cross St Pancras":  "kings-cross-st-pancras-station",
+    "Goodge Street":            "goodge-street-station",
+    "Russell Square":           "russell-square-station",
+    "Gloucester Road":          "gloucester-road-station",
+    "Lancaster Gate":           "lancaster-gate-station",
 }
 
 BASE = "https://www.onthemarket.com/to-rent/property/{slug}/"

@@ -24,9 +24,15 @@ AREAS = {
     "Holborn":            ("holborn-london",             "Holborn, London"),
     "Chancery Lane":      ("chancery-lane-london",      "Chancery Lane, London"),
     "Farringdon":         ("farringdon-london",         "Farringdon, London"),
-    "Angel":              ("angel-london",              "Angel, London"),
-    "Old Street":         ("old-street-london",         "Old Street, London"),
-    "Charing Cross":      ("charing-cross-london",      "Charing Cross, London"),
+    "Angel":                    ("angel-london",                    "Angel, London"),
+    "Old Street":               ("old-street-london",               "Old Street, London"),
+    "Charing Cross":            ("charing-cross-london",            "Charing Cross, London"),
+    "Victoria":                 ("victoria-london",                 "Victoria, London"),
+    "King's Cross St Pancras":  ("kings-cross-london",              "King's Cross, London"),
+    "Goodge Street":            ("goodge-street-london",            "Goodge Street, London"),
+    "Russell Square":           ("russell-square-london",           "Russell Square, London"),
+    "Gloucester Road":          ("gloucester-road-london",          "Gloucester Road, London"),
+    "Lancaster Gate":           ("lancaster-gate-london",           "Lancaster Gate, London"),
 }
 
 def _search_url(slug: str, term: str) -> str:

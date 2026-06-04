@@ -87,9 +87,15 @@ _OTM_VALID_POSTCODES: dict[str, list[str]] = {
     "Holborn":            ["WC2B", "WC1V"],             # Holborn core
     "Chancery Lane":      ["WC2A", "EC4A"],             # Chancery Lane & Temple
     "Farringdon":         ["EC1A", "EC1M"],             # Farringdon & Barbican fringe
-    "Angel":              ["N1"],                       # Angel & Islington
-    "Old Street":         ["EC1V", "EC1Y"],             # Old Street & Shoreditch fringe
-    "Charing Cross":      ["WC2N"],                     # Charing Cross & Embankment
+    "Angel":                    ["N1"],                       # Angel & Islington
+    "Old Street":               ["EC1V", "EC1Y"],             # Old Street & Shoreditch fringe
+    "Charing Cross":            ["WC2N"],                     # Charing Cross & Embankment
+    "Victoria":                 ["SW1E", "SW1W", "SW1V"],     # Victoria & Pimlico
+    "King's Cross St Pancras":  ["N1C", "WC1X"],              # King's Cross & Pentonville
+    "Goodge Street":            ["W1T", "W1W"],               # Fitzrovia
+    "Russell Square":           ["WC1B", "WC1E"],             # Bloomsbury
+    "Gloucester Road":          ["SW7"],                      # South Kensington & Gloucester Rd
+    "Lancaster Gate":           ["W2 3", "W2 4"],             # Lancaster Gate & Hyde Park
 }
 
 

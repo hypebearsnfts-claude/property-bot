@@ -22,9 +22,18 @@ AREAS = {
     "Holborn":              "STATION%5E4668",
     "Chancery Lane":        "STATION%5E1920",
     "Farringdon":           "STATION%5E3552",
-    "Angel":                "STATION%5E339",
-    "Old Street":           "STATION%5E6855",
-    "Charing Cross":        "STATION%5E1936",
+    "Angel":                    "STATION%5E339",
+    "Old Street":               "STATION%5E6855",
+    "Charing Cross":            "STATION%5E1936",
+    # ── 6 new stations — confirm IDs from Rightmove search URL ──────────────
+    # Search each station on rightmove.co.uk, select from autocomplete,
+    # and copy the number from locationIdentifier=STATION%5E{NUMBER} in the URL
+    "Victoria":                 "STATION%5E9491",
+    "King's Cross St Pancras":  "STATION%5E5165",
+    "Goodge Street":            "STATION%5E3863",
+    "Russell Square":           "STATION%5E7877",
+    "Gloucester Road":          "STATION%5E3809",
+    "Lancaster Gate":           "STATION%5E5354",
 }
 
 BASE     = "https://www.rightmove.co.uk/property-to-rent/find.html"

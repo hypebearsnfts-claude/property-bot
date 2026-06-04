@@ -24,9 +24,15 @@ AREAS = {
     "Holborn":            "holborn",
     "Chancery Lane":      "chancery-lane",
     "Farringdon":         "farringdon",
-    "Angel":              "angel",
-    "Old Street":         "old-street",
-    "Charing Cross":      "charing-cross",
+    "Angel":                    "angel",
+    "Old Street":               "old-street",
+    "Charing Cross":            "charing-cross",
+    "Victoria":                 "victoria",
+    "King's Cross St Pancras":  "kings-cross-st-pancras",
+    "Goodge Street":            "goodge-street",
+    "Russell Square":           "russell-square",
+    "Gloucester Road":          "gloucester-road",
+    "Lancaster Gate":           "lancaster-gate",
 }
 
 LISTING_SEL = "a[data-testid*='listing']"

@@ -154,9 +154,15 @@ _ZOOPLA_SLUGS: dict[str, str] = {
     "Holborn":            "holborn",
     "Chancery Lane":      "chancery-lane",
     "Farringdon":         "farringdon",
-    "Angel":              "angel",
-    "Old Street":         "old-street",
-    "Charing Cross":      "charing-cross",
+    "Angel":                    "angel",
+    "Old Street":               "old-street",
+    "Charing Cross":            "charing-cross",
+    "Victoria":                 "victoria",
+    "King's Cross St Pancras":  "kings-cross-st-pancras",
+    "Goodge Street":            "goodge-street",
+    "Russell Square":           "russell-square",
+    "Gloucester Road":          "gloucester-road",
+    "Lancaster Gate":           "lancaster-gate",
 }
 
 # Station IDs — same as scrapers/rightmove.py AREAS dict.
@@ -175,9 +181,15 @@ _RIGHTMOVE_STATIONS: dict[str, str] = {
     "Holborn":            "STATION%5E4668",
     "Chancery Lane":      "STATION%5E1920",
     "Farringdon":         "STATION%5E3552",
-    "Angel":              "STATION%5E339",
-    "Old Street":         "STATION%5E6855",
-    "Charing Cross":      "STATION%5E1936",
+    "Angel":                    "STATION%5E339",
+    "Old Street":               "STATION%5E6855",
+    "Charing Cross":            "STATION%5E1936",
+    "Victoria":                 "STATION%5E9491",
+    "King's Cross St Pancras":  "STATION%5E5165",
+    "Goodge Street":            "STATION%5E3863",
+    "Russell Square":           "STATION%5E7877",
+    "Gloucester Road":          "STATION%5E3809",
+    "Lancaster Gate":           "STATION%5E5354",
 }
 
 _OTM_STATION_SLUGS: dict[str, str] = {
@@ -193,9 +205,15 @@ _OTM_STATION_SLUGS: dict[str, str] = {
     "Holborn":            "holborn-station",
     "Chancery Lane":      "chancery-lane-station",
     "Farringdon":         "farringdon-station",
-    "Angel":              "angel-station",
-    "Old Street":         "old-street-station",
-    "Charing Cross":      "charing-cross-station",
+    "Angel":                    "angel-station",
+    "Old Street":               "old-street-station",
+    "Charing Cross":            "charing-cross-station",
+    "Victoria":                 "victoria-station",
+    "King's Cross St Pancras":  "kings-cross-st-pancras-station",
+    "Goodge Street":            "goodge-street-station",
+    "Russell Square":           "russell-square-station",
+    "Gloucester Road":          "gloucester-road-station",
+    "Lancaster Gate":           "lancaster-gate-station",
 }
 
 _UA = ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
