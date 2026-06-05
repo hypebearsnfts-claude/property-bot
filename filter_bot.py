@@ -285,14 +285,45 @@ _DETAIL_UA = (
 )
 
 
+def _has_unfurnished(t: str) -> bool:
+    """True only if the text indicates an UNFURNISHED-only let.
+
+    "furnished or unfurnished" (and slash/part variants) means a furnished
+    option IS available, so those must NOT be blocked. `t` must be lowercase.
+    """
+    if "unfurnished" not in t:
+        return False
+    masked = (
+        t.replace("furnished or unfurnished", " ")
+         .replace("furnished/unfurnished", " ")
+         .replace("furnished / unfurnished", " ")
+         .replace("furnished or part furnished", " ")
+         .replace("furnished or part-furnished", " ")
+    )
+    return "unfurnished" in masked
+
+
 def _text_has_blocked_keyword(text: str) -> bool:
-    """Return True if the given text contains any blacklisted keyword."""
+    """Detail-page deep check on the FULL rendered page text.
+
+    Deliberately NARROW: this scans the entire page (header nav, footer, and
+    "similar properties" rails included), so it must only use terms that won't
+    appear in site chrome. It exists to catch attributes hidden in the listing
+    body that the card didn't expose: concierge, porter, and unfurnished-only.
+
+    Do NOT add nav/category terms here (e.g. "student accommodation",
+    "student property", agent names) — those appear in every portal's menu and
+    would false-block 100% of listings. They are already handled at the card
+    level in _has_blacklisted_keyword (which scans only the listing's own fields).
+    """
     if not text:
         return False
     t = text.lower()
-    if any(kw in t for kw in BLACKLISTED_KEYWORDS):
+    if "concierge" in t:
         return True
-    if _WHOLE_WORD_RE.search(t):
+    if _WHOLE_WORD_RE.search(t):        # whole-word "porter"
+        return True
+    if _has_unfurnished(t):
         return True
     return False
 
@@ -403,10 +434,9 @@ def _is_blacklisted(listing: dict) -> bool:
 BLACKLISTED_KEYWORDS = [
     # Any concierge service — "concierge" is safe as substring (no common false positives)
     "concierge",
-    # Unfurnished / flexible furnishing — scrapers filter for furnished but portals
-    # sometimes return "furnished or unfurnished" listings in furnished searches.
-    # Rightmove cards often include the letting detail text within the card body.
-    "unfurnished",              # catches "unfurnished", "furnished or unfurnished"
+    # NOTE: "unfurnished" is intentionally NOT a naive substring here — it would
+    # wrongly match "furnished or unfurnished" (furnished IS available). It is
+    # handled by _has_unfurnished(), called below, which excludes those variants.
     # Student-only lettings — Rightmove STU_LET listings sometimes appear in regular rental searches
     "student property",
     "student accommodation",
@@ -456,6 +486,10 @@ def _has_blacklisted_keyword(listing: dict) -> bool:
 
     # Whole-word check for porter (avoids false positives like reporter/supporter)
     if _WHOLE_WORD_RE.search(haystack):
+        return True
+
+    # Unfurnished-only — but keep "furnished or unfurnished" (furnished available)
+    if _has_unfurnished(haystack):
         return True
 
     return False
