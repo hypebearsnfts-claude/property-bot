@@ -63,6 +63,34 @@ def _load_airdna_rates() -> dict:
     return {}
 
 
+def _get_airdna_avg(area: str, beds: int) -> Optional[int]:
+    """
+    Look up AirDNA average nightly rate (GBP, Entire Place) for a given station
+    area and bedroom count.
+
+    Lookup priority:
+      1. by_station[area][beds]   — hyper-local 0.5-mile radius per station
+      2. by_bedrooms[beds]        — London-wide fallback
+
+    The daily Cowork task populates by_station with real per-station data.
+    """
+    rates    = _load_airdna_rates()
+    beds_key = str(beds)
+
+    # 1. Station-specific (0.5-mile radius — apple-to-apple comparison)
+    station_data = rates.get("by_station", {}).get(area, {})
+    val = station_data.get(beds_key)
+    if val:
+        return int(val)
+
+    # 2. London-wide fallback
+    val = rates.get("by_bedrooms", {}).get(beds_key)
+    if val:
+        return int(val)
+
+    return None
+
+
 def _str_not_viable(listing: dict) -> bool:
     """
     Return True if the listing's STR (Airbnb) potential doesn't cover the
@@ -70,35 +98,33 @@ def _str_not_viable(listing: dict) -> bool:
 
     Formula (Ernest's rule):
       required_nightly = asking_pcm × 1.5 ÷ 21
-      airdna_avg       = AirDNA ADR for same bed count, Entire Place, GBP
+      airdna_avg       = AirDNA ADR for same station area + bed count
+                         (Entire Place, 0.5-mile radius, GBP)
       Remove if: required_nightly > airdna_avg + £50
 
-    AirDNA guest ranges used for comparables:
-      1 bed → 1–4 guests   |  2 bed → 1–6 guests   |  3 bed → 1–8 guests
-      4 bed → 1–10 guests  |  5 bed → 1–12 guests  |  6 bed → 1–14 guests
-      7 bed → 1–16 guests
+    AirDNA guest ranges: 1-bed=1-4 guests, 2-bed=1-6, 3-bed=1-8,
+                         4-bed=1-10, 5-bed=1-12, 6-bed=1-14, 7-bed=1-16
 
     Returns False (keep listing) if AirDNA data is unavailable.
     """
     asking_pcm = _parse_price_pcm(listing.get("price", ""))
     beds       = listing.get("beds")
+    area       = listing.get("area", "")
     if not asking_pcm or not beds:
         return False   # can't compute — keep listing
 
-    rates = _load_airdna_rates()
-    by_beds = rates.get("by_bedrooms", {})
-    airdna_avg = by_beds.get(str(beds)) or by_beds.get(str(int(beds)))
+    airdna_avg = _get_airdna_avg(area, beds)
     if not airdna_avg:
-        return False   # no AirDNA data for this bed count — keep listing
+        return False   # no AirDNA data — don't reject
 
     required_nightly = (asking_pcm * 1.5) / 21
     margin = required_nightly - airdna_avg
 
     if margin > STR_MAX_ABOVE_ADR:
         logger.info(
-            "[str] STR not viable: %s | asking £%d/mo → requires £%.0f/night "
-            "but AirDNA %d-bed avg is £%d/night (over by £%.0f)",
-            listing.get("address", "")[:40], asking_pcm,
+            "[str] STR not viable: %s (%s) | £%d/mo → £%.0f/night needed, "
+            "AirDNA %d-bed avg £%d/night (over by £%.0f)",
+            listing.get("address", "")[:35], area, asking_pcm,
             required_nightly, beds, airdna_avg, margin,
         )
         return True
