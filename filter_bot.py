@@ -52,6 +52,20 @@ LISTINGS_PATH     = Path(__file__).parent / "listings.json"
 AIRDNA_RATES_PATH = Path(__file__).parent / "airdna_rates.json"
 STR_MAX_ABOVE_ADR = int(os.getenv("STR_MAX_ABOVE_ADR", "50"))  # £ tolerance above AirDNA ADR
 
+# Sources that should normally return listings every run. If one of these hits
+# zero it's almost certainly bot-blocked or a broken selector — worth an alert.
+# (zoopla / openrent are chronically bot-blocked, so they're intentionally
+# excluded here to avoid daily false alarms — they're still counted/reported.)
+CORE_SOURCES = {s.strip() for s in os.getenv(
+    "CORE_SOURCES", "rightmove,onthemarket").split(",") if s.strip()}
+# Alert if the detail-page check blocks at least this fraction (and this many).
+DETAIL_BLOCK_ALERT_FRACTION = float(os.getenv("DETAIL_BLOCK_ALERT_FRACTION", "0.8"))
+DETAIL_BLOCK_ALERT_MIN      = int(os.getenv("DETAIL_BLOCK_ALERT_MIN", "10"))
+
+# Populated by run_pipeline() each run; read by run_filter_pipeline_and_send()
+# to emit health alerts without changing run_pipeline's return signature.
+_LAST_RUN_DIAG: dict = {}
+
 
 def _load_airdna_rates() -> dict:
     """Load AirDNA nightly rates by bedroom count from airdna_rates.json."""
@@ -303,8 +317,10 @@ def _has_unfurnished(t: str) -> bool:
     return "unfurnished" in masked
 
 
-def _text_has_blocked_keyword(text: str) -> bool:
+def _blocked_keyword(text: str) -> Optional[str]:
     """Detail-page deep check on the FULL rendered page text.
+
+    Returns the matched term (for logging) or None.
 
     Deliberately NARROW: this scans the entire page (header nav, footer, and
     "similar properties" rails included), so it must only use terms that won't
@@ -317,15 +333,21 @@ def _text_has_blocked_keyword(text: str) -> bool:
     level in _has_blacklisted_keyword (which scans only the listing's own fields).
     """
     if not text:
-        return False
+        return None
     t = text.lower()
     if "concierge" in t:
-        return True
-    if _WHOLE_WORD_RE.search(t):        # whole-word "porter"
-        return True
+        return "concierge"
+    m = _WHOLE_WORD_RE.search(t)           # whole-word "porter"
+    if m:
+        return m.group(0)
     if _has_unfurnished(t):
-        return True
-    return False
+        return "unfurnished"
+    return None
+
+
+def _text_has_blocked_keyword(text: str) -> bool:
+    """Bool wrapper around _blocked_keyword (kept for callers/tests)."""
+    return _blocked_keyword(text) is not None
 
 
 async def _check_detail_pages_playwright(listings: list[dict]) -> list[bool]:
@@ -370,9 +392,10 @@ async def _check_detail_pages_playwright(listings: list[dict]) -> list[bool]:
                         text = await page.evaluate(
                             "() => document.body.innerText.slice(0, 25000)"
                         )
-                        if _text_has_blocked_keyword(text):
+                        kw = _blocked_keyword(text)
+                        if kw:
                             results[idx] = True
-                            logger.info("[filter] Detail check blocked: %s", url[:70])
+                            logger.info("[filter] Detail check blocked (%r): %s", kw, url[:70])
                     except PWTimeout:
                         logger.debug("[filter] Detail page timeout: %s", url[:70])
                     except Exception as exc:
@@ -611,15 +634,26 @@ async def run_pipeline(
     Returns (passing_listings, total_scraped, new_after_dedup, walk_count)
     Each passing listing has walk_station, walk_mins, and verdict dict attached.
     """
+    _LAST_RUN_DIAG.clear()
     if not LISTINGS_PATH.exists():
         logger.error("[filter] listings.json not found at %s", LISTINGS_PATH)
-        return [], 0, 0, 0
+        _LAST_RUN_DIAG.update(per_source={}, detail_checked=0, detail_blocked=0)
+        return [], 0, 0, 0, []
 
     # Clean seen_listings.json of entries older than 30 days
     clean_old_entries()
 
     raw: list[dict] = json.loads(LISTINGS_PATH.read_text(encoding="utf-8"))
     logger.info("[filter] Loaded %d listings", len(raw))
+
+    # Per-source counts of the full scraped set (for observability + alerts)
+    per_source: dict[str, int] = {}
+    for _l in raw:
+        src = (_l.get("source") or "unknown").lower()
+        per_source[src] = per_source.get(src, 0) + 1
+    logger.info("[filter] Scraped by source: %s",
+                ", ".join(f"{k}={v}" for k, v in sorted(per_source.items())) or "none")
+    _LAST_RUN_DIAG.update(per_source=per_source, detail_checked=0, detail_blocked=0)
 
     # Step 0 — price change detection (runs on full scraped set before any filtering)
     price_drops = check_price_changes(raw)
@@ -698,9 +732,11 @@ async def run_pipeline(
         before_detail = len(walk_passed)
         walk_passed   = [l for l, blocked in zip(walk_passed, detail_flags) if not blocked]
         detail_removed = before_detail - len(walk_passed)
+        _LAST_RUN_DIAG.update(detail_checked=before_detail, detail_blocked=detail_removed)
         if detail_removed:
-            logger.info("[filter] Detail-page Playwright check: blocked %d listings "
-                        "(porter/concierge/unfurnished hidden in key features)", detail_removed)
+            logger.info("[filter] Detail-page Playwright check: blocked %d/%d listings "
+                        "(porter/concierge/unfurnished hidden in key features)",
+                        detail_removed, before_detail)
 
     # Step 5 — STR viability check (AirDNA)
     # Remove listings where the required Airbnb nightly rate (asking × 1.5 ÷ 21)
@@ -881,6 +917,63 @@ async def run(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
 # ── Automated pipeline (called by scheduler.py) ───────────────────────────────
 
+def _source_breakdown_str() -> str:
+    """One-line 'rightmove=74, onthemarket=89, zoopla=0, openrent=0' summary."""
+    per = _LAST_RUN_DIAG.get("per_source", {}) or {}
+    if not per:
+        return "no scrape data"
+    return ", ".join(f"{k}={v}" for k, v in sorted(per.items()))
+
+
+def _build_health_warnings(sent: int, new_count: int, total_scraped: int) -> list[str]:
+    """Detect 'looks broken' conditions worth a Telegram heads-up.
+
+    Returns human-readable warning lines (empty list = all healthy).
+    """
+    warnings: list[str] = []
+    per = _LAST_RUN_DIAG.get("per_source", {}) or {}
+
+    # 1. Nothing scraped at all → every source blocked / network issue
+    if total_scraped == 0:
+        warnings.append("0 listings scraped from ALL sources — likely network/IP block.")
+    else:
+        # 2. A normally-reliable source returned zero → bot-blocked / selector broke
+        for src in sorted(CORE_SOURCES):
+            if per.get(src, 0) == 0:
+                warnings.append(f"source '{src}' returned 0 listings — likely bot-blocked or selector broke.")
+
+    # 3. Detail-page check blocked an abnormally high share → possible false positives
+    checked = _LAST_RUN_DIAG.get("detail_checked", 0) or 0
+    blocked = _LAST_RUN_DIAG.get("detail_blocked", 0) or 0
+    if checked >= DETAIL_BLOCK_ALERT_MIN and blocked / checked >= DETAIL_BLOCK_ALERT_FRACTION:
+        pct = round(100 * blocked / checked)
+        warnings.append(
+            f"detail-page check blocked {pct}% ({blocked}/{checked}) — "
+            f"possible false-positive keyword match (see 'Detail check blocked' log lines)."
+        )
+
+    # 4. Scraped real listings but sent nothing → something downstream is over-filtering
+    if total_scraped > 0 and new_count > 0 and sent == 0:
+        warnings.append(
+            f"{new_count} new listing(s) checked but 0 sent — every one was filtered out."
+        )
+
+    return warnings
+
+
+async def _send_health_alert(bot, chat_id: int, sent: int, new_count: int, total_scraped: int) -> None:
+    """Send a Telegram heads-up if the run looks unhealthy. No-op if healthy."""
+    try:
+        warnings = _build_health_warnings(sent, new_count, total_scraped)
+        if not warnings:
+            return
+        body = "⚠️ Property bot health check\n" + "\n".join(f"• {w}" for w in warnings)
+        body += f"\n\nScraped by source: {_source_breakdown_str()}"
+        await bot.send_message(chat_id=chat_id, text=body, disable_web_page_preview=True)
+    except Exception as exc:
+        logger.warning("[filter] Failed to send health alert: %s", exc)
+
+
 async def run_filter_pipeline_and_send(
     bot,
     chat_id: str,
@@ -937,10 +1030,13 @@ async def run_filter_pipeline_and_send(
             text=(
                 f"✅ Done. 0 properties passed.\n"
                 f"• Scraped today: {total_scraped_now:,}\n"
+                f"• By source: {_source_breakdown_str()}\n"
                 f"• Already sent (skipped): {dupes_skipped:,}\n"
                 f"• New listings checked for FMV: {new_count:,}"
             ),
         )
+        await _send_health_alert(bot, chat_id, sent=0, new_count=new_count,
+                                 total_scraped=total_scraped_now)
         return
 
     to_send = passing[:MAX_SEND] if MAX_SEND > 0 else passing
@@ -1000,11 +1096,14 @@ async def run_filter_pipeline_and_send(
         text=(
             f"✅ Done.\n"
             f"• Scraped today: {total_scraped_now:,}\n"
+            f"• By source: {_source_breakdown_str()}\n"
             f"• Already sent (skipped): {dupes_skipped:,}\n"
             f"• New listings checked for FMV: {new_count:,}\n"
             f"• Passed FMV & sent: {sent}"
         ),
     )
+    await _send_health_alert(bot, chat_id, sent=sent, new_count=new_count,
+                             total_scraped=total_scraped_now)
     logger.info("[filter] Automated pipeline complete — %d/%d new passed, %d sent (dupes skipped: %d)",
                 len(passing), new_count, sent, dupes_skipped)
 
