@@ -1,5 +1,4 @@
-import asyncio, logging, re
-import requests
+import asyncio, logging, os, re
 from bs4 import BeautifulSoup
 
 logger = logging.getLogger(__name__)
@@ -44,7 +43,43 @@ _HEADERS = {
                    "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"),
     "Accept-Language": "en-GB,en;q=0.9",
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+    "Sec-Fetch-Dest": "document",
+    "Sec-Fetch-Mode": "navigate",
+    "Sec-Fetch-Site": "none",
+    "Upgrade-Insecure-Requests": "1",
 }
+
+# OpenRent's WAF returns HTTP 405 to a plain `requests` fingerprint from the cloud,
+# but serves the page fine to a real Chrome TLS handshake. curl_cffi impersonates
+# Chrome (free) and is tried first; plain requests is the fallback. Optional proxy
+# via env if OpenRent ever IP-blocks too (kept cloud-side, no PC, no login).
+_PROXY = os.getenv("OPENRENT_PROXY") or os.getenv("PROXY_URL") or ""
+
+
+def _fetch(url: str):
+    """Return HTML for an OpenRent search page, or None if blocked."""
+    proxies = {"http": _PROXY, "https": _PROXY} if _PROXY else None
+    try:
+        from curl_cffi import requests as creq
+        r = creq.get(url, headers=_HEADERS, impersonate="chrome124",
+                     proxies=proxies, timeout=30)
+        if r.status_code == 200 and "/property-to-rent/london/" in r.text:
+            return r.text
+        logger.info("[openrent] curl_cffi status=%s", r.status_code)
+    except ImportError:
+        logger.warning("[openrent] curl_cffi not installed — add it to requirements.txt")
+    except Exception as exc:
+        logger.info("[openrent] curl_cffi error: %s", exc)
+    try:
+        import requests
+        r = requests.get(url, headers=_HEADERS, proxies=proxies, timeout=30)
+        if r.status_code == 200 and "/property-to-rent/london/" in r.text:
+            return r.text
+        logger.info("[openrent] requests status=%s", r.status_code)
+    except Exception as exc:
+        logger.info("[openrent] requests error: %s", exc)
+    return None
+
 
 _MAX_MILES   = 0.5
 _MILE_IN_KM  = 1.609344
@@ -128,19 +163,14 @@ def _parse_card(area: str, href: str, text: str):
 
 def _scrape_area_sync(area: str, slug: str, term: str):
     listings, seen = [], set()
-    session = requests.Session()
-    session.headers.update(_HEADERS)
     for page_i in range(_MAX_PAGES):
         url = _search_url(slug, term, skip=page_i * 20)
-        try:
-            r = session.get(url, timeout=30)
-        except Exception as exc:
-            logger.warning("[openrent] %s page %d request error: %s", area, page_i, exc)
+        html = _fetch(url)
+        if not html:
+            if page_i == 0:
+                logger.info("[openrent] %s -> blocked / no HTML", area)
             break
-        if r.status_code != 200:
-            logger.info("[openrent] %s -> HTTP %s", area, r.status_code)
-            break
-        soup = BeautifulSoup(r.text, "lxml")
+        soup = BeautifulSoup(html, "lxml")
         anchors = [a for a in soup.find_all("a", href=True) if _PROP_RE.search(a["href"])]
         if not anchors:
             # No property links in server HTML — nothing more to page through.
