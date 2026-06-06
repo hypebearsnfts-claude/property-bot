@@ -1,16 +1,10 @@
-import asyncio, logging, random
-from playwright.async_api import async_playwright, TimeoutError as PWTimeout
-try:
-    from playwright_stealth import stealth_async as _stealth_async
-    _STEALTH_AVAILABLE = True
-except ImportError:
-    _STEALTH_AVAILABLE = False
+import asyncio, logging, os, re
 
 logger = logging.getLogger(__name__)
 
-# Station slugs for Zoopla's /station/tube/ URL format — confirmed live 2026-04-17.
-# All use radius=0.5 miles, matching Rightmove STATION and OTM station searches.
-# Soho has no tube station; Piccadilly Circus is the central Soho stop.
+# Station slugs for Zoopla's /station/tube/ URL format. All use radius=0.5 miles.
+# Zoopla applies beds_min / furnished_state / radius SERVER-SIDE, so the returned
+# results are already filtered — we just parse the cards.
 AREAS = {
     "Covent Garden":      "covent-garden",
     "Soho":               "piccadilly-circus",
@@ -24,233 +18,176 @@ AREAS = {
     "Holborn":            "holborn",
     "Chancery Lane":      "chancery-lane",
     "Farringdon":         "farringdon",
-    "Angel":                    "angel",
-    "Old Street":               "old-street",
-    "Charing Cross":            "charing-cross",
-    "Victoria":                 "victoria",
-    "King's Cross St Pancras":  "kings-cross-st-pancras",
-    "Goodge Street":            "goodge-street",
-    "Russell Square":           "russell-square",
-    "Gloucester Road":          "gloucester-road",
-    "Lancaster Gate":           "lancaster-gate",
+    "Angel":              "angel",
+    "Old Street":         "old-street",
+    "Charing Cross":      "charing-cross",
+    "Victoria":           "victoria",
+    "King's Cross St Pancras": "kings-cross-st-pancras",
+    "Goodge Street":      "goodge-street",
+    "Russell Square":     "russell-square",
+    "Gloucester Road":    "gloucester-road",
+    "Lancaster Gate":     "lancaster-gate",
 }
 
-LISTING_SEL = "a[data-testid*='listing']"
+_MAX_PAGES = 4
+_DETAIL_RE = re.compile(r"/to-rent/details/(\d+)")
 
-_UA = ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
-       "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36")
+# Optional proxy / unlocker. Zoopla sits behind Cloudflare, which blocks datacenter
+# IPs (GitHub Actions). curl_cffi (Chrome TLS impersonation) is tried first and is
+# free; if it's still blocked, set ZOOPLA_PROXY (a residential/unlocker proxy URL,
+# e.g. http://user:pass@host:port) as a GitHub secret and requests route through it
+# — still fully cloud-side, no PC and no login required.
+_PROXY = os.getenv("ZOOPLA_PROXY") or os.getenv("PROXY_URL") or ""
 
-_EXTRA_HEADERS = {
+_HEADERS = {
+    "User-Agent": ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+                   "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"),
     "Accept-Language": "en-GB,en;q=0.9",
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+    "Sec-Fetch-Dest": "document",
+    "Sec-Fetch-Mode": "navigate",
+    "Sec-Fetch-Site": "none",
+    "Upgrade-Insecure-Requests": "1",
 }
 
 
 def _url(slug, pn=1):
     return (f"https://www.zoopla.co.uk/to-rent/property/station/tube/{slug}/"
-            f"?beds_min=2&price_max=15000&furnished_state=furnished&radius=0.5&results_sort=newest_listings&pn={pn}")
+            f"?beds_min=2&price_max=15000&furnished_state=furnished&radius=0.5"
+            f"&results_sort=newest_listings&pn={pn}")
 
 
-async def _load_page(browser, area, slug, pn):
+def _fetch_html(url: str):
+    """Fetch a Zoopla page from the cloud, best-effort past Cloudflare.
+
+    1) curl_cffi impersonating Chrome (free; defeats TLS/JA3 fingerprinting).
+    2) plain requests (last resort).
+    Both routed through ZOOPLA_PROXY if set. Returns HTML str or None if blocked.
     """
-    Load one Zoopla results page in a brand-new browser context.
+    proxies = {"http": _PROXY, "https": _PROXY} if _PROXY else None
 
-    A fresh context is essential: Zoopla bot detection flags the Playwright
-    session after the first page load, so page 2+ return no listing cards
-    when the same context is reused.
-
-    Returns list[dict] of raw card data (empty on bot-detection/timeout).
-    """
-    ctx = await browser.new_context(
-        user_agent=_UA,
-        viewport={"width": 1280, "height": 900},
-        locale="en-GB",
-        extra_http_headers=_EXTRA_HEADERS,
-    )
-    page = await ctx.new_page()
-    if _STEALTH_AVAILABLE:
-        await _stealth_async(page)
+    # Attempt 1 — curl_cffi with Chrome impersonation
     try:
-        url = _url(slug, pn)
-        try:
-            await page.goto(url, wait_until="domcontentloaded", timeout=35_000)
-        except PWTimeout:
-            logger.warning("[zoopla] %s p%d: goto timeout", area, pn)
-            return []
+        from curl_cffi import requests as creq
+        r = creq.get(url, headers=_HEADERS, impersonate="chrome124",
+                     proxies=proxies, timeout=30)
+        if r.status_code == 200 and "/to-rent/details/" in r.text:
+            return r.text
+        logger.info("[zoopla] curl_cffi status=%s len=%s (blocked?)",
+                    r.status_code, len(r.text or ""))
+    except ImportError:
+        logger.warning("[zoopla] curl_cffi not installed — add it to requirements.txt")
+    except Exception as exc:
+        logger.info("[zoopla] curl_cffi error: %s", exc)
 
-        # Dismiss cookie banner (best-effort)
-        try:
-            await page.locator(
-                "button:has-text('Accept all'), button:has-text('Accept All')"
-            ).first.click(timeout=4_000)
-            await page.wait_for_timeout(800)
-        except Exception:
-            pass
+    # Attempt 2 — plain requests
+    try:
+        import requests
+        r = requests.get(url, headers=_HEADERS, proxies=proxies, timeout=30)
+        if r.status_code == 200 and "/to-rent/details/" in r.text:
+            return r.text
+        logger.info("[zoopla] requests status=%s len=%s (blocked?)",
+                    r.status_code, len(r.text or ""))
+    except Exception as exc:
+        logger.info("[zoopla] requests error: %s", exc)
 
-        # Scroll to trigger lazy-loaded cards
-        await page.evaluate("window.scrollTo(0, 400)")
-        await asyncio.sleep(random.uniform(0.4, 0.8))
-        await page.evaluate("window.scrollTo(0, 800)")
-
-        # Wait for listing cards
-        try:
-            await page.wait_for_selector(LISTING_SEL, timeout=18_000)
-        except PWTimeout:
-            logger.info("[zoopla] %s p%d: selector timeout (bot-detected or end)", area, pn)
-            return []
-
-        await asyncio.sleep(random.uniform(0.5, 1.0))
-
-        # Extract card data via JS
-        cards_data = await page.evaluate(r"""
-            (sel) => {
-                const links = document.querySelectorAll(sel);
-                return Array.from(links).map(a => {
-                    if (!a.href || a.href.includes('/new-homes/')) return null;
-                    const text = a.innerText.toLowerCase();
-                    if (text.includes('let agreed')) return null;
-                    const price = a.querySelector('[data-testid*="price"], [class*="Price"], [class*="price"]');
-                    const addr  = a.querySelector('[data-testid*="address"], [class*="address"], [class*="Address"]');
-                    const title = a.querySelector('[data-testid*="title"], h2, [class*="title"], [class*="Title"]');
-
-                    const featText = a.innerText || '';
-                    const bathMatch = featText.match(/(\d+)\s*bath/i);
-                    const sqftMatch = featText.match(/([\d,]+)\s*sq\.?\s*ft/i)
-                                   || featText.match(/([\d,]+)\s*sqft/i);
-                    const sqmMatch  = featText.match(/([\d,]+)\s*(?:sq\.?\s*m(?!\w)|sqm)/i);
-                    let sqft = null;
-                    if (sqftMatch) sqft = parseInt(sqftMatch[1].replace(/,/g,''));
-                    else if (sqmMatch) sqft = Math.round(parseInt(sqmMatch[1].replace(/,/g,'')) * 10.764);
-
-                    const agentEl = a.querySelector('[data-testid="listing-agent-name"], [class*="AgentName"], [class*="agent-name"], [class*="BranchName"]');
-                    const agent = agentEl ? agentEl.innerText.trim() : '';
-
-                    return {
-                        url:         a.href,
-                        price:       price ? price.innerText.trim() : 'Price N/A',
-                        address:     addr  ? addr.innerText.trim().replace(/\s+/g,' ') : '',
-                        title:       title ? title.innerText.trim() : 'Property',
-                        baths:       bathMatch ? parseInt(bathMatch[1]) : null,
-                        sqft:        sqft,
-                        agent:       agent,
-                        description: featText.slice(0, 600),
-                    };
-                }).filter(Boolean);
-            }
-        """, LISTING_SEL)
-
-        return cards_data
-
-    finally:
-        await ctx.close()
+    return None
 
 
-async def _scrape_area(browser, area, slug):
-    """
-    Scrape all pages for one area, creating a fresh browser context per page.
-    Retries up to 3 times with exponential backoff if page 1 returns 0 listings.
-    """
-    _RETRY_DELAYS  = [10, 22, 38]   # seconds before attempt 2, 3, 4
-    _FULL_PAGE_MIN = 24             # Zoopla returns ~25-28 per page; ≥24 = full page
+def _parse_card(area: str, href: str, text: str):
+    tl = text.lower()
+    if "let agreed" in tl:
+        return None
+    m = _DETAIL_RE.search(href)
+    if not m:
+        return None
 
-    for attempt in range(4):
-        listings       = []
-        seen_this_area = set()
-        pages_fetched  = 0          # pages that returned at least 1 new listing
+    beds_m = re.search(r"(\d+)\s*beds?\b", tl)
+    if not beds_m or int(beds_m.group(1)) < 2:
+        return None
+    beds = int(beds_m.group(1))
 
-        for pn in range(1, 51):
-            if pn > 1:
-                await asyncio.sleep(random.uniform(3.5, 6.0))
+    price_m = re.search(r"£\s*([\d,]+)\s*pcm", text, re.I) or re.search(r"£\s*([\d,]+)\s*pw", text, re.I)
+    price = (f"£{price_m.group(1)} pcm") if price_m else "Price N/A"
 
-            try:
-                cards_data = await _load_page(browser, area, slug, pn)
-            except Exception as exc:
-                logger.error("[zoopla] %s p%d error: %s", area, pn, exc)
-                break
+    bath_m = re.search(r"(\d+)\s*baths?\b", tl)
+    sqft_m = re.search(r"([\d,]+)\s*sq\.?\s*ft", tl)
+    sqft = int(sqft_m.group(1).replace(",", "")) if sqft_m else None
 
-            if not cards_data:
-                # Empty page — bot-detected or end of results
-                break
+    addr_m = re.search(r"([A-Z][A-Za-z0-9'’.\- ]+,\s*London\s+[A-Z]{1,2}\d[A-Z\d]?)", text)
+    address = addr_m.group(1).strip() if addr_m else area
 
-            page_urls = {d['url'] for d in cards_data if d.get('url')}
-            if pn > 1 and page_urls and page_urls.issubset(seen_this_area):
-                logger.info("[zoopla] %s p%d: all dupes — end of results", area, pn)
-                break
+    full = href if href.startswith("http") else "https://www.zoopla.co.uk" + href
+    return {
+        "source":      "zoopla",
+        "area":        area,
+        "title":       address,
+        "price":       price,
+        "address":     address,
+        "url":         full.split("?")[0],
+        "beds":        beds,
+        "baths":       int(bath_m.group(1)) if bath_m else None,
+        "sqft":        sqft,
+        "description": text[:600],
+    }
 
-            cnt = 0
-            for d in cards_data:
-                u = d.get('url', '')
-                if u and u not in seen_this_area:
-                    seen_this_area.add(u)
-                    listings.append({
-                        "source":      "zoopla",
-                        "area":        area,
-                        "title":       d["title"],
-                        "price":       d["price"],
-                        "address":     d["address"],
-                        "url":         u,
-                        "baths":       d.get("baths"),
-                        "sqft":        d.get("sqft"),
-                        "agent":       d.get("agent", ""),
-                        "description": d.get("description", ""),
-                    })
-                    cnt += 1
 
-            if cnt > 0:
-                pages_fetched += 1
-            logger.info("[zoopla] %s p%d: +%d (total %d)", area, pn, cnt, len(listings))
+def _parse_html(area: str, html: str):
+    from bs4 import BeautifulSoup
+    soup = BeautifulSoup(html, "lxml")
+    # Prefer the text-bearing listing card anchor; fall back to any detail link.
+    anchors = soup.select("a[data-testid='listing-card-content']")
+    if not anchors:
+        anchors = [a for a in soup.find_all("a", href=True) if _DETAIL_RE.search(a.get("href", ""))]
+    out, seen = [], set()
+    for a in anchors:
+        href = a.get("href", "")
+        m = _DETAIL_RE.search(href)
+        if not m or m.group(1) in seen:
+            continue
+        text = a.get_text(" ", strip=True)
+        if len(text) < 20 and a.parent is not None:
+            text = a.parent.get_text(" ", strip=True)
+        rec = _parse_card(area, href, text)
+        if rec:
+            seen.add(m.group(1))
+            out.append(rec)
+    return out
 
-            if cnt == 0:
-                break
 
-        # Retry if: got 0 listings, OR stopped after exactly 1 full page
-        # (page 2 bot-detected — retry logic handles this)
-        stopped_after_one_full_page = (pages_fetched == 1 and len(listings) >= _FULL_PAGE_MIN)
-        if (listings and not stopped_after_one_full_page) or attempt == 3:
+def _scrape_area_sync(area: str, slug: str):
+    listings, seen = [], set()
+    for pn in range(1, _MAX_PAGES + 1):
+        html = _fetch_html(_url(slug, pn))
+        if not html:
+            if pn == 1:
+                logger.info("[zoopla] %s -> blocked / no HTML", area)
             break
-
-        delay = _RETRY_DELAYS[attempt]
-        reason = "0 listings" if not listings else f"only 1 page ({len(listings)} listings) — possible early bot-stop"
-        logger.info("[zoopla] %s attempt %d got %s — retrying in %ds…", area, attempt + 1, reason, delay)
-        await asyncio.sleep(delay)
-
+        page = _parse_html(area, html)
+        new = [r for r in page if r["url"] not in seen]
+        for r in new:
+            seen.add(r["url"])
+        listings.extend(new)
+        if not new:
+            break
     logger.info("[zoopla] %s -> %d listings", area, len(listings))
     return listings
 
 
 async def scrape():
-    sem = asyncio.Semaphore(2)
-
-    async def _s(browser, area, term):
-        async with sem:
-            return await _scrape_area(browser, area, term)
-
-    async with async_playwright() as pw:
-        browser = await pw.chromium.launch(
-            headless=True,
-            args=[
-                "--no-sandbox",
-                "--disable-setuid-sandbox",
-                "--disable-dev-shm-usage",
-                "--disable-blink-features=AutomationControlled",
-            ],
-        )
-        results = await asyncio.gather(
-            *[_s(browser, a, t) for a, t in AREAS.items()],
-            return_exceptions=True,
-        )
-        await browser.close()
-
+    results = await asyncio.gather(
+        *[asyncio.to_thread(_scrape_area_sync, a, slug) for a, slug in AREAS.items()],
+        return_exceptions=True,
+    )
     all_listings = []
     for r in results:
         if isinstance(r, list):
             all_listings.extend(r)
-
+        else:
+            logger.warning("[zoopla] area task failed: %s", r)
     seen, unique = set(), []
     for lst in all_listings:
         if lst.get("url") and lst["url"] not in seen:
-            seen.add(lst["url"])
-            unique.append(lst)
-
+            seen.add(lst["url"]); unique.append(lst)
     logger.info("[zoopla] Total after dedup: %d", len(unique))
     return unique

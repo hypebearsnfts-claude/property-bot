@@ -10,6 +10,9 @@ lxml==5.2.2
 # HTTP clients
 requests==2.32.3
 aiohttp==3.9.5
+# Chrome TLS/JA3 impersonation — lets the Zoopla scraper pass Cloudflare's
+# fingerprint check from the cloud without a browser. Falls back to requests.
+curl_cffi==0.7.4
 
 # AI / LLM
 anthropic>=0.40.0
