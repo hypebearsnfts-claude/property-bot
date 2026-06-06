@@ -1,16 +1,20 @@
 import asyncio, logging, re
-from playwright.async_api import async_playwright, TimeoutError as PWTimeout
-try:
-    from playwright_stealth import stealth_async as _stealth_async
-    _STEALTH_AVAILABLE = True
-except ImportError:
-    _STEALTH_AVAILABLE = False
+import requests
+from bs4 import BeautifulSoup
 
 logger = logging.getLogger(__name__)
 
-# OpenRent search URL — uses their /properties-to-rent search with a term + radius
-# radius=0.5 = 0.5 miles (matches Rightmove, Zoopla, OTM — required for walk-time filter)
-# bedrooms_min=2; furnishedType=1 = furnished only
+# OpenRent search URL — uses their /properties-to-rent search with a term + radius.
+# IMPORTANT: OpenRent server-renders the full results list in the page HTML. The
+# fancy `a.pli` cards you see in a browser are built CLIENT-SIDE by JavaScript
+# (and personalised to the logged-in user). That JS/AJAX does not complete on the
+# GitHub Actions runner, which is why the old Playwright scraper (which waited for
+# `a.pli`) timed out and returned 0. We instead fetch the server HTML with a plain
+# HTTP request and parse the property links directly — no JS, no browser needed.
+#
+# The server returns a wider set than the on-screen filters (bedrooms_min / radius
+# are applied client-side), so we re-apply them here: >=2 beds, and <= 0.5 miles
+# using the per-card distance text.
 AREAS = {
     "Covent Garden":      ("covent-garden-london",      "Covent Garden, London"),
     "Soho":               ("soho-london",               "Soho, London"),
@@ -21,151 +25,160 @@ AREAS = {
     "Marylebone":         ("marylebone-london",         "Marylebone, London"),
     "Regent's Park":      ("regents-park-london",       "Regent's Park, London"),
     "Kensington Olympia": ("kensington-olympia-london", "Kensington Olympia, London"),
-    "Holborn":            ("holborn-london",             "Holborn, London"),
+    "Holborn":            ("holborn-london",            "Holborn, London"),
     "Chancery Lane":      ("chancery-lane-london",      "Chancery Lane, London"),
     "Farringdon":         ("farringdon-london",         "Farringdon, London"),
-    "Angel":                    ("angel-london",                    "Angel, London"),
-    "Old Street":               ("old-street-london",               "Old Street, London"),
-    "Charing Cross":            ("charing-cross-london",            "Charing Cross, London"),
-    "Victoria":                 ("victoria-london",                 "Victoria, London"),
-    "King's Cross St Pancras":  ("kings-cross-london",              "King's Cross, London"),
-    "Goodge Street":            ("goodge-street-london",            "Goodge Street, London"),
-    "Russell Square":           ("russell-square-london",           "Russell Square, London"),
-    "Gloucester Road":          ("gloucester-road-london",          "Gloucester Road, London"),
-    "Lancaster Gate":           ("lancaster-gate-london",           "Lancaster Gate, London"),
+    "Angel":              ("angel-london",              "Angel, London"),
+    "Old Street":         ("old-street-london",         "Old Street, London"),
+    "Charing Cross":      ("charing-cross-london",      "Charing Cross, London"),
+    "Victoria":           ("victoria-london",           "Victoria, London"),
+    "King's Cross St Pancras": ("kings-cross-london",   "King's Cross, London"),
+    "Goodge Street":      ("goodge-street-london",      "Goodge Street, London"),
+    "Russell Square":     ("russell-square-london",     "Russell Square, London"),
+    "Gloucester Road":    ("gloucester-road-london",    "Gloucester Road, London"),
+    "Lancaster Gate":     ("lancaster-gate-london",     "Lancaster Gate, London"),
 }
 
-def _search_url(slug: str, term: str) -> str:
+_HEADERS = {
+    "User-Agent": ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+                   "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"),
+    "Accept-Language": "en-GB,en;q=0.9",
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+}
+
+_MAX_MILES   = 0.5
+_MILE_IN_KM  = 1.609344
+_MAX_KM      = _MAX_MILES * _MILE_IN_KM       # 0.5 mi -> ~0.805 km
+_MAX_PAGES   = 5                              # 20 results/page; stop early on distance
+_PROP_RE     = re.compile(r"/property-to-rent/london/[^/\s\"']+/(\d+)")
+
+
+def _search_url(slug: str, term: str, skip: int = 0) -> str:
     from urllib.parse import quote
-    return (
+    base = (
         f"https://www.openrent.co.uk/properties-to-rent/{slug}"
         f"?term={quote(term)}&bedrooms_min=2&max_rent=15000"
-        f"&furnishedType=1&isLive=true&radius=0.5"
+        f"&furnishedType=1&isLive=true&radius={_MAX_MILES}"
     )
+    return base + (f"&skip={skip}" if skip else "")
 
 
-async def _scrape_area(browser, area, slug, term):
-    ctx = await browser.new_context(
-        user_agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
-        viewport={"width": 1280, "height": 900},
-        locale="en-GB",
-        extra_http_headers={
-            "Accept-Language": "en-GB,en;q=0.9",
-            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
-            "Sec-Fetch-Dest": "document",
-            "Sec-Fetch-Mode": "navigate",
-            "Sec-Fetch-Site": "none",
-        },
-    )
-    page = await ctx.new_page()
-    if _STEALTH_AVAILABLE:
-        await _stealth_async(page)
-    listings = []
-    try:
-        url = _search_url(slug, term)
-        await page.goto(url, wait_until="domcontentloaded", timeout=30_000)
-        # Cookie banner
+def _parse_card(area: str, href: str, text: str):
+    """Build a listing dict from a property anchor's href + surrounding text.
+    Returns None if it should be skipped (let-agreed, <2 beds, or out of radius)."""
+    tl = text.lower()
+    if "let agreed" in tl:
+        return None
+
+    # Distance — enforce the 0.5-mile radius (server returns a wider set)
+    dist_km = None
+    dm = re.search(r"([\d.]+)\s*km", tl)
+    if dm:
         try:
-            await page.locator(
-                "button#onetrust-accept-btn-handler, button:has-text('Accept all'), button:has-text('I agree')"
-            ).first.click(timeout=3_000)
-            await page.wait_for_timeout(500)
-        except Exception:
-            pass
-
-        # OpenRent uses a.pli for listing cards — wait for them
-        # If they don't appear within 15s the area likely has no results
+            dist_km = float(dm.group(1))
+        except ValueError:
+            dist_km = None
+    mile_m = re.search(r"([\d.]+)\s*mile", tl)
+    if dist_km is None and mile_m:
         try:
-            await page.wait_for_selector("a.pli, div.property-result", timeout=15_000)
-        except PWTimeout:
-            logger.info("[openrent] %s -> no listings (selector timeout)", area)
-            return listings
+            dist_km = float(mile_m.group(1)) * _MILE_IN_KM
+        except ValueError:
+            dist_km = None
+    if dist_km is not None and dist_km > _MAX_KM + 1e-6:
+        return None
 
-        # Scroll to load all lazy cards
-        prev = 0
-        for _ in range(10):
-            cur = await page.eval_on_selector_all("a.pli, div.property-result", "els => els.length")
-            if cur == prev and _ > 0:
-                break
-            prev = cur
-            await page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
-            await page.wait_for_timeout(1000)
+    # Bedrooms — require >= 2 (the URL's bedrooms_min is only applied client-side).
+    # "Studio" / "Room in a Shared Flat" have no "N bed" and are skipped.
+    beds_m = re.search(r"(\d+)\s*bed", tl)
+    if not beds_m or int(beds_m.group(1)) < 2:
+        return None
+    beds = int(beds_m.group(1))
 
-        cards = await page.query_selector_all("a.pli, div.property-result a")
-        for card in cards:
-            try:
-                text = (await card.inner_text()).lower()
-                if "let agreed" in text:
-                    continue
-                # Require at least 2 beds — match "X bed" pattern specifically
-                beds_m = re.search(r'(\d+)\s*bed', text, re.IGNORECASE)
-                if beds_m and int(beds_m.group(1)) < 2:
-                    continue
-                href = await card.get_attribute("href") or ""
-                if not href:
-                    continue
-                if not href.startswith("http"):
-                    href = "https://www.openrent.co.uk" + href
-                # Price — multiple possible selectors
-                price_el = await card.query_selector(
-                    "div.pim span.fs-4, span.price, [class*='price'], [class*='Price']"
-                )
-                price_raw = ((await price_el.inner_text()).strip()) if price_el else ""
-                price = (price_raw + " pcm") if price_raw and "pcm" not in price_raw.lower() else price_raw or "Price N/A"
+    price_m = (re.search(r"£\s*([\d,]+)\s*(?:per month|/\s*month|pcm|per calendar month)", text, re.I)
+               or re.search(r"£\s*([\d,]+)", text))
+    price = (f"£{price_m.group(1)} pcm") if price_m else "Price N/A"
 
-                title_el = await card.query_selector("div.fw-medium, p.fw-medium, h2, [class*='title']")
-                title = (await title_el.inner_text()).strip() if title_el else area
+    bath_m = re.search(r"(\d+)\s*bath", tl)
+    sqft_m = re.search(r"([\d,]+)\s*(?:sq\.?\s*ft|sqft)", tl)
+    sqm_m  = re.search(r"([\d,]+)\s*(?:sq\.?\s*m\b|sqm|m²)", tl)
+    sqft = None
+    if sqft_m:
+        sqft = int(sqft_m.group(1).replace(",", ""))
+    elif sqm_m:
+        sqft = int(int(sqm_m.group(1).replace(",", "")) * 10.764)
 
-                card_text = await card.inner_text()
-                bath_m = re.search(r"(\d+)\s*bath", card_text, re.IGNORECASE)
-                sqft_m = re.search(r"([\d,]+)\s*(?:sq\.?\s*ft|sqft)", card_text, re.IGNORECASE)
-                sqm_m  = re.search(r"([\d,]+)\s*(?:sq\.?\s*m\b|sqm|m²)", card_text, re.IGNORECASE)
-                sqft = None
-                if sqft_m:
-                    sqft = int(sqft_m.group(1).replace(",", ""))
-                elif sqm_m:
-                    sqft = int(int(sqm_m.group(1).replace(",", "")) * 10.764)
+    full = href if href.startswith("http") else "https://www.openrent.co.uk" + href
+    # Title: first chunk that looks like "2 Bed Flat, Newport House, WC2H"
+    tm = re.search(r"(\d+\s*Bed[^£\n]{0,80}?[A-Z]{1,2}\d[A-Z\d]?)", text)
+    title = tm.group(1).strip() if tm else text.strip()[:120]
 
-                listings.append({
-                    "source":      "openrent",
-                    "area":        area,
-                    "title":       title,
-                    "price":       price,
-                    "address":     title,
-                    "url":         href,
-                    "baths":       int(bath_m.group(1)) if bath_m else None,
-                    "sqft":        sqft,
-                    "description": card_text[:600],
-                })
-            except Exception:
+    return {
+        "source":      "openrent",
+        "area":        area,
+        "title":       title,
+        "price":       price,
+        "address":     title,
+        "url":         full.split("?")[0],
+        "beds":        beds,
+        "baths":       int(bath_m.group(1)) if bath_m else None,
+        "sqft":        sqft,
+        "description": text[:600],
+    }
+
+
+def _scrape_area_sync(area: str, slug: str, term: str):
+    listings, seen = [], set()
+    session = requests.Session()
+    session.headers.update(_HEADERS)
+    for page_i in range(_MAX_PAGES):
+        url = _search_url(slug, term, skip=page_i * 20)
+        try:
+            r = session.get(url, timeout=30)
+        except Exception as exc:
+            logger.warning("[openrent] %s page %d request error: %s", area, page_i, exc)
+            break
+        if r.status_code != 200:
+            logger.info("[openrent] %s -> HTTP %s", area, r.status_code)
+            break
+        soup = BeautifulSoup(r.text, "lxml")
+        anchors = [a for a in soup.find_all("a", href=True) if _PROP_RE.search(a["href"])]
+        if not anchors:
+            # No property links in server HTML — nothing more to page through.
+            break
+        page_added, page_seen = 0, 0
+        for a in anchors:
+            m = _PROP_RE.search(a["href"])
+            pid = m.group(1)
+            if pid in seen:
                 continue
-    except Exception as exc:
-        logger.error("[openrent] %s error: %s", area, exc)
-    finally:
-        await ctx.close()
+            seen.add(pid)
+            page_seen += 1
+            text = a.get_text(" ", strip=True)
+            if len(text) < 30 and a.parent is not None:
+                text = a.parent.get_text(" ", strip=True)
+            rec = _parse_card(area, a["href"], text)
+            if rec:
+                listings.append(rec)
+                page_added += 1
+        # Distance-sorted results: once a full page yields nothing new, stop.
+        if page_seen == 0:
+            break
     logger.info("[openrent] %s -> %d listings", area, len(listings))
     return listings
 
 
 async def scrape():
-    async with async_playwright() as pw:
-        browser = await pw.chromium.launch(
-            headless=True,
-            args=[
-                "--no-sandbox",
-                "--disable-setuid-sandbox",
-                "--disable-dev-shm-usage",
-                "--disable-blink-features=AutomationControlled",
-            ],
-        )
-        results = await asyncio.gather(
-            *[_scrape_area(browser, a, slug, term) for a, (slug, term) in AREAS.items()],
-            return_exceptions=True,
-        )
-        await browser.close()
+    results = await asyncio.gather(
+        *[asyncio.to_thread(_scrape_area_sync, a, slug, term)
+          for a, (slug, term) in AREAS.items()],
+        return_exceptions=True,
+    )
     all_listings = []
     for r in results:
-        if isinstance(r, list): all_listings.extend(r)
+        if isinstance(r, list):
+            all_listings.extend(r)
+        else:
+            logger.warning("[openrent] area task failed: %s", r)
     seen, unique = set(), []
     for lst in all_listings:
         if lst.get("url") and lst["url"] not in seen:
