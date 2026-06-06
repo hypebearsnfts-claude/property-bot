@@ -47,6 +47,12 @@ jobs:
           ZOOPLA_PASSWORD:             ${{ secrets.ZOOPLA_PASSWORD }}
           OTM_EMAIL:                   ${{ secrets.OTM_EMAIL }}
           OTM_PASSWORD:                ${{ secrets.OTM_PASSWORD }}
+          # Optional residential/unlocker proxy for sites that block datacenter IPs.
+          # Zoopla (Cloudflare) returns 403 from GitHub's IPs; set ZOOPLA_PROXY to a
+          # residential/unlocker proxy URL (http://user:pass@host:port) and the
+          # scraper routes through it. Leave unset and Zoopla simply returns 0.
+          ZOOPLA_PROXY:                ${{ secrets.ZOOPLA_PROXY }}
+          OPENRENT_PROXY:              ${{ secrets.OPENRENT_PROXY }}
         run: python scheduler.py
 
       - name: Commit updated seen_listings.json and enquiry_log.json
