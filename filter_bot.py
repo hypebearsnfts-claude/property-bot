@@ -648,12 +648,24 @@ async def run_pipeline(
 
     # Per-source counts of the full scraped set (for observability + alerts)
     per_source: dict[str, int] = {}
+    # Per-station counts across ALL sources combined (coverage monitoring)
+    per_station: dict[str, int] = {}
     for _l in raw:
         src = (_l.get("source") or "unknown").lower()
         per_source[src] = per_source.get(src, 0) + 1
+        area = _l.get("area")
+        if area:
+            per_station[area] = per_station.get(area, 0) + 1
     logger.info("[filter] Scraped by source: %s",
                 ", ".join(f"{k}={v}" for k, v in sorted(per_source.items())) or "none")
-    _LAST_RUN_DIAG.update(per_source=per_source, detail_checked=0, detail_blocked=0)
+    # Expected stations = the canonical AirDNA station list (matches scraper AREAS)
+    expected_stations = sorted(_load_airdna_rates().get("by_station", {}).keys())
+    zero_stations = [s for s in expected_stations if per_station.get(s, 0) == 0]
+    if zero_stations:
+        logger.warning("[filter] Stations with 0 listings (all sources): %s",
+                       ", ".join(zero_stations))
+    _LAST_RUN_DIAG.update(per_source=per_source, per_station=per_station,
+                          zero_stations=zero_stations, detail_checked=0, detail_blocked=0)
 
     # Step 0 — price change detection (runs on full scraped set before any filtering)
     price_drops = check_price_changes(raw)
@@ -956,6 +968,14 @@ def _build_health_warnings(sent: int, new_count: int, total_scraped: int) -> lis
     if total_scraped > 0 and new_count > 0 and sent == 0:
         warnings.append(
             f"{new_count} new listing(s) checked but 0 sent — every one was filtered out."
+        )
+
+    # 5. A station returned 0 listings across ALL sources → lost coverage there
+    zero_stations = _LAST_RUN_DIAG.get("zero_stations", []) or []
+    if total_scraped > 0 and zero_stations:
+        warnings.append(
+            f"{len(zero_stations)} station(s) had 0 listings from every source: "
+            + ", ".join(zero_stations)
         )
 
     return warnings
