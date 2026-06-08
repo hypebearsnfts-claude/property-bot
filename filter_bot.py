@@ -639,13 +639,18 @@ def _format_property_message(listing: dict, verdict: dict) -> str:
         f"🏢 {_esc(source)}",
         f"🔗 [View listing]({url})",
         *(["📱 *OpenRent — please contact manually*"] if listing.get("source") == "openrent" else []),
-        "\\-\\-\\-",
-        f"Own history: {own_str}",
-        f"Nearby let\\-agreed: {let_str}",
-        f"Confidence: {_esc(confidence)}",
     ]
-    if reasoning:
-        lines.append(f"_{_esc(reasoning)}_")
+    # Comparables context only applies to the old FMV method (>£7,500). Hide it for
+    # AirDNA STR passes, where no sale/let comparables are pulled.
+    if verdict.get("method") != "airdna_str":
+        lines += [
+            "\\-\\-\\-",
+            f"Own history: {own_str}",
+            f"Nearby let\\-agreed: {let_str}",
+            f"Confidence: {_esc(confidence)}",
+        ]
+        if reasoning:
+            lines.append(f"_{_esc(reasoning)}_")
 
     return "\n".join(lines)
 
