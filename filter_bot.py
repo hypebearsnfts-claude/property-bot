@@ -580,7 +580,10 @@ def _format_property_message(listing: dict, verdict: dict) -> str:
     area    = listing.get("area", "")
     address = listing.get("address", "")
     url     = listing.get("url", "")
-    source  = listing.get("source", "").capitalize()
+    _PLATFORM_NAMES = {"rightmove": "Rightmove", "onthemarket": "OnTheMarket",
+                       "zoopla": "Zoopla", "openrent": "OpenRent"}
+    _src_raw = (listing.get("source") or "").lower()
+    source   = _PLATFORM_NAMES.get(_src_raw, _src_raw.capitalize() or "Unknown")
 
     # Price
     asking     = verdict.get("asking_price") or listing.get("price_pcm", 0) or 0
@@ -632,8 +635,8 @@ def _format_property_message(listing: dict, verdict: dict) -> str:
         f"📍 {_esc(address)}",
         f"💰 Asking: £{asking:,}/month",
         fmv_line,
-        f"🚶 {walk_mins} min walk to {_esc(station_fmt)}",
-        f"✅ VERDICT: PASS  \\[{_esc(source)}\\]",
+        f"🚇 Nearest station: {_esc(station_fmt)}",
+        f"🏢 {_esc(source)}",
         f"🔗 [View listing]({url})",
         *(["📱 *OpenRent — please contact manually*"] if listing.get("source") == "openrent" else []),
         "\\-\\-\\-",
