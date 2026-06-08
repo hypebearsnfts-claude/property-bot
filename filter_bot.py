@@ -27,7 +27,7 @@ import json
 import logging
 import os
 import re
-from datetime import date
+from datetime import datetime
 from pathlib import Path
 from typing import Optional
 
@@ -52,41 +52,39 @@ MAX_PRICE_2BED = int(os.getenv("MAX_PRICE_2BED", "5500"))   # hard ceiling for 2
 
 LISTINGS_PATH     = Path(__file__).parent / "listings.json"
 AIRDNA_RATES_PATH = Path(__file__).parent / "airdna_rates.json"
-# Running CSV log of every property sent to Telegram (opens in Excel). Appended
-# each run and committed by the workflow, so it's always up to date.
-PASSED_CSV_PATH   = Path(__file__).parent / "passed_listings.csv"
-_PASSED_CSV_COLS  = ["date", "source", "area", "address", "beds", "price",
-                     "asking_pcm", "method", "fmv", "str_required_nightly",
-                     "str_airdna_avg", "nearest_station", "url"]
+# One CSV per run of the properties sent to Telegram (opens in Excel). The file is
+# named passed_<date>_<HHMM>.csv (unique per run) and committed by the workflow.
+# Columns: link, listed_by (agent/landlord — blank where the portal doesn't expose
+# it), price, bedrooms.
+_PASSED_CSV_COLS  = ["link", "listed_by", "price", "bedrooms"]
+_RUN_STAMP        = None   # set lazily on first write → one file for the whole run
+
+
+def _run_csv_path() -> Path:
+    global _RUN_STAMP
+    if _RUN_STAMP is None:
+        _RUN_STAMP = datetime.now().strftime("%Y-%m-%d_%H%M")
+    return Path(__file__).parent / f"passed_{_RUN_STAMP}.csv"
 
 
 def _log_passed_listing(listing: dict, verdict: dict) -> None:
-    """Append one sent property to passed_listings.csv (best-effort)."""
+    """Append one sent property to this run's passed_<timestamp>.csv (best-effort)."""
     try:
-        v = verdict or {}
         row = {
-            "date":                 date.today().isoformat(),
-            "source":               listing.get("source", ""),
-            "area":                 listing.get("area", ""),
-            "address":              listing.get("address", ""),
-            "beds":                 listing.get("beds", ""),
-            "price":                listing.get("price", ""),
-            "asking_pcm":           v.get("asking_price", ""),
-            "method":               v.get("method", "comparables_fmv"),
-            "fmv":                  v.get("fmv", ""),
-            "str_required_nightly": v.get("str_required_nightly", ""),
-            "str_airdna_avg":       v.get("str_airdna_avg", ""),
-            "nearest_station":      listing.get("walk_station", ""),
-            "url":                  listing.get("url", ""),
+            "link":      listing.get("url", ""),
+            "listed_by": listing.get("agent") or listing.get("landlord") or "",
+            "price":     listing.get("price", ""),
+            "bedrooms":  listing.get("beds", ""),
         }
-        is_new = not PASSED_CSV_PATH.exists()
-        with PASSED_CSV_PATH.open("a", newline="", encoding="utf-8") as f:
+        path = _run_csv_path()
+        is_new = not path.exists()
+        with path.open("a", newline="", encoding="utf-8") as f:
             w = csv.DictWriter(f, fieldnames=_PASSED_CSV_COLS)
             if is_new:
                 w.writeheader()
             w.writerow(row)
     except Exception as exc:
-        logger.warning("[filter] Failed to append passed_listings.csv: %s", exc)
+        logger.warning("[filter] Failed to write passed CSV: %s", exc)
 STR_MAX_ABOVE_ADR = int(os.getenv("STR_MAX_ABOVE_ADR", "50"))  # £ tolerance above AirDNA ADR
 # FMV routing by asking rent: at or below this, decide with the AirDNA STR check
 # only (fast, no LLM). Above this, use the old comparables/LLM FMV method, where
