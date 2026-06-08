@@ -120,6 +120,9 @@ async def _load_page(browser, area, loc_id, index):
                     const addr  = card.querySelector('address, [class*="Address_address"], [class*="propertyCard-address"]');
                     const title = card.querySelector('[class*="propertyCard-title"], h2, [class*="Title"]');
                     const featText = card.innerText || '';
+                    const bedMatch = featText.match(/(\d+)\s*bed/i);
+                    const beds = bedMatch ? parseInt(bedMatch[1])
+                                          : (/\bstudio\b/i.test(featText) ? 0 : null);
                     const bathMatch = featText.match(/(\d+)\s*bath/i);
                     const sqftMatch = featText.match(/([\d,]+)\s*sq\.?\s*ft/i)
                                    || featText.match(/([\d,]+)\s*sqft/i);
@@ -140,6 +143,7 @@ async def _load_page(browser, area, loc_id, index):
                         price:       price ? price.innerText.trim() : 'Price N/A',
                         address:     addr  ? addr.innerText.trim().replace(/\s+/g,' ') : '',
                         title:       title ? title.innerText.trim() : 'Property',
+                        beds:        beds,
                         baths:       bathMatch ? parseInt(bathMatch[1]) : null,
                         sqft:        sqft,
                         agent:       agent,
