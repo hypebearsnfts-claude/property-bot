@@ -206,6 +206,7 @@ async def _scrape_area_inner(browser, area, loc_id):
                         "price":       d["price"],
                         "address":     d["address"],
                         "url":         u,
+                        "beds":        d.get("beds"),
                         "baths":       d.get("baths"),
                         "sqft":        d.get("sqft"),
                         "agent":       d.get("agent", ""),
