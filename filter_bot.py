@@ -51,6 +51,10 @@ MAX_PRICE_2BED = int(os.getenv("MAX_PRICE_2BED", "5500"))   # hard ceiling for 2
 LISTINGS_PATH     = Path(__file__).parent / "listings.json"
 AIRDNA_RATES_PATH = Path(__file__).parent / "airdna_rates.json"
 STR_MAX_ABOVE_ADR = int(os.getenv("STR_MAX_ABOVE_ADR", "50"))  # £ tolerance above AirDNA ADR
+# FMV routing by asking rent: at or below this, decide with the AirDNA STR check
+# only (fast, no LLM). Above this, use the old comparables/LLM FMV method, where
+# AirDNA's per-station ADR caps make STR viability unreliable.
+FMV_OLD_METHOD_THRESHOLD = int(os.getenv("FMV_OLD_METHOD_THRESHOLD", "7500"))
 
 # Sources that should normally return listings every run. If one of these hits
 # zero it's almost certainly bot-blocked or a broken selector — worth an alert.
@@ -144,6 +148,30 @@ def _str_not_viable(listing: dict) -> bool:
         return True
 
     return False
+
+
+def _airdna_str_verdict(listing: dict) -> Optional[dict]:
+    """AirDNA STR-viability verdict with the numbers (for gating + messaging).
+
+    Returns None if it can't be computed (missing price/beds or no AirDNA data),
+    so the caller can fall back to the comparables FMV method.
+    """
+    asking_pcm = _parse_price_pcm(listing.get("price", "")) or listing.get("price_pcm")
+    beds       = listing.get("beds")
+    area       = listing.get("area", "")
+    if not asking_pcm or not beds:
+        return None
+    airdna_avg = _get_airdna_avg(area, beds)
+    if not airdna_avg:
+        return None
+    required_nightly = round((asking_pcm * 1.5) / 21)
+    return {
+        "viable":           (required_nightly - airdna_avg) <= STR_MAX_ABOVE_ADR,
+        "asking_price":     asking_pcm,
+        "required_nightly": required_nightly,
+        "airdna_avg":       airdna_avg,
+        "beds":             beds,
+    }
 
 logging.basicConfig(
     format="%(asctime)s | %(levelname)s | %(name)s | %(message)s",
@@ -570,8 +598,13 @@ def _format_property_message(listing: dict, verdict: dict) -> str:
     prop_type = listing.get("prop_type") or "property"
     bed_str   = f"{beds} bed " if beds else ""
 
-    # FMV line — handle None gracefully for low-confidence/no-data passes
-    if fmv is not None and difference is not None:
+    # FMV line — handle the AirDNA STR method, the comparables FMV, and the None case
+    if verdict.get("method") == "airdna_str":
+        req = verdict.get("str_required_nightly")
+        adr = verdict.get("str_airdna_avg")
+        fmv_line = (f"📊 STR viable: needs £{req:,}/night vs AirDNA avg £{adr:,}/night ✅"
+                    if req and adr else "📊 STR viable \\(AirDNA\\)")
+    elif fmv is not None and difference is not None:
         if difference < 0:
             diff_label = f"£{abs(difference):,} below FMV — great deal"
         elif difference == 0:
@@ -750,17 +783,7 @@ async def run_pipeline(
                         "(porter/concierge/unfurnished hidden in key features)",
                         detail_removed, before_detail)
 
-    # Step 5 — STR viability check (AirDNA)
-    # Remove listings where the required Airbnb nightly rate (asking × 1.5 ÷ 21)
-    # exceeds the AirDNA average by more than £50 — not worth it as an STR investment.
-    before_str = len(walk_passed)
-    walk_passed = [l for l in walk_passed if not _str_not_viable(l)]
-    str_removed = before_str - len(walk_passed)
-    if str_removed:
-        logger.info("[filter] STR viability (AirDNA): removed %d listings "
-                    "(required nightly > AirDNA avg + £%d)", str_removed, STR_MAX_ABOVE_ADR)
-
-    # Step 6 — Hard price ceiling by bed count (skip FMV for overpriced listings)
+    # Step 5 — Hard price ceiling by bed count (skip FMV for overpriced listings)
     def _over_price_cap(listing: dict) -> bool:
         pcm = _parse_price_pcm(listing.get("price", ""))
         if not pcm:
@@ -778,23 +801,58 @@ async def run_pipeline(
         logger.info("[filter] Price ceiling (2-bed ≤£%d, 3+bed ≤£%d): removed %d listings",
                     MAX_PRICE_2BED, MAX_PRICE_PCM, price_removed)
 
-    # Step 6 — FMV verdict
+    # Step 6 — FMV verdict, routed by asking rent:
+    #   • <= FMV_OLD_METHOD_THRESHOLD (£7,500): decide with the AirDNA STR check only
+    #     (fast, no LLM). Falls back to the comparables FMV if STR can't be computed.
+    #   • >  threshold (or unknown price): use the old comparables/LLM FMV method.
     fmv_passed: list[dict] = []
+    n_airdna = n_oldfmv = 0
 
-    for i, listing in enumerate(walk_passed, 1):
-        logger.info("[filter] FMV check %d/%d: %s", i, len(walk_passed), listing.get("address", "")[:50])
+    async def _old_fmv(listing: dict) -> bool:
         try:
             verdict = await get_fmv_verdict(listing)
-            if verdict.get("verdict") == "PASS":
-                listing["_verdict"] = verdict
+        except Exception as exc:
+            logger.warning("[filter] FMV verdict failed for %s: %s", listing.get("address"), exc)
+            return False
+        if verdict.get("verdict") == "PASS":
+            listing["_verdict"] = verdict
+            return True
+        logger.debug("[filter] FMV FAIL: %s (asking £%s, FMV £%s)",
+                     listing.get("address", "")[:40], verdict.get("asking_price"), verdict.get("fmv"))
+        return False
+
+    for i, listing in enumerate(walk_passed, 1):
+        pcm = _parse_price_pcm(listing.get("price", "")) or listing.get("price_pcm")
+        use_airdna = pcm is not None and pcm <= FMV_OLD_METHOD_THRESHOLD
+        if use_airdna:
+            sv = _airdna_str_verdict(listing)
+            if sv is None:
+                # Can't compute STR (missing beds / no AirDNA) → fall back to old FMV
+                n_oldfmv += 1
+                if await _old_fmv(listing):
+                    fmv_passed.append(listing)
+                continue
+            n_airdna += 1
+            if sv["viable"]:
+                listing["_verdict"] = {
+                    "verdict": "PASS", "method": "airdna_str",
+                    "asking_price": sv["asking_price"], "fmv": None, "difference": None,
+                    "str_required_nightly": sv["required_nightly"], "str_airdna_avg": sv["airdna_avg"],
+                    "confidence": "AirDNA STR",
+                }
                 fmv_passed.append(listing)
             else:
-                logger.debug("[filter] FAIL: %s (asking £%s, FMV £%s)",
-                             listing.get("address", "")[:40],
-                             verdict.get("asking_price"), verdict.get("fmv"))
-        except Exception as exc:
-            logger.warning("[filter] FMV verdict failed for %s: %s",
-                           listing.get("address"), exc)
+                logger.info("[filter] STR FAIL: %s | needs £%d/night vs AirDNA £%d",
+                            listing.get("address", "")[:40], sv["required_nightly"], sv["airdna_avg"])
+        else:
+            logger.info("[filter] FMV (>£%d) check %d/%d: %s", FMV_OLD_METHOD_THRESHOLD, i,
+                        len(walk_passed), listing.get("address", "")[:50])
+            n_oldfmv += 1
+            if await _old_fmv(listing):
+                fmv_passed.append(listing)
+
+    logger.info("[filter] FMV routing: %d via AirDNA STR (≤£%d), %d via comparables FMV (>£%d/unknown)",
+                n_airdna, FMV_OLD_METHOD_THRESHOLD, n_oldfmv, FMV_OLD_METHOD_THRESHOLD)
 
     # Sort by walk time (closest first)
     fmv_passed.sort(key=lambda l: l.get("walk_mins") or 999)
