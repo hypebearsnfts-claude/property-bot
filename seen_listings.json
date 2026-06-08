@@ -1,18 +1,4 @@
 {
-  "https://www.rightmove.co.uk/properties/88245039#/?channel=RES_LET": "2026-05-09",
-  "https://www.rightmove.co.uk/properties/88239660#/?channel=RES_LET": "2026-05-09",
-  "https://www.rightmove.co.uk/properties/88155807#/?channel=RES_LET": "2026-05-09",
-  "https://www.rightmove.co.uk/properties/88118733#/?channel=RES_LET": "2026-05-09",
-  "https://www.rightmove.co.uk/properties/88248852#/?channel=RES_LET": "2026-05-09",
-  "https://www.rightmove.co.uk/properties/88232385#/?channel=RES_LET": "2026-05-09",
-  "https://www.rightmove.co.uk/properties/81974891#/?channel=RES_LET": "2026-05-09",
-  "https://www.rightmove.co.uk/properties/88241730#/?channel=RES_LET": "2026-05-09",
-  "https://www.onthemarket.com/details/11560045/": "2026-05-09",
-  "https://www.onthemarket.com/details/19442119/": "2026-05-09",
-  "https://www.onthemarket.com/details/19443507/": "2026-05-09",
-  "https://www.onthemarket.com/details/5611574/": "2026-05-09",
-  "https://www.onthemarket.com/details/8828509/": "2026-05-09",
-  "https://www.onthemarket.com/details/19431863/": "2026-05-09",
   "https://www.rightmove.co.uk/properties/88276899#/?channel=RES_LET": "2026-05-10",
   "https://www.rightmove.co.uk/properties/88276881#/?channel=RES_LET": "2026-05-10",
   "https://www.rightmove.co.uk/properties/88196517#/?channel=RES_LET": "2026-05-10",
@@ -966,7 +952,7 @@
   },
   "https://www.onthemarket.com/details/19610598/": {
     "date": "2026-06-01",
-    "price": "2,400 pcm (£554 pw)"
+    "price": "2,299 pcm (£531 pw)"
   },
   "https://www.onthemarket.com/details/5627464/": {
     "date": "2026-06-01",
@@ -1142,7 +1128,7 @@
   },
   "https://www.onthemarket.com/details/10693839/": {
     "date": "2026-06-01",
-    "price": "2,800 pcm (£646 pw)"
+    "price": "2,750 pcm (£635 pw)"
   },
   "https://www.onthemarket.com/details/6300119/": {
     "date": "2026-06-01",
@@ -1186,7 +1172,7 @@
   },
   "https://www.onthemarket.com/details/11942693/": {
     "date": "2026-06-01",
-    "price": "2,799 pcm (£646 pw)"
+    "price": "2,743 pcm (£633 pw)"
   },
   "https://www.onthemarket.com/details/16527515/": {
     "date": "2026-06-01",
@@ -1618,7 +1604,7 @@
   },
   "https://www.rightmove.co.uk/properties/88082538#/?channel=RES_LET": {
     "date": "2026-06-06",
-    "price": "£2,400 pcm\n£554 pw"
+    "price": "£2,300 pcm\n£531 pw"
   },
   "https://www.onthemarket.com/details/17595131/": {
     "date": "2026-06-06",
@@ -2011,5 +1997,145 @@
   "https://www.onthemarket.com/details/19431205/": {
     "date": "2026-06-07",
     "price": "3,683 pcm (£850 pw)"
+  },
+  "https://www.rightmove.co.uk/properties/89449317#/?channel=RES_LET": {
+    "date": "2026-06-08",
+    "price": "£3,467 pcm\n£800 pw"
+  },
+  "https://www.rightmove.co.uk/properties/89424873#/?channel=RES_LET": {
+    "date": "2026-06-08",
+    "price": "£3,450 pcm\n£796 pw"
+  },
+  "https://www.rightmove.co.uk/properties/88466580#/?channel=RES_LET": {
+    "date": "2026-06-08",
+    "price": "£3,185 pcm\n£735 pw"
+  },
+  "https://www.rightmove.co.uk/properties/161734964#/?channel=RES_LET": {
+    "date": "2026-06-08",
+    "price": "£3,142 pcm\n£725 pw"
+  },
+  "https://www.rightmove.co.uk/properties/89447715#/?channel=RES_LET": {
+    "date": "2026-06-08",
+    "price": "£3,683 pcm\n£850 pw"
+  },
+  "https://www.openrent.co.uk/property-to-rent/london/3-bed-flat-parker-st-wc2b/2922288": {
+    "date": "2026-06-08",
+    "price": "£4,500 pcm"
+  },
+  "https://www.openrent.co.uk/property-to-rent/london/3-bed-flat-exide-house-wc2h/1771440": {
+    "date": "2026-06-08",
+    "price": "£5,345 pcm"
+  },
+  "https://www.openrent.co.uk/property-to-rent/london/3-bed-flat-whitehall-court-sw1a/2846054": {
+    "date": "2026-06-08",
+    "price": "£5,500 pcm"
+  },
+  "https://www.openrent.co.uk/property-to-rent/london/2-bed-flat-black-bull-court-ec1n/2912266": {
+    "date": "2026-06-08",
+    "price": "£3,300 pcm"
+  },
+  "https://www.openrent.co.uk/property-to-rent/london/3-bed-flat-theobalds-road-wc1x/2922043": {
+    "date": "2026-06-08",
+    "price": "£3,950 pcm"
+  },
+  "https://www.openrent.co.uk/property-to-rent/london/2-bed-flat-luxborough-st-w1u/2820301": {
+    "date": "2026-06-08",
+    "price": "£4,450 pcm"
+  },
+  "https://www.openrent.co.uk/property-to-rent/london/4-bed-flat-wheatley-st-w1g/2906102": {
+    "date": "2026-06-08",
+    "price": "£5,200 pcm"
+  },
+  "https://www.openrent.co.uk/property-to-rent/london/2-bed-flat-new-cavendish-street-w1g/2919333": {
+    "date": "2026-06-08",
+    "price": "£2,985 pcm"
+  },
+  "https://www.openrent.co.uk/property-to-rent/london/3-bed-flat-st-michaels-street-w2/2922583": {
+    "date": "2026-06-08",
+    "price": "£5,000 pcm"
+  },
+  "https://www.openrent.co.uk/property-to-rent/london/4-bed-flat-holcroft-court-w1w/2921882": {
+    "date": "2026-06-08",
+    "price": "£1,350 pcm"
+  },
+  "https://www.openrent.co.uk/property-to-rent/london/2-bed-flat-olympia-w14/2857013": {
+    "date": "2026-06-08",
+    "price": "£3,600 pcm"
+  },
+  "https://www.openrent.co.uk/property-to-rent/london/4-bed-maisonette-top-floor-maisonette-w14/2840615": {
+    "date": "2026-06-08",
+    "price": "£4,500 pcm"
+  },
+  "https://www.openrent.co.uk/property-to-rent/london/3-bed-flat-boswell-street-wc1n/2922067": {
+    "date": "2026-06-08",
+    "price": "£950 pcm"
+  },
+  "https://www.openrent.co.uk/property-to-rent/london/2-bed-flat-victoria-house-ec4y/2824125": {
+    "date": "2026-06-08",
+    "price": "£3,680 pcm"
+  },
+  "https://www.openrent.co.uk/property-to-rent/london/4-bed-flat-grimthorpe-house-ec1v/2869510": {
+    "date": "2026-06-08",
+    "price": "£4,250 pcm"
+  },
+  "https://www.openrent.co.uk/property-to-rent/london/2-bed-flat-upper-tachbrook-street-sw1v/2895965": {
+    "date": "2026-06-08",
+    "price": "£2,600 pcm"
+  },
+  "https://www.openrent.co.uk/property-to-rent/london/3-bed-flat-ebury-square-gardens-belgravia-sw1w/2872841": {
+    "date": "2026-06-08",
+    "price": "£4,600 pcm"
+  },
+  "https://www.openrent.co.uk/property-to-rent/london/3-bed-maisonette-de-quincey-house-sw1v/2895799": {
+    "date": "2026-06-08",
+    "price": "£3,350 pcm"
+  },
+  "https://www.openrent.co.uk/property-to-rent/london/4-bed-terraced-house-balfe-st-n1/2862696": {
+    "date": "2026-06-08",
+    "price": "£4,800 pcm"
+  },
+  "https://www.onthemarket.com/details/19670528/": {
+    "date": "2026-06-08",
+    "price": "3,000 pcm (£692 pw)"
+  },
+  "https://www.onthemarket.com/details/19487286/": {
+    "date": "2026-06-08",
+    "price": "2,600 pcm (£600 pw)"
+  },
+  "https://www.onthemarket.com/details/19413686/": {
+    "date": "2026-06-08",
+    "price": "2,350 pcm (£542 pw)"
+  },
+  "https://www.onthemarket.com/details/19672648/": {
+    "date": "2026-06-08",
+    "price": "3,000 pcm (£692 pw)"
+  },
+  "https://www.onthemarket.com/details/1590569/": {
+    "date": "2026-06-08",
+    "price": "2,925 pcm (£675 pw)"
+  },
+  "https://www.rightmove.co.uk/properties/89193750#/?channel=RES_LET": {
+    "date": "2026-06-08",
+    "price": "£6,062 pcm\n£1,399 pw"
+  },
+  "https://www.onthemarket.com/details/10382124/": {
+    "date": "2026-06-08",
+    "price": "4,008 pcm (£925 pw)"
+  },
+  "https://www.onthemarket.com/details/19626703/": {
+    "date": "2026-06-08",
+    "price": "3,600 pcm (£831 pw)"
+  },
+  "https://www.onthemarket.com/details/19672865/": {
+    "date": "2026-06-08",
+    "price": "1,475 pcm (£340 pw)"
+  },
+  "https://www.onthemarket.com/details/19672517/": {
+    "date": "2026-06-08",
+    "price": "1,295 pcm (£299 pw)"
+  },
+  "https://www.rightmove.co.uk/properties/88196343#/?channel=RES_LET": {
+    "date": "2026-06-08",
+    "price": "£3,683 pcm\n£850 pw"
   }
 }
