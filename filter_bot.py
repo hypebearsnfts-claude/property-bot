@@ -22,10 +22,12 @@ Environment variables (.env):
 """
 
 import asyncio
+import csv
 import json
 import logging
 import os
 import re
+from datetime import date
 from pathlib import Path
 from typing import Optional
 
@@ -50,6 +52,41 @@ MAX_PRICE_2BED = int(os.getenv("MAX_PRICE_2BED", "5500"))   # hard ceiling for 2
 
 LISTINGS_PATH     = Path(__file__).parent / "listings.json"
 AIRDNA_RATES_PATH = Path(__file__).parent / "airdna_rates.json"
+# Running CSV log of every property sent to Telegram (opens in Excel). Appended
+# each run and committed by the workflow, so it's always up to date.
+PASSED_CSV_PATH   = Path(__file__).parent / "passed_listings.csv"
+_PASSED_CSV_COLS  = ["date", "source", "area", "address", "beds", "price",
+                     "asking_pcm", "method", "fmv", "str_required_nightly",
+                     "str_airdna_avg", "nearest_station", "url"]
+
+
+def _log_passed_listing(listing: dict, verdict: dict) -> None:
+    """Append one sent property to passed_listings.csv (best-effort)."""
+    try:
+        v = verdict or {}
+        row = {
+            "date":                 date.today().isoformat(),
+            "source":               listing.get("source", ""),
+            "area":                 listing.get("area", ""),
+            "address":              listing.get("address", ""),
+            "beds":                 listing.get("beds", ""),
+            "price":                listing.get("price", ""),
+            "asking_pcm":           v.get("asking_price", ""),
+            "method":               v.get("method", "comparables_fmv"),
+            "fmv":                  v.get("fmv", ""),
+            "str_required_nightly": v.get("str_required_nightly", ""),
+            "str_airdna_avg":       v.get("str_airdna_avg", ""),
+            "nearest_station":      listing.get("walk_station", ""),
+            "url":                  listing.get("url", ""),
+        }
+        is_new = not PASSED_CSV_PATH.exists()
+        with PASSED_CSV_PATH.open("a", newline="", encoding="utf-8") as f:
+            w = csv.DictWriter(f, fieldnames=_PASSED_CSV_COLS)
+            if is_new:
+                w.writeheader()
+            w.writerow(row)
+    except Exception as exc:
+        logger.warning("[filter] Failed to append passed_listings.csv: %s", exc)
 STR_MAX_ABOVE_ADR = int(os.getenv("STR_MAX_ABOVE_ADR", "50"))  # £ tolerance above AirDNA ADR
 # FMV routing by asking rent: at or below this, decide with the AirDNA STR check
 # only (fast, no LLM). Above this, use the old comparables/LLM FMV method, where
@@ -963,6 +1000,7 @@ async def run(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
                 disable_web_page_preview=True,
             )
             mark_as_seen(listing)   # record so tomorrow's run skips it
+            _log_passed_listing(listing, verdict)
             sent += 1
             await asyncio.sleep(0.5)   # Telegram rate limit
         except Exception as exc:
@@ -977,6 +1015,7 @@ async def run(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
                 )
                 await update.message.reply_text(plain, disable_web_page_preview=True)
                 mark_as_seen(listing)
+                _log_passed_listing(listing, verdict)
                 sent += 1
             except Exception:
                 pass
@@ -1145,6 +1184,7 @@ async def run_filter_pipeline_and_send(
                     disable_web_page_preview=True,
                 )
                 mark_as_seen(listing)
+                _log_passed_listing(listing, verdict)
                 sent += 1
                 await asyncio.sleep(2.5)   # ~24 msg/min — safely under Telegram's 30/min limit
                 break
@@ -1171,6 +1211,7 @@ async def run_filter_pipeline_and_send(
                     )
                     await bot.send_message(chat_id=chat_id, text=plain, disable_web_page_preview=True)
                     mark_as_seen(listing)
+                    _log_passed_listing(listing, verdict)
                     sent += 1
                     await asyncio.sleep(2.5)
                 except Exception:
