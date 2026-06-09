@@ -69,7 +69,9 @@ def _run_csv_path() -> Path:
     global _RUN_STAMP
     if _RUN_STAMP is None:
         _RUN_STAMP = datetime.now().strftime("%Y-%m-%d_%H%M")
-    return Path(__file__).parent / f"passed_{_RUN_STAMP}.csv"
+    out_dir = Path(__file__).parent / "passed_runs"
+    out_dir.mkdir(exist_ok=True)
+    return out_dir / f"passed_{_RUN_STAMP}.csv"
 
 
 def _log_passed_listing(listing: dict, verdict: dict) -> None:
