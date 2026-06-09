@@ -120,9 +120,20 @@ async def _load_page(browser, area, loc_id, index):
                     const addr  = card.querySelector('address, [class*="Address_address"], [class*="propertyCard-address"]');
                     const title = card.querySelector('[class*="propertyCard-title"], h2, [class*="Title"]');
                     const featText = card.innerText || '';
-                    const bedMatch = featText.match(/(\d+)\s*bed/i);
-                    const beds = bedMatch ? parseInt(bedMatch[1])
-                                          : (/\bstudio\b/i.test(featText) ? 0 : null);
+                    // Rightmove cards render as "<address>\n<type>\n<beds>\n<baths>",
+                    // NOT the literal "N bed". The bedroom count is the first
+                    // standalone 1–2 digit line in the title block.
+                    let beds = null;
+                    const titleText = title ? (title.innerText || '') : '';
+                    for (const ln of titleText.split('\n')) {
+                        if (/^\s*\d{1,2}\s*$/.test(ln)) { beds = parseInt(ln.trim(), 10); break; }
+                    }
+                    if (beds === null && /\bstudio\b/i.test(titleText)) beds = 0;
+                    if (beds === null) {
+                        const bedMatch = featText.match(/(\d{1,2})\s*bed/i);
+                        if (bedMatch) beds = parseInt(bedMatch[1], 10);
+                        else if (/\bstudio\b/i.test(featText)) beds = 0;
+                    }
                     const bathMatch = featText.match(/(\d+)\s*bath/i);
                     const sqftMatch = featText.match(/([\d,]+)\s*sq\.?\s*ft/i)
                                    || featText.match(/([\d,]+)\s*sqft/i);

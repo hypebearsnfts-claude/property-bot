@@ -55,8 +55,13 @@ AIRDNA_RATES_PATH = Path(__file__).parent / "airdna_rates.json"
 # One CSV per run of the properties sent to Telegram (opens in Excel). The file is
 # named passed_<date>_<HHMM>.csv (unique per run) and committed by the workflow.
 # Columns: link, listed_by (agent/landlord — blank where the portal doesn't expose
-# it), price, bedrooms.
-_PASSED_CSV_COLS  = ["link", "listed_by", "price", "bedrooms"]
+# it), price, bedrooms, required_nightly (the £/night we need to clear), airdna_adr
+# (AirDNA average £/night for that station + bed count), margin (required − ADR, in
+# £; negative = the nightly we need is BELOW the AirDNA average = more headroom).
+# The three AirDNA columns are blank for the >£7,500 comparables route, which
+# doesn't run the AirDNA check.
+_PASSED_CSV_COLS  = ["link", "listed_by", "price", "bedrooms",
+                     "required_nightly", "airdna_adr", "margin"]
 _RUN_STAMP        = None   # set lazily on first write → one file for the whole run
 
 
@@ -70,11 +75,17 @@ def _run_csv_path() -> Path:
 def _log_passed_listing(listing: dict, verdict: dict) -> None:
     """Append one sent property to this run's passed_<timestamp>.csv (best-effort)."""
     try:
+        req = verdict.get("str_required_nightly")
+        adr = verdict.get("str_airdna_avg")
+        margin = round(req - adr) if (req is not None and adr is not None) else ""
         row = {
-            "link":      listing.get("url", ""),
-            "listed_by": listing.get("agent") or listing.get("landlord") or "",
-            "price":     listing.get("price", ""),
-            "bedrooms":  listing.get("beds", ""),
+            "link":             listing.get("url", ""),
+            "listed_by":        listing.get("agent") or listing.get("landlord") or "",
+            "price":            listing.get("price", ""),
+            "bedrooms":         listing.get("beds", ""),
+            "required_nightly": round(req) if req is not None else "",
+            "airdna_adr":       round(adr) if adr is not None else "",
+            "margin":           margin,
         }
         path = _run_csv_path()
         is_new = not path.exists()
@@ -141,6 +152,46 @@ def _get_airdna_avg(area: str, beds: int) -> Optional[int]:
     if val:
         return int(val)
 
+    return None
+
+
+# Property-type tokens that precede the bedroom count on portal cards.
+_PROP_TYPES = (
+    r"Flat|Apartment|Maisonette|Penthouse|House|Studio|Duplex|Mews|Cottage|"
+    r"Bungalow|Town\s?house|Triplex|Terraced?|End of Terrace|Detached|"
+    r"Semi-Detached|Link Detached|Bedsit|Serviced Apartment|Barn Conversion|"
+    r"Not Specified|Ground Floor|Character Property"
+)
+
+
+def _infer_beds(listing: dict) -> Optional[int]:
+    """Best-effort bedroom count from a listing's title/description.
+
+    Rightmove (and similar) cards render as
+        <address>\\n<property type>\\n<bedrooms>\\n<bathrooms>[\\n<distance>]
+    — they do NOT contain the literal text 'N bed'. So the reliable signal is
+    the first standalone 1–2 digit line in the title (the bedroom count), with a
+    '<type> <N>' / 'N bed' regex on the description as a fallback. Returns None
+    only when nothing usable is found.
+    """
+    title = listing.get("title") or ""
+    desc  = listing.get("description") or ""
+    # 1) First standalone integer line in the structured title = bedrooms.
+    for part in title.split("\n"):
+        p = part.strip()
+        if re.fullmatch(r"\d{1,2}", p):
+            return int(p)
+    if re.search(r"\bstudio\b", title, re.I):
+        return 0
+    # 2) Description fallback: "<TYPE> <beds>" then explicit "N bed(room)".
+    m = re.search(r"(?:%s)s?[\s\n]+(\d{1,2})\b" % _PROP_TYPES, desc, re.I)
+    if m:
+        return int(m.group(1))
+    m = re.search(r"(\d{1,2})\s*bed", desc, re.I)
+    if m:
+        return int(m.group(1))
+    if re.search(r"\bstudio\b", desc, re.I):
+        return 0
     return None
 
 
@@ -699,6 +750,46 @@ def _check_walk(listing: dict) -> tuple[Optional[str], Optional[int]]:
     return nearest_walk_minutes(address, listing=listing)
 
 
+# ── Coverage helpers ────────────────────────────────────────────────────────
+
+# A zero-listing station is only a real gap if NO other station that DID return
+# listings lies within this distance. Stations closer than this share most of
+# their 0.5mi catchment, so the same properties get scraped once and deduped to
+# whichever neighbour was processed first (e.g. Charing Cross ⊂ Covent Garden).
+OVERLAP_MI = 0.55
+
+
+def _haversine_mi(a: float, b: float, c: float, d: float) -> float:
+    import math
+    R = 3958.7613
+    p = math.pi / 180
+    x = 0.5 - math.cos((c - a) * p) / 2 + math.cos(a * p) * math.cos(c * p) * (1 - math.cos((d - b) * p)) / 2
+    return 2 * R * math.asin(math.sqrt(x))
+
+
+def _uncovered_zero_stations(raw_zero: list[str], per_station: dict[str, int]) -> list[str]:
+    """From the stations that returned 0 listings, keep only those with NO
+    non-zero station within OVERLAP_MI — i.e. genuine lost coverage, not a
+    dedup/labelling artifact of overlapping central stations."""
+    coords = _load_airdna_rates().get("station_coords", {})
+    uncovered: list[str] = []
+    for s in raw_zero:
+        sc = coords.get(s)
+        if not sc:
+            uncovered.append(s)   # no coords to reason about → don't silence it
+            continue
+        covered = any(
+            other != s
+            and per_station.get(other, 0) > 0
+            and oc
+            and _haversine_mi(sc[0], sc[1], oc[0], oc[1]) <= OVERLAP_MI
+            for other, oc in coords.items()
+        )
+        if not covered:
+            uncovered.append(s)
+    return uncovered
+
+
 # ── Pipeline ──────────────────────────────────────────────────────────────────
 
 async def run_pipeline(
@@ -722,6 +813,20 @@ async def run_pipeline(
     raw: list[dict] = json.loads(LISTINGS_PATH.read_text(encoding="utf-8"))
     logger.info("[filter] Loaded %d listings", len(raw))
 
+    # Backfill bedroom count where the scraper didn't capture it (portal cards
+    # show "<type> <beds> <baths>", not the literal "N bed"). Without beds the
+    # FMV router can't run the AirDNA STR check and wrongly falls back to the
+    # comparables FMV. Infer from title/description so every source has beds.
+    beds_filled = 0
+    for _l in raw:
+        if _l.get("beds") is None:
+            b = _infer_beds(_l)
+            if b is not None:
+                _l["beds"] = b
+                beds_filled += 1
+    if beds_filled:
+        logger.info("[filter] Backfilled bedroom count for %d listings (title/desc)", beds_filled)
+
     # Per-source counts of the full scraped set (for observability + alerts)
     per_source: dict[str, int] = {}
     # Per-station counts across ALL sources combined (coverage monitoring)
@@ -736,12 +841,21 @@ async def run_pipeline(
                 ", ".join(f"{k}={v}" for k, v in sorted(per_source.items())) or "none")
     # Expected stations = the canonical AirDNA station list (matches scraper AREAS)
     expected_stations = sorted(_load_airdna_rates().get("by_station", {}).keys())
-    zero_stations = [s for s in expected_stations if per_station.get(s, 0) == 0]
-    if zero_stations:
+    raw_zero = [s for s in expected_stations if per_station.get(s, 0) == 0]
+    # Overlap-aware: a station whose 0.5mi catchment overlaps a neighbour that DID
+    # return listings isn't actually uncovered — its properties were scraped under
+    # the neighbour and dropped by URL dedup. Only flag genuinely-isolated zeros.
+    zero_stations = _uncovered_zero_stations(raw_zero, per_station)
+    overlap_covered = [s for s in raw_zero if s not in zero_stations]
+    if raw_zero:
         logger.warning("[filter] Stations with 0 listings (all sources): %s",
-                       ", ".join(zero_stations))
+                       ", ".join(raw_zero))
+        if overlap_covered:
+            logger.info("[filter] …of which covered by an overlapping neighbour "
+                        "(not a real gap): %s", ", ".join(overlap_covered))
     _LAST_RUN_DIAG.update(per_source=per_source, per_station=per_station,
-                          zero_stations=zero_stations, detail_checked=0, detail_blocked=0)
+                          zero_stations=zero_stations, overlap_covered=overlap_covered,
+                          detail_checked=0, detail_blocked=0)
 
     # Step 0 — price change detection (runs on full scraped set before any filtering)
     price_drops = check_price_changes(raw)
@@ -1077,8 +1191,8 @@ def _build_health_warnings(sent: int, new_count: int, total_scraped: int) -> lis
     zero_stations = _LAST_RUN_DIAG.get("zero_stations", []) or []
     if total_scraped > 0 and zero_stations:
         warnings.append(
-            f"{len(zero_stations)} station(s) had 0 listings from every source: "
-            + ", ".join(zero_stations)
+            f"{len(zero_stations)} station(s) had 0 listings from every source "
+            f"and no nearby station to cover them: " + ", ".join(zero_stations)
         )
 
     return warnings
