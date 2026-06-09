@@ -197,6 +197,26 @@ def _infer_beds(listing: dict) -> Optional[int]:
     return None
 
 
+def _infer_agent(listing: dict) -> str:
+    """Best-effort agency/landlord name from a listing's description.
+
+    Rightmove cards don't expose the agent in a selectable element — it sits in
+    the card text as 'Added/Reduced on DD/MM/YYYY by <AGENCY>, <branch>'. Pull
+    that out so 'listed_by' isn't blank. Returns '' if nothing is found.
+    """
+    desc = listing.get("description") or ""
+    if not desc:
+        return ""
+    m = re.search(r"(?:Added|Reduced)\s+on\s+\d{2}/\d{2}/\d{4}\s+by\s+([^\n]+)", desc, re.I)
+    if m:
+        return m.group(1).strip()
+    # Fallback: "<agent>\n0xx xxx ..." (agent line immediately above a phone number)
+    m = re.search(r"\bby\s+([^\n]+?)\s*\n\s*0\d[\d ]{6,}", desc)
+    if m:
+        return m.group(1).strip()
+    return ""
+
+
 def _str_not_viable(listing: dict) -> bool:
     """
     Return True if the listing's STR (Airbnb) potential doesn't cover the
@@ -819,15 +839,20 @@ async def run_pipeline(
     # show "<type> <beds> <baths>", not the literal "N bed"). Without beds the
     # FMV router can't run the AirDNA STR check and wrongly falls back to the
     # comparables FMV. Infer from title/description so every source has beds.
-    beds_filled = 0
+    beds_filled = agent_filled = 0
     for _l in raw:
         if _l.get("beds") is None:
             b = _infer_beds(_l)
             if b is not None:
                 _l["beds"] = b
                 beds_filled += 1
-    if beds_filled:
-        logger.info("[filter] Backfilled bedroom count for %d listings (title/desc)", beds_filled)
+        if not (_l.get("agent") or _l.get("landlord")):
+            a = _infer_agent(_l)
+            if a:
+                _l["agent"] = a
+                agent_filled += 1
+    if beds_filled or agent_filled:
+        logger.info("[filter] Backfilled from title/desc: %d beds, %d agents", beds_filled, agent_filled)
 
     # Per-source counts of the full scraped set (for observability + alerts)
     per_source: dict[str, int] = {}

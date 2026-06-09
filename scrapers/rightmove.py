@@ -142,7 +142,13 @@ async def _load_page(browser, area, loc_id, index):
                     if (sqftMatch) sqft = parseInt(sqftMatch[1].replace(/,/g,''));
                     else if (sqmMatch) sqft = Math.round(parseInt(sqmMatch[1].replace(/,/g,'')) * 10.764);
                     const agentEl = card.querySelector('[class*="ContactBlock_contactTitle"], [class*="agentLogo"], .propertyCard-contactsItem span, [data-test="agent-title"]');
-                    const agent = agentEl ? agentEl.innerText.trim() : '';
+                    let agent = agentEl ? agentEl.innerText.trim() : '';
+                    // The agency isn't in a reliable element — it's in the card text as
+                    // "Added/Reduced on DD/MM/YYYY by <AGENCY>, <branch>". Pull it out.
+                    if (!agent) {
+                        const am = featText.match(/(?:Added|Reduced)\s+on\s+\d{2}\/\d{2}\/\d{4}\s+by\s+([^\n]+)/i);
+                        if (am) agent = am[1].trim();
+                    }
                     // Extract key features bullet points specifically so they are never cut off
                     const featureEls = card.querySelectorAll('li, [class*="feature"], [class*="tag"], [class*="badge"]');
                     const features = Array.from(featureEls).map(el => el.innerText.trim()).filter(Boolean);
