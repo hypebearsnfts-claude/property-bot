@@ -55,12 +55,13 @@ AIRDNA_RATES_PATH = Path(__file__).parent / "airdna_rates.json"
 # One CSV per run of the properties sent to Telegram (opens in Excel). The file is
 # named passed_<date>_<HHMM>.csv (unique per run) and committed by the workflow.
 # Columns: link, listed_by (agent/landlord — blank where the portal doesn't expose
-# it), price, bedrooms, required_nightly (the £/night we need to clear), airdna_adr
-# (AirDNA average £/night for that station + bed count), margin (required − ADR, in
-# £; negative = the nightly we need is BELOW the AirDNA average = more headroom).
-# The three AirDNA columns are blank for the >£7,500 comparables route, which
-# doesn't run the AirDNA check.
-_PASSED_CSV_COLS  = ["link", "listed_by", "price", "bedrooms",
+# it), price, bedrooms, nearest_station (the station the AirDNA ADR is based on),
+# required_nightly (the £/night we need to clear), airdna_adr (AirDNA average
+# £/night for that station + bed count), margin (required − ADR, in £; negative =
+# the nightly we need is BELOW the AirDNA average = more headroom). The three
+# AirDNA columns are blank for the >£7,500 comparables route, which doesn't run
+# the AirDNA check.
+_PASSED_CSV_COLS  = ["link", "listed_by", "price", "bedrooms", "nearest_station",
                      "required_nightly", "airdna_adr", "margin"]
 _RUN_STAMP        = None   # set lazily on first write → one file for the whole run
 
@@ -85,6 +86,7 @@ def _log_passed_listing(listing: dict, verdict: dict) -> None:
             "listed_by":        listing.get("agent") or listing.get("landlord") or "",
             "price":            listing.get("price", ""),
             "bedrooms":         listing.get("beds", ""),
+            "nearest_station":  listing.get("area") or listing.get("walk_station") or "",
             "required_nightly": round(req) if req is not None else "",
             "airdna_adr":       round(adr) if adr is not None else "",
             "margin":           margin,
