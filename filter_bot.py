@@ -1064,14 +1064,12 @@ async def status(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         except Exception:
             listings_info = "⚠️ found but unreadable"
 
-    google_key    = "✅ set" if os.getenv("GOOGLE_MAPS_API_KEY")  else "❌ missing"
     anthropic_key = "✅ set" if os.getenv("ANTHROPIC_API_KEY")     else "❌ missing"
 
     await update.message.reply_text(
         f"⚙️ *Filter Bot settings*\n"
-        f"• Max walk to station: {MAX_WALK_MINS} min\n"
+        f"• Nearest station: from scrape area \\(0\\.5 mi radius\\)\n"
         f"• listings\\.json: {listings_info}\n"
-        f"• Google Maps API: {google_key}\n"
         f"• Anthropic API: {anthropic_key}\n\n"
         "Use /run to filter and send results\\.",
         parse_mode="MarkdownV2",

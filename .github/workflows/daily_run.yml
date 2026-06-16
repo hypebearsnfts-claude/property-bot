@@ -36,7 +36,6 @@ jobs:
           TELEGRAM_FILTER_BOT_TOKEN:   ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_RESEARCH_CHAT_ID:   ${{ secrets.TELEGRAM_CHAT_ID }}
           TELEGRAM_FILTER_CHAT_ID:     ${{ secrets.TELEGRAM_CHAT_ID }}
-          GOOGLE_MAPS_API_KEY:         ${{ secrets.GOOGLE_MAPS_API_KEY }}
           ANTHROPIC_API_KEY:           ${{ secrets.ANTHROPIC_API_KEY }}
           # Portal credentials for automated enquiry form submission.
           # Add these as GitHub Secrets under Settings → Secrets and variables → Actions.
