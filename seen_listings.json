@@ -1,30 +1,4 @@
 {
-  "https://www.rightmove.co.uk/properties/88828977#/?channel=RES_LET": "2026-05-22",
-  "https://www.rightmove.co.uk/properties/88777710#/?channel=RES_LET": "2026-05-22",
-  "https://www.rightmove.co.uk/properties/88828986#/?channel=RES_LET": "2026-05-22",
-  "https://www.rightmove.co.uk/properties/88829001#/?channel=RES_LET": "2026-05-22",
-  "https://www.rightmove.co.uk/properties/88827378#/?channel=RES_LET": "2026-05-22",
-  "https://www.rightmove.co.uk/properties/88821528#/?channel=RES_LET": "2026-05-22",
-  "https://www.rightmove.co.uk/properties/88811403#/?channel=RES_LET": "2026-05-22",
-  "https://www.rightmove.co.uk/properties/88765368#/?channel=RES_LET": "2026-05-22",
-  "https://www.rightmove.co.uk/properties/88742358#/?channel=RES_LET": "2026-05-22",
-  "https://www.rightmove.co.uk/properties/88834056#/?channel=RES_LET": "2026-05-22",
-  "https://www.rightmove.co.uk/properties/88833576#/?channel=RES_LET": "2026-05-22",
-  "https://www.rightmove.co.uk/properties/88823736#/?channel=RES_LET": "2026-05-22",
-  "https://www.rightmove.co.uk/properties/88832766#/?channel=RES_LET": "2026-05-22",
-  "https://www.rightmove.co.uk/properties/88819926#/?channel=RES_LET": "2026-05-22",
-  "https://www.rightmove.co.uk/properties/88727439#/?channel=RES_LET": "2026-05-22",
-  "https://www.rightmove.co.uk/properties/88798269#/?channel=RES_LET": "2026-05-22",
-  "https://www.rightmove.co.uk/properties/88831281#/?channel=RES_LET": "2026-05-22",
-  "https://www.rightmove.co.uk/properties/88840014#/?channel=RES_LET": "2026-05-22",
-  "https://www.rightmove.co.uk/properties/88801227#/?channel=RES_LET": "2026-05-22",
-  "https://www.rightmove.co.uk/properties/88822266#/?channel=RES_LET": "2026-05-22",
-  "https://www.rightmove.co.uk/properties/88832601#/?channel=RES_LET": "2026-05-22",
-  "https://www.rightmove.co.uk/properties/87816825#/?channel=RES_LET": "2026-05-22",
-  "https://www.rightmove.co.uk/properties/88816278#/?channel=RES_LET": "2026-05-22",
-  "https://www.rightmove.co.uk/properties/88840773#/?channel=RES_LET": "2026-05-22",
-  "https://www.rightmove.co.uk/properties/88836255#/?channel=RES_LET": "2026-05-22",
-  "https://www.onthemarket.com/details/19521095/": "2026-05-22",
   "https://www.rightmove.co.uk/properties/88853400#/?channel=RES_LET": "2026-05-23",
   "https://www.rightmove.co.uk/properties/88800831#/?channel=RES_LET": "2026-05-23",
   "https://www.rightmove.co.uk/properties/88855284#/?channel=RES_LET": "2026-05-23",
@@ -1020,7 +994,7 @@
   },
   "https://www.rightmove.co.uk/properties/89211549#/?channel=RES_LET": {
     "date": "2026-06-03",
-    "price": "£3,900 pcm\n£900 pw"
+    "price": "£3,850 pcm\n£888 pw"
   },
   "https://www.rightmove.co.uk/properties/89237625#/?channel=RES_LET": {
     "date": "2026-06-03",
@@ -3165,5 +3139,21 @@
   "https://www.onthemarket.com/details/19764685/": {
     "date": "2026-06-20",
     "price": "1,450 pcm (£335 pw)"
+  },
+  "https://www.rightmove.co.uk/properties/88823736#/?channel=RES_LET": {
+    "date": "2026-06-21",
+    "price": "£4,311 pcm\n£995 pw"
+  },
+  "https://www.rightmove.co.uk/properties/89958114#/?channel=RES_LET": {
+    "date": "2026-06-21",
+    "price": "£5,250 pcm\n£1,212 pw"
+  },
+  "https://www.onthemarket.com/details/19765331/": {
+    "date": "2026-06-21",
+    "price": "4,600 pcm (£1,062 pw)"
+  },
+  "https://www.onthemarket.com/details/19765244/": {
+    "date": "2026-06-21",
+    "price": "4,500 pcm (£1,038 pw)"
   }
 }
