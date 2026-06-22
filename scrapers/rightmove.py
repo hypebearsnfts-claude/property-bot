@@ -8,10 +8,13 @@ logger = logging.getLogger(__name__)
 _SEM: asyncio.Semaphore | None = None
 
 AREAS = {
-    # Neighbourhoods (region boundary)
-    "Covent Garden":        "REGION%5E87501",
-    "Soho":                 "REGION%5E87529",
-    # Stations (0.5 mile radius)
+    # Stations (0.5 mile radius). Covent Garden + Soho were previously REGION
+    # codes, which under-covered the area badly (REGION search returned ~66
+    # Covent Garden results vs 142 from the station+0.5mi search). Soho has no
+    # tube station, so it uses Piccadilly Circus — the same anchor OnTheMarket
+    # and Zoopla already use for Soho.
+    "Covent Garden":        "STATION%5E2375",
+    "Soho":                 "STATION%5E7220",   # Piccadilly Circus (nearest to Soho)
     "Baker Street":         "STATION%5E488",
     "Bond Street":          "STATION%5E1166",
     "Marble Arch":          "STATION%5E6032",
