@@ -40,20 +40,26 @@ AREAS = {
 
 _HEADERS = {
     "User-Agent": ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
-                   "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"),
+                   "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36"),
     "Accept-Language": "en-GB,en;q=0.9",
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
     "Sec-Fetch-Dest": "document",
     "Sec-Fetch-Mode": "navigate",
-    "Sec-Fetch-Site": "none",
+    "Sec-Fetch-Site": "cross-site",
+    "Referer": "https://www.google.com/",
     "Upgrade-Insecure-Requests": "1",
 }
 
 # OpenRent's WAF returns HTTP 405 to a plain `requests` fingerprint from the cloud,
-# but serves the page fine to a real Chrome TLS handshake. curl_cffi impersonates
-# Chrome (free) and is tried first; plain requests is the fallback. Optional proxy
-# via env if OpenRent ever IP-blocks too (kept cloud-side, no PC, no login).
+# but serves the page to a real Chrome TLS handshake. curl_cffi impersonates a
+# browser; we rotate through several modern fingerprints (a WAF that rejects one
+# may accept another). Optional proxy via env if OpenRent IP-blocks the runner
+# outright (kept cloud-side, no PC, no login).
 _PROXY = os.getenv("OPENRENT_PROXY") or os.getenv("PROXY_URL") or ""
+
+# Modern fingerprints to rotate (curl_cffi >= 0.15). Defeats fingerprint/header
+# rejection (the likely cause of the 405) — NOT a datacenter-IP ban.
+_IMPERSONATE = ["chrome136", "chrome131", "safari180", "chrome131_android", "chrome124"]
 
 
 def _fetch(url: str):
@@ -61,15 +67,17 @@ def _fetch(url: str):
     proxies = {"http": _PROXY, "https": _PROXY} if _PROXY else None
     try:
         from curl_cffi import requests as creq
-        r = creq.get(url, headers=_HEADERS, impersonate="chrome124",
-                     proxies=proxies, timeout=30)
-        if r.status_code == 200 and "/property-to-rent/london/" in r.text:
-            return r.text
-        logger.info("[openrent] curl_cffi status=%s", r.status_code)
+        for imp in _IMPERSONATE:
+            try:
+                r = creq.get(url, headers=_HEADERS, impersonate=imp,
+                             proxies=proxies, timeout=30)
+                if r.status_code == 200 and "/property-to-rent/london/" in r.text:
+                    return r.text
+                logger.info("[openrent] curl_cffi imp=%s status=%s", imp, r.status_code)
+            except Exception as exc:
+                logger.info("[openrent] curl_cffi imp=%s error: %s", imp, exc)
     except ImportError:
         logger.warning("[openrent] curl_cffi not installed — add it to requirements.txt")
-    except Exception as exc:
-        logger.info("[openrent] curl_cffi error: %s", exc)
     try:
         import requests
         r = requests.get(url, headers=_HEADERS, proxies=proxies, timeout=30)

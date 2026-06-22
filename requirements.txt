@@ -10,9 +10,12 @@ lxml==5.2.2
 # HTTP clients
 requests==2.32.3
 aiohttp==3.9.5
-# Chrome TLS/JA3 impersonation — lets the Zoopla scraper pass Cloudflare's
-# fingerprint check from the cloud without a browser. Falls back to requests.
-curl_cffi==0.7.4
+# Chrome TLS/JA3 impersonation — lets the Zoopla/OpenRent scrapers pass WAF
+# fingerprint checks from the cloud without a browser. 0.15 adds modern targets
+# (chrome131/136/142, safari18) which the scrapers rotate through. Falls back to
+# requests. NOTE: defeats fingerprinting, NOT datacenter-IP reputation blocks —
+# if a site bans the runner's IP outright, set ZOOPLA_PROXY / OPENRENT_PROXY.
+curl_cffi==0.15.0
 
 # AI / LLM
 anthropic>=0.40.0

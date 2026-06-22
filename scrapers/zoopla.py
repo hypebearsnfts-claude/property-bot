@@ -41,14 +41,20 @@ _PROXY = os.getenv("ZOOPLA_PROXY") or os.getenv("PROXY_URL") or ""
 
 _HEADERS = {
     "User-Agent": ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
-                   "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"),
+                   "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36"),
     "Accept-Language": "en-GB,en;q=0.9",
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
     "Sec-Fetch-Dest": "document",
     "Sec-Fetch-Mode": "navigate",
-    "Sec-Fetch-Site": "none",
+    "Sec-Fetch-Site": "cross-site",
+    "Referer": "https://www.google.com/",
     "Upgrade-Insecure-Requests": "1",
 }
+
+# Modern browser fingerprints to rotate through (curl_cffi >= 0.15). A site that
+# fingerprint-blocks one may let another through; we try each until one returns a
+# real results page. This defeats TLS/JA3 detection — NOT datacenter-IP bans.
+_IMPERSONATE = ["chrome136", "chrome131", "safari180", "chrome131_android", "chrome124"]
 
 
 def _url(slug, pn=1):
@@ -66,19 +72,21 @@ def _fetch_html(url: str):
     """
     proxies = {"http": _PROXY, "https": _PROXY} if _PROXY else None
 
-    # Attempt 1 — curl_cffi with Chrome impersonation
+    # Attempt 1 — curl_cffi, rotating through modern browser fingerprints
     try:
         from curl_cffi import requests as creq
-        r = creq.get(url, headers=_HEADERS, impersonate="chrome124",
-                     proxies=proxies, timeout=30)
-        if r.status_code == 200 and "/to-rent/details/" in r.text:
-            return r.text
-        logger.info("[zoopla] curl_cffi status=%s len=%s (blocked?)",
-                    r.status_code, len(r.text or ""))
+        for imp in _IMPERSONATE:
+            try:
+                r = creq.get(url, headers=_HEADERS, impersonate=imp,
+                             proxies=proxies, timeout=30)
+                if r.status_code == 200 and "/to-rent/details/" in r.text:
+                    return r.text
+                logger.info("[zoopla] curl_cffi imp=%s status=%s len=%s (blocked?)",
+                            imp, r.status_code, len(r.text or ""))
+            except Exception as exc:
+                logger.info("[zoopla] curl_cffi imp=%s error: %s", imp, exc)
     except ImportError:
         logger.warning("[zoopla] curl_cffi not installed — add it to requirements.txt")
-    except Exception as exc:
-        logger.info("[zoopla] curl_cffi error: %s", exc)
 
     # Attempt 2 — plain requests
     try:
