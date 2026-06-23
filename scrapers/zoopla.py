@@ -102,7 +102,7 @@ def _fetch_html(url: str):
     return None
 
 
-def _parse_card(area: str, href: str, text: str):
+def _parse_card(area: str, href: str, text: str, addr_text: str = ""):
     tl = text.lower()
     if "let agreed" in tl:
         return None
@@ -122,8 +122,13 @@ def _parse_card(area: str, href: str, text: str):
     sqft_m = re.search(r"([\d,]+)\s*sq\.?\s*ft", tl)
     sqft = int(sqft_m.group(1).replace(",", "")) if sqft_m else None
 
-    addr_m = re.search(r"([A-Z][A-Za-z0-9'’.\- ]+,\s*London\s+[A-Z]{1,2}\d[A-Z\d]?)", text)
-    address = addr_m.group(1).strip() if addr_m else area
+    # Address: prefer the card's <address> element (clean: "Street, Area, London PC")
+    # — it starts with the STREET, which is essential for cross-portal dedup. Only
+    # fall back to the old text regex (which can grab the neighbourhood) if absent.
+    address = (addr_text or "").strip()
+    if not address:
+        addr_m = re.search(r"([A-Z][A-Za-z0-9'’.\- ]+,\s*London\s+[A-Z]{1,2}\d[A-Z\d]?)", text)
+        address = addr_m.group(1).strip() if addr_m else area
 
     full = href if href.startswith("http") else "https://www.zoopla.co.uk" + href
     return {
@@ -156,7 +161,10 @@ def _parse_html(area: str, html: str):
         text = a.get_text(" ", strip=True)
         if len(text) < 20 and a.parent is not None:
             text = a.parent.get_text(" ", strip=True)
-        rec = _parse_card(area, href, text)
+        # Zoopla cards carry a clean <address> element ("Street, Area, London PC").
+        addr_el = a.find("address") or (a.parent.find("address") if a.parent else None)
+        addr_text = addr_el.get_text(" ", strip=True) if addr_el else ""
+        rec = _parse_card(area, href, text, addr_text)
         if rec:
             seen.add(m.group(1))
             out.append(rec)

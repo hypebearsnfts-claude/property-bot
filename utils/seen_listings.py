@@ -68,26 +68,49 @@ def _save(data: dict) -> None:
         logger.warning("[seen] Failed to save seen_listings.json: %s", exc)
 
 
+def _seen_signatures(seen: dict) -> set[str]:
+    """Set of property signatures already sent (for cross-platform/agency dedup)."""
+    return {e["sig"] for e in seen.values()
+            if isinstance(e, dict) and e.get("sig")}
+
+
 def is_duplicate(listing: dict) -> bool:
-    """Return True if this listing's URL has already been sent to Telegram."""
+    """Return True if this property was already sent — by exact URL OR by property
+    signature (street + postcode + beds), so the same flat is never sent twice
+    even if it reappears on a different portal or via a different agency."""
+    seen = _load()
     url = listing.get("url", "").strip()
-    if not url:
-        return False
-    return url in _load()
+    if url and url in seen:
+        return True
+    try:
+        from utils.dedupe import property_signature
+        sig = property_signature(listing)
+    except Exception:
+        sig = None
+    if sig and sig in _seen_signatures(seen):
+        return True
+    return False
 
 
 def mark_as_seen(listing: dict) -> None:
     """
-    Record this listing URL as sent today, storing the price for future
-    price-drop detection. Saves immediately so record persists on crash.
+    Record this listing as sent today — URL + price (for price-drop detection) +
+    property signature (for cross-platform/agency dedup). Saves immediately so the
+    record persists on crash.
     """
     url = listing.get("url", "").strip()
     if not url:
         return
+    try:
+        from utils.dedupe import property_signature
+        sig = property_signature(listing)
+    except Exception:
+        sig = None
     seen = _load()
     seen[url] = {
         "date":  datetime.now().strftime("%Y-%m-%d"),
         "price": listing.get("price", ""),
+        "sig":   sig,
     }
     _save(seen)
     logger.debug("[seen] Marked as seen: %s", url[:80])
