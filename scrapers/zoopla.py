@@ -31,6 +31,7 @@ AREAS = {
 
 _MAX_PAGES = 4
 _DETAIL_RE = re.compile(r"/to-rent/details/(\d+)")
+_AGENT_LOGO_RE = re.compile(r"agent_logo", re.I)   # Zoopla agent-logo image src
 
 # Optional proxy / unlocker. Zoopla sits behind Cloudflare, which blocks datacenter
 # IPs (GitHub Actions). curl_cffi (Chrome TLS impersonation) is tried first and is
@@ -102,7 +103,7 @@ def _fetch_html(url: str):
     return None
 
 
-def _parse_card(area: str, href: str, text: str, addr_text: str = ""):
+def _parse_card(area: str, href: str, text: str, addr_text: str = "", agent: str = ""):
     tl = text.lower()
     if "let agreed" in tl:
         return None
@@ -141,6 +142,7 @@ def _parse_card(area: str, href: str, text: str, addr_text: str = ""):
         "beds":        beds,
         "baths":       int(bath_m.group(1)) if bath_m else None,
         "sqft":        sqft,
+        "agent":       (agent or "").strip(),
         "description": text[:600],
     }
 
@@ -164,7 +166,19 @@ def _parse_html(area: str, html: str):
         # Zoopla cards carry a clean <address> element ("Street, Area, London PC").
         addr_el = a.find("address") or (a.parent.find("address") if a.parent else None)
         addr_text = addr_el.get_text(" ", strip=True) if addr_el else ""
-        rec = _parse_card(area, href, text, addr_text)
+        # Agent/branch name = alt text of the agent-logo image in the card. Walk up
+        # from the anchor to the smallest container that holds an agent_logo img.
+        agent = ""
+        node = a
+        for _ in range(6):
+            node = node.parent
+            if node is None:
+                break
+            logo = node.find("img", src=_AGENT_LOGO_RE)
+            if logo and logo.get("alt"):
+                agent = logo["alt"]
+                break
+        rec = _parse_card(area, href, text, addr_text, agent)
         if rec:
             seen.add(m.group(1))
             out.append(rec)

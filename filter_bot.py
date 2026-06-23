@@ -477,6 +477,77 @@ async def _check_detail_pages_playwright(listings: list[dict]) -> list[bool]:
     return results
 
 
+# Sources whose detail pages Cloudflare/WAF blocks for Playwright from the cloud,
+# but which curl_cffi (Chrome impersonation) can fetch. We check these over HTTP.
+_HTTP_DETAIL_SOURCES = {"zoopla", "openrent"}
+_DETAIL_IMPERSONATE  = ["chrome136", "chrome131", "safari180"]
+
+
+def _check_detail_pages_http(listings: list[dict]) -> list[bool]:
+    """Detail-page keyword check for portals Playwright can't reach (Zoopla/OpenRent).
+
+    Fetches each detail page with curl_cffi (the same method the scrapers use to
+    get past the WAF), strips scripts/styles, and runs the deep keyword check.
+    Best-effort: any fetch failure → False (don't block)."""
+    import concurrent.futures
+
+    def _one(url: str) -> bool:
+        clean = (url or "").split("#")[0]
+        if not clean:
+            return False
+        try:
+            from curl_cffi import requests as creq
+            from bs4 import BeautifulSoup
+        except ImportError:
+            return False
+        for imp in _DETAIL_IMPERSONATE:
+            try:
+                r = creq.get(clean, headers={"User-Agent": _DETAIL_UA,
+                                             "Accept-Language": "en-GB,en;q=0.9"},
+                             impersonate=imp, timeout=30)
+                if r.status_code == 200 and len(r.text) > 2000:
+                    soup = BeautifulSoup(r.text, "lxml")
+                    for tag in soup(["script", "style", "noscript"]):
+                        tag.decompose()
+                    text = soup.get_text(" ", strip=True)[:25000]
+                    kw = _blocked_keyword(text)
+                    if kw:
+                        logger.info("[filter] Detail check (http) blocked (%r): %s", kw, clean[:70])
+                        return True
+                    return False
+            except Exception as exc:
+                logger.debug("[filter] http detail imp=%s error (%s): %s", imp, clean[:50], exc)
+        return False
+
+    results = [False] * len(listings)
+    with concurrent.futures.ThreadPoolExecutor(max_workers=6) as ex:
+        for i, blocked in zip(range(len(listings)),
+                              ex.map(lambda l: _one(l.get("url", "")), listings)):
+            results[i] = blocked
+    return results
+
+
+async def _check_detail_pages(listings: list[dict]) -> list[bool]:
+    """Dispatch the detail-page keyword check by source: Playwright for
+    Rightmove/OTM (which it can render), curl_cffi for Zoopla/OpenRent (which
+    Cloudflare/WAF blocks for Playwright). Returns one bool per listing."""
+    results = [False] * len(listings)
+    pw_idx   = [i for i, l in enumerate(listings)
+                if (l.get("source") or "").lower() not in _HTTP_DETAIL_SOURCES]
+    http_idx = [i for i, l in enumerate(listings)
+                if (l.get("source") or "").lower() in _HTTP_DETAIL_SOURCES]
+
+    if pw_idx:
+        flags = await _check_detail_pages_playwright([listings[i] for i in pw_idx])
+        for k, i in enumerate(pw_idx):
+            results[i] = flags[k]
+    if http_idx:
+        flags = await asyncio.to_thread(_check_detail_pages_http, [listings[i] for i in http_idx])
+        for k, i in enumerate(http_idx):
+            results[i] = flags[k]
+    return results
+
+
 # ── Agent blacklist ───────────────────────────────────────────────────────────
 # Listings from these agents are silently dropped before any other processing.
 # Case-insensitive. Add/remove names here as needed.
@@ -877,13 +948,11 @@ async def run_pipeline(
             xp_removed,
         )
 
-    # Step 4.7 — Detail-page keyword check via Playwright
-    # Plain HTTP requests to OTM/Rightmove are blocked from GitHub Actions IPs.
-    # Playwright renders the full page (JavaScript + CSS) like a real browser,
-    # bypassing bot detection and reliably exposing Key Features sections that
-    # contain "24 Hour Porter", "24 Hr Concierge", etc.
+    # Step 4.7 — Detail-page keyword check (porter / concierge / unfurnished).
+    # Rightmove/OTM are rendered with Playwright; Zoopla/OpenRent (which block
+    # Playwright from the cloud) are fetched with curl_cffi. Dispatched by source.
     if walk_passed:
-        detail_flags  = await _check_detail_pages_playwright(walk_passed)
+        detail_flags  = await _check_detail_pages(walk_passed)
         before_detail = len(walk_passed)
         walk_passed   = [l for l, blocked in zip(walk_passed, detail_flags) if not blocked]
         detail_removed = before_detail - len(walk_passed)
