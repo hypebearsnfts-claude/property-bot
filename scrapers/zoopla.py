@@ -32,6 +32,24 @@ AREAS = {
 _MAX_PAGES = 4
 _DETAIL_RE = re.compile(r"/to-rent/details/(\d+)")
 _AGENT_LOGO_RE = re.compile(r"agent_logo", re.I)   # Zoopla agent-logo image src
+_OUTWARD_RE    = re.compile(r"\b([A-Z]{1,2})\d[A-Z\d]?\b")   # outward postcode area
+# Central/inner London postcode areas — every one of our 21 stations sits in one
+# of these. Zoopla sometimes leaks out-of-region results (e.g. a Hampshire GU34
+# house) past its own radius filter, so we reject anything outside these areas.
+_LONDON_AREAS = {"E", "EC", "N", "NW", "SE", "SW", "W", "WC"}
+
+
+def _is_unfurnished_only(text: str) -> bool:
+    """True only for UNFURNISHED-only lets ('furnished or unfurnished' = OK)."""
+    t = text.lower()
+    if "unfurnished" not in t:
+        return False
+    masked = (t.replace("furnished or unfurnished", " ")
+               .replace("furnished/unfurnished", " ")
+               .replace("furnished / unfurnished", " ")
+               .replace("furnished or part furnished", " ")
+               .replace("part furnished or unfurnished", " "))
+    return "unfurnished" in masked
 
 # Optional proxy / unlocker. Zoopla sits behind Cloudflare, which blocks datacenter
 # IPs (GitHub Actions). curl_cffi (Chrome TLS impersonation) is tried first and is
@@ -130,6 +148,18 @@ def _parse_card(area: str, href: str, text: str, addr_text: str = "", agent: str
     if not address:
         addr_m = re.search(r"([A-Z][A-Za-z0-9'’.\- ]+,\s*London\s+[A-Z]{1,2}\d[A-Z\d]?)", text)
         address = addr_m.group(1).strip() if addr_m else area
+
+    # Area guard — Zoopla's server-side radius filter occasionally leaks
+    # out-of-region results. If we can read a postcode and it's NOT a central
+    # London area, drop it (e.g. "…Alton, Hampshire GU34" → GU → rejected).
+    codes = _OUTWARD_RE.findall((addr_text or address).upper())
+    if codes and codes[-1] not in _LONDON_AREAS:
+        return None
+
+    # Furnished guard — the URL asks for furnished, but leaked results ignore it.
+    # Drop explicit unfurnished-only lets (keep "furnished or unfurnished").
+    if _is_unfurnished_only(addr_text + " " + text):
+        return None
 
     full = href if href.startswith("http") else "https://www.zoopla.co.uk" + href
     return {
