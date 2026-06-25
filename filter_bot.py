@@ -506,6 +506,7 @@ def _check_detail_pages_http(listings: list[dict]) -> list[bool]:
                                              "Accept-Language": "en-GB,en;q=0.9"},
                              impersonate=imp, timeout=30)
                 if r.status_code == 200 and len(r.text) > 2000:
+                    # 1) Precise pass: visible text only (scripts/styles stripped).
                     soup = BeautifulSoup(r.text, "lxml")
                     for tag in soup(["script", "style", "noscript"]):
                         tag.decompose()
@@ -514,6 +515,21 @@ def _check_detail_pages_http(listings: list[dict]) -> list[bool]:
                     if kw:
                         logger.info("[filter] Detail check (http) blocked (%r): %s", kw, clean[:70])
                         return True
+                    # 2) Safety net (only when the page server-rendered little
+                    # visible text, i.e. the description is hidden in an embedded
+                    # JSON/state <script> blob). Scan the RAW HTML for the two
+                    # HIGH-SIGNAL amenity terms only — "concierge" and whole-word
+                    # "porter" never appear in site chrome, so this is safe.
+                    # Unfurnished is NOT scanned here: furnish enums in JSON would
+                    # cause false positives.
+                    if len(text) < 3000:
+                        raw = r.text.lower()
+                        if "concierge" in raw:
+                            logger.info("[filter] Detail check (http, raw) blocked ('concierge'): %s", clean[:70])
+                            return True
+                        if _WHOLE_WORD_RE.search(raw):
+                            logger.info("[filter] Detail check (http, raw) blocked ('porter'): %s", clean[:70])
+                            return True
                     return False
             except Exception as exc:
                 logger.debug("[filter] http detail imp=%s error (%s): %s", imp, clean[:50], exc)
