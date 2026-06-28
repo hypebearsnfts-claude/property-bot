@@ -1,56 +1,4 @@
 {
-  "https://www.rightmove.co.uk/properties/89076006#/?channel=RES_LET": {
-    "date": "2026-05-29",
-    "price": "£6,006 pcm\n£1,386 pw"
-  },
-  "https://www.rightmove.co.uk/properties/89062773#/?channel=RES_LET": {
-    "date": "2026-05-29",
-    "price": "£3,575 pcm\n£825 pw"
-  },
-  "https://www.rightmove.co.uk/properties/89038521#/?channel=RES_LET": {
-    "date": "2026-05-29",
-    "price": "£3,878 pcm\n£895 pw"
-  },
-  "https://www.rightmove.co.uk/properties/88986339#/?channel=RES_LET": {
-    "date": "2026-05-29",
-    "price": "£4,442 pcm\n£1,025 pw"
-  },
-  "https://www.rightmove.co.uk/properties/88988433#/?channel=RES_LET": {
-    "date": "2026-05-29",
-    "price": "£4,485 pcm\n£1,035 pw"
-  },
-  "https://www.rightmove.co.uk/properties/89075868#/?channel=RES_LET": {
-    "date": "2026-05-29",
-    "price": "£5,200 pcm\n£1,200 pw"
-  },
-  "https://www.rightmove.co.uk/properties/89056650#/?channel=RES_LET": {
-    "date": "2026-05-29",
-    "price": "£4,940 pcm\n£1,140 pw"
-  },
-  "https://www.rightmove.co.uk/properties/89046774#/?channel=RES_LET": {
-    "date": "2026-05-29",
-    "price": "£3,695 pcm\n£853 pw"
-  },
-  "https://www.rightmove.co.uk/properties/172399373#/?channel=RES_LET": {
-    "date": "2026-05-29",
-    "price": "£5,417 pcm\n£1,250 pw"
-  },
-  "https://www.onthemarket.com/details/19236766/": {
-    "date": "2026-05-29",
-    "price": "5,000 pcm (£1,154 pw)"
-  },
-  "https://www.rightmove.co.uk/properties/89082021#/?channel=RES_LET": {
-    "date": "2026-05-29",
-    "price": "£850 pcm\n£196 pw"
-  },
-  "https://www.rightmove.co.uk/properties/89063367#/?channel=RES_LET": {
-    "date": "2026-05-29",
-    "price": "£2,700 pcm\n£623 pw"
-  },
-  "https://www.rightmove.co.uk/properties/151519121#/?channel=RES_LET": {
-    "date": "2026-05-29",
-    "price": "£5,417 pcm\n£1,250 pw"
-  },
   "https://www.rightmove.co.uk/properties/89089893#/?channel=RES_LET": {
     "date": "2026-05-30",
     "price": "£2,650 pcm\n£612 pw"
@@ -2041,7 +1989,7 @@
   },
   "https://www.rightmove.co.uk/properties/89584902#/?channel=RES_LET": {
     "date": "2026-06-11",
-    "price": "£4,030 pcm\n£930 pw"
+    "price": "£3,943 pcm\n£910 pw\nPREMIUM LISTING"
   },
   "https://www.rightmove.co.uk/properties/93465029#/?channel=RES_LET": {
     "date": "2026-06-11",
@@ -2785,7 +2733,7 @@
   },
   "https://www.rightmove.co.uk/properties/89958114#/?channel=RES_LET": {
     "date": "2026-06-21",
-    "price": "£5,250 pcm\n£1,212 pw"
+    "price": "£4,950 pcm\n£1,142 pw"
   },
   "https://www.onthemarket.com/details/19765331/": {
     "date": "2026-06-21",
@@ -3133,7 +3081,7 @@
   },
   "https://www.zoopla.co.uk/to-rent/details/73508137/": {
     "date": "2026-06-23",
-    "price": "£5,195 pcm"
+    "price": "£5,100 pcm"
   },
   "https://www.zoopla.co.uk/to-rent/details/70572108/": {
     "date": "2026-06-23",
@@ -5311,6 +5259,41 @@
   "https://www.onthemarket.com/details/19812231/": {
     "date": "2026-06-27",
     "price": "3,497 pcm (£807 pw)",
+    "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/90032454#/?channel=RES_LET": {
+    "date": "2026-06-28",
+    "price": "£5,417 pcm\n£1,250 pw",
+    "sig": "strand|WC2R|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/58266958/": {
+    "date": "2026-06-28",
+    "price": "£3,077 pcm",
+    "sig": "seymour place|W1H|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73569759/": {
+    "date": "2026-06-28",
+    "price": "£4,200 pcm",
+    "sig": "chalton street|NW1|3"
+  },
+  "https://www.onthemarket.com/details/19137960/": {
+    "date": "2026-06-28",
+    "price": "4,996 pcm (£1,153 pw)",
+    "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/88507164#/?channel=RES_LET": {
+    "date": "2026-06-28",
+    "price": "£4,333 pcm\n£1,000 pw",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/5635080/": {
+    "date": "2026-06-28",
+    "price": "3,445 pcm (£795 pw)",
+    "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/90229665#/?channel=RES_LET": {
+    "date": "2026-06-28",
+    "price": "£4,200 pcm\n£969 pw",
     "sig": null
   }
 }
