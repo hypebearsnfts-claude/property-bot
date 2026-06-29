@@ -1,36 +1,4 @@
 {
-  "https://www.rightmove.co.uk/properties/89089893#/?channel=RES_LET": {
-    "date": "2026-05-30",
-    "price": "£2,650 pcm\n£612 pw"
-  },
-  "https://www.rightmove.co.uk/properties/89088810#/?channel=RES_LET": {
-    "date": "2026-05-30",
-    "price": "£3,098 pcm\n£715 pw"
-  },
-  "https://www.rightmove.co.uk/properties/89085630#/?channel=RES_LET": {
-    "date": "2026-05-30",
-    "price": "£3,098 pcm\n£715 pw"
-  },
-  "https://www.onthemarket.com/details/18696897/": {
-    "date": "2026-05-30",
-    "price": "5,399 pcm (£1,246 pw)"
-  },
-  "https://www.rightmove.co.uk/properties/89088240#/?channel=RES_LET": {
-    "date": "2026-05-30",
-    "price": "£3,497 pcm\n£807 pw"
-  },
-  "https://www.rightmove.co.uk/properties/89082387#/?channel=RES_LET": {
-    "date": "2026-05-30",
-    "price": "£3,532 pcm\n£815 pw"
-  },
-  "https://www.onthemarket.com/details/13602626/": {
-    "date": "2026-05-30",
-    "price": "3,575 pcm (£825 pw)"
-  },
-  "https://www.onthemarket.com/details/19552913/": {
-    "date": "2026-05-30",
-    "price": "5,500 pcm (£1,269 pw)"
-  },
   "https://www.rightmove.co.uk/properties/89113074#/?channel=RES_LET": {
     "date": "2026-05-31",
     "price": "£4,500 pcm\n£1,038 pw"
@@ -2177,7 +2145,7 @@
   },
   "https://www.rightmove.co.uk/properties/89716872#/?channel=RES_LET": {
     "date": "2026-06-15",
-    "price": "£5,417 pcm\n£1,250 pw"
+    "price": "£5,200 pcm\n£1,200 pw"
   },
   "https://www.rightmove.co.uk/properties/88575159#/?channel=RES_LET": {
     "date": "2026-06-15",
@@ -2245,7 +2213,7 @@
   },
   "https://www.openrent.co.uk/property-to-rent/london/3-bed-flat-west-kensington-w14/2927885": {
     "date": "2026-06-15",
-    "price": "£3,480 pcm"
+    "price": "£3,320 pcm"
   },
   "https://www.openrent.co.uk/property-to-rent/london/2-bed-flat-hackney-road-e2/2858407": {
     "date": "2026-06-15",
@@ -2829,7 +2797,7 @@
   },
   "https://www.zoopla.co.uk/to-rent/details/73283277/": {
     "date": "2026-06-23",
-    "price": "£3,878 pcm"
+    "price": "£3,792 pcm"
   },
   "https://www.zoopla.co.uk/to-rent/details/67224843/": {
     "date": "2026-06-23",
@@ -2997,7 +2965,7 @@
   },
   "https://www.zoopla.co.uk/to-rent/details/73491511/": {
     "date": "2026-06-23",
-    "price": "£5,000 pcm"
+    "price": "£4,600 pcm"
   },
   "https://www.zoopla.co.uk/to-rent/details/73482060/": {
     "date": "2026-06-23",
@@ -3461,7 +3429,7 @@
   },
   "https://www.zoopla.co.uk/to-rent/details/73475634/": {
     "date": "2026-06-23",
-    "price": "£4,333 pcm"
+    "price": "£4,000 pcm"
   },
   "https://www.zoopla.co.uk/to-rent/details/73472418/": {
     "date": "2026-06-23",
@@ -5294,6 +5262,116 @@
   "https://www.rightmove.co.uk/properties/90229665#/?channel=RES_LET": {
     "date": "2026-06-28",
     "price": "£4,200 pcm\n£969 pw",
+    "sig": null
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73574890/": {
+    "date": "2026-06-29",
+    "price": "£4,658 pcm",
+    "sig": "wimpole street|W1G|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73572326/": {
+    "date": "2026-06-29",
+    "price": "£8,500 pcm",
+    "sig": "cato street|W1H|4"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73576664/": {
+    "date": "2026-06-29",
+    "price": "£3,012 pcm",
+    "sig": "clipstone street|W1W|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73536019/": {
+    "date": "2026-06-29",
+    "price": "£4,983 pcm",
+    "sig": "merchant square|W2|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73570954/": {
+    "date": "2026-06-29",
+    "price": "£3,500 pcm",
+    "sig": "lizmans house|NW1|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/70115207/": {
+    "date": "2026-06-29",
+    "price": "£4,008 pcm",
+    "sig": "brock street|NW1|2"
+  },
+  "https://www.rightmove.co.uk/properties/90266382#/?channel=RES_LET": {
+    "date": "2026-06-29",
+    "price": "£3,800 pcm\n£877 pw",
+    "sig": "st pancras way|NW1|2"
+  },
+  "https://www.rightmove.co.uk/properties/41674442#/?channel=RES_LET": {
+    "date": "2026-06-29",
+    "price": "£2,100 pcm\n£485 pw",
+    "sig": "northdown street|N1|2"
+  },
+  "https://www.rightmove.co.uk/properties/90248571#/?channel=RES_LET": {
+    "date": "2026-06-29",
+    "price": "£5,750 pcm\n£1,327 pw\nOUTSIDE SPACE",
+    "sig": "cornwall gardens|SW7|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/72868923/": {
+    "date": "2026-06-29",
+    "price": "£1,500 pcm",
+    "sig": "great russell mansions|WC1B|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73565866/": {
+    "date": "2026-06-29",
+    "price": "£4,225 pcm",
+    "sig": "thayer street|W1U|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/66412705/": {
+    "date": "2026-06-29",
+    "price": "£3,900 pcm",
+    "sig": "penfold street|NW8|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73570956/": {
+    "date": "2026-06-29",
+    "price": "£1,650 pcm",
+    "sig": "west kensington court|W14|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/70219755/": {
+    "date": "2026-06-29",
+    "price": "£3,050 pcm",
+    "sig": "scope house|EC1N|2"
+  },
+  "https://www.openrent.co.uk/property-to-rent/london/2-bed-flat-chantrey-house-sw1w/1058838": {
+    "date": "2026-06-29",
+    "price": "£4,885 pcm",
+    "sig": "chantrey house|SW1W|2"
+  },
+  "https://www.onthemarket.com/details/19821534/": {
+    "date": "2026-06-29",
+    "price": "3,200 pcm (£738 pw)",
+    "sig": "lily close|W14|2"
+  },
+  "https://www.onthemarket.com/details/19339370/": {
+    "date": "2026-06-29",
+    "price": "4,250 pcm (£981 pw)",
+    "sig": "richmond way|W14|4"
+  },
+  "https://www.onthemarket.com/details/19813957/": {
+    "date": "2026-06-29",
+    "price": "4,600 pcm (£1,062 pw)",
+    "sig": "angel|N1|4"
+  },
+  "https://www.rightmove.co.uk/properties/90190686#/?channel=RES_LET": {
+    "date": "2026-06-29",
+    "price": "£3,950 pcm\n£912 pw",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/12135615/": {
+    "date": "2026-06-29",
+    "price": "5,417 pcm (£1,250 pw)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/19816845/": {
+    "date": "2026-06-29",
+    "price": "3,600 pcm (£831 pw)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/19818658/": {
+    "date": "2026-06-29",
+    "price": "2,690 pcm (£621 pw)",
     "sig": null
   }
 }
