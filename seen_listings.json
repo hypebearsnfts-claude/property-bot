@@ -1,488 +1,4 @@
 {
-  "https://www.rightmove.co.uk/properties/89149887#/?channel=RES_LET": {
-    "date": "2026-06-01",
-    "price": "£4,333 pcm\n£1,000 pw"
-  },
-  "https://www.rightmove.co.uk/properties/89134566#/?channel=RES_LET": {
-    "date": "2026-06-01",
-    "price": "£4,247 pcm\n£980 pw"
-  },
-  "https://www.rightmove.co.uk/properties/89145123#/?channel=RES_LET": {
-    "date": "2026-06-01",
-    "price": "£3,467 pcm\n£800 pw"
-  },
-  "https://www.onthemarket.com/details/12035999/": {
-    "date": "2026-06-01",
-    "price": "3,445 pcm (£795 pw)"
-  },
-  "https://www.onthemarket.com/details/18653901/": {
-    "date": "2026-06-01",
-    "price": "5,345 pcm (£1,233 pw)"
-  },
-  "https://www.rightmove.co.uk/properties/89122554#/?channel=RES_LET": {
-    "date": "2026-06-01",
-    "price": "£4,950 pcm\n£1,142 pw"
-  },
-  "https://www.onthemarket.com/details/15667315/": {
-    "date": "2026-06-01",
-    "price": "2,773 pcm (£640 pw)"
-  },
-  "https://www.rightmove.co.uk/properties/173219915#/?channel=RES_LET": {
-    "date": "2026-06-01",
-    "price": "£8,000 pcm\n£1,846 pw"
-  },
-  "https://www.rightmove.co.uk/properties/170342339#/?channel=RES_LET": {
-    "date": "2026-06-01",
-    "price": "£8,498 pcm\n£1,961 pw"
-  },
-  "https://www.onthemarket.com/details/19562326/": {
-    "date": "2026-06-01",
-    "price": "2,650 pcm (£612 pw)"
-  },
-  "https://www.onthemarket.com/details/19580617/": {
-    "date": "2026-06-01",
-    "price": "5,460 pcm (£1,260 pw)"
-  },
-  "https://www.rightmove.co.uk/properties/96679219#/?channel=RES_LET": {
-    "date": "2026-06-01",
-    "price": "£5,250 pcm\n£1,212 pw"
-  },
-  "https://www.rightmove.co.uk/properties/172631828#/?channel=RES_LET": {
-    "date": "2026-06-01",
-    "price": "£7,410 pcm\n£1,710 pw"
-  },
-  "https://www.rightmove.co.uk/properties/173167532#/?channel=RES_LET": {
-    "date": "2026-06-01",
-    "price": "£6,933 pcm\n£1,600 pw"
-  },
-  "https://www.onthemarket.com/details/19502059/": {
-    "date": "2026-06-01",
-    "price": "3,683 pcm (£850 pw)"
-  },
-  "https://www.rightmove.co.uk/properties/89111766#/?channel=RES_LET": {
-    "date": "2026-06-01",
-    "price": "£4,400 pcm\n£1,015 pw"
-  },
-  "https://www.rightmove.co.uk/properties/173735705#/?channel=RES_LET": {
-    "date": "2026-06-01",
-    "price": "£4,350 pcm\n£1,004 pw"
-  },
-  "https://www.rightmove.co.uk/properties/87913257#/?channel=RES_LET": {
-    "date": "2026-06-01",
-    "price": "£4,350 pcm\n£1,004 pw"
-  },
-  "https://www.onthemarket.com/details/19301373/": {
-    "date": "2026-06-01",
-    "price": "3,500 pcm (£808 pw)"
-  },
-  "https://www.onthemarket.com/details/19530899/": {
-    "date": "2026-06-01",
-    "price": "2,300 pcm (£531 pw)"
-  },
-  "https://www.onthemarket.com/details/19620274/": {
-    "date": "2026-06-01",
-    "price": "2,300 pcm (£531 pw)"
-  },
-  "https://www.onthemarket.com/details/19281633/": {
-    "date": "2026-06-01",
-    "price": "2,600 pcm (£600 pw)"
-  },
-  "https://www.onthemarket.com/details/19619999/": {
-    "date": "2026-06-01",
-    "price": "4,996 pcm (£1,153 pw)"
-  },
-  "https://www.onthemarket.com/details/19179077/": {
-    "date": "2026-06-01",
-    "price": "2,225 pcm (£513 pw)"
-  },
-  "https://www.onthemarket.com/details/19421306/": {
-    "date": "2026-06-01",
-    "price": "2,300 pcm (£531 pw)"
-  },
-  "https://www.onthemarket.com/details/19610598/": {
-    "date": "2026-06-01",
-    "price": "2,299 pcm (£531 pw)"
-  },
-  "https://www.onthemarket.com/details/5627464/": {
-    "date": "2026-06-01",
-    "price": "4,983 pcm (£1,150 pw)"
-  },
-  "https://www.onthemarket.com/details/19401997/": {
-    "date": "2026-06-01",
-    "price": "3,249 pcm (£750 pw)"
-  },
-  "https://www.onthemarket.com/details/19512507/": {
-    "date": "2026-06-01",
-    "price": "2,950 pcm (£681 pw)"
-  },
-  "https://www.onthemarket.com/details/19490211/": {
-    "date": "2026-06-01",
-    "price": "2,250 pcm (£519 pw)"
-  },
-  "https://www.onthemarket.com/details/19355788/": {
-    "date": "2026-06-01",
-    "price": "3,900 pcm (£900 pw)"
-  },
-  "https://www.onthemarket.com/details/19140169/": {
-    "date": "2026-06-01",
-    "price": "2,300 pcm (£531 pw)"
-  },
-  "https://www.onthemarket.com/details/19590533/": {
-    "date": "2026-06-01",
-    "price": "2,800 pcm (£646 pw)"
-  },
-  "https://www.onthemarket.com/details/19580767/": {
-    "date": "2026-06-01",
-    "price": "2,600 pcm (£600 pw)"
-  },
-  "https://www.onthemarket.com/details/19578978/": {
-    "date": "2026-06-01",
-    "price": "2,200 pcm (£508 pw)"
-  },
-  "https://www.onthemarket.com/details/19564358/": {
-    "date": "2026-06-01",
-    "price": "3,200 pcm (£738 pw)"
-  },
-  "https://www.onthemarket.com/details/17562870/": {
-    "date": "2026-06-01",
-    "price": "3,800 pcm (£877 pw)"
-  },
-  "https://www.onthemarket.com/details/19490210/": {
-    "date": "2026-06-01",
-    "price": "3,100 pcm (£715 pw)"
-  },
-  "https://www.onthemarket.com/details/19283835/": {
-    "date": "2026-06-01",
-    "price": "1,538 pcm (£355 pw)"
-  },
-  "https://www.onthemarket.com/details/19500982/": {
-    "date": "2026-06-01",
-    "price": "2,550 pcm (£588 pw)"
-  },
-  "https://www.onthemarket.com/details/19083973/": {
-    "date": "2026-06-01",
-    "price": "3,000 pcm (£692 pw)"
-  },
-  "https://www.onthemarket.com/details/10129390/": {
-    "date": "2026-06-01",
-    "price": "5,633 pcm (£1,300 pw)"
-  },
-  "https://www.onthemarket.com/details/19057402/": {
-    "date": "2026-06-01",
-    "price": "1,950 pcm (£450 pw)"
-  },
-  "https://www.onthemarket.com/details/19329399/": {
-    "date": "2026-06-01",
-    "price": "2,600 pcm (£600 pw)"
-  },
-  "https://www.onthemarket.com/details/13079594/": {
-    "date": "2026-06-01",
-    "price": "4,600 pcm (£1,062 pw)"
-  },
-  "https://www.onthemarket.com/details/19216517/": {
-    "date": "2026-06-01",
-    "price": "2,850 pcm (£658 pw)"
-  },
-  "https://www.onthemarket.com/details/11488308/": {
-    "date": "2026-06-01",
-    "price": "3,575 pcm (£825 pw)"
-  },
-  "https://www.onthemarket.com/details/17376121/": {
-    "date": "2026-06-01",
-    "price": "6,392 pcm (£1,475 pw)"
-  },
-  "https://www.onthemarket.com/details/18529756/": {
-    "date": "2026-06-01",
-    "price": "3,987 pcm (£920 pw)"
-  },
-  "https://www.onthemarket.com/details/14624894/": {
-    "date": "2026-06-01",
-    "price": "4,117 pcm (£950 pw)"
-  },
-  "https://www.onthemarket.com/details/17203000/": {
-    "date": "2026-06-01",
-    "price": "2,249 pcm (£519 pw)"
-  },
-  "https://www.onthemarket.com/details/13162580/": {
-    "date": "2026-06-01",
-    "price": "3,400 pcm (£785 pw)"
-  },
-  "https://www.onthemarket.com/details/19523486/": {
-    "date": "2026-06-01",
-    "price": "3,597 pcm (£830 pw)"
-  },
-  "https://www.onthemarket.com/details/18654400/": {
-    "date": "2026-06-01",
-    "price": "3,350 pcm (£773 pw)"
-  },
-  "https://www.onthemarket.com/details/18446498/": {
-    "date": "2026-06-01",
-    "price": "5,200 pcm (£1,200 pw)"
-  },
-  "https://www.onthemarket.com/details/19620399/": {
-    "date": "2026-06-01",
-    "price": "2,300 pcm (£531 pw)"
-  },
-  "https://www.onthemarket.com/details/19620426/": {
-    "date": "2026-06-01",
-    "price": "3,350 pcm (£773 pw)"
-  },
-  "https://www.onthemarket.com/details/19346570/": {
-    "date": "2026-06-01",
-    "price": "2,750 pcm (£635 pw)"
-  },
-  "https://www.onthemarket.com/details/19610308/": {
-    "date": "2026-06-01",
-    "price": "2,700 pcm (£623 pw)"
-  },
-  "https://www.onthemarket.com/details/19593114/": {
-    "date": "2026-06-01",
-    "price": "3,200 pcm (£738 pw)"
-  },
-  "https://www.onthemarket.com/details/19566572/": {
-    "date": "2026-06-01",
-    "price": "2,700 pcm (£623 pw)"
-  },
-  "https://www.onthemarket.com/details/13520753/": {
-    "date": "2026-06-01",
-    "price": "2,400 pcm (£554 pw)"
-  },
-  "https://www.onthemarket.com/details/11760240/": {
-    "date": "2026-06-01",
-    "price": "3,397 pcm (£784 pw)"
-  },
-  "https://www.onthemarket.com/details/19066408/": {
-    "date": "2026-06-01",
-    "price": "3,500 pcm (£808 pw)"
-  },
-  "https://www.onthemarket.com/details/18955018/": {
-    "date": "2026-06-01",
-    "price": "2,500 pcm (£577 pw)"
-  },
-  "https://www.onthemarket.com/details/19620338/": {
-    "date": "2026-06-01",
-    "price": "2,795 pcm (£645 pw)"
-  },
-  "https://www.onthemarket.com/details/13567955/": {
-    "date": "2026-06-01",
-    "price": "3,000 pcm (£692 pw)"
-  },
-  "https://www.onthemarket.com/details/18548403/": {
-    "date": "2026-06-01",
-    "price": "2,700 pcm (£623 pw)"
-  },
-  "https://www.onthemarket.com/details/19617841/": {
-    "date": "2026-06-01",
-    "price": "3,600 pcm (£831 pw)"
-  },
-  "https://www.onthemarket.com/details/10693839/": {
-    "date": "2026-06-01",
-    "price": "2,750 pcm (£635 pw)"
-  },
-  "https://www.onthemarket.com/details/6300119/": {
-    "date": "2026-06-01",
-    "price": "3,150 pcm (£727 pw)"
-  },
-  "https://www.onthemarket.com/details/19464425/": {
-    "date": "2026-06-01",
-    "price": "3,600 pcm (£831 pw)"
-  },
-  "https://www.onthemarket.com/details/19350705/": {
-    "date": "2026-06-01",
-    "price": "3,683 pcm (£850 pw)"
-  },
-  "https://www.onthemarket.com/details/19547761/": {
-    "date": "2026-06-01",
-    "price": "4,225 pcm (£975 pw)"
-  },
-  "https://www.onthemarket.com/details/19560955/": {
-    "date": "2026-06-01",
-    "price": "4,000 pcm (£923 pw)"
-  },
-  "https://www.onthemarket.com/details/19499034/": {
-    "date": "2026-06-01",
-    "price": "3,497 pcm (£807 pw)"
-  },
-  "https://www.onthemarket.com/details/19421575/": {
-    "date": "2026-06-01",
-    "price": "3,878 pcm (£895 pw)"
-  },
-  "https://www.onthemarket.com/details/19398730/": {
-    "date": "2026-06-01",
-    "price": "3,600 pcm (£831 pw)"
-  },
-  "https://www.onthemarket.com/details/11508877/": {
-    "date": "2026-06-01",
-    "price": "3,500 pcm (£808 pw)"
-  },
-  "https://www.onthemarket.com/details/18913341/": {
-    "date": "2026-06-01",
-    "price": "3,500 pcm (£808 pw)"
-  },
-  "https://www.onthemarket.com/details/11942693/": {
-    "date": "2026-06-01",
-    "price": "2,743 pcm (£633 pw)"
-  },
-  "https://www.onthemarket.com/details/16527515/": {
-    "date": "2026-06-01",
-    "price": "3,033 pcm (£700 pw)"
-  },
-  "https://www.onthemarket.com/details/19611141/": {
-    "date": "2026-06-01",
-    "price": "2,900 pcm (£669 pw)"
-  },
-  "https://www.onthemarket.com/details/17077394/": {
-    "date": "2026-06-01",
-    "price": "1,750 pcm (£404 pw)"
-  },
-  "https://www.onthemarket.com/details/19499001/": {
-    "date": "2026-06-01",
-    "price": "2,800 pcm (£646 pw)"
-  },
-  "https://www.onthemarket.com/details/19581253/": {
-    "date": "2026-06-01",
-    "price": "4,250 pcm (£981 pw)"
-  },
-  "https://www.onthemarket.com/details/17207573/": {
-    "date": "2026-06-01",
-    "price": "4,450 pcm (£1,027 pw)"
-  },
-  "https://www.onthemarket.com/details/19334300/": {
-    "date": "2026-06-01",
-    "price": "3,750 pcm (£865 pw)"
-  },
-  "https://www.onthemarket.com/details/19054056/": {
-    "date": "2026-06-01",
-    "price": "3,900 pcm (£900 pw)"
-  },
-  "https://www.onthemarket.com/details/12690803/": {
-    "date": "2026-06-01",
-    "price": "4,250 pcm (£981 pw)"
-  },
-  "https://www.onthemarket.com/details/17606296/": {
-    "date": "2026-06-01",
-    "price": "2,650 pcm (£612 pw)"
-  },
-  "https://www.onthemarket.com/details/14900283/": {
-    "date": "2026-06-01",
-    "price": "4,117 pcm (£950 pw)"
-  },
-  "https://www.onthemarket.com/details/19090422/": {
-    "date": "2026-06-01",
-    "price": "3,878 pcm (£895 pw)"
-  },
-  "https://www.onthemarket.com/details/19246825/": {
-    "date": "2026-06-01",
-    "price": "4,000 pcm (£923 pw)"
-  },
-  "https://www.onthemarket.com/details/7447909/": {
-    "date": "2026-06-01",
-    "price": "7,800 pcm (£1,800 pw)"
-  },
-  "https://www.onthemarket.com/details/10567644/": {
-    "date": "2026-06-01",
-    "price": "3,683 pcm (£850 pw)"
-  },
-  "https://www.rightmove.co.uk/properties/136611059#/?channel=RES_LET": {
-    "date": "2026-06-01",
-    "price": "£8,753 pcm\n£2,020 pw"
-  },
-  "https://www.onthemarket.com/details/5176918/": {
-    "date": "2026-06-01",
-    "price": "3,683 pcm (£850 pw)"
-  },
-  "https://www.onthemarket.com/details/19534882/": {
-    "date": "2026-06-01",
-    "price": "2,665 pcm (£615 pw)"
-  },
-  "https://www.onthemarket.com/details/18982928/": {
-    "date": "2026-06-01",
-    "price": "2,700 pcm (£623 pw)"
-  },
-  "https://www.onthemarket.com/details/19431571/": {
-    "date": "2026-06-01",
-    "price": "2,750 pcm (£635 pw)"
-  },
-  "https://www.onthemarket.com/details/7776657/": {
-    "date": "2026-06-01",
-    "price": "3,200 pcm (£738 pw)"
-  },
-  "https://www.onthemarket.com/details/19591357/": {
-    "date": "2026-06-01",
-    "price": "3,450 pcm (£796 pw)"
-  },
-  "https://www.onthemarket.com/details/15835207/": {
-    "date": "2026-06-01",
-    "price": "3,100 pcm (£715 pw)"
-  },
-  "https://www.onthemarket.com/details/11729997/": {
-    "date": "2026-06-01",
-    "price": "3,600 pcm (£831 pw)"
-  },
-  "https://www.onthemarket.com/details/19245884/": {
-    "date": "2026-06-01",
-    "price": "3,349 pcm (£773 pw)"
-  },
-  "https://www.onthemarket.com/details/16417639/": {
-    "date": "2026-06-01",
-    "price": "3,250 pcm (£750 pw)"
-  },
-  "https://www.onthemarket.com/details/15775353/": {
-    "date": "2026-06-01",
-    "price": "3,900 pcm (£900 pw)"
-  },
-  "https://www.onthemarket.com/details/14946486/": {
-    "date": "2026-06-01",
-    "price": "2,850 pcm (£658 pw)"
-  },
-  "https://www.onthemarket.com/details/19411034/": {
-    "date": "2026-06-01",
-    "price": "3,250 pcm (£750 pw)"
-  },
-  "https://www.onthemarket.com/details/15886654/": {
-    "date": "2026-06-01",
-    "price": "3,500 pcm (£808 pw)"
-  },
-  "https://www.onthemarket.com/details/19417471/": {
-    "date": "2026-06-01",
-    "price": "2,795 pcm (£645 pw)"
-  },
-  "https://www.onthemarket.com/details/13592147/": {
-    "date": "2026-06-01",
-    "price": "2,600 pcm (£600 pw)"
-  },
-  "https://www.onthemarket.com/details/15835199/": {
-    "date": "2026-06-01",
-    "price": "3,050 pcm (£704 pw)"
-  },
-  "https://www.onthemarket.com/details/17642146/": {
-    "date": "2026-06-01",
-    "price": "3,600 pcm (£831 pw)"
-  },
-  "https://www.onthemarket.com/details/15797713/": {
-    "date": "2026-06-01",
-    "price": "3,300 pcm (£762 pw)"
-  },
-  "https://www.onthemarket.com/details/7998688/": {
-    "date": "2026-06-01",
-    "price": "2,102 pcm (£485 pw)"
-  },
-  "https://www.onthemarket.com/details/19341201/": {
-    "date": "2026-06-01",
-    "price": "2,195 pcm (£507 pw)"
-  },
-  "https://www.onthemarket.com/details/13639469/": {
-    "date": "2026-06-01",
-    "price": "5,200 pcm (£1,200 pw)"
-  },
-  "https://www.onthemarket.com/details/14823030/": {
-    "date": "2026-06-01",
-    "price": "2,968 pcm (£685 pw)"
-  },
-  "https://www.onthemarket.com/details/15224509/": {
-    "date": "2026-06-01",
-    "price": "3,298 pcm (£761 pw)"
-  },
   "https://www.rightmove.co.uk/properties/89197581#/?channel=RES_LET": {
     "date": "2026-06-02",
     "price": "£4,117 pcm\n£950 pw"
@@ -681,7 +197,7 @@
   },
   "https://www.rightmove.co.uk/properties/88125462#/?channel=RES_LET": {
     "date": "2026-06-06",
-    "price": "£4,932 pcm\n£1,138 pw\nPREMIUM LISTING"
+    "price": "£4,833 pcm\n£1,115 pw\nPREMIUM LISTING"
   },
   "https://www.rightmove.co.uk/properties/89353278#/?channel=RES_LET": {
     "date": "2026-06-06",
@@ -1925,7 +1441,7 @@
   },
   "https://www.rightmove.co.uk/properties/89577816#/?channel=RES_LET": {
     "date": "2026-06-11",
-    "price": "£2,650 pcm\n£612 pw"
+    "price": "£2,600 pcm\n£600 pw"
   },
   "https://www.rightmove.co.uk/properties/89554371#/?channel=RES_LET": {
     "date": "2026-06-11",
@@ -5551,6 +5067,206 @@
   "https://www.zoopla.co.uk/to-rent/details/72931477/": {
     "date": "2026-06-30",
     "price": "£4,800 pcm",
+    "sig": null
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73593655/": {
+    "date": "2026-07-01",
+    "price": "£5,000 pcm",
+    "sig": "rossmore road|NW1|3"
+  },
+  "https://www.rightmove.co.uk/properties/89122554#/?channel=RES_LET": {
+    "date": "2026-07-01",
+    "price": "£4,950 pcm\n£1,142 pw",
+    "sig": "linhope street|NW1|2"
+  },
+  "https://www.onthemarket.com/details/19580617/": {
+    "date": "2026-07-01",
+    "price": "5,460 pcm (£1,260 pw)",
+    "sig": "39 hill street|W1J|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73587722/": {
+    "date": "2026-07-01",
+    "price": "£3,600 pcm",
+    "sig": "portsea place|W2|2"
+  },
+  "https://www.rightmove.co.uk/properties/173167532#/?channel=RES_LET": {
+    "date": "2026-07-01",
+    "price": "£6,933 pcm\n£1,600 pw",
+    "sig": "connaught street hyde park|W2|4"
+  },
+  "https://www.rightmove.co.uk/properties/90322374#/?channel=RES_LET": {
+    "date": "2026-07-01",
+    "price": "£4,200 pcm\n£969 pw",
+    "sig": "william road|NW1|3"
+  },
+  "https://www.rightmove.co.uk/properties/90353190#/?channel=RES_LET": {
+    "date": "2026-07-01",
+    "price": "£6,495 pcm\n£1,499 pw",
+    "sig": "woodhall|NW1|5"
+  },
+  "https://www.rightmove.co.uk/properties/90353754#/?channel=RES_LET": {
+    "date": "2026-07-01",
+    "price": "£2,700 pcm\n£623 pw",
+    "sig": "cathedral mansions|SW1V|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/58680310/": {
+    "date": "2026-07-01",
+    "price": "£3,250 pcm",
+    "sig": "doughty street|WC1N|2"
+  },
+  "https://www.rightmove.co.uk/properties/90328230#/?channel=RES_LET": {
+    "date": "2026-07-01",
+    "price": "£3,250 pcm\n£750 pw",
+    "sig": "kenway road|SW5|2"
+  },
+  "https://www.rightmove.co.uk/properties/90326487#/?channel=RES_LET": {
+    "date": "2026-07-01",
+    "price": "£8,500 pcm\n£1,962 pw",
+    "sig": "drayton gardens|SW10|4"
+  },
+  "https://www.rightmove.co.uk/properties/90317721#/?channel=RES_LET": {
+    "date": "2026-07-01",
+    "price": "£4,008 pcm\n£925 pw",
+    "sig": "cromwell road|SW5|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73589325/": {
+    "date": "2026-07-01",
+    "price": "£4,204 pcm",
+    "sig": "paddington basin|W2|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73596520/": {
+    "date": "2026-07-01",
+    "price": "£4,500 pcm",
+    "sig": "dereham place|EC2A|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73594404/": {
+    "date": "2026-07-01",
+    "price": "£3,500 pcm",
+    "sig": "22 dingley road|EC1V|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/56536944/": {
+    "date": "2026-07-01",
+    "price": "£2,950 pcm",
+    "sig": "caernarvon house|W2|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73588873/": {
+    "date": "2026-07-01",
+    "price": "£6,500 pcm",
+    "sig": "cleveland square|W2|3"
+  },
+  "https://www.onthemarket.com/details/18653901/": {
+    "date": "2026-07-01",
+    "price": "5,345 pcm (£1,233 pw)",
+    "sig": "exide house|WC2H|3"
+  },
+  "https://www.onthemarket.com/details/19833275/": {
+    "date": "2026-07-01",
+    "price": "2,600 pcm (£600 pw)",
+    "sig": "southcombe street|W14|2"
+  },
+  "https://www.onthemarket.com/details/19827271/": {
+    "date": "2026-07-01",
+    "price": "3,050 pcm (£704 pw)",
+    "sig": "addison park mansions|W14|3"
+  },
+  "https://www.onthemarket.com/details/19610598/": {
+    "date": "2026-07-01",
+    "price": "2,299 pcm (£531 pw)",
+    "sig": "avonmore road|W14|2"
+  },
+  "https://www.onthemarket.com/details/19620274/": {
+    "date": "2026-07-01",
+    "price": "2,300 pcm (£531 pw)",
+    "sig": "milson road|W14|2"
+  },
+  "https://www.onthemarket.com/details/19216517/": {
+    "date": "2026-07-01",
+    "price": "2,850 pcm (£658 pw)",
+    "sig": "olympia|W14|2"
+  },
+  "https://www.onthemarket.com/details/19379810/": {
+    "date": "2026-07-01",
+    "price": "3,000 pcm (£692 pw)",
+    "sig": "matheson road|W14|2"
+  },
+  "https://www.onthemarket.com/details/13162580/": {
+    "date": "2026-07-01",
+    "price": "3,400 pcm (£785 pw)",
+    "sig": "poppins court|EC4A|2"
+  },
+  "https://www.onthemarket.com/details/19523486/": {
+    "date": "2026-07-01",
+    "price": "3,597 pcm (£830 pw)",
+    "sig": "bartholomew close|EC1A|2"
+  },
+  "https://www.onthemarket.com/details/13567955/": {
+    "date": "2026-07-01",
+    "price": "3,000 pcm (£692 pw)",
+    "sig": "priory green|N1|3"
+  },
+  "https://www.onthemarket.com/details/18913341/": {
+    "date": "2026-07-01",
+    "price": "3,500 pcm (£808 pw)",
+    "sig": "ironomonger row|EC1V|2"
+  },
+  "https://www.onthemarket.com/details/18548403/": {
+    "date": "2026-07-01",
+    "price": "2,700 pcm (£623 pw)",
+    "sig": "shire house|EC1Y|2"
+  },
+  "https://www.onthemarket.com/details/17606296/": {
+    "date": "2026-07-01",
+    "price": "2,650 pcm (£612 pw)",
+    "sig": "123|EC1V|3"
+  },
+  "https://www.onthemarket.com/details/7447909/": {
+    "date": "2026-07-01",
+    "price": "7,800 pcm (£1,800 pw)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/19825316/": {
+    "date": "2026-07-01",
+    "price": "3,500 pcm (£808 pw)",
+    "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/90327246#/?channel=RES_LET": {
+    "date": "2026-07-01",
+    "price": "£4,000 pcm\n£923 pw",
+    "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/89019522#/?channel=RES_LET": {
+    "date": "2026-07-01",
+    "price": "£3,597 pcm\n£830 pw",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/19417471/": {
+    "date": "2026-07-01",
+    "price": "2,795 pcm (£645 pw)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/14946486/": {
+    "date": "2026-07-01",
+    "price": "2,850 pcm (£658 pw)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/19411034/": {
+    "date": "2026-07-01",
+    "price": "3,250 pcm (£750 pw)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/15886654/": {
+    "date": "2026-07-01",
+    "price": "3,500 pcm (£808 pw)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/13592147/": {
+    "date": "2026-07-01",
+    "price": "2,600 pcm (£600 pw)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/7998688/": {
+    "date": "2026-07-01",
+    "price": "2,102 pcm (£485 pw)",
     "sig": null
   }
 }
