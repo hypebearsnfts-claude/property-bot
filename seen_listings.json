@@ -1,52 +1,4 @@
 {
-  "https://www.rightmove.co.uk/properties/89289048#/?channel=RES_LET": {
-    "date": "2026-06-04",
-    "price": "£4,750 pcm\n£1,096 pw"
-  },
-  "https://www.rightmove.co.uk/properties/174251249#/?channel=RES_LET": {
-    "date": "2026-06-04",
-    "price": "£5,000 pcm\n£1,154 pw"
-  },
-  "https://www.rightmove.co.uk/properties/89304441#/?channel=RES_LET": {
-    "date": "2026-06-04",
-    "price": "£3,033 pcm\n£700 pw"
-  },
-  "https://www.onthemarket.com/details/19646985/": {
-    "date": "2026-06-04",
-    "price": "2,700 pcm (£623 pw)"
-  },
-  "https://www.onthemarket.com/details/19648878/": {
-    "date": "2026-06-04",
-    "price": "4,000 pcm (£923 pw)"
-  },
-  "https://www.onthemarket.com/details/19531740/": {
-    "date": "2026-06-04",
-    "price": "3,500 pcm (£808 pw)"
-  },
-  "https://www.onthemarket.com/details/19290534/": {
-    "date": "2026-06-04",
-    "price": "4,117 pcm (£950 pw)"
-  },
-  "https://www.onthemarket.com/details/19648188/": {
-    "date": "2026-06-04",
-    "price": "3,900 pcm (£900 pw)"
-  },
-  "https://www.rightmove.co.uk/properties/89284629#/?channel=RES_LET": {
-    "date": "2026-06-04",
-    "price": "£4,000 pcm\n£923 pw"
-  },
-  "https://www.onthemarket.com/details/7079910/": {
-    "date": "2026-06-04",
-    "price": "5,200 pcm (£1,200 pw)"
-  },
-  "https://www.onthemarket.com/details/19613608/": {
-    "date": "2026-06-04",
-    "price": "7,000 pcm (£1,615 pw)"
-  },
-  "https://www.rightmove.co.uk/properties/136611053#/?channel=RES_LET": {
-    "date": "2026-06-04",
-    "price": "£6,860 pcm\n£1,583 pw"
-  },
   "https://www.rightmove.co.uk/properties/89336370#/?channel=RES_LET": {
     "date": "2026-06-06",
     "price": "£4,329 pcm\n£999 pw"
@@ -881,7 +833,7 @@
   },
   "https://www.rightmove.co.uk/properties/89500938#/?channel=RES_LET": {
     "date": "2026-06-09",
-    "price": "£3,000 pcm\n£692 pw"
+    "price": "£2,899 pcm\n£669 pw"
   },
   "https://www.rightmove.co.uk/properties/174699416#/?channel=RES_LET": {
     "date": "2026-06-09",
@@ -1233,7 +1185,7 @@
   },
   "https://www.rightmove.co.uk/properties/89544861#/?channel=RES_LET": {
     "date": "2026-06-10",
-    "price": "£4,052 pcm\n£935 pw"
+    "price": "£3,965 pcm\n£915 pw"
   },
   "https://www.rightmove.co.uk/properties/174609881#/?channel=RES_LET": {
     "date": "2026-06-10",
@@ -5102,7 +5054,7 @@
   },
   "https://www.onthemarket.com/details/19825316/": {
     "date": "2026-07-01",
-    "price": "3,500 pcm (£808 pw)",
+    "price": "3,400 pcm (£785 pw)",
     "sig": null
   },
   "https://www.rightmove.co.uk/properties/90327246#/?channel=RES_LET": {
@@ -5122,7 +5074,7 @@
   },
   "https://www.onthemarket.com/details/14946486/": {
     "date": "2026-07-01",
-    "price": "2,850 pcm (£658 pw)",
+    "price": "2,750 pcm (£635 pw)",
     "sig": null
   },
   "https://www.onthemarket.com/details/19411034/": {
@@ -5443,6 +5395,81 @@
   "https://www.onthemarket.com/details/19856008/": {
     "date": "2026-07-03",
     "price": "3,380 pcm (£780 pw)",
+    "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/89237625#/?channel=RES_LET": {
+    "date": "2026-07-04",
+    "price": "£3,575 pcm\n£825 pw",
+    "sig": "montagu row|W1U|2"
+  },
+  "https://www.rightmove.co.uk/properties/90396129#/?channel=RES_LET": {
+    "date": "2026-07-04",
+    "price": "£3,400 pcm\n£785 pw\nSHARERS WELCOME",
+    "sig": "cleveland street|W1T|2"
+  },
+  "https://www.rightmove.co.uk/properties/90494247#/?channel=RES_LET": {
+    "date": "2026-07-04",
+    "price": "£4,250 pcm\n£981 pw",
+    "sig": "belgrave road|SW1V|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/67688928/": {
+    "date": "2026-07-04",
+    "price": "£6,500 pcm",
+    "sig": "artillery row|SW1P|3"
+  },
+  "https://www.rightmove.co.uk/properties/90470907#/?channel=RES_LET": {
+    "date": "2026-07-04",
+    "price": "£4,008 pcm\n£925 pw",
+    "sig": "ebury street|SW1W|2"
+  },
+  "https://www.rightmove.co.uk/properties/90469566#/?channel=RES_LET": {
+    "date": "2026-07-04",
+    "price": "£3,500 pcm\n£808 pw\nPREMIUM LISTING",
+    "sig": "ebury bridge road|SW1W|2"
+  },
+  "https://www.rightmove.co.uk/properties/90487095#/?channel=RES_LET": {
+    "date": "2026-07-04",
+    "price": "£3,550 pcm\n£819 pw",
+    "sig": "park view house|NW1|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73620042/": {
+    "date": "2026-07-04",
+    "price": "£3,098 pcm",
+    "sig": "wharf road|N1|2"
+  },
+  "https://www.onthemarket.com/details/19864774/": {
+    "date": "2026-07-04",
+    "price": "3,000 pcm (£692 pw)",
+    "sig": "oldstreet|EC1V|2"
+  },
+  "https://www.onthemarket.com/details/15201562/": {
+    "date": "2026-07-04",
+    "price": "4,100 pcm (£946 pw)",
+    "sig": "acton street|WC1X|3"
+  },
+  "https://www.onthemarket.com/details/19860059/": {
+    "date": "2026-07-04",
+    "price": "2,816 pcm (£650 pw)",
+    "sig": "petersham mews|SW7|2"
+  },
+  "https://www.onthemarket.com/details/3209583/": {
+    "date": "2026-07-04",
+    "price": "4,008 pcm (£925 pw)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/11914160/": {
+    "date": "2026-07-04",
+    "price": "3,200 pcm (£738 pw)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/19849362/": {
+    "date": "2026-07-04",
+    "price": "5,200 pcm (£1,200 pw)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/19852836/": {
+    "date": "2026-07-04",
+    "price": "2,100 pcm (£485 pw)",
     "sig": null
   }
 }
