@@ -1,60 +1,4 @@
 {
-  "https://www.rightmove.co.uk/properties/143039084#/?channel=RES_LET": {
-    "date": "2026-06-10",
-    "price": "£4,498 pcm\n£1,038 pw"
-  },
-  "https://www.onthemarket.com/details/19687459/": {
-    "date": "2026-06-10",
-    "price": "2,708 pcm (£625 pw)"
-  },
-  "https://www.rightmove.co.uk/properties/89520768#/?channel=RES_LET": {
-    "date": "2026-06-10",
-    "price": "£2,800 pcm\n£646 pw"
-  },
-  "https://www.rightmove.co.uk/properties/88289100#/?channel=RES_LET": {
-    "date": "2026-06-10",
-    "price": "£5,417 pcm\n£1,250 pw"
-  },
-  "https://www.rightmove.co.uk/properties/88766148#/?channel=RES_LET": {
-    "date": "2026-06-10",
-    "price": "£5,850 pcm\n£1,350 pw"
-  },
-  "https://www.rightmove.co.uk/properties/89514738#/?channel=RES_LET": {
-    "date": "2026-06-10",
-    "price": "£5,369 pcm\n£1,239 pw"
-  },
-  "https://www.rightmove.co.uk/properties/88228182#/?channel=RES_LET": {
-    "date": "2026-06-10",
-    "price": "£3,445 pcm\n£795 pw"
-  },
-  "https://www.rightmove.co.uk/properties/89544861#/?channel=RES_LET": {
-    "date": "2026-06-10",
-    "price": "£3,965 pcm\n£915 pw"
-  },
-  "https://www.rightmove.co.uk/properties/174609881#/?channel=RES_LET": {
-    "date": "2026-06-10",
-    "price": "£5,200 pcm\n£1,200 pw"
-  },
-  "https://www.rightmove.co.uk/properties/89340099#/?channel=RES_LET": {
-    "date": "2026-06-10",
-    "price": "£3,683 pcm\n£850 pw\nPREMIUM LISTING"
-  },
-  "https://www.rightmove.co.uk/properties/171165323#/?channel=RES_LET": {
-    "date": "2026-06-10",
-    "price": "£4,500 pcm\n£1,038 pw"
-  },
-  "https://www.rightmove.co.uk/properties/89534817#/?channel=RES_LET": {
-    "date": "2026-06-10",
-    "price": "£4,250 pcm\n£981 pw"
-  },
-  "https://www.rightmove.co.uk/properties/89531400#/?channel=RES_LET": {
-    "date": "2026-06-10",
-    "price": "£3,900 pcm\n£900 pw"
-  },
-  "https://www.onthemarket.com/details/19686636/": {
-    "date": "2026-06-10",
-    "price": "2,950 pcm (£681 pw)"
-  },
   "https://www.rightmove.co.uk/properties/171789734#/?channel=RES_LET": {
     "date": "2026-06-11",
     "price": "£3,100 pcm\n£715 pw"
@@ -417,7 +361,7 @@
   },
   "https://www.onthemarket.com/details/19719480/": {
     "date": "2026-06-15",
-    "price": "3,500 pcm (£808 pw)"
+    "price": "3,250 pcm (£750 pw)"
   },
   "https://www.rightmove.co.uk/properties/89693787#/?channel=RES_LET": {
     "date": "2026-06-15",
@@ -3513,7 +3457,7 @@
   },
   "https://www.onthemarket.com/details/19821534/": {
     "date": "2026-06-29",
-    "price": "3,200 pcm (£738 pw)",
+    "price": "3,000 pcm (£692 pw)",
     "sig": "lily close|W14|2"
   },
   "https://www.onthemarket.com/details/19339370/": {
@@ -5179,6 +5123,131 @@
   "https://www.onthemarket.com/details/19283911/": {
     "date": "2026-07-09",
     "price": "5,000 pcm (£1,154 pw)",
+    "sig": null
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73679923/": {
+    "date": "2026-07-10",
+    "price": "£7,000 pcm",
+    "sig": "1 fareham street|W1F|3"
+  },
+  "https://www.rightmove.co.uk/properties/88329219#/?channel=RES_LET": {
+    "date": "2026-07-10",
+    "price": "£5,399 pcm\n£1,246 pw",
+    "sig": "177 gloucester place|NW1|4"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73668255/": {
+    "date": "2026-07-10",
+    "price": "£5,135 pcm",
+    "sig": "park road|NW1|2"
+  },
+  "https://www.rightmove.co.uk/properties/62445941#/?channel=RES_LET": {
+    "date": "2026-07-10",
+    "price": "£5,460 pcm\n£1,260 pw",
+    "sig": "hill street|W1|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73635907/": {
+    "date": "2026-07-10",
+    "price": "£4,788 pcm",
+    "sig": "hill street mayfair|W1J|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73677349/": {
+    "date": "2026-07-10",
+    "price": "£4,333 pcm",
+    "sig": "garrett mansions|W2|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/61441407/": {
+    "date": "2026-07-10",
+    "price": "£2,730 pcm",
+    "sig": "university street|WC1E|2"
+  },
+  "https://www.rightmove.co.uk/properties/174609881#/?channel=RES_LET": {
+    "date": "2026-07-10",
+    "price": "£5,200 pcm\n£1,200 pw",
+    "sig": "burton street|WC1H|3"
+  },
+  "https://www.rightmove.co.uk/properties/90706512#/?channel=RES_LET": {
+    "date": "2026-07-10",
+    "price": "£4,745 pcm\n£1,095 pw",
+    "sig": "huntley street|WC1E|3"
+  },
+  "https://www.rightmove.co.uk/properties/90702180#/?channel=RES_LET": {
+    "date": "2026-07-10",
+    "price": "£3,350 pcm\n£773 pw",
+    "sig": "redcliffe gardens|SW10|2"
+  },
+  "https://www.rightmove.co.uk/properties/90741864#/?channel=RES_LET": {
+    "date": "2026-07-10",
+    "price": "£3,850 pcm\n£888 pw",
+    "sig": "hyde park gardens|W2|2"
+  },
+  "https://www.rightmove.co.uk/properties/90737628#/?channel=RES_LET": {
+    "date": "2026-07-10",
+    "price": "£3,575 pcm\n£825 pw",
+    "sig": "cleveland terrace|W2|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/55721845/": {
+    "date": "2026-07-10",
+    "price": "£3,727 pcm",
+    "sig": "palgrave gardens|NW1|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73675866/": {
+    "date": "2026-07-10",
+    "price": "£5,287 pcm",
+    "sig": "munster square|NW1|4"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/62747343/": {
+    "date": "2026-07-10",
+    "price": "£6,750 pcm",
+    "sig": "vernon street|W14|6"
+  },
+  "https://www.onthemarket.com/details/17281195/": {
+    "date": "2026-07-10",
+    "price": "3,700 pcm (£854 pw)",
+    "sig": "camden walk|N1|3"
+  },
+  "https://www.onthemarket.com/details/19686636/": {
+    "date": "2026-07-10",
+    "price": "2,950 pcm (£681 pw)",
+    "sig": "peerless street|EC1V|2"
+  },
+  "https://www.onthemarket.com/details/19892171/": {
+    "date": "2026-07-10",
+    "price": "3,250 pcm (£750 pw)",
+    "sig": "courtfield road|SW7|2"
+  },
+  "https://www.onthemarket.com/details/19903531/": {
+    "date": "2026-07-10",
+    "price": "3,500 pcm (£808 pw)",
+    "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/90730317#/?channel=RES_LET": {
+    "date": "2026-07-10",
+    "price": "£3,550 pcm\n£819 pw",
+    "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/90703710#/?channel=RES_LET": {
+    "date": "2026-07-10",
+    "price": "£4,000 pcm\n£923 pw",
+    "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/90653001#/?channel=RES_LET": {
+    "date": "2026-07-10",
+    "price": "£3,250 pcm\n£750 pw",
+    "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/90629169#/?channel=RES_LET": {
+    "date": "2026-07-10",
+    "price": "£3,250 pcm\n£750 pw",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/7465115/": {
+    "date": "2026-07-10",
+    "price": "4,700 pcm (£1,085 pw)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/19900877/": {
+    "date": "2026-07-10",
+    "price": "1,550 pcm (£358 pw)",
     "sig": null
   }
 }
