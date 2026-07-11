@@ -2186,7 +2186,7 @@
   },
   "https://www.zoopla.co.uk/to-rent/details/73405640/": {
     "date": "2026-06-25",
-    "price": "£4,000 pcm",
+    "price": "£3,800 pcm",
     "sig": "sandwich street|WC1H|2"
   },
   "https://www.zoopla.co.uk/to-rent/details/73371427/": {
@@ -2631,7 +2631,7 @@
   },
   "https://www.zoopla.co.uk/to-rent/details/73425583/": {
     "date": "2026-06-25",
-    "price": "£4,600 pcm",
+    "price": "£3,800 pcm",
     "sig": "gray s inn road|WC1X|4"
   },
   "https://www.zoopla.co.uk/to-rent/details/61214514/": {
@@ -5262,6 +5262,66 @@
   "https://www.onthemarket.com/details/17160285/": {
     "date": "2026-07-11",
     "price": "2,900 pcm (£669 pw)",
+    "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/143039084#/?channel=RES_LET": {
+    "date": "2026-07-11",
+    "price": "£4,498 pcm\n£1,038 pw",
+    "sig": "parker street|WC2B|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73668120/": {
+    "date": "2026-07-11",
+    "price": "£5,092 pcm",
+    "sig": "bickenhall street|W1U|2"
+  },
+  "https://www.rightmove.co.uk/properties/90621195#/?channel=RES_LET": {
+    "date": "2026-07-11",
+    "price": "£8,500 pcm\n£1,962 pw",
+    "sig": "nottingham street|W1U|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/51014533/": {
+    "date": "2026-07-11",
+    "price": "£5,417 pcm",
+    "sig": "kensington west|W14|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73689733/": {
+    "date": "2026-07-11",
+    "price": "£2,700 pcm",
+    "sig": "betterton street|WC2H|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73190370/": {
+    "date": "2026-07-11",
+    "price": "£4,550 pcm",
+    "sig": "burton street|WC1H|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/65147052/": {
+    "date": "2026-07-11",
+    "price": "£3,200 pcm",
+    "sig": "craven hill gardens|W2|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73680749/": {
+    "date": "2026-07-11",
+    "price": "£3,200 pcm",
+    "sig": "leinster gardens|W2|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73670636/": {
+    "date": "2026-07-11",
+    "price": "£3,683 pcm",
+    "sig": "westbourne crescent|W2|3"
+  },
+  "https://www.onthemarket.com/details/19913774/": {
+    "date": "2026-07-11",
+    "price": "3,300 pcm (£762 pw)",
+    "sig": "barnabas house|EC1V|3"
+  },
+  "https://www.rightmove.co.uk/properties/90483165#/?channel=RES_LET": {
+    "date": "2026-07-11",
+    "price": "£3,200 pcm\n£738 pw",
+    "sig": null
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73689815/": {
+    "date": "2026-07-11",
+    "price": "£5,850 pcm",
     "sig": null
   }
 }
