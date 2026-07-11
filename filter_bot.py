@@ -483,62 +483,78 @@ _HTTP_DETAIL_SOURCES = {"zoopla", "openrent"}
 _DETAIL_IMPERSONATE  = ["chrome136", "chrome131", "safari180"]
 
 
+def _fetch_detail_html(listing: dict) -> Optional[str]:
+    """Fetch a detail page's HTML using the SAME proven fetch the scraper uses to
+    get past the WAF for that source (rich headers + impersonation rotation +
+    optional proxy). Reusing the scraper's fetcher is far more reliable than a
+    bespoke request with minimal headers (which Cloudflare was rejecting)."""
+    src = (listing.get("source") or "").lower()
+    url = (listing.get("url") or "").split("#")[0]
+    if not url:
+        return None
+    try:
+        if src == "zoopla":
+            from scrapers.zoopla import _fetch_html
+            return _fetch_html(url)
+        if src == "openrent":
+            from scrapers.openrent import _fetch
+            return _fetch(url)
+    except Exception as exc:
+        logger.debug("[filter] detail fetch error (%s): %s", url[:50], exc)
+    return None
+
+
 def _check_detail_pages_http(listings: list[dict]) -> list[bool]:
     """Detail-page keyword check for portals Playwright can't reach (Zoopla/OpenRent).
 
-    Fetches each detail page with curl_cffi (the same method the scrapers use to
-    get past the WAF), strips scripts/styles, and runs the deep keyword check.
-    Best-effort: any fetch failure → False (don't block)."""
+    Uses the scraper's own proven fetcher, strips scripts/styles, and runs the
+    deep keyword check. Best-effort: any fetch failure → False (don't block)."""
     import concurrent.futures
 
-    def _one(url: str) -> bool:
-        clean = (url or "").split("#")[0]
-        if not clean:
+    def _one(listing: dict) -> bool:
+        html = _fetch_detail_html(listing)
+        if not html:
             return False
+        clean = (listing.get("url") or "").split("#")[0]
         try:
-            from curl_cffi import requests as creq
             from bs4 import BeautifulSoup
         except ImportError:
             return False
-        for imp in _DETAIL_IMPERSONATE:
-            try:
-                r = creq.get(clean, headers={"User-Agent": _DETAIL_UA,
-                                             "Accept-Language": "en-GB,en;q=0.9"},
-                             impersonate=imp, timeout=30)
-                if r.status_code == 200 and len(r.text) > 2000:
-                    # 1) Precise pass: visible text only (scripts/styles stripped).
-                    soup = BeautifulSoup(r.text, "lxml")
-                    for tag in soup(["script", "style", "noscript"]):
-                        tag.decompose()
-                    text = soup.get_text(" ", strip=True)[:25000]
-                    kw = _blocked_keyword(text)
-                    if kw:
-                        logger.info("[filter] Detail check (http) blocked (%r): %s", kw, clean[:70])
-                        return True
-                    # 2) Safety net (only when the page server-rendered little
-                    # visible text, i.e. the description is hidden in an embedded
-                    # JSON/state <script> blob). Scan the RAW HTML for the two
-                    # HIGH-SIGNAL amenity terms only — "concierge" and whole-word
-                    # "porter" never appear in site chrome, so this is safe.
-                    # Unfurnished is NOT scanned here: furnish enums in JSON would
-                    # cause false positives.
-                    if len(text) < 3000:
-                        raw = r.text.lower()
-                        if "concierge" in raw:
-                            logger.info("[filter] Detail check (http, raw) blocked ('concierge'): %s", clean[:70])
-                            return True
-                        if _WHOLE_WORD_RE.search(raw):
-                            logger.info("[filter] Detail check (http, raw) blocked ('porter'): %s", clean[:70])
-                            return True
-                    return False
-            except Exception as exc:
-                logger.debug("[filter] http detail imp=%s error (%s): %s", imp, clean[:50], exc)
+        # 1) Precise pass: visible text only (scripts/styles stripped).
+        soup = BeautifulSoup(html, "lxml")
+        for tag in soup(["script", "style", "noscript"]):
+            tag.decompose()
+        text = soup.get_text(" ", strip=True)[:25000]
+        kw = _blocked_keyword(text)
+        if kw:
+            logger.info("[filter] Detail check (http) blocked (%r): %s", kw, clean[:70])
+            return True
+        # 2) Safety net: the description sometimes ships only in an embedded
+        # JSON/state <script> blob (not rendered markup). Scan the RAW HTML for
+        # the two HIGH-SIGNAL amenity terms — "concierge" and whole-word "porter"
+        # never appear in site chrome, so this is safe. (Unfurnished is NOT scanned
+        # here: furnish enums in JSON would cause false positives.)
+        # Truncate before any "similar/recommended properties" rail so a NEARBY
+        # listing's porter/concierge can't falsely block this one.
+        raw = html.lower()
+        cut = len(raw)
+        for marker in ("similar propert", "properties you might", "you might also",
+                       "more properties from", "recommended for you"):
+            j = raw.find(marker)
+            if 0 <= j < cut:
+                cut = j
+        raw = raw[:cut]
+        if "concierge" in raw:
+            logger.info("[filter] Detail check (http, raw) blocked ('concierge'): %s", clean[:70])
+            return True
+        if _WHOLE_WORD_RE.search(raw):
+            logger.info("[filter] Detail check (http, raw) blocked ('porter'): %s", clean[:70])
+            return True
         return False
 
     results = [False] * len(listings)
     with concurrent.futures.ThreadPoolExecutor(max_workers=6) as ex:
-        for i, blocked in zip(range(len(listings)),
-                              ex.map(lambda l: _one(l.get("url", "")), listings)):
+        for i, blocked in zip(range(len(listings)), ex.map(_one, listings)):
             results[i] = blocked
     return results
 
