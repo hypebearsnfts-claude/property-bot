@@ -1,72 +1,4 @@
 {
-  "https://www.onthemarket.com/details/19708185/": {
-    "date": "2026-06-12",
-    "price": "2,750 pcm (£635 pw)"
-  },
-  "https://www.rightmove.co.uk/properties/88380876#/?channel=RES_LET": {
-    "date": "2026-06-12",
-    "price": "£7,600 pcm\n£1,754 pw"
-  },
-  "https://www.rightmove.co.uk/properties/171223916#/?channel=RES_LET": {
-    "date": "2026-06-12",
-    "price": "£11,000 pcm\n£2,538 pw"
-  },
-  "https://www.rightmove.co.uk/properties/88378185#/?channel=RES_LET": {
-    "date": "2026-06-12",
-    "price": "£12,848 pcm\n£2,965 pw"
-  },
-  "https://www.rightmove.co.uk/properties/89632215#/?channel=RES_LET": {
-    "date": "2026-06-12",
-    "price": "£3,800 pcm\n£877 pw"
-  },
-  "https://www.rightmove.co.uk/properties/89613219#/?channel=RES_LET": {
-    "date": "2026-06-12",
-    "price": "£3,900 pcm\n£900 pw"
-  },
-  "https://www.rightmove.co.uk/properties/89646951#/?channel=RES_LET": {
-    "date": "2026-06-12",
-    "price": "£3,200 pcm\n£738 pw"
-  },
-  "https://www.onthemarket.com/details/19707295/": {
-    "date": "2026-06-12",
-    "price": "3,500 pcm (£808 pw)"
-  },
-  "https://www.rightmove.co.uk/properties/89648544#/?channel=RES_LET": {
-    "date": "2026-06-12",
-    "price": "£4,250 pcm\n£981 pw"
-  },
-  "https://www.onthemarket.com/details/18966956/": {
-    "date": "2026-06-12",
-    "price": "3,683 pcm (£850 pw)"
-  },
-  "https://www.onthemarket.com/details/19704174/": {
-    "date": "2026-06-12",
-    "price": "2,650 pcm (£612 pw)"
-  },
-  "https://www.onthemarket.com/details/19702923/": {
-    "date": "2026-06-12",
-    "price": "2,600 pcm (£600 pw)"
-  },
-  "https://www.onthemarket.com/details/19708178/": {
-    "date": "2026-06-12",
-    "price": "2,750 pcm (£635 pw)"
-  },
-  "https://www.rightmove.co.uk/properties/88387026#/?channel=RES_LET": {
-    "date": "2026-06-12",
-    "price": "£3,228 pcm\n£745 pw"
-  },
-  "https://www.rightmove.co.uk/properties/88797768#/?channel=RES_LET": {
-    "date": "2026-06-12",
-    "price": "£3,500 pcm\n£808 pw"
-  },
-  "https://www.onthemarket.com/details/19709611/": {
-    "date": "2026-06-12",
-    "price": "1,475 pcm (£340 pw)"
-  },
-  "https://www.onthemarket.com/details/8507349/": {
-    "date": "2026-06-12",
-    "price": "1,440 pcm (£332 pw)"
-  },
   "https://www.rightmove.co.uk/properties/89651394#/?channel=RES_LET": {
     "date": "2026-06-13",
     "price": "£4,500 pcm\n£1,038 pw"
@@ -2936,7 +2868,7 @@
   },
   "https://www.openrent.co.uk/property-to-rent/london/3-bed-flat-bridge-wharf-n1/2931382": {
     "date": "2026-06-26",
-    "price": "£3,796 pcm",
+    "price": "£3,640 pcm",
     "sig": "bridge wharf|N1|3"
   },
   "https://www.openrent.co.uk/property-to-rent/london/4-bed-terraced-house-cullum-welch-court-n1/2941300": {
@@ -4521,7 +4453,7 @@
   },
   "https://www.openrent.co.uk/property-to-rent/london/4-bed-flat-grimthorpe-house-ec1v/1057470": {
     "date": "2026-07-07",
-    "price": "£1,280 pcm",
+    "price": "£1,250 pcm",
     "sig": "grimthorpe house|EC1V|4"
   },
   "https://www.onthemarket.com/details/19874625/": {
@@ -5322,6 +5254,71 @@
   "https://www.zoopla.co.uk/to-rent/details/73689815/": {
     "date": "2026-07-11",
     "price": "£5,850 pcm",
+    "sig": null
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73693838/": {
+    "date": "2026-07-12",
+    "price": "£2,750 pcm",
+    "sig": "dulverton mansions|WC1X|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73490183/": {
+    "date": "2026-07-12",
+    "price": "£4,875 pcm",
+    "sig": "sydney mews|SW3|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73690467/": {
+    "date": "2026-07-12",
+    "price": "£3,800 pcm",
+    "sig": "calthorpe street|WC1X|4"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73679784/": {
+    "date": "2026-07-12",
+    "price": "£4,000 pcm",
+    "sig": "the arc|EC1V|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73690468/": {
+    "date": "2026-07-12",
+    "price": "£3,400 pcm",
+    "sig": "bramber|WC1H|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/72456968/": {
+    "date": "2026-07-12",
+    "price": "£4,767 pcm",
+    "sig": "fulham road|SW3|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73524337/": {
+    "date": "2026-07-12",
+    "price": "£4,550 pcm",
+    "sig": "chelsea|SW3|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73520321/": {
+    "date": "2026-07-12",
+    "price": "£4,766 pcm",
+    "sig": "exceptional two bedroom|SW3|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73479582/": {
+    "date": "2026-07-12",
+    "price": "£3,000 pcm",
+    "sig": "queen s gate mews|SW7|2"
+  },
+  "https://www.openrent.co.uk/property-to-rent/london/3-bed-flat-hill-st-w1j/2918264": {
+    "date": "2026-07-12",
+    "price": "£7,410 pcm",
+    "sig": "hill st|W1J|3"
+  },
+  "https://www.openrent.co.uk/property-to-rent/london/3-bed-flat-shaftesbury-place-w14/2935955": {
+    "date": "2026-07-12",
+    "price": "£3,987 pcm",
+    "sig": "shaftesbury place|W14|3"
+  },
+  "https://www.rightmove.co.uk/properties/88387026#/?channel=RES_LET": {
+    "date": "2026-07-12",
+    "price": "£3,228 pcm\n£745 pw",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/8507349/": {
+    "date": "2026-07-12",
+    "price": "1,440 pcm (£332 pw)",
     "sig": null
   }
 }
