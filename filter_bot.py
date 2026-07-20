@@ -507,14 +507,16 @@ def _fetch_detail_html(listing: dict) -> Optional[str]:
 def _check_detail_pages_http(listings: list[dict]) -> list[bool]:
     """Detail-page keyword check for portals Playwright can't reach (Zoopla/OpenRent).
 
-    Uses the scraper's own proven fetcher, strips scripts/styles, and runs the
-    deep keyword check. Best-effort: any fetch failure → False (don't block)."""
-    import concurrent.futures
+    Uses the scraper's own proven fetcher. IMPORTANT: firing ~100 detail fetches
+    in a parallel burst trips Cloudflare's rate limit (run logs show most fetches
+    403 while the paced search-page fetches succeed) — so Zoopla is checked
+    SERIALLY with jittered delays and one delayed retry. A listing whose page
+    still can't be fetched is marked listing['_detail_unchecked']=True (surfaced
+    in the Telegram message) instead of failing silently."""
+    import random as _random
+    import time as _time
 
-    def _one(listing: dict) -> bool:
-        html = _fetch_detail_html(listing)
-        if not html:
-            return False
+    def _scan(listing: dict, html: str) -> bool:
         clean = (listing.get("url") or "").split("#")[0]
         try:
             from bs4 import BeautifulSoup
@@ -553,9 +555,28 @@ def _check_detail_pages_http(listings: list[dict]) -> list[bool]:
         return False
 
     results = [False] * len(listings)
-    with concurrent.futures.ThreadPoolExecutor(max_workers=6) as ex:
-        for i, blocked in zip(range(len(listings)), ex.map(_one, listings)):
-            results[i] = blocked
+    fetch_failed = 0
+    for i, listing in enumerate(listings):
+        # Paced serial fetch: jittered delay between requests avoids the burst
+        # that triggers Cloudflare 403s.
+        if i:
+            _time.sleep(_random.uniform(1.5, 3.0))
+        html = _fetch_detail_html(listing)
+        if not html:
+            # One retry after a longer cool-off — transient 403s often clear.
+            _time.sleep(_random.uniform(8.0, 12.0))
+            html = _fetch_detail_html(listing)
+        if html:
+            results[i] = _scan(listing, html)
+        else:
+            fetch_failed += 1
+            listing["_detail_unchecked"] = True
+            logger.info("[filter] Detail check (http): could not fetch %s — passing UNCHECKED",
+                        (listing.get("url") or "")[:70])
+    if fetch_failed:
+        logger.warning("[filter] Detail check (http): %d/%d pages could not be fetched "
+                       "(rate-limited?) — those listings passed unchecked", fetch_failed, len(listings))
+    _LAST_RUN_DIAG["detail_fetch_failed"] = fetch_failed
     return results
 
 
@@ -776,6 +797,8 @@ def _format_property_message(listing: dict, verdict: dict) -> str:
         f"🏢 {_esc(source)}",
         f"🔗 [View listing]({url})",
         *(["📱 *OpenRent — please contact manually*"] if listing.get("source") == "openrent" else []),
+        *(["⚠️ _Couldn't verify porter/concierge/furnishing — page blocked\\. Check manually\\._"]
+          if listing.get("_detail_unchecked") else []),
     ]
     # Comparables context only applies to the old FMV method (>£7,500). Hide it for
     # AirDNA STR passes, where no sale/let comparables are pulled.
@@ -1237,6 +1260,14 @@ def _build_health_warnings(sent: int, new_count: int, total_scraped: int) -> lis
     if total_scraped > 0 and new_count > 0 and sent == 0:
         warnings.append(
             f"{new_count} new listing(s) checked but 0 sent — every one was filtered out."
+        )
+
+    # 4.5. Detail pages couldn't be fetched → those listings passed unchecked
+    fetch_failed = _LAST_RUN_DIAG.get("detail_fetch_failed", 0) or 0
+    if fetch_failed >= 5:
+        warnings.append(
+            f"{fetch_failed} Zoopla/OpenRent detail page(s) couldn't be fetched (rate-limited?) — "
+            f"those listings were sent UNCHECKED for porter/concierge (marked ⚠️ in their messages)."
         )
 
     # 5. A station returned 0 listings across ALL sources → lost coverage there
