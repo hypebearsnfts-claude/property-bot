@@ -35,8 +35,10 @@ _AGENT_LOGO_RE = re.compile(r"agent_logo", re.I)   # Zoopla agent-logo image src
 _OUTWARD_RE    = re.compile(r"\b([A-Z]{1,2})\d[A-Z\d]?\b")   # outward postcode area
 # Central/inner London postcode areas — every one of our 21 stations sits in one
 # of these. Zoopla sometimes leaks out-of-region results (e.g. a Hampshire GU34
-# house) past its own radius filter, so we reject anything outside these areas.
-_LONDON_AREAS = {"E", "EC", "N", "NW", "SE", "SW", "W", "WC"}
+# house, or Earls Way SE1 by Tower Bridge — 2mi from any of our stations) past
+# its own radius filter, so we reject anything outside these areas. E and SE are
+# deliberately NOT allowed: no station's 0.5mi radius reaches them.
+_LONDON_AREAS = {"EC", "N", "NW", "SW", "W", "WC"}
 
 
 def _is_unfurnished_only(text: str) -> bool:

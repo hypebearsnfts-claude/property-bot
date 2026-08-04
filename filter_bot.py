@@ -991,6 +991,19 @@ async def run_pipeline(
                     dupes_skipped, len(new_listings))
     walk_passed = new_listings
 
+    # Step 4.2 — Previously-blocked filter. The detail check once POSITIVELY
+    # identified these as porter/concierge/unfurnished; that verdict is permanent
+    # (building attributes don't change). Without this, a blocked listing gets
+    # re-checked every run and slips through the day Zoopla rate-limits the fetch
+    # (observed: 73661757 blocked 19 Jul, leaked 2 Aug).
+    from utils.blocked_listings import is_blocked as _is_prev_blocked
+    before_bl = len(walk_passed)
+    walk_passed = [l for l in walk_passed if not _is_prev_blocked(l)]
+    bl_skipped = before_bl - len(walk_passed)
+    if bl_skipped:
+        logger.info("[filter] Previously-blocked filter: skipped %d known porter/concierge listings",
+                    bl_skipped)
+
     # Step 4.5 — Cross-portal dedup: when the same property appears on Rightmove
     # AND on OTM/Zoopla, keep only the higher-priority portal version so we avoid
     # Rightmove's finicky enquiry form whenever a better alternative exists.
@@ -1009,6 +1022,12 @@ async def run_pipeline(
     if walk_passed:
         detail_flags  = await _check_detail_pages(walk_passed)
         before_detail = len(walk_passed)
+        # Persist every block so future runs skip these listings outright —
+        # the detail check must never be a daily dice-roll for the same flat.
+        from utils.blocked_listings import mark_blocked as _mark_blocked
+        for l, blocked in zip(walk_passed, detail_flags):
+            if blocked:
+                _mark_blocked(l, "detail-keyword (porter/concierge/unfurnished)")
         walk_passed   = [l for l, blocked in zip(walk_passed, detail_flags) if not blocked]
         detail_removed = before_detail - len(walk_passed)
         _LAST_RUN_DIAG.update(detail_checked=before_detail, detail_blocked=detail_removed)

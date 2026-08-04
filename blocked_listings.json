@@ -1,0 +1,27 @@
+{
+  "https://www.zoopla.co.uk/to-rent/details/73661757/": {
+    "date": "2026-08-04",
+    "reason": "concierge (One Tower Bridge; also out-of-area SE1)",
+    "sig": "earls way|SE1|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/69341246/": {
+    "date": "2026-08-04",
+    "reason": "concierge 24x7",
+    "sig": "consort rise house|SW1W|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73408297/": {
+    "date": "2026-08-04",
+    "reason": "24 hour porter",
+    "sig": "upper grosvenor street|W1K|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73571699/": {
+    "date": "2026-08-04",
+    "reason": "porter/security",
+    "sig": "emperor s gate|SW7|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73479093/": {
+    "date": "2026-08-04",
+    "reason": "24-hour concierge",
+    "sig": "norfolk crescent|W2|4"
+  }
+}
