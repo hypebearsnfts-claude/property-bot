@@ -1,79 +1,4 @@
 {
-  "https://www.zoopla.co.uk/to-rent/details/73611183/": {
-    "date": "2026-07-05",
-    "price": "£5,750 pcm",
-    "sig": "bedford court mansions|WC1B|4"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/73609597/": {
-    "date": "2026-07-05",
-    "price": "£5,460 pcm",
-    "sig": "exchange court|WC2R|2"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/73564622/": {
-    "date": "2026-07-05",
-    "price": "£3,683 pcm",
-    "sig": "clarence gate gardens|NW1|2"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/73587140/": {
-    "date": "2026-07-05",
-    "price": "£3,051 pcm",
-    "sig": "cambridge square|W2|2"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/73623795/": {
-    "date": "2026-07-05",
-    "price": "£4,000 pcm",
-    "sig": "frampton street|NW8|4"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/71522664/": {
-    "date": "2026-07-05",
-    "price": "£4,000 pcm",
-    "sig": "peninsula|W2|3"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/73109401/": {
-    "date": "2026-07-05",
-    "price": "£6,912 pcm",
-    "sig": "sussex gardens|W2|3"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/73383375/": {
-    "date": "2026-07-05",
-    "price": "£4,250 pcm",
-    "sig": "westbourne terrace|W2|3"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/73628089/": {
-    "date": "2026-07-05",
-    "price": "£4,767 pcm",
-    "sig": "barnsbury road|N1|4"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/73628083/": {
-    "date": "2026-07-05",
-    "price": "£4,593 pcm",
-    "sig": "cloudesley road|N1|4"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/70994561/": {
-    "date": "2026-07-05",
-    "price": "£3,600 pcm",
-    "sig": "hoxton street|N1|4"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/73320478/": {
-    "date": "2026-07-05",
-    "price": "£3,575 pcm",
-    "sig": "sheldon square|W2|2"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/73309400/": {
-    "date": "2026-07-05",
-    "price": "£7,000 pcm",
-    "sig": "gloucester terrace|W2|3"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/70320453/": {
-    "date": "2026-07-05",
-    "price": "£8,017 pcm",
-    "sig": "chartwell court|W2|3"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/73277823/": {
-    "date": "2026-07-05",
-    "price": "£5,000 pcm",
-    "sig": "hermitage street|W2|3"
-  },
   "https://www.zoopla.co.uk/to-rent/details/73633609/": {
     "date": "2026-07-06",
     "price": "£3,250 pcm",
@@ -2491,7 +2416,7 @@
   },
   "https://www.onthemarket.com/details/19995744/": {
     "date": "2026-07-24",
-    "price": "2,700 pcm (£623 pw)",
+    "price": "2,695 pcm (£622 pw)",
     "sig": "bolingbroke road|W14|2"
   },
   "https://www.onthemarket.com/details/19902588/": {
@@ -2871,7 +2796,7 @@
   },
   "https://www.zoopla.co.uk/to-rent/details/73720147/": {
     "date": "2026-07-26",
-    "price": "£3,250 pcm",
+    "price": "£3,100 pcm",
     "sig": "bride court|EC4Y|2"
   },
   "https://www.zoopla.co.uk/to-rent/details/71141034/": {
@@ -3086,7 +3011,7 @@
   },
   "https://www.zoopla.co.uk/to-rent/details/71031102/": {
     "date": "2026-07-28",
-    "price": "£3,000 pcm",
+    "price": "£2,947 pcm",
     "sig": "warwick way|SW1V|2"
   },
   "https://www.zoopla.co.uk/to-rent/details/73828004/": {
@@ -3411,7 +3336,7 @@
   },
   "https://www.onthemarket.com/details/11345150/": {
     "date": "2026-07-30",
-    "price": "3,575 pcm (£825 pw)",
+    "price": "3,445 pcm (£795 pw)",
     "sig": "shaftesbury avenue|WC2H|2"
   },
   "https://www.rightmove.co.uk/properties/90395781#/?channel=RES_LET": {
@@ -3606,7 +3531,7 @@
   },
   "https://www.zoopla.co.uk/to-rent/details/73845491/": {
     "date": "2026-07-31",
-    "price": "£3,500 pcm",
+    "price": "£3,000 pcm",
     "sig": "old brompton road|SW5|2"
   },
   "https://www.zoopla.co.uk/to-rent/details/73844546/": {
@@ -4112,6 +4037,116 @@
   "https://www.onthemarket.com/details/20051403/": {
     "date": "2026-08-03",
     "price": "1,395 pcm (£322 pw)",
+    "sig": null
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73885212/": {
+    "date": "2026-08-04",
+    "price": "£3,450 pcm",
+    "sig": "durweston street|W1H|2"
+  },
+  "https://www.rightmove.co.uk/properties/91584102#/?channel=RES_LET": {
+    "date": "2026-08-04",
+    "price": "£4,550 pcm\n£1,050 pw",
+    "sig": "eccleston place|SW1W|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73837065/": {
+    "date": "2026-08-04",
+    "price": "£4,983 pcm",
+    "sig": "chesham street|SW1X|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73883600/": {
+    "date": "2026-08-04",
+    "price": "£2,750 pcm",
+    "sig": "collier street|N1|2"
+  },
+  "https://www.rightmove.co.uk/properties/91613481#/?channel=RES_LET": {
+    "date": "2026-08-04",
+    "price": "£6,000 pcm\n£1,385 pw\nPREMIUM LISTING",
+    "sig": "chenies mews|WC1E|4"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73887203/": {
+    "date": "2026-08-04",
+    "price": "£3,600 pcm",
+    "sig": "theobalds road ref pk507|WC1X|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73741357/": {
+    "date": "2026-08-04",
+    "price": "£8,667 pcm",
+    "sig": "queensberry place|SW7|4"
+  },
+  "https://www.rightmove.co.uk/properties/90032790#/?channel=RES_LET": {
+    "date": "2026-08-04",
+    "price": "£6,912 pcm\n£1,595 pw",
+    "sig": "sussex gardens|W2|3"
+  },
+  "https://www.rightmove.co.uk/properties/89339385#/?channel=RES_LET": {
+    "date": "2026-08-04",
+    "price": "£4,250 pcm\n£981 pw",
+    "sig": "westbourne terrace|W2|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/55278522/": {
+    "date": "2026-08-04",
+    "price": "£4,000 pcm",
+    "sig": "bell yard|WC2A|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/50987169/": {
+    "date": "2026-08-04",
+    "price": "£2,900 pcm",
+    "sig": "pentonville road|N1|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73880940/": {
+    "date": "2026-08-04",
+    "price": "£4,507 pcm",
+    "sig": "cloudesley road|N1|4"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73459030/": {
+    "date": "2026-08-04",
+    "price": "£3,250 pcm",
+    "sig": "new wharf road|N1|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73883476/": {
+    "date": "2026-08-04",
+    "price": "£3,100 pcm",
+    "sig": "grenville place|SW7|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73875743/": {
+    "date": "2026-08-04",
+    "price": "£3,302 pcm",
+    "sig": "queensway|W2|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73669567/": {
+    "date": "2026-08-04",
+    "price": "£3,750 pcm",
+    "sig": "sheldon square|W2|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73588873/": {
+    "date": "2026-08-04",
+    "price": "£6,500 pcm",
+    "sig": "cleveland square|W2|3"
+  },
+  "https://www.onthemarket.com/details/20061133/": {
+    "date": "2026-08-04",
+    "price": "2,750 pcm (£635 pw)",
+    "sig": "milson road|W14|2"
+  },
+  "https://www.onthemarket.com/details/3209583/": {
+    "date": "2026-08-04",
+    "price": "3,792 pcm (£875 pw)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/20059239/": {
+    "date": "2026-08-04",
+    "price": "3,250 pcm (£750 pw)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/20012859/": {
+    "date": "2026-08-04",
+    "price": "2,496 pcm (£576 pw)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/20062359/": {
+    "date": "2026-08-04",
+    "price": "2,395 pcm (£553 pw)",
     "sig": null
   }
 }

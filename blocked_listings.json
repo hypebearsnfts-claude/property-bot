@@ -23,5 +23,1050 @@
     "date": "2026-08-04",
     "reason": "24-hour concierge",
     "sig": "norfolk crescent|W2|4"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73868894/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "chapter house|WC2B|2"
+  },
+  "https://www.rightmove.co.uk/properties/174991193#/?channel=RES_LET": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "whitehall|SW1A|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73861013/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "lincoln square|WC2A|3"
+  },
+  "https://www.rightmove.co.uk/properties/174974882#/?channel=RES_LET": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "101 103 new oxford street|WC1A|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/61078125/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "portugal street|WC2A|2"
+  },
+  "https://www.rightmove.co.uk/properties/91372038#/?channel=RES_LET": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "st martin s lane|WC2N|2"
+  },
+  "https://www.rightmove.co.uk/properties/91169934#/?channel=RES_LET": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "bedford avenue|WC1B|2"
+  },
+  "https://www.rightmove.co.uk/properties/91095906#/?channel=RES_LET": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "new oxford street|WC1A|2"
+  },
+  "https://www.rightmove.co.uk/properties/90782937#/?channel=RES_LET": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "tottenham court road west|W1F|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73651329/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "tottenham court road west|W1F|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73482132/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "marconi house|WC2R|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/70781282/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "newton street|WC2B|2"
+  },
+  "https://www.rightmove.co.uk/properties/91372986#/?channel=RES_LET": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "eastcastle street|W1T|2"
+  },
+  "https://www.rightmove.co.uk/properties/90680226#/?channel=RES_LET": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "mandarin oriental|W1S|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73884588/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "bryanston square|W1H|2"
+  },
+  "https://www.rightmove.co.uk/properties/89728743#/?channel=RES_LET": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "welbeck street|W1W|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73887812/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "portman square|W1H|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73835478/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "heron place|W1U|3"
+  },
+  "https://www.rightmove.co.uk/properties/95221895#/?channel=RES_LET": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "new cavendish street|W1G|3"
+  },
+  "https://www.rightmove.co.uk/properties/91010322#/?channel=RES_LET": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "portman mansions|W1U|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73804061/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "glentworth street|NW1|2"
+  },
+  "https://www.rightmove.co.uk/properties/89998008#/?channel=RES_LET": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "waterdale manor house|NW1|2"
+  },
+  "https://www.rightmove.co.uk/properties/90019383#/?channel=RES_LET": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "allsop place|NW1|2"
+  },
+  "https://www.rightmove.co.uk/properties/89726886#/?channel=RES_LET": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "marylebone street|W1G|2"
+  },
+  "https://www.onthemarket.com/details/18811995/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "clarewood court|W1H|2"
+  },
+  "https://www.rightmove.co.uk/properties/171537680#/?channel=RES_LET": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "strathmore court|NW8|5"
+  },
+  "https://www.rightmove.co.uk/properties/170173679#/?channel=RES_LET": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "gloucester place|NW1|3"
+  },
+  "https://www.rightmove.co.uk/properties/167363147#/?channel=RES_LET": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "strathmore court|NW8|2"
+  },
+  "https://www.rightmove.co.uk/properties/165142190#/?channel=RES_LET": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "strathmore court|NW8|6"
+  },
+  "https://www.rightmove.co.uk/properties/91623675#/?channel=RES_LET": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "duke street|W1|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/51869089/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "upper berkeley street|W1H|2"
+  },
+  "https://www.rightmove.co.uk/properties/91516368#/?channel=RES_LET": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "wigmore court wigmore street marylebone|W1U|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73010274/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "duke street|W1K|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73821913/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "morely house|W1W|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/58932872/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "park street|W1K|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73795764/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "winsley court|W1B|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73835544/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "chesterfield street|W1J|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73725013/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "65 duke street|W1K|2"
+  },
+  "https://www.rightmove.co.uk/properties/89732475#/?channel=RES_LET": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "chesterfield house|W1J|2"
+  },
+  "https://www.rightmove.co.uk/properties/171597635#/?channel=RES_LET": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "upper grosvenor street|W1K|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/72568972/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "marylebone lane|W1U|2"
+  },
+  "https://www.rightmove.co.uk/properties/91573632#/?channel=RES_LET": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "the water gardens hyde park|W2|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73833134/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "meridien house|W1H|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/68730654/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "the water gardens|W2|2"
+  },
+  "https://www.rightmove.co.uk/properties/174829664#/?channel=RES_LET": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "castleacre|W2|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/70660911/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "archery close|W2|3"
+  },
+  "https://www.rightmove.co.uk/properties/42261181#/?channel=RES_LET": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "harrowby street|W1H|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/70334196/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "the water gardens|W2|3"
+  },
+  "https://www.rightmove.co.uk/properties/173492288#/?channel=RES_LET": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "cleveland street|W1T|3"
+  },
+  "https://www.rightmove.co.uk/properties/173113007#/?channel=RES_LET": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "weymouth street|W1W|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/70710619/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "4b merchant square east|W2|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73886041/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "merchant square|W2|4"
+  },
+  "https://www.rightmove.co.uk/properties/91588944#/?channel=RES_LET": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "newcastle place|W2|2"
+  },
+  "https://www.rightmove.co.uk/properties/91563939#/?channel=RES_LET": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "carrick yard|NW8|3"
+  },
+  "https://www.rightmove.co.uk/properties/91448001#/?channel=RES_LET": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "westmark tower|W2|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/64682905/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "3 merchant square|W2|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73761294/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "merchant square|W2|3"
+  },
+  "https://www.rightmove.co.uk/properties/90798666#/?channel=RES_LET": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "4b merchant square east|W2|2"
+  },
+  "https://www.rightmove.co.uk/properties/174898019#/?channel=RES_LET": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "newcastle place|W2|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/59976859/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "westmark tower|W2|3"
+  },
+  "https://www.rightmove.co.uk/properties/172579823#/?channel=RES_LET": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "garrett mansions|W2|3"
+  },
+  "https://www.rightmove.co.uk/properties/87434868#/?channel=RES_LET": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "west end gate|W2|2"
+  },
+  "https://www.rightmove.co.uk/properties/167163272#/?channel=RES_LET": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "west end gate|W2|3"
+  },
+  "https://www.rightmove.co.uk/properties/89557989#/?channel=RES_LET": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "paramount court|WC1E|2"
+  },
+  "https://www.rightmove.co.uk/properties/88212309#/?channel=RES_LET": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "triton building|NW1|2"
+  },
+  "https://www.rightmove.co.uk/properties/91589598#/?channel=RES_LET": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "brock street|NW1|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73512839/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "rochester row|SW1P|4"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73879744/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "ebury square|SW1W|2"
+  },
+  "https://www.rightmove.co.uk/properties/90304764#/?channel=RES_LET": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "the nova building|SW1W|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/67201679/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "203 buckingham palace rd|SW1W|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73352631/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "elizabeth street|SW1W|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73731983/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "buckingham gate|SW1E|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/65459164/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "eccleston street|SW1W|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73588507/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "vauxhall bridge road|SW1V|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73886265/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "kings gate walk|SW1E|2"
+  },
+  "https://www.rightmove.co.uk/properties/89901654#/?channel=RES_LET": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "consort rise|SW1|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73486216/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "sutherland street|SW1V|3"
+  },
+  "https://www.rightmove.co.uk/properties/90056094#/?channel=RES_LET": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "victoria street|SW1H|2"
+  },
+  "https://www.rightmove.co.uk/properties/88187727#/?channel=RES_LET": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "old pye street|SW1P|2"
+  },
+  "https://www.rightmove.co.uk/properties/171097376#/?channel=RES_LET": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "1 ebury square|SW1|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73746386/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "st pancras chambers|NW1|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73686418/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "4 hand axe yard|WC1X|2"
+  },
+  "https://www.rightmove.co.uk/properties/160206065#/?channel=RES_LET": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "euston road|NW1|3"
+  },
+  "https://www.rightmove.co.uk/properties/161086190#/?channel=RES_LET": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "tavistock square|WC1H|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/70657756/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "1 jubilee walk|WC1X|2"
+  },
+  "https://www.rightmove.co.uk/properties/90914655#/?channel=RES_LET": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "signature house|WC1X|2"
+  },
+  "https://www.rightmove.co.uk/properties/91310301#/?channel=RES_LET": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "warrington house|WC1X|3"
+  },
+  "https://www.rightmove.co.uk/properties/89765685#/?channel=RES_LET": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "postmark|WC1X|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/64876644/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "sovereign court|WC1X|2"
+  },
+  "https://www.rightmove.co.uk/properties/90666654#/?channel=RES_LET": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "paragon square|WC1X|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73832954/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "point west|SW7|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73832086/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "oak lodge|W8|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73797636/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "stanhope gardens|SW7|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/69960301/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "rose square|SW3|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73853131/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "drayton gardens|SW10|4"
+  },
+  "https://www.rightmove.co.uk/properties/88086024#/?channel=RES_LET": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "kenway road|SW5|3"
+  },
+  "https://www.onthemarket.com/details/9439138/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "pelham street|SW7|5"
+  },
+  "https://www.rightmove.co.uk/properties/174651983#/?channel=RES_LET": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "harrington road|SW7|3"
+  },
+  "https://www.onthemarket.com/details/18385552/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "75 stanhope gardens|SW7|2"
+  },
+  "https://www.rightmove.co.uk/properties/149093612#/?channel=RES_LET": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "roland house|SW7|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73739746/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "lancaster gate|W2|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73705820/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "camellia house|W2|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/54339442/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "upper wimpole street|W1G|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73855216/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "great cumberland place|W1H|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/71946852/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "welbeck street|W1G|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73799971/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "2|W1G|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73735246/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "blandford street|W1U|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73832827/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "cornwall house|NW1|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73823552/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "palgrave gardens|NW1|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/65365235/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "herbal hill|EC1R|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/55417784/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "9 herbal hill|EC1R|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73348318/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "essex street|WC2R|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73267890/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "chancery lane|WC2A|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73224017/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "kingsway|WC2B|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73854403/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "moreland street|EC1V|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73850994/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "canaletto tower|EC1V|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73793369/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "2b|N1|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73620042/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "wharf road|N1|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/65676574/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "canaletto tower|EC1V|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73675828/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "strand|WC2R|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73816542/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "8 artillery row|SW1P|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73790548/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "the view|SW1E|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73659735/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "catherine place|SW1E|4"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/68187840/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "consort rise|SW1W|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73355242/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "eaton square|SW1W|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/67984870/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "capella|N1C|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/67873449/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "sandwich street|WC1H|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73605615/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "grenville street|WC1N|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73832958/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "the lancasters|W2|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73676055/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "south wharf road|W2|2"
+  },
+  "https://www.onthemarket.com/details/19963307/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "dunraven street|W1K|2"
+  },
+  "https://www.onthemarket.com/details/8560457/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "stourcliffe street|W1H|3"
+  },
+  "https://www.onthemarket.com/details/19970244/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "warren house|W14|2"
+  },
+  "https://www.onthemarket.com/details/19355788/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "earsby street|W14|3"
+  },
+  "https://www.onthemarket.com/details/6508648/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "rushmore house|W14|2"
+  },
+  "https://www.onthemarket.com/details/9174883/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "durrels house|W14|3"
+  },
+  "https://www.onthemarket.com/details/10995154/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "tollard house|W14|2"
+  },
+  "https://www.onthemarket.com/details/19176463/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "oakwood court|W14|4"
+  },
+  "https://www.onthemarket.com/details/19918003/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "fitzjames avenue|W14|4"
+  },
+  "https://www.onthemarket.com/details/19859792/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "kenbrook house|W14|3"
+  },
+  "https://www.onthemarket.com/details/19756502/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "beckford close|W14|2"
+  },
+  "https://www.onthemarket.com/details/19762405/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "charles house|W14|2"
+  },
+  "https://www.onthemarket.com/details/19762369/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "benson house|W14|2"
+  },
+  "https://www.onthemarket.com/details/13079594/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "somerset square|W14|3"
+  },
+  "https://www.onthemarket.com/details/10129390/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "serlby court|W14|3"
+  },
+  "https://www.onthemarket.com/details/11488308/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "park close|W14|2"
+  },
+  "https://www.onthemarket.com/details/13229901/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "little britain|EC1A|2"
+  },
+  "https://www.onthemarket.com/details/20051657/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "moon street|N1|3"
+  },
+  "https://www.onthemarket.com/details/20054136/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "bollinder place|EC1V|2"
+  },
+  "https://www.onthemarket.com/details/19975463/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "eagle point|EC1V|2"
+  },
+  "https://www.onthemarket.com/details/19881538/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "city road|EC1Y|2"
+  },
+  "https://www.onthemarket.com/details/5254445/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "bezier|EC1Y|2"
+  },
+  "https://www.onthemarket.com/details/18970797/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "atlas building|EC1V|2"
+  },
+  "https://www.onthemarket.com/details/20024201/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "melton court|SW7|3"
+  },
+  "https://www.onthemarket.com/details/19973152/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "prince consort road|SW7|4"
+  },
+  "https://www.onthemarket.com/details/20014096/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "7 paper mill buildings|N1|2"
+  },
+  "https://www.onthemarket.com/details/17777743/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "7 city garden row|N1|2"
+  },
+  "https://www.onthemarket.com/details/17207573/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "3 bollinder place|EC1V|2"
+  },
+  "https://www.onthemarket.com/details/19090422/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "238 city reach|EC1V|2"
+  },
+  "https://www.onthemarket.com/details/19661221/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "13 elm place|SW7|2"
+  },
+  "https://www.onthemarket.com/details/6952188/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "hempel gardens|W2|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/67048272/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "porchester place|W2|2"
+  },
+  "https://www.onthemarket.com/details/19424699/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/19512941/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/89841747#/?channel=RES_LET": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/18778055/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/19926512/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/13675858/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/19655818/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/20022039/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/16386967/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/18916140/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/90204171#/?channel=RES_LET": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/19694813/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/13136327/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/19776423/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/87836679#/?channel=RES_LET": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/89807607#/?channel=RES_LET": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/88513866#/?channel=RES_LET": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/19871050/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/136611056#/?channel=RES_LET": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/151519121#/?channel=RES_LET": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/90576327#/?channel=RES_LET": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/13640617/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/19237320/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/19863480/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/19787742/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/19617237/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/17298169/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/17879455/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/19758542/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/19739740/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/19597848/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/19876984/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/6082083/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/19628246/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/19860223/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/19473100/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/172625051#/?channel=RES_LET": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.zoopla.co.uk/to-rent/details/72931477/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73863993/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/18863778/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/19923628/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/15667234/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/13639469/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/19722266/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/19736564/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/20033207/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/19294217/": {
+    "date": "2026-08-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
   }
 }
