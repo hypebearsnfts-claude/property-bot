@@ -1573,5 +1573,50 @@
     "date": "2026-08-09",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": "cloudesley road|N1|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73934723/": {
+    "date": "2026-08-10",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "stratton street|W1J|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73936485/": {
+    "date": "2026-08-10",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "merchant square east|W2|4"
+  },
+  "https://www.rightmove.co.uk/properties/91755096#/?channel=RES_LET": {
+    "date": "2026-08-10",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "ridgmount gardens|WC1E|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73787654/": {
+    "date": "2026-08-10",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "peterborough house|WC1X|2"
+  },
+  "https://www.rightmove.co.uk/properties/172752014#/?channel=RES_LET": {
+    "date": "2026-08-10",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "old brompton road|SW7|2"
+  },
+  "https://www.rightmove.co.uk/properties/91822701#/?channel=RES_LET": {
+    "date": "2026-08-10",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "bayswater road|W2|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/67804018/": {
+    "date": "2026-08-10",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "jubilee walk|WC1X|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73936514/": {
+    "date": "2026-08-10",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "whitehall court|SW1A|2"
+  },
+  "https://www.onthemarket.com/details/20100228/": {
+    "date": "2026-08-10",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "fitzgeorge avenue|W14|2"
   }
 }
