@@ -1668,5 +1668,85 @@
     "date": "2026-08-11",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": null
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73962857/": {
+    "date": "2026-08-12",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "broadley terrace|NW1|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73953659/": {
+    "date": "2026-08-12",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "lisson grove|NW1|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73953507/": {
+    "date": "2026-08-12",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "crawford street|W1U|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73710279/": {
+    "date": "2026-08-12",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "merchant square west|W2|4"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73953918/": {
+    "date": "2026-08-12",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "55 victoria street|SW1H|3"
+  },
+  "https://www.rightmove.co.uk/properties/91908645#/?channel=RES_LET": {
+    "date": "2026-08-12",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "manuscript court|WC1X|3"
+  },
+  "https://www.rightmove.co.uk/properties/91920753#/?channel=RES_LET": {
+    "date": "2026-08-12",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "evelyn gardens|SW7|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73936501/": {
+    "date": "2026-08-12",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "porchester gate|W2|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/72773363/": {
+    "date": "2026-08-12",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "author kings cross|N1|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/71338490/": {
+    "date": "2026-08-12",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "250 city road|EC1V|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/65684358/": {
+    "date": "2026-08-12",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "brill place|NW1|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73441187/": {
+    "date": "2026-08-12",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "hermitage street|W2|2"
+  },
+  "https://www.onthemarket.com/details/20116635/": {
+    "date": "2026-08-12",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "deanery street|W1K|2"
+  },
+  "https://www.onthemarket.com/details/20124181/": {
+    "date": "2026-08-12",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "mornington avenue|W14|3"
+  },
+  "https://www.onthemarket.com/details/20116377/": {
+    "date": "2026-08-12",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/20120521/": {
+    "date": "2026-08-12",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
   }
 }
