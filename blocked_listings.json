@@ -1748,5 +1748,50 @@
     "date": "2026-08-12",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": null
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73970948/": {
+    "date": "2026-08-13",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "bryanston place|W1H|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/67997355/": {
+    "date": "2026-08-13",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "hallam street|W1W|2"
+  },
+  "https://www.rightmove.co.uk/properties/175025255#/?channel=RES_LET": {
+    "date": "2026-08-13",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "4a merchant square paddington|W2|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73951502/": {
+    "date": "2026-08-13",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "287 edgware road|W2|2"
+  },
+  "https://www.rightmove.co.uk/properties/91939467#/?channel=RES_LET": {
+    "date": "2026-08-13",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "prince regent mews|NW1|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73969599/": {
+    "date": "2026-08-13",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "8 artillery row|SW1P|2"
+  },
+  "https://www.rightmove.co.uk/properties/91228464#/?channel=RES_LET": {
+    "date": "2026-08-13",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "russell square|WC1B|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/64638788/": {
+    "date": "2026-08-13",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "truro house|WC1X|2"
+  },
+  "https://www.rightmove.co.uk/properties/91219098#/?channel=RES_LET": {
+    "date": "2026-08-13",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
   }
 }
