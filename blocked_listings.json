@@ -1843,5 +1843,45 @@
     "date": "2026-08-14",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": null
+  },
+  "https://www.zoopla.co.uk/to-rent/details/63911874/": {
+    "date": "2026-08-15",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "portman gate|NW1|3"
+  },
+  "https://www.rightmove.co.uk/properties/91567389#/?channel=RES_LET": {
+    "date": "2026-08-15",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "park street|W1K|2"
+  },
+  "https://www.rightmove.co.uk/properties/92036562#/?channel=RES_LET": {
+    "date": "2026-08-15",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "east harbet road|W2|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73970481/": {
+    "date": "2026-08-15",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "praed street|W2|2"
+  },
+  "https://www.rightmove.co.uk/properties/92024214#/?channel=RES_LET": {
+    "date": "2026-08-15",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "the nova building|SW1W|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73953631/": {
+    "date": "2026-08-15",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "curzon street|W1J|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73983433/": {
+    "date": "2026-08-15",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "merchant square|W2|2"
+  },
+  "https://www.onthemarket.com/details/20099295/": {
+    "date": "2026-08-15",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "hazlitt road|W14|2"
   }
 }
