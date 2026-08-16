@@ -1883,5 +1883,50 @@
     "date": "2026-08-15",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": "hazlitt road|W14|2"
+  },
+  "https://www.rightmove.co.uk/properties/92049945#/?channel=RES_LET": {
+    "date": "2026-08-16",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "albert court|SW7|4"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73865125/": {
+    "date": "2026-08-16",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "great cumberland place|W1H|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73708026/": {
+    "date": "2026-08-16",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "artillery mansions|SW1H|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73337721/": {
+    "date": "2026-08-16",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "ashley gardens|SW1P|4"
+  },
+  "https://www.onthemarket.com/details/11065937/": {
+    "date": "2026-08-16",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "shelton street|WC2H|2"
+  },
+  "https://www.onthemarket.com/details/19289933/": {
+    "date": "2026-08-16",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "petersham place|SW7|4"
+  },
+  "https://www.onthemarket.com/details/8897947/": {
+    "date": "2026-08-16",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/20139660/": {
+    "date": "2026-08-16",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/7315704/": {
+    "date": "2026-08-16",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
   }
 }
