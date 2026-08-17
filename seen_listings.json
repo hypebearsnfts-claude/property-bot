@@ -1,64 +1,4 @@
 {
-  "https://www.zoopla.co.uk/to-rent/details/73747295/": {
-    "date": "2026-07-18",
-    "price": "£4,550 pcm",
-    "sig": "upper wimpole street|W1G|2"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/73747292/": {
-    "date": "2026-07-18",
-    "price": "£3,200 pcm",
-    "sig": "upper wimpole|W1G|2"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/73679807/": {
-    "date": "2026-07-18",
-    "price": "£5,417 pcm",
-    "sig": "romney mews|W1U|2"
-  },
-  "https://www.rightmove.co.uk/properties/89872113#/?channel=RES_LET": {
-    "date": "2026-07-18",
-    "price": "£4,311 pcm\n£995 pw\nPREMIUM LISTING",
-    "sig": "sale place paddington|W2|3"
-  },
-  "https://www.rightmove.co.uk/properties/91053540#/?channel=RES_LET": {
-    "date": "2026-07-18",
-    "price": "£4,500 pcm\n£1,038 pw",
-    "sig": "the chenies|NW1|4"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/73749023/": {
-    "date": "2026-07-18",
-    "price": "£4,312 pcm",
-    "sig": "transept street|NW1|3"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/58933136/": {
-    "date": "2026-07-18",
-    "price": "£4,500 pcm",
-    "sig": "stanhope street|NW1|4"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/73689863/": {
-    "date": "2026-07-18",
-    "price": "£4,150 pcm",
-    "sig": "newby|NW1|4"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/73747147/": {
-    "date": "2026-07-18",
-    "price": "£3,800 pcm",
-    "sig": "parkland court|W14|2"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/71007904/": {
-    "date": "2026-07-18",
-    "price": "£3,350 pcm",
-    "sig": "high holborn|WC1V|2"
-  },
-  "https://www.rightmove.co.uk/properties/91025646#/?channel=RES_LET": {
-    "date": "2026-07-18",
-    "price": "£3,500 pcm\n£808 pw",
-    "sig": null
-  },
-  "https://www.rightmove.co.uk/properties/90643527#/?channel=RES_LET": {
-    "date": "2026-07-18",
-    "price": "£4,000 pcm\n£923 pw\nPREMIUM LISTING",
-    "sig": null
-  },
   "https://www.rightmove.co.uk/properties/90986223#/?channel=RES_LET": {
     "date": "2026-07-19",
     "price": "£3,900 pcm\n£900 pw",
@@ -3766,7 +3706,7 @@
   },
   "https://www.onthemarket.com/details/20120843/": {
     "date": "2026-08-15",
-    "price": "4,980 pcm (£1,149 pw)",
+    "price": "4,780 pcm (£1,103 pw)",
     "sig": "argyle street|WC1X|4"
   },
   "https://www.onthemarket.com/details/20144204/": {
@@ -3863,5 +3803,75 @@
     "date": "2026-08-16",
     "price": "2,750 pcm (£635 pw)",
     "sig": "mallow street|EC1Y|2"
+  },
+  "https://www.rightmove.co.uk/properties/92071356#/?channel=RES_LET": {
+    "date": "2026-08-17",
+    "price": "£2,950 pcm\n£681 pw",
+    "sig": "cosway street|NW1|2"
+  },
+  "https://www.rightmove.co.uk/properties/92068086#/?channel=RES_LET": {
+    "date": "2026-08-17",
+    "price": "£14,083 pcm\n£3,250 pw",
+    "sig": "devonshire place|W1G|3"
+  },
+  "https://www.rightmove.co.uk/properties/89872113#/?channel=RES_LET": {
+    "date": "2026-08-17",
+    "price": "£4,312 pcm\n£995 pw\nPREMIUM LISTING",
+    "sig": "sale place paddington|W2|3"
+  },
+  "https://www.rightmove.co.uk/properties/92077590#/?channel=RES_LET": {
+    "date": "2026-08-17",
+    "price": "£4,750 pcm\n£1,096 pw",
+    "sig": "balfe street|N1|4"
+  },
+  "https://www.rightmove.co.uk/properties/91053540#/?channel=RES_LET": {
+    "date": "2026-08-17",
+    "price": "£4,500 pcm\n£1,038 pw",
+    "sig": "the chenies|NW1|4"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73994546/": {
+    "date": "2026-08-17",
+    "price": "£4,312 pcm",
+    "sig": "merchant square west|W2|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73946045/": {
+    "date": "2026-08-17",
+    "price": "£4,030 pcm",
+    "sig": "transept street|NW1|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73993888/": {
+    "date": "2026-08-17",
+    "price": "£4,099 pcm",
+    "sig": "macklin street|WC2B|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/62509816/": {
+    "date": "2026-08-17",
+    "price": "£4,750 pcm",
+    "sig": "wetherby gardens|SW5|2"
+  },
+  "https://www.onthemarket.com/details/20149243/": {
+    "date": "2026-08-17",
+    "price": "3,500 pcm (£808 pw)",
+    "sig": "tilney court|EC1V|2"
+  },
+  "https://www.rightmove.co.uk/properties/90934149#/?channel=RES_LET": {
+    "date": "2026-08-17",
+    "price": "£4,117 pcm\n£950 pw\nBILLS INCLUDED",
+    "sig": "st christophers house|W1U|2"
+  },
+  "https://www.onthemarket.com/details/20150226/": {
+    "date": "2026-08-17",
+    "price": "3,796 pcm (£876 pw)",
+    "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/91426620#/?channel=RES_LET": {
+    "date": "2026-08-17",
+    "price": "£3,250 pcm\n£750 pw",
+    "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/151152236#/?channel=RES_LET": {
+    "date": "2026-08-17",
+    "price": "£2,995 pcm\n£691 pw",
+    "sig": null
   }
 }

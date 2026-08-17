@@ -1928,5 +1928,25 @@
     "date": "2026-08-16",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/172988024#/?channel=RES_LET": {
+    "date": "2026-08-17",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "upper wimpole street|W1G|2"
+  },
+  "https://www.rightmove.co.uk/properties/92061111#/?channel=RES_LET": {
+    "date": "2026-08-17",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "water gardens square|SE16|3"
+  },
+  "https://www.onthemarket.com/details/20150460/": {
+    "date": "2026-08-17",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "gasholders|N1C|2"
+  },
+  "https://www.rightmove.co.uk/properties/91219056#/?channel=RES_LET": {
+    "date": "2026-08-17",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
   }
 }
