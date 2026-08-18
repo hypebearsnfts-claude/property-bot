@@ -1948,5 +1948,35 @@
     "date": "2026-08-17",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/91867845#/?channel=RES_LET": {
+    "date": "2026-08-18",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "praed street paddington|W2|3"
+  },
+  "https://www.rightmove.co.uk/properties/91213773#/?channel=RES_LET": {
+    "date": "2026-08-18",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "balmoral paddington|W2|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73714769/": {
+    "date": "2026-08-18",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "99 105 horseferry road|SW1P|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73711345/": {
+    "date": "2026-08-18",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "ivor court|NW1|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74008052/": {
+    "date": "2026-08-18",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "145 fulham road|SW3|2"
+  },
+  "https://www.onthemarket.com/details/20137030/": {
+    "date": "2026-08-18",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "fitzjames avenue|W14|3"
   }
 }
