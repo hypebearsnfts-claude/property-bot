@@ -2038,5 +2038,30 @@
     "date": "2026-08-19",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/92175987#/?channel=RES_LET": {
+    "date": "2026-08-20",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "hanway gardens|W1|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74021484/": {
+    "date": "2026-08-20",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "george street|W1H|4"
+  },
+  "https://www.rightmove.co.uk/properties/92215521#/?channel=RES_LET": {
+    "date": "2026-08-20",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "earls court road|SW5|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74019892/": {
+    "date": "2026-08-20",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "hanway gardens|W1T|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73955283/": {
+    "date": "2026-08-20",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "1 jasper walk|N1|2"
   }
 }
