@@ -2063,5 +2063,75 @@
     "date": "2026-08-20",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": "1 jasper walk|N1|2"
+  },
+  "https://www.rightmove.co.uk/properties/92258718#/?channel=RES_LET": {
+    "date": "2026-08-21",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "manchester street|W1U|2"
+  },
+  "https://www.rightmove.co.uk/properties/91667583#/?channel=RES_LET": {
+    "date": "2026-08-21",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "george street marylebone|W1U|3"
+  },
+  "https://www.rightmove.co.uk/properties/92217489#/?channel=RES_LET": {
+    "date": "2026-08-21",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "hyde park square hyde park|W2|3"
+  },
+  "https://www.rightmove.co.uk/properties/92251116#/?channel=RES_LET": {
+    "date": "2026-08-21",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "canalside walk|W2|2"
+  },
+  "https://www.onthemarket.com/details/20178653/": {
+    "date": "2026-08-21",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "st mary abbots court|W14|3"
+  },
+  "https://www.onthemarket.com/details/20177335/": {
+    "date": "2026-08-21",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "dewhurst road|W14|4"
+  },
+  "https://www.onthemarket.com/details/20182954/": {
+    "date": "2026-08-21",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "84 mount street|W1K|2"
+  },
+  "https://www.onthemarket.com/details/8653199/": {
+    "date": "2026-08-21",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/5249876/": {
+    "date": "2026-08-21",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/20160428/": {
+    "date": "2026-08-21",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/91858980#/?channel=RES_LET": {
+    "date": "2026-08-21",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/20164054/": {
+    "date": "2026-08-21",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/16386111/": {
+    "date": "2026-08-21",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/20177974/": {
+    "date": "2026-08-21",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
   }
 }

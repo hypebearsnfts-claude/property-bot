@@ -1,64 +1,4 @@
 {
-  "https://www.zoopla.co.uk/to-rent/details/73781319/": {
-    "date": "2026-07-22",
-    "price": "£3,895 pcm",
-    "sig": "john adam house|WC2N|2"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/73783842/": {
-    "date": "2026-07-22",
-    "price": "£5,417 pcm",
-    "sig": "swallow street|W1B|3"
-  },
-  "https://www.rightmove.co.uk/properties/89976237#/?channel=RES_LET": {
-    "date": "2026-07-22",
-    "price": "£5,850 pcm\n£1,350 pw\nPREMIUM LISTING",
-    "sig": "seymour place|W1H|3"
-  },
-  "https://www.rightmove.co.uk/properties/88354725#/?channel=RES_LET": {
-    "date": "2026-07-22",
-    "price": "£3,750 pcm\n£865 pw",
-    "sig": "north audley street|W1K|2"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/73783181/": {
-    "date": "2026-07-22",
-    "price": "£5,000 pcm",
-    "sig": "percy street|W1T|3"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/67589133/": {
-    "date": "2026-07-22",
-    "price": "£3,250 pcm",
-    "sig": "gloucester road|SW7|2"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/73783747/": {
-    "date": "2026-07-22",
-    "price": "£2,750 pcm",
-    "sig": "seraph court|EC1V|2"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/73783404/": {
-    "date": "2026-07-22",
-    "price": "£4,745 pcm",
-    "sig": "danbury street|N1|3"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/73786522/": {
-    "date": "2026-07-22",
-    "price": "£3,000 pcm",
-    "sig": "hallfield estate|W2|3"
-  },
-  "https://www.onthemarket.com/details/19878826/": {
-    "date": "2026-07-22",
-    "price": "4,983 pcm (£1,150 pw)",
-    "sig": "farm street|W1J|2"
-  },
-  "https://www.onthemarket.com/details/19972286/": {
-    "date": "2026-07-22",
-    "price": "4,000 pcm (£923 pw)",
-    "sig": null
-  },
-  "https://www.zoopla.co.uk/to-rent/details/73777392/": {
-    "date": "2026-07-22",
-    "price": "£5,850 pcm",
-    "sig": null
-  },
   "https://www.zoopla.co.uk/to-rent/details/50698500/": {
     "date": "2026-07-23",
     "price": "£3,250 pcm",
@@ -2731,7 +2671,7 @@
   },
   "https://www.onthemarket.com/details/18696897/": {
     "date": "2026-08-09",
-    "price": "5,250 pcm (£1,212 pw)",
+    "price": "5,099 pcm (£1,177 pw)",
     "sig": "177 gloucester place|NW1|4"
   },
   "https://www.rightmove.co.uk/properties/91134156#/?channel=RES_LET": {
@@ -3902,6 +3842,76 @@
   "https://www.onthemarket.com/details/20172769/": {
     "date": "2026-08-20",
     "price": "3,700 pcm (£854 pw)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/20182935/": {
+    "date": "2026-08-21",
+    "price": "3,500 pcm (£808 pw)",
+    "sig": "siddons court|WC2E|2"
+  },
+  "https://www.onthemarket.com/details/19343172/": {
+    "date": "2026-08-21",
+    "price": "8,000 pcm (£1,846 pw)",
+    "sig": "charing cross road|WC2H|3"
+  },
+  "https://www.rightmove.co.uk/properties/92219226#/?channel=RES_LET": {
+    "date": "2026-08-21",
+    "price": "£3,660 pcm\n£845 pw",
+    "sig": "upper montagu street|W1H|2"
+  },
+  "https://www.rightmove.co.uk/properties/88354725#/?channel=RES_LET": {
+    "date": "2026-08-21",
+    "price": "£3,750 pcm\n£865 pw",
+    "sig": "north audley street|W1K|2"
+  },
+  "https://www.rightmove.co.uk/properties/92163063#/?channel=RES_LET": {
+    "date": "2026-08-21",
+    "price": "£8,558 pcm\n£1,975 pw",
+    "sig": "portland place|W1B|3"
+  },
+  "https://www.rightmove.co.uk/properties/91770390#/?channel=RES_LET": {
+    "date": "2026-08-21",
+    "price": "£9,967 pcm\n£2,300 pw",
+    "sig": "chester square|SW1W|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/71299590/": {
+    "date": "2026-08-21",
+    "price": "£2,400 pcm",
+    "sig": "stelfox house|WC1X|2"
+  },
+  "https://www.rightmove.co.uk/properties/92232645#/?channel=RES_LET": {
+    "date": "2026-08-21",
+    "price": "£3,450 pcm\n£796 pw\nPREMIUM LISTING",
+    "sig": "regent square|WC1H|2"
+  },
+  "https://www.rightmove.co.uk/properties/91570821#/?channel=RES_LET": {
+    "date": "2026-08-21",
+    "price": "£4,767 pcm\n£1,100 pw\nPREMIUM LISTING",
+    "sig": "gloucester road|SW7|2"
+  },
+  "https://www.onthemarket.com/details/20070237/": {
+    "date": "2026-08-21",
+    "price": "2,300 pcm (£531 pw)",
+    "sig": "gambier house|EC1V|2"
+  },
+  "https://www.onthemarket.com/details/18639775/": {
+    "date": "2026-08-21",
+    "price": "2,750 pcm (£635 pw)",
+    "sig": "175 gloucester place|NW1|2"
+  },
+  "https://www.onthemarket.com/details/7150537/": {
+    "date": "2026-08-21",
+    "price": "3,250 pcm (£750 pw)",
+    "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/92044071#/?channel=RES_LET": {
+    "date": "2026-08-21",
+    "price": "£5,500 pcm\n£1,269 pw",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/20181007/": {
+    "date": "2026-08-21",
+    "price": "4,000 pcm (£923 pw)",
     "sig": null
   }
 }
