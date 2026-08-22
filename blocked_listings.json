@@ -2133,5 +2133,25 @@
     "date": "2026-08-21",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": null
+  },
+  "https://www.onthemarket.com/details/19959967/": {
+    "date": "2026-08-22",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "landward court|W1H|4"
+  },
+  "https://www.onthemarket.com/details/20188438/": {
+    "date": "2026-08-22",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "canal building|N1|2"
+  },
+  "https://www.onthemarket.com/details/20187623/": {
+    "date": "2026-08-22",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "thurston house|N1|2"
+  },
+  "https://www.onthemarket.com/details/20188181/": {
+    "date": "2026-08-22",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "40 cranley gardens|SW7|2"
   }
 }
