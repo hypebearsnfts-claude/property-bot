@@ -2153,5 +2153,35 @@
     "date": "2026-08-22",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": "40 cranley gardens|SW7|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73676122/": {
+    "date": "2026-08-23",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "hill street|W1J|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74028146/": {
+    "date": "2026-08-23",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "hyde park square|W2|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73994543/": {
+    "date": "2026-08-23",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "merchant square west|W2|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74016567/": {
+    "date": "2026-08-23",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "abingdon villas|W8|4"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74021907/": {
+    "date": "2026-08-23",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "hermitage street|W2|3"
+  },
+  "https://www.onthemarket.com/details/17617551/": {
+    "date": "2026-08-23",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "vicary house|EC1A|2"
   }
 }
