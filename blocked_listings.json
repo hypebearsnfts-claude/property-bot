@@ -2183,5 +2183,70 @@
     "date": "2026-08-23",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": "vicary house|EC1A|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/68317942/": {
+    "date": "2026-08-24",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "portman gate|NW1|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73979683/": {
+    "date": "2026-08-24",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "seymour place|W1H|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74012207/": {
+    "date": "2026-08-24",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "montagu mansions|W1U|2"
+  },
+  "https://www.rightmove.co.uk/properties/174327299#/?channel=RES_LET": {
+    "date": "2026-08-24",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "edgware road|W2|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73963444/": {
+    "date": "2026-08-24",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "hanover gate mansions|NW1|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/59736180/": {
+    "date": "2026-08-24",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "the atlas building|EC1V|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74047100/": {
+    "date": "2026-08-24",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "the heron|EC2Y|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/70953122/": {
+    "date": "2026-08-24",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "clarendon court|EC1Y|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/70566580/": {
+    "date": "2026-08-24",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "siena house|EC1V|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73732602/": {
+    "date": "2026-08-24",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "bridgewater square|EC2Y|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/64834038/": {
+    "date": "2026-08-24",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "22 dingley road|EC1V|2"
+  },
+  "https://www.onthemarket.com/details/20193781/": {
+    "date": "2026-08-24",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/20099753/": {
+    "date": "2026-08-24",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
   }
 }
