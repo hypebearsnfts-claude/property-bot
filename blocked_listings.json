@@ -2248,5 +2248,45 @@
     "date": "2026-08-24",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": null
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74058678/": {
+    "date": "2026-08-25",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "4b merchant square|W2|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73742179/": {
+    "date": "2026-08-25",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "weymouth street|W1W|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/59979750/": {
+    "date": "2026-08-25",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "atelier|W14|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74056550/": {
+    "date": "2026-08-25",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "pinks mews|EC1N|2"
+  },
+  "https://www.onthemarket.com/details/20198317/": {
+    "date": "2026-08-25",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "sherwood street|W1F|2"
+  },
+  "https://www.onthemarket.com/details/20200769/": {
+    "date": "2026-08-25",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/14121595/": {
+    "date": "2026-08-25",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/16673086/": {
+    "date": "2026-08-25",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
   }
 }
