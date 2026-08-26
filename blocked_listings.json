@@ -2288,5 +2288,70 @@
     "date": "2026-08-25",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": null
+  },
+  "https://www.zoopla.co.uk/to-rent/details/72460160/": {
+    "date": "2026-08-26",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "39 hill street|W1J|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74065881/": {
+    "date": "2026-08-26",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "hill street|W1J|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74065608/": {
+    "date": "2026-08-26",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "bourne house|NW1|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73949857/": {
+    "date": "2026-08-26",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "praed street|W2|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73674196/": {
+    "date": "2026-08-26",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "20 palace street|SW1E|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/70947567/": {
+    "date": "2026-08-26",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "consort rise|SW1W|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74062753/": {
+    "date": "2026-08-26",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "porchester terrace|W2|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74070441/": {
+    "date": "2026-08-26",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "forset court marble arch|W2|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/60275323/": {
+    "date": "2026-08-26",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "macready house|W1H|2"
+  },
+  "https://www.onthemarket.com/details/7079916/": {
+    "date": "2026-08-26",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/20207929/": {
+    "date": "2026-08-26",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/20210714/": {
+    "date": "2026-08-26",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/20205829/": {
+    "date": "2026-08-26",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
   }
 }
