@@ -2066,7 +2066,7 @@
   },
   "https://www.onthemarket.com/details/16428632/": {
     "date": "2026-08-12",
-    "price": "3,000 pcm (£692 pw)",
+    "price": "2,950 pcm (£681 pw)",
     "sig": null
   },
   "https://www.onthemarket.com/details/2995986/": {
@@ -2841,7 +2841,7 @@
   },
   "https://www.rightmove.co.uk/properties/92219226#/?channel=RES_LET": {
     "date": "2026-08-21",
-    "price": "£3,660 pcm\n£845 pw",
+    "price": "£3,585 pcm\n£827 pw",
     "sig": "upper montagu street|W1H|2"
   },
   "https://www.rightmove.co.uk/properties/88354725#/?channel=RES_LET": {
@@ -3697,6 +3697,51 @@
   "https://www.onthemarket.com/details/20219707/": {
     "date": "2026-08-27",
     "price": "3,900 pcm (£900 pw)",
+    "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/171728594#/?channel=RES_LET": {
+    "date": "2026-08-27",
+    "price": "£10,400 pcm\n£2,400 pw",
+    "sig": "sherwood street|W1F|3"
+  },
+  "https://www.onthemarket.com/details/3172165/": {
+    "date": "2026-08-27",
+    "price": "3,497 pcm (£807 pw)",
+    "sig": "emperors gate|SW7|3"
+  },
+  "https://www.rightmove.co.uk/properties/92163147#/?channel=RES_LET": {
+    "date": "2026-08-27",
+    "price": "£4,117 pcm\n£950 pw",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/14685514/": {
+    "date": "2026-08-27",
+    "price": "4,767 pcm (£1,100 pw)",
+    "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/91305087#/?channel=RES_LET": {
+    "date": "2026-08-27",
+    "price": "£5,500 pcm\n£1,269 pw",
+    "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/92389200#/?channel=RES_LET": {
+    "date": "2026-08-27",
+    "price": "£3,500 pcm\n£808 pw",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/20210134/": {
+    "date": "2026-08-27",
+    "price": "2,500 pcm (£577 pw)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/20223006/": {
+    "date": "2026-08-27",
+    "price": "3,495 pcm (£807 pw)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/20221157/": {
+    "date": "2026-08-27",
+    "price": "3,700 pcm (£854 pw)",
     "sig": null
   }
 }
