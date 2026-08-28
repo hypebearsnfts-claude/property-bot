@@ -2453,5 +2453,10 @@
     "date": "2026-08-28",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": null
+  },
+  "https://www.zoopla.co.uk/to-rent/details/70529258/": {
+    "date": "2026-08-28",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "principal tower|EC2A|2"
   }
 }

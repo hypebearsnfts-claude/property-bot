@@ -3521,7 +3521,7 @@
   },
   "https://www.zoopla.co.uk/to-rent/details/74062446/": {
     "date": "2026-08-27",
-    "price": "£4,312 pcm",
+    "price": "£3,900 pcm",
     "sig": "sidmouth street|WC1H|3"
   },
   "https://www.onthemarket.com/details/20197441/": {
@@ -3738,5 +3738,30 @@
     "date": "2026-08-28",
     "price": "3,900 pcm (£900 pw)",
     "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/92531139#/?channel=RES_LET": {
+    "date": "2026-08-28",
+    "price": "£3,878 pcm\n£895 pw",
+    "sig": "jenner house|WC1N|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74096342/": {
+    "date": "2026-08-28",
+    "price": "£5,200 pcm",
+    "sig": "city road|EC1Y|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74095723/": {
+    "date": "2026-08-28",
+    "price": "£3,500 pcm",
+    "sig": "mills court|EC2A|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74094523/": {
+    "date": "2026-08-28",
+    "price": "£5,000 pcm",
+    "sig": "torrington place|WC1E|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74009477/": {
+    "date": "2026-08-28",
+    "price": "£2,750 pcm",
+    "sig": "abbey lodge|NW8|2"
   }
 }
