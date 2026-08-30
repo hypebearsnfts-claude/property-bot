@@ -3588,5 +3588,40 @@
     "date": "2026-08-30",
     "price": "2,600 pcm (£600 pw)",
     "sig": null
+  },
+  "https://www.zoopla.co.uk/to-rent/details/53701133/": {
+    "date": "2026-08-30",
+    "price": "£3,400 pcm",
+    "sig": "harcourt terrace|SW10|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/67941127/": {
+    "date": "2026-08-30",
+    "price": "£3,100 pcm",
+    "sig": "bidborough street|WC1H|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74022657/": {
+    "date": "2026-08-30",
+    "price": "£4,000 pcm",
+    "sig": "old brompton road|SW5|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73844546/": {
+    "date": "2026-08-30",
+    "price": "£5,000 pcm",
+    "sig": "gledhow gardens|SW5|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74030248/": {
+    "date": "2026-08-30",
+    "price": "£3,358 pcm",
+    "sig": "inverness terrace|W2|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73914503/": {
+    "date": "2026-08-30",
+    "price": "£3,460 pcm",
+    "sig": "sussex gardens|W2|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/59719489/": {
+    "date": "2026-08-30",
+    "price": "£3,900 pcm",
+    "sig": "southwick street|W2|2"
   }
 }

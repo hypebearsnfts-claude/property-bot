@@ -2463,5 +2463,15 @@
     "date": "2026-08-30",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": "green street|W1K|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/71697181/": {
+    "date": "2026-08-30",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "park road|NW8|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/65243578/": {
+    "date": "2026-08-30",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "porchester place|W2|3"
   }
 }
