@@ -2458,5 +2458,10 @@
     "date": "2026-08-28",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": "principal tower|EC2A|2"
+  },
+  "https://www.onthemarket.com/details/20235972/": {
+    "date": "2026-08-30",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "green street|W1K|2"
   }
 }
