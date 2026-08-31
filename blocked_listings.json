@@ -2473,5 +2473,10 @@
     "date": "2026-08-30",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": "porchester place|W2|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74071776/": {
+    "date": "2026-08-31",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "city road|EC1V|2"
   }
 }
