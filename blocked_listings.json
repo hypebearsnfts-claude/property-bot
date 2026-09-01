@@ -2478,5 +2478,25 @@
     "date": "2026-08-31",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": "city road|EC1V|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74084746/": {
+    "date": "2026-09-01",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "glentworth street|NW1|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74113722/": {
+    "date": "2026-09-01",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "new quebec street|W1H|2"
+  },
+  "https://www.rightmove.co.uk/properties/88339611#/?channel=RES_LET": {
+    "date": "2026-09-01",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "hill street|W1|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74112706/": {
+    "date": "2026-09-01",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "central street|EC1V|3"
   }
 }

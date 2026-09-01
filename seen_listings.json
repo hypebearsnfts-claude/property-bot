@@ -1,104 +1,4 @@
 {
-  "https://www.zoopla.co.uk/to-rent/details/73661757/": {
-    "date": "2026-08-02",
-    "price": "£5,500 pcm",
-    "sig": "earls way|SE1|2"
-  },
-  "https://www.rightmove.co.uk/properties/90430560#/?channel=RES_LET": {
-    "date": "2026-08-02",
-    "price": "£4,225 pcm\n£975 pw",
-    "sig": "frith street|W1|2"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/71318400/": {
-    "date": "2026-08-02",
-    "price": "£3,750 pcm",
-    "sig": "townsend house|W1D|2"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/73611472/": {
-    "date": "2026-08-02",
-    "price": "£4,400 pcm",
-    "sig": "huntsworth mews|NW1|3"
-  },
-  "https://www.rightmove.co.uk/properties/91157106#/?channel=RES_LET": {
-    "date": "2026-08-02",
-    "price": "£2,985 pcm\n£689 pw",
-    "sig": "new cavendish street|W1G|2"
-  },
-  "https://www.rightmove.co.uk/properties/87098458#/?channel=RES_LET": {
-    "date": "2026-08-02",
-    "price": "£7,410 pcm\n£1,710 pw",
-    "sig": "hill street|W1|3"
-  },
-  "https://www.rightmove.co.uk/properties/90406638#/?channel=RES_LET": {
-    "date": "2026-08-02",
-    "price": "£3,835 pcm\n£885 pw",
-    "sig": "warren court|NW1|2"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/52986623/": {
-    "date": "2026-08-02",
-    "price": "£5,100 pcm",
-    "sig": "glentworth street|NW1|3"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/73808679/": {
-    "date": "2026-08-02",
-    "price": "£4,498 pcm",
-    "sig": "marylebone road|NW1|2"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/73326557/": {
-    "date": "2026-08-02",
-    "price": "£4,767 pcm",
-    "sig": "william road|NW1|3"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/65352693/": {
-    "date": "2026-08-02",
-    "price": "£6,392 pcm",
-    "sig": "earsby street|W14|5"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/73859245/": {
-    "date": "2026-08-02",
-    "price": "£3,495 pcm",
-    "sig": "graham street|N1|2"
-  },
-  "https://www.onthemarket.com/details/19629593/": {
-    "date": "2026-08-02",
-    "price": "3,100 pcm (£715 pw)",
-    "sig": "gordon mansions|W14|2"
-  },
-  "https://www.onthemarket.com/details/19283835/": {
-    "date": "2026-08-02",
-    "price": "1,538 pcm (£355 pw)",
-    "sig": null
-  },
-  "https://www.rightmove.co.uk/properties/90453129#/?channel=RES_LET": {
-    "date": "2026-08-02",
-    "price": "£3,380 pcm\n£780 pw\nGuide Price",
-    "sig": null
-  },
-  "https://www.onthemarket.com/details/7585290/": {
-    "date": "2026-08-02",
-    "price": "5,500 pcm (£1,269 pw)",
-    "sig": null
-  },
-  "https://www.onthemarket.com/details/19825316/": {
-    "date": "2026-08-02",
-    "price": "3,300 pcm (£762 pw)",
-    "sig": null
-  },
-  "https://www.rightmove.co.uk/properties/91519992#/?channel=RES_LET": {
-    "date": "2026-08-02",
-    "price": "£5,417 pcm\n£1,250 pw",
-    "sig": null
-  },
-  "https://www.onthemarket.com/details/20044528/": {
-    "date": "2026-08-02",
-    "price": "4,500 pcm (£1,038 pw)",
-    "sig": null
-  },
-  "https://www.onthemarket.com/details/19856008/": {
-    "date": "2026-08-02",
-    "price": "3,380 pcm (£780 pw)",
-    "sig": null
-  },
   "https://www.rightmove.co.uk/properties/91299747#/?channel=RES_LET": {
     "date": "2026-08-03",
     "price": "£9,000 pcm\n£2,077 pw",
@@ -1781,7 +1681,7 @@
   },
   "https://www.onthemarket.com/details/20147386/": {
     "date": "2026-08-16",
-    "price": "3,250 pcm (£750 pw)",
+    "price": "3,200 pcm (£738 pw)",
     "sig": "richmond avenue|N1|2"
   },
   "https://www.onthemarket.com/details/20125418/": {
@@ -2226,7 +2126,7 @@
   },
   "https://www.onthemarket.com/details/18639775/": {
     "date": "2026-08-21",
-    "price": "2,750 pcm (£635 pw)",
+    "price": "2,699 pcm (£623 pw)",
     "sig": "175 gloucester place|NW1|2"
   },
   "https://www.onthemarket.com/details/7150537/": {
@@ -3526,6 +3426,61 @@
   },
   "https://www.onthemarket.com/details/20236642/": {
     "date": "2026-08-31",
+    "price": "3,900 pcm (£900 pw)",
+    "sig": null
+  },
+  "https://www.zoopla.co.uk/to-rent/details/71318400/": {
+    "date": "2026-09-01",
+    "price": "£3,750 pcm",
+    "sig": "townsend house|W1D|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74087978/": {
+    "date": "2026-09-01",
+    "price": "£5,499 pcm",
+    "sig": "huntsworth mews|NW1|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/48913730/": {
+    "date": "2026-09-01",
+    "price": "£3,500 pcm",
+    "sig": "colosseum terrace|NW1|2"
+  },
+  "https://www.rightmove.co.uk/properties/162211085#/?channel=RES_LET": {
+    "date": "2026-09-01",
+    "price": "£4,398 pcm\n£1,015 pw",
+    "sig": "sidmouth street|WC1H|4"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/56546906/": {
+    "date": "2026-09-01",
+    "price": "£3,650 pcm",
+    "sig": "cromwell road|SW5|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/72370204/": {
+    "date": "2026-09-01",
+    "price": "£4,799 pcm",
+    "sig": "galen place|WC1A|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74112808/": {
+    "date": "2026-09-01",
+    "price": "£3,000 pcm",
+    "sig": "gordon mansions|W14|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74109271/": {
+    "date": "2026-09-01",
+    "price": "£1,729 pcm",
+    "sig": "hammersmith road|W14|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74113256/": {
+    "date": "2026-09-01",
+    "price": "£3,500 pcm",
+    "sig": "eckford street|N1|2"
+  },
+  "https://www.onthemarket.com/details/17647564/": {
+    "date": "2026-09-01",
+    "price": "2,999 pcm (£692 pw)",
+    "sig": "west kensington court edith villas 9ad|W14|3"
+  },
+  "https://www.onthemarket.com/details/20238436/": {
+    "date": "2026-09-01",
     "price": "3,900 pcm (£900 pw)",
     "sig": null
   }
