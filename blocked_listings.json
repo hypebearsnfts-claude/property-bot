@@ -2498,5 +2498,50 @@
     "date": "2026-09-01",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": "central street|EC1V|3"
+  },
+  "https://www.rightmove.co.uk/properties/92632713#/?channel=RES_LET": {
+    "date": "2026-09-02",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "merchant square paddington|W2|3"
+  },
+  "https://www.rightmove.co.uk/properties/89538690#/?channel=RES_LET": {
+    "date": "2026-09-02",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "1 palace place|SW1E|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74122916/": {
+    "date": "2026-09-02",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "st pancras chambers|NW1|2"
+  },
+  "https://www.onthemarket.com/details/20251308/": {
+    "date": "2026-09-02",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "glyn mansions|W14|3"
+  },
+  "https://www.onthemarket.com/details/20247608/": {
+    "date": "2026-09-02",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "gunterstone road|W14|2"
+  },
+  "https://www.onthemarket.com/details/19955124/": {
+    "date": "2026-09-02",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "8 dingley road|EC1V|2"
+  },
+  "https://www.onthemarket.com/details/9009021/": {
+    "date": "2026-09-02",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/92656365#/?channel=RES_LET": {
+    "date": "2026-09-02",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/17864674/": {
+    "date": "2026-09-02",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
   }
 }
