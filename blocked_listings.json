@@ -2543,5 +2543,50 @@
     "date": "2026-09-02",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": null
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74131606/": {
+    "date": "2026-09-03",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "chiltern place|W1U|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74127767/": {
+    "date": "2026-09-03",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "bridge place|SW1V|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/72267040/": {
+    "date": "2026-09-03",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "ebury street|SW1W|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/71289130/": {
+    "date": "2026-09-03",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "cambridge square|W2|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/58213749/": {
+    "date": "2026-09-03",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "old marylebone road|NW1|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74127031/": {
+    "date": "2026-09-03",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "radnor terrace|W14|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73954750/": {
+    "date": "2026-09-03",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "new wharf road|N1|2"
+  },
+  "https://www.rightmove.co.uk/properties/92687583#/?channel=RES_LET": {
+    "date": "2026-09-03",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/20258112/": {
+    "date": "2026-09-03",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
   }
 }
