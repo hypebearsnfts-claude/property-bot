@@ -2588,5 +2588,85 @@
     "date": "2026-09-03",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": null
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73832226/": {
+    "date": "2026-09-05",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "hanway street|W1T|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/66737311/": {
+    "date": "2026-09-05",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "abbey lodge|NW8|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74147073/": {
+    "date": "2026-09-05",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "marylebone road|NW1|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74142335/": {
+    "date": "2026-09-05",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "triton building|NW1|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74136287/": {
+    "date": "2026-09-05",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "brock street|NW1|3"
+  },
+  "https://www.rightmove.co.uk/properties/92753859#/?channel=RES_LET": {
+    "date": "2026-09-05",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "onslow square south kensington|SW7|2"
+  },
+  "https://www.onthemarket.com/details/19909679/": {
+    "date": "2026-09-05",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "onslow square|SW7|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74144026/": {
+    "date": "2026-09-05",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "faraday house|W1U|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74154085/": {
+    "date": "2026-09-05",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "warwick road|W14|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/64853300/": {
+    "date": "2026-09-05",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "sherrin house|W14|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/70326285/": {
+    "date": "2026-09-05",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "book house|EC1V|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74140020/": {
+    "date": "2026-09-05",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "wenlock road|N1|2"
+  },
+  "https://www.onthemarket.com/details/20234458/": {
+    "date": "2026-09-05",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "banner street|EC1Y|2"
+  },
+  "https://www.rightmove.co.uk/properties/92769459#/?channel=RES_LET": {
+    "date": "2026-09-05",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/7779108/": {
+    "date": "2026-09-05",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/20172473/": {
+    "date": "2026-09-05",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
   }
 }
