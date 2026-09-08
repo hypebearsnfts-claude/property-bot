@@ -2723,5 +2723,15 @@
     "date": "2026-09-07",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": null
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73790555/": {
+    "date": "2026-09-08",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "clement house|WC2R|3"
+  },
+  "https://www.onthemarket.com/details/6879835/": {
+    "date": "2026-09-08",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
   }
 }
