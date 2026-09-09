@@ -2733,5 +2733,60 @@
     "date": "2026-09-08",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": null
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74189560/": {
+    "date": "2026-09-09",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "morley house|W1W|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74183401/": {
+    "date": "2026-09-09",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "castleacre|W2|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74182553/": {
+    "date": "2026-09-09",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "quadrangle tower|W2|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74044265/": {
+    "date": "2026-09-09",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "edgware road|W2|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/71224464/": {
+    "date": "2026-09-09",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "majesty house|WC1X|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74190903/": {
+    "date": "2026-09-09",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "62 calthorpe street|WC1X|2"
+  },
+  "https://www.onthemarket.com/details/20231268/": {
+    "date": "2026-09-09",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "aldersgate street|EC1A|2"
+  },
+  "https://www.onthemarket.com/details/20288797/": {
+    "date": "2026-09-09",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/92661744#/?channel=RES_LET": {
+    "date": "2026-09-09",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/90743019#/?channel=RES_LET": {
+    "date": "2026-09-09",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/11451707/": {
+    "date": "2026-09-09",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
   }
 }
