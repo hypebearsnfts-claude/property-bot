@@ -2828,5 +2828,30 @@
     "date": "2026-09-10",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/169599470#/?channel=RES_LET": {
+    "date": "2026-09-11",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "leinster gardens|W2|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74213874/": {
+    "date": "2026-09-11",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "york way|N1C|2"
+  },
+  "https://www.onthemarket.com/details/20313980/": {
+    "date": "2026-09-11",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "russell road|W14|2"
+  },
+  "https://www.onthemarket.com/details/20299581/": {
+    "date": "2026-09-11",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/20312488/": {
+    "date": "2026-09-11",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
   }
 }
