@@ -3151,7 +3151,7 @@
   },
   "https://www.zoopla.co.uk/to-rent/details/74208757/": {
     "date": "2026-09-10",
-    "price": "£2,950 pcm",
+    "price": "£2,650 pcm",
     "sig": "ossulston st|NW1|2"
   },
   "https://www.zoopla.co.uk/to-rent/details/43799431/": {
@@ -3318,5 +3318,10 @@
     "date": "2026-09-11",
     "price": "3,800 pcm (£877 pw)",
     "sig": null
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74210719/": {
+    "date": "2026-09-11",
+    "price": "£3,000 pcm",
+    "sig": "19 almeida street|N1|2"
   }
 }
