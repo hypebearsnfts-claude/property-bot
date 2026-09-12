@@ -2858,5 +2858,20 @@
     "date": "2026-09-11",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": "gratton road|W14|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74096743/": {
+    "date": "2026-09-12",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "wigmore street|W1U|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/67913624/": {
+    "date": "2026-09-12",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "new north road|N1|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74221534/": {
+    "date": "2026-09-12",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "wetherby place|SW7|2"
   }
 }
