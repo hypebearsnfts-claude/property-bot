@@ -2873,5 +2873,15 @@
     "date": "2026-09-12",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": "wetherby place|SW7|2"
+  },
+  "https://www.onthemarket.com/details/20325920/": {
+    "date": "2026-09-13",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/20304448/": {
+    "date": "2026-09-13",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
   }
 }
