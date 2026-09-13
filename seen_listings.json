@@ -3233,5 +3233,20 @@
     "date": "2026-09-13",
     "price": "4,749 pcm (£1,096 pw)",
     "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/91266132#/?channel=RES_LET": {
+    "date": "2026-09-13",
+    "price": "£2,800 pcm\n£646 pw",
+    "sig": "frampton street|NW8|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74229303/": {
+    "date": "2026-09-13",
+    "price": "£3,400 pcm",
+    "sig": "bevan house|WC1N|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73970304/": {
+    "date": "2026-09-13",
+    "price": "£3,400 pcm",
+    "sig": "heathcote street|WC1N|2"
   }
 }

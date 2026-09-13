@@ -2883,5 +2883,10 @@
     "date": "2026-09-13",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/93025854#/?channel=RES_LET": {
+    "date": "2026-09-13",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
   }
 }
