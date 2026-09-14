@@ -2888,5 +2888,70 @@
     "date": "2026-09-13",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": null
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74232224/": {
+    "date": "2026-09-14",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "little portland street|W1W|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74231953/": {
+    "date": "2026-09-14",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "park mount lodge|W1K|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/65109569/": {
+    "date": "2026-09-14",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "marble arch|W1H|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/70590356/": {
+    "date": "2026-09-14",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "albion street|W2|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74233253/": {
+    "date": "2026-09-14",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "wells street|W1T|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/67403533/": {
+    "date": "2026-09-14",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "whitehall|SW1A|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/65867973/": {
+    "date": "2026-09-14",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "bilton towers|W1H|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74235625/": {
+    "date": "2026-09-14",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "east harding street|EC4A|2"
+  },
+  "https://www.onthemarket.com/details/20328899/": {
+    "date": "2026-09-14",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "augustine road|W14|5"
+  },
+  "https://www.onthemarket.com/details/20331624/": {
+    "date": "2026-09-14",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "145 city road|EC1V|2"
+  },
+  "https://www.rightmove.co.uk/properties/93129216#/?channel=RES_LET": {
+    "date": "2026-09-14",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/20329332/": {
+    "date": "2026-09-14",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/13279837/": {
+    "date": "2026-09-14",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
   }
 }
