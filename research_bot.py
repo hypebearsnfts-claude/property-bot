@@ -124,10 +124,15 @@ async def run_research_pipeline(bot, chat_id) -> int:
     chat_id = int(chat_id)
     logger.info("[research] Automated pipeline started")
 
-    await bot.send_message(
-        chat_id=chat_id,
-        text="🔍 Research Bot: scraping Rightmove, Zoopla, OpenRent & OnTheMarket…",
-    )
+    # Kickoff message is nice-to-have — a transient Telegram timeout here must
+    # NEVER kill the run (run #189 died at 56s on exactly this line's TimedOut).
+    try:
+        await bot.send_message(
+            chat_id=chat_id,
+            text="🔍 Research Bot: scraping Rightmove, Zoopla, OpenRent & OnTheMarket…",
+        )
+    except Exception as exc:
+        logger.warning("[research] Kickoff Telegram message failed (%s) — continuing anyway", exc)
 
     try:
         # Run all 4 scrapers with full deduplication (no enrichment here —
