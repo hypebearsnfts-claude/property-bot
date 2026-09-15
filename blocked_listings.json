@@ -2953,5 +2953,45 @@
     "date": "2026-09-14",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/93154167#/?channel=RES_LET": {
+    "date": "2026-09-15",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "116 cromwell rd|SW7|4"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74242221/": {
+    "date": "2026-09-15",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "gloucester road|SW7|4"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74241024/": {
+    "date": "2026-09-15",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "dorset square|NW1|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73343162/": {
+    "date": "2026-09-15",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "fitzjames avenue|W14|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73524337/": {
+    "date": "2026-09-15",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "chelsea|SW3|2"
+  },
+  "https://www.onthemarket.com/details/9006063/": {
+    "date": "2026-09-15",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/20342065/": {
+    "date": "2026-09-15",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/20340995/": {
+    "date": "2026-09-15",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
   }
 }

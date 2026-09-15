@@ -1,59 +1,4 @@
 {
-  "https://www.rightmove.co.uk/properties/91020933#/?channel=RES_LET": {
-    "date": "2026-08-16",
-    "price": "£2,816 pcm\n£650 pw",
-    "sig": "swallowfield|NW1|2"
-  },
-  "https://www.onthemarket.com/details/17617160/": {
-    "date": "2026-08-16",
-    "price": "4,225 pcm (£975 pw)",
-    "sig": "harrington road|SW7|2"
-  },
-  "https://www.rightmove.co.uk/properties/91624386#/?channel=RES_LET": {
-    "date": "2026-08-16",
-    "price": "£3,445 pcm\n£795 pw",
-    "sig": "westbourne terrace|NW1|2"
-  },
-  "https://www.rightmove.co.uk/properties/90997899#/?channel=RES_LET": {
-    "date": "2026-08-16",
-    "price": "£5,250 pcm\n£1,212 pw",
-    "sig": "brook mews north|W2|3"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/73984230/": {
-    "date": "2026-08-16",
-    "price": "£3,683 pcm",
-    "sig": "george street|W1U|2"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/73939124/": {
-    "date": "2026-08-16",
-    "price": "£2,800 pcm",
-    "sig": "elsham road|W14|2"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/73991413/": {
-    "date": "2026-08-16",
-    "price": "£3,700 pcm",
-    "sig": "peerless street|EC1V|3"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/73461392/": {
-    "date": "2026-08-16",
-    "price": "£3,600 pcm",
-    "sig": "semley house|SW1W|2"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/73800917/": {
-    "date": "2026-08-16",
-    "price": "£6,600 pcm",
-    "sig": "cobham court|SW1X|3"
-  },
-  "https://www.onthemarket.com/details/20147386/": {
-    "date": "2026-08-16",
-    "price": "3,200 pcm (£738 pw)",
-    "sig": "richmond avenue|N1|2"
-  },
-  "https://www.onthemarket.com/details/20125418/": {
-    "date": "2026-08-16",
-    "price": "2,750 pcm (£635 pw)",
-    "sig": "mallow street|EC1Y|2"
-  },
   "https://www.rightmove.co.uk/properties/92071356#/?channel=RES_LET": {
     "date": "2026-08-17",
     "price": "£2,950 pcm\n£681 pw",
@@ -1951,7 +1896,7 @@
   },
   "https://www.rightmove.co.uk/properties/92672337#/?channel=RES_LET": {
     "date": "2026-09-03",
-    "price": "£3,899 pcm\n£900 pw",
+    "price": "£3,799 pcm\n£877 pw",
     "sig": "osbaburgh street|NW1|4"
   },
   "https://www.zoopla.co.uk/to-rent/details/74127326/": {
@@ -2341,7 +2286,7 @@
   },
   "https://www.zoopla.co.uk/to-rent/details/73336875/": {
     "date": "2026-09-06",
-    "price": "£4,117 pcm",
+    "price": "£4,073 pcm",
     "sig": "highwood house ogle street|W1W|2"
   },
   "https://www.zoopla.co.uk/to-rent/details/74111055/": {
@@ -3237,6 +3182,56 @@
   "https://www.onthemarket.com/details/20330407/": {
     "date": "2026-09-14",
     "price": "1,250 pcm (£288 pw)",
+    "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/89807400#/?channel=RES_LET": {
+    "date": "2026-09-15",
+    "price": "£12,497 pcm\n£2,884 pw\nPREMIUM LISTING",
+    "sig": "connaught place|W2|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/65084057/": {
+    "date": "2026-09-15",
+    "price": "£6,000 pcm",
+    "sig": "evelyn mansions|SW1P|4"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74232366/": {
+    "date": "2026-09-15",
+    "price": "£3,250 pcm",
+    "sig": "queensway|W2|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74245553/": {
+    "date": "2026-09-15",
+    "price": "£2,500 pcm",
+    "sig": "hall place|W2|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74190342/": {
+    "date": "2026-09-15",
+    "price": "£2,750 pcm",
+    "sig": "elsham road|W14|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73461392/": {
+    "date": "2026-09-15",
+    "price": "£3,600 pcm",
+    "sig": "semley house|SW1W|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73800917/": {
+    "date": "2026-09-15",
+    "price": "£6,600 pcm",
+    "sig": "cobham court|SW1X|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/50468415/": {
+    "date": "2026-09-15",
+    "price": "£5,633 pcm",
+    "sig": "queens gate mews|SW7|3"
+  },
+  "https://www.onthemarket.com/details/20120843/": {
+    "date": "2026-09-15",
+    "price": "4,380 pcm (£1,011 pw)",
+    "sig": "argyle street|WC1X|4"
+  },
+  "https://www.onthemarket.com/details/20339157/": {
+    "date": "2026-09-15",
+    "price": "4,500 pcm (£1,038 pw)",
     "sig": null
   }
 }
