@@ -2993,5 +2993,20 @@
     "date": "2026-09-15",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": null
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74249746/": {
+    "date": "2026-09-16",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "the quadrangle 3rd floor|W2|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74248052/": {
+    "date": "2026-09-16",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "russell gardens|W14|4"
+  },
+  "https://www.onthemarket.com/details/7154200/": {
+    "date": "2026-09-16",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
   }
 }
