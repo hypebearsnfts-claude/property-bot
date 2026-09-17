@@ -3008,5 +3008,25 @@
     "date": "2026-09-16",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": null
+  },
+  "https://www.zoopla.co.uk/to-rent/details/60773888/": {
+    "date": "2026-09-17",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "montagu square|W1H|2"
+  },
+  "https://www.rightmove.co.uk/properties/93273072#/?channel=RES_LET": {
+    "date": "2026-09-17",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "wellington house|SW1E|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/59289806/": {
+    "date": "2026-09-17",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "parker street|WC2B|2"
+  },
+  "https://www.onthemarket.com/details/880947/": {
+    "date": "2026-09-17",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "clerkenwell road|EC1M|2"
   }
 }
