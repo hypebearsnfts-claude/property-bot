@@ -3028,5 +3028,15 @@
     "date": "2026-09-17",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": "clerkenwell road|EC1M|2"
+  },
+  "https://www.rightmove.co.uk/properties/93298434#/?channel=RES_LET": {
+    "date": "2026-09-18",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "de walden street|W1G|3"
+  },
+  "https://www.rightmove.co.uk/properties/93129537#/?channel=RES_LET": {
+    "date": "2026-09-18",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
   }
 }
