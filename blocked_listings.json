@@ -3063,5 +3063,20 @@
     "date": "2026-09-19",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": null
+  },
+  "https://www.zoopla.co.uk/to-rent/details/65674718/": {
+    "date": "2026-09-19",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "penthouse apartment|WC1X|2"
+  },
+  "https://www.onthemarket.com/details/19248777/": {
+    "date": "2026-09-19",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "gilbert street|W1K|3"
+  },
+  "https://www.rightmove.co.uk/properties/93334338#/?channel=RES_LET": {
+    "date": "2026-09-19",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
   }
 }
