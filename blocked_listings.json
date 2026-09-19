@@ -3038,5 +3038,30 @@
     "date": "2026-09-18",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": null
+  },
+  "https://www.onthemarket.com/details/18921239/": {
+    "date": "2026-09-19",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "warwick lane kensington|W14|2"
+  },
+  "https://www.onthemarket.com/details/20191439/": {
+    "date": "2026-09-19",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "high holborn|WC1V|2"
+  },
+  "https://www.rightmove.co.uk/properties/93267435#/?channel=RES_LET": {
+    "date": "2026-09-19",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/20371517/": {
+    "date": "2026-09-19",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/20336148/": {
+    "date": "2026-09-19",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
   }
 }
