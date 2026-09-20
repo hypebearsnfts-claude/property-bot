@@ -3078,5 +3078,25 @@
     "date": "2026-09-19",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": null
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74239846/": {
+    "date": "2026-09-20",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "sherbourne house|SW1V|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74263805/": {
+    "date": "2026-09-20",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "fulham road|SW3|2"
+  },
+  "https://www.onthemarket.com/details/20139062/": {
+    "date": "2026-09-20",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "grosvenor square|W1K|2"
+  },
+  "https://www.onthemarket.com/details/20373857/": {
+    "date": "2026-09-20",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "ground floor|W14|2"
   }
 }

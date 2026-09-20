@@ -1,74 +1,4 @@
 {
-  "https://www.onthemarket.com/details/20182935/": {
-    "date": "2026-08-21",
-    "price": "3,500 pcm (£808 pw)",
-    "sig": "siddons court|WC2E|2"
-  },
-  "https://www.onthemarket.com/details/19343172/": {
-    "date": "2026-08-21",
-    "price": "8,000 pcm (£1,846 pw)",
-    "sig": "charing cross road|WC2H|3"
-  },
-  "https://www.rightmove.co.uk/properties/92219226#/?channel=RES_LET": {
-    "date": "2026-08-21",
-    "price": "£3,430 pcm\n£792 pw",
-    "sig": "upper montagu street|W1H|2"
-  },
-  "https://www.rightmove.co.uk/properties/88354725#/?channel=RES_LET": {
-    "date": "2026-08-21",
-    "price": "£3,750 pcm\n£865 pw",
-    "sig": "north audley street|W1K|2"
-  },
-  "https://www.rightmove.co.uk/properties/92163063#/?channel=RES_LET": {
-    "date": "2026-08-21",
-    "price": "£8,558 pcm\n£1,975 pw",
-    "sig": "portland place|W1B|3"
-  },
-  "https://www.rightmove.co.uk/properties/91770390#/?channel=RES_LET": {
-    "date": "2026-08-21",
-    "price": "£9,967 pcm\n£2,300 pw",
-    "sig": "chester square|SW1W|3"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/71299590/": {
-    "date": "2026-08-21",
-    "price": "£2,250 pcm",
-    "sig": "stelfox house|WC1X|2"
-  },
-  "https://www.rightmove.co.uk/properties/92232645#/?channel=RES_LET": {
-    "date": "2026-08-21",
-    "price": "£3,450 pcm\n£796 pw\nPREMIUM LISTING",
-    "sig": "regent square|WC1H|2"
-  },
-  "https://www.rightmove.co.uk/properties/91570821#/?channel=RES_LET": {
-    "date": "2026-08-21",
-    "price": "£4,498 pcm\n£1,038 pw\nPREMIUM LISTING",
-    "sig": "gloucester road|SW7|2"
-  },
-  "https://www.onthemarket.com/details/20070237/": {
-    "date": "2026-08-21",
-    "price": "2,300 pcm (£531 pw)",
-    "sig": "gambier house|EC1V|2"
-  },
-  "https://www.onthemarket.com/details/18639775/": {
-    "date": "2026-08-21",
-    "price": "2,599 pcm (£600 pw)",
-    "sig": "175 gloucester place|NW1|2"
-  },
-  "https://www.onthemarket.com/details/7150537/": {
-    "date": "2026-08-21",
-    "price": "3,098 pcm (£715 pw)",
-    "sig": null
-  },
-  "https://www.rightmove.co.uk/properties/92044071#/?channel=RES_LET": {
-    "date": "2026-08-21",
-    "price": "£5,500 pcm\n£1,269 pw",
-    "sig": null
-  },
-  "https://www.onthemarket.com/details/20181007/": {
-    "date": "2026-08-21",
-    "price": "4,000 pcm (£923 pw)",
-    "sig": null
-  },
   "https://www.rightmove.co.uk/properties/92276088#/?channel=RES_LET": {
     "date": "2026-08-22",
     "price": "£3,895 pcm\n£899 pw",
@@ -1311,7 +1241,7 @@
   },
   "https://www.zoopla.co.uk/to-rent/details/74105203/": {
     "date": "2026-08-31",
-    "price": "£2,200 pcm",
+    "price": "£2,150 pcm",
     "sig": "essex road|N1|2"
   },
   "https://www.zoopla.co.uk/to-rent/details/74104592/": {
@@ -2891,7 +2821,7 @@
   },
   "https://www.zoopla.co.uk/to-rent/details/74249660/": {
     "date": "2026-09-16",
-    "price": "£4,200 pcm",
+    "price": "£3,975 pcm",
     "sig": "edith road|W14|3"
   },
   "https://www.zoopla.co.uk/to-rent/details/51846265/": {
@@ -3182,6 +3112,51 @@
   "https://www.rightmove.co.uk/properties/93342915#/?channel=RES_LET": {
     "date": "2026-09-19",
     "price": "£2,799 pcm\n£646 pw",
+    "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/92219226#/?channel=RES_LET": {
+    "date": "2026-09-20",
+    "price": "£3,430 pcm\n£792 pw",
+    "sig": "upper montagu street|W1H|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/62552611/": {
+    "date": "2026-09-20",
+    "price": "£2,340 pcm",
+    "sig": "woodstock grove|W12|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74085683/": {
+    "date": "2026-09-20",
+    "price": "£3,300 pcm",
+    "sig": "president house|EC1V|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74281137/": {
+    "date": "2026-09-20",
+    "price": "£4,100 pcm",
+    "sig": "old pye st|SW1P|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74211430/": {
+    "date": "2026-09-20",
+    "price": "£3,500 pcm",
+    "sig": "gloucester road|SW7|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/68390498/": {
+    "date": "2026-09-20",
+    "price": "£7,367 pcm",
+    "sig": "queen s gate place mews|SW7|3"
+  },
+  "https://www.onthemarket.com/details/18639775/": {
+    "date": "2026-09-20",
+    "price": "2,599 pcm (£600 pw)",
+    "sig": "175 gloucester place|NW1|2"
+  },
+  "https://www.onthemarket.com/details/7150537/": {
+    "date": "2026-09-20",
+    "price": "3,098 pcm (£715 pw)",
+    "sig": null
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74257882/": {
+    "date": "2026-09-20",
+    "price": "£12,003 pcm",
     "sig": null
   }
 }
