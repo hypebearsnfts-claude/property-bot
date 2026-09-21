@@ -3098,5 +3098,25 @@
     "date": "2026-09-20",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": "ground floor|W14|2"
+  },
+  "https://www.rightmove.co.uk/properties/93359766#/?channel=RES_LET": {
+    "date": "2026-09-21",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "asquith house|W2|2"
+  },
+  "https://www.rightmove.co.uk/properties/93393648#/?channel=RES_LET": {
+    "date": "2026-09-21",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "colony mansions|SW5|2"
+  },
+  "https://www.onthemarket.com/details/19482297/": {
+    "date": "2026-09-21",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "elvaston place knightsbridge|SW7|2"
+  },
+  "https://www.onthemarket.com/details/20375291/": {
+    "date": "2026-09-21",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
   }
 }
