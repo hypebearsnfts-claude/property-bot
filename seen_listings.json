@@ -1946,7 +1946,7 @@
   },
   "https://www.zoopla.co.uk/to-rent/details/74167623/": {
     "date": "2026-09-07",
-    "price": "£3,800 pcm",
+    "price": "£3,500 pcm",
     "sig": "warwick house street|SW1Y|2"
   },
   "https://www.zoopla.co.uk/to-rent/details/73929809/": {
@@ -3173,5 +3173,35 @@
     "date": "2026-09-21",
     "price": "5,417 pcm (£1,250 pw)",
     "sig": null
+  },
+  "https://www.zoopla.co.uk/to-rent/details/71637142/": {
+    "date": "2026-09-21",
+    "price": "£7,000 pcm",
+    "sig": "maddox street|W1S|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74298702/": {
+    "date": "2026-09-21",
+    "price": "£2,750 pcm",
+    "sig": "59a crawford street|W1H|2"
+  },
+  "https://www.rightmove.co.uk/properties/93403152#/?channel=RES_LET": {
+    "date": "2026-09-21",
+    "price": "£4,312 pcm\n£995 pw",
+    "sig": "mortimer street|W1W|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74298752/": {
+    "date": "2026-09-21",
+    "price": "£3,000 pcm",
+    "sig": "coram mansions|WC1N|2"
+  },
+  "https://www.onthemarket.com/details/20381848/": {
+    "date": "2026-09-21",
+    "price": "3,000 pcm (£692 pw)",
+    "sig": "3 cranley place|SW7|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74296080/": {
+    "date": "2026-09-21",
+    "price": "£3,857 pcm",
+    "sig": "churchway|NW1|2"
   }
 }
