@@ -3118,5 +3118,20 @@
     "date": "2026-09-21",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": null
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74304267/": {
+    "date": "2026-09-22",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "baker street|NW1|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/71174609/": {
+    "date": "2026-09-22",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "merchant square east|W2|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74299213/": {
+    "date": "2026-09-22",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "decorum|N1|3"
   }
 }
