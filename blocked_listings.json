@@ -3133,5 +3133,55 @@
     "date": "2026-09-22",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": "decorum|N1|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74313937/": {
+    "date": "2026-09-24",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "montagu square|W1H|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74315349/": {
+    "date": "2026-09-24",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "hyde park crescent|W2|3"
+  },
+  "https://www.rightmove.co.uk/properties/92589936#/?channel=RES_LET": {
+    "date": "2026-09-24",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "regent court|NW8|3"
+  },
+  "https://www.rightmove.co.uk/properties/92329149#/?channel=RES_LET": {
+    "date": "2026-09-24",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "king regent s place|W1T|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74304695/": {
+    "date": "2026-09-24",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "gloucester place|NW1|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73679797/": {
+    "date": "2026-09-24",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "elizabeth court|NW1|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74313980/": {
+    "date": "2026-09-24",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "the cooper building|N1|2"
+  },
+  "https://www.onthemarket.com/details/13361712/": {
+    "date": "2026-09-24",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "seward street|EC1V|2"
+  },
+  "https://www.rightmove.co.uk/properties/91890780#/?channel=RES_LET": {
+    "date": "2026-09-24",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/93542592#/?channel=RES_LET": {
+    "date": "2026-09-24",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
   }
 }
