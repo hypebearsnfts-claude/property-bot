@@ -3183,5 +3183,35 @@
     "date": "2026-09-24",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": null
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74342221/": {
+    "date": "2026-09-25",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "devonshire street|W1G|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74341877/": {
+    "date": "2026-09-25",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "the mansion|W1U|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74340434/": {
+    "date": "2026-09-25",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "south kensington|SW3|2"
+  },
+  "https://www.onthemarket.com/details/20344178/": {
+    "date": "2026-09-25",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/20399364/": {
+    "date": "2026-09-25",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/20394666/": {
+    "date": "2026-09-25",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
   }
 }
