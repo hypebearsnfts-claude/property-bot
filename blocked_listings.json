@@ -3213,5 +3213,25 @@
     "date": "2026-09-25",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/90744660#/?channel=RES_LET": {
+    "date": "2026-09-26",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "albert court west block prince consort road|SW7|4"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74311961/": {
+    "date": "2026-09-26",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "19 sun street|EC2A|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74341740/": {
+    "date": "2026-09-26",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "hyde park square|W2|2"
+  },
+  "https://www.onthemarket.com/details/20404911/": {
+    "date": "2026-09-26",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
   }
 }
