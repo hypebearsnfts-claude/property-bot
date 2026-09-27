@@ -3238,5 +3238,10 @@
     "date": "2026-09-27",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": null
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74319506/": {
+    "date": "2026-09-27",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "shepherdess walk|N1|2"
   }
 }

@@ -2763,5 +2763,25 @@
     "date": "2026-09-27",
     "price": "3,395 pcm (£783 pw)",
     "sig": null
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74339717/": {
+    "date": "2026-09-27",
+    "price": "£1,300 pcm",
+    "sig": "studd street|N1|5"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/55273891/": {
+    "date": "2026-09-27",
+    "price": "£2,750 pcm",
+    "sig": "goswell road|EC1V|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/71119534/": {
+    "date": "2026-09-27",
+    "price": "£4,750 pcm",
+    "sig": "copenhagen street|N1|4"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74316036/": {
+    "date": "2026-09-27",
+    "price": "£2,850 pcm",
+    "sig": "sidmouth street|WC1H|3"
   }
 }
