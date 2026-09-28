@@ -1,69 +1,4 @@
 {
-  "https://www.rightmove.co.uk/properties/90274836#/?channel=RES_LET": {
-    "date": "2026-08-29",
-    "price": "£3,500 pcm\n£808 pw",
-    "sig": "balcombe street|NW1|2"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/71803886/": {
-    "date": "2026-08-29",
-    "price": "£6,933 pcm",
-    "sig": "connaught street|W2|4"
-  },
-  "https://www.rightmove.co.uk/properties/91701909#/?channel=RES_LET": {
-    "date": "2026-08-29",
-    "price": "£4,745 pcm\n£1,095 pw",
-    "sig": "huntley street|WC1E|2"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/74100651/": {
-    "date": "2026-08-29",
-    "price": "£3,500 pcm",
-    "sig": "kings mews|WC1N|2"
-  },
-  "https://www.rightmove.co.uk/properties/98631332#/?channel=RES_LET": {
-    "date": "2026-08-29",
-    "price": "£4,008 pcm\n£925 pw",
-    "sig": "gray s inn road|WC1X|2"
-  },
-  "https://www.rightmove.co.uk/properties/175048007#/?channel=RES_LET": {
-    "date": "2026-08-29",
-    "price": "£5,000 pcm\n£1,154 pw",
-    "sig": "redfield lane|SW5|3"
-  },
-  "https://www.rightmove.co.uk/properties/90278715#/?channel=RES_LET": {
-    "date": "2026-08-29",
-    "price": "£5,417 pcm\n£1,250 pw",
-    "sig": "courtfield road|SW7|3"
-  },
-  "https://www.rightmove.co.uk/properties/92283774#/?channel=RES_LET": {
-    "date": "2026-08-29",
-    "price": "£3,800 pcm\n£877 pw\nPREMIUM LISTING",
-    "sig": "gloucester terrace|W2|2"
-  },
-  "https://www.rightmove.co.uk/properties/92011872#/?channel=RES_LET": {
-    "date": "2026-08-29",
-    "price": "£5,417 pcm\n£1,250 pw\nPREMIUM LISTING",
-    "sig": "inverness terrace|W2|3"
-  },
-  "https://www.rightmove.co.uk/properties/175058981#/?channel=RES_LET": {
-    "date": "2026-08-29",
-    "price": "£3,293 pcm\n£760 pw\nPREMIUM LISTING",
-    "sig": "chilworth mews bayswater|W2|2"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/74100096/": {
-    "date": "2026-08-29",
-    "price": "£2,800 pcm",
-    "sig": "royal oak court|N1|2"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/61350775/": {
-    "date": "2026-08-29",
-    "price": "£4,500 pcm",
-    "sig": "oakshott court|NW1|4"
-  },
-  "https://www.onthemarket.com/details/20233529/": {
-    "date": "2026-08-29",
-    "price": "3,900 pcm (£900 pw)",
-    "sig": null
-  },
   "https://www.onthemarket.com/details/20162006/": {
     "date": "2026-08-30",
     "price": "5,150 pcm (£1,188 pw)",
@@ -2341,7 +2276,7 @@
   },
   "https://www.zoopla.co.uk/to-rent/details/61069169/": {
     "date": "2026-09-22",
-    "price": "£3,600 pcm",
+    "price": "£3,400 pcm",
     "sig": "britton street|EC1M|2"
   },
   "https://www.zoopla.co.uk/to-rent/details/74290688/": {
@@ -2366,7 +2301,7 @@
   },
   "https://www.onthemarket.com/details/20389225/": {
     "date": "2026-09-22",
-    "price": "2,750 pcm (£635 pw)",
+    "price": "2,600 pcm (£600 pw)",
     "sig": "barons keep|W14|2"
   },
   "https://www.zoopla.co.uk/to-rent/details/74279867/": {
@@ -2551,7 +2486,7 @@
   },
   "https://www.zoopla.co.uk/to-rent/details/71077111/": {
     "date": "2026-09-25",
-    "price": "£2,650 pcm",
+    "price": "£2,575 pcm",
     "sig": "brunswick mansions|WC1N|2"
   },
   "https://www.zoopla.co.uk/to-rent/details/74030709/": {
@@ -2783,5 +2718,50 @@
     "date": "2026-09-27",
     "price": "£2,850 pcm",
     "sig": "sidmouth street|WC1H|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/71803886/": {
+    "date": "2026-09-28",
+    "price": "£6,933 pcm",
+    "sig": "connaught street|W2|4"
+  },
+  "https://www.rightmove.co.uk/properties/93637539#/?channel=RES_LET": {
+    "date": "2026-09-28",
+    "price": "£3,500 pcm\n£808 pw",
+    "sig": "doric way|NW1|4"
+  },
+  "https://www.rightmove.co.uk/properties/92722239#/?channel=RES_LET": {
+    "date": "2026-09-28",
+    "price": "£4,300 pcm\n£992 pw",
+    "sig": "huntley street|WC1E|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73900175/": {
+    "date": "2026-09-28",
+    "price": "£3,000 pcm",
+    "sig": "gray s inn road|WC1X|2"
+  },
+  "https://www.rightmove.co.uk/properties/90278715#/?channel=RES_LET": {
+    "date": "2026-09-28",
+    "price": "£5,417 pcm\n£1,250 pw",
+    "sig": "courtfield road|SW7|3"
+  },
+  "https://www.rightmove.co.uk/properties/93360930#/?channel=RES_LET": {
+    "date": "2026-09-28",
+    "price": "£4,329 pcm\n£999 pw",
+    "sig": "gloucester terrace|W2|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/71018750/": {
+    "date": "2026-09-28",
+    "price": "£3,400 pcm",
+    "sig": "broadwick street|W1F|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/44664803/": {
+    "date": "2026-09-28",
+    "price": "£5,750 pcm",
+    "sig": "sandringham court|W1F|3"
+  },
+  "https://www.onthemarket.com/details/20422734/": {
+    "date": "2026-09-28",
+    "price": "3,250 pcm (£750 pw)",
+    "sig": "swinton st|WC1X|2"
   }
 }

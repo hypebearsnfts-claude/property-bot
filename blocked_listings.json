@@ -3243,5 +3243,45 @@
     "date": "2026-09-27",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": "shepherdess walk|N1|2"
+  },
+  "https://www.rightmove.co.uk/properties/165620675#/?channel=RES_LET": {
+    "date": "2026-09-28",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "devonshire place|W1G|3"
+  },
+  "https://www.onthemarket.com/details/14085603/": {
+    "date": "2026-09-28",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "rosary gardens|SW7|2"
+  },
+  "https://www.onthemarket.com/details/19936534/": {
+    "date": "2026-09-28",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "queen s gate terrace|SW7|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73019081/": {
+    "date": "2026-09-28",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "baker street|NW1|4"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/72682386/": {
+    "date": "2026-09-28",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "harley house|NW1|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74348261/": {
+    "date": "2026-09-28",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "st dunstans house|EC4A|2"
+  },
+  "https://www.onthemarket.com/details/20424934/": {
+    "date": "2026-09-28",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/92650476#/?channel=RES_LET": {
+    "date": "2026-09-28",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
   }
 }
