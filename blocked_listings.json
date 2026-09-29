@@ -3283,5 +3283,30 @@
     "date": "2026-09-28",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": null
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74320649/": {
+    "date": "2026-09-29",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "molyneux street|W1H|2"
+  },
+  "https://www.rightmove.co.uk/properties/93502437#/?channel=RES_LET": {
+    "date": "2026-09-29",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "alba square|SW1W|3"
+  },
+  "https://www.onthemarket.com/details/20407664/": {
+    "date": "2026-09-29",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "woodsford square|W14|6"
+  },
+  "https://www.onthemarket.com/details/15035406/": {
+    "date": "2026-09-29",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "6 lewis cubitt walk|N1C|2"
+  },
+  "https://www.rightmove.co.uk/properties/93710319#/?channel=RES_LET": {
+    "date": "2026-09-29",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
   }
 }
