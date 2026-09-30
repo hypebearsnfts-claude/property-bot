@@ -1,99 +1,4 @@
 {
-  "https://www.zoopla.co.uk/to-rent/details/74087838/": {
-    "date": "2026-08-31",
-    "price": "£5,500 pcm",
-    "sig": "tottenham street|W1T|2"
-  },
-  "https://www.rightmove.co.uk/properties/92410329#/?channel=RES_LET": {
-    "date": "2026-08-31",
-    "price": "£3,700 pcm\n£854 pw",
-    "sig": "stanfield|NW8|3"
-  },
-  "https://www.rightmove.co.uk/properties/91353786#/?channel=RES_LET": {
-    "date": "2026-08-31",
-    "price": "£2,675 pcm\n£617 pw",
-    "sig": "carburton street|W1W|2"
-  },
-  "https://www.rightmove.co.uk/properties/172241588#/?channel=RES_LET": {
-    "date": "2026-08-31",
-    "price": "£6,000 pcm\n£1,385 pw\nTOWN CENTRE LOCATION",
-    "sig": "great portland street|W1W|3"
-  },
-  "https://www.rightmove.co.uk/properties/92566584#/?channel=RES_LET": {
-    "date": "2026-08-31",
-    "price": "£3,987 pcm\n£920 pw",
-    "sig": "queen alexandra mansions|WC1H|3"
-  },
-  "https://www.rightmove.co.uk/properties/90373086#/?channel=RES_LET": {
-    "date": "2026-08-31",
-    "price": "£3,650 pcm\n£842 pw",
-    "sig": "new north street|WC1N|2"
-  },
-  "https://www.rightmove.co.uk/properties/91517175#/?channel=RES_LET": {
-    "date": "2026-08-31",
-    "price": "£4,500 pcm\n£1,038 pw",
-    "sig": "queen s gate place|SW7|2"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/74054636/": {
-    "date": "2026-08-31",
-    "price": "£2,800 pcm",
-    "sig": "sinclair road|W14|2"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/74013060/": {
-    "date": "2026-08-31",
-    "price": "£3,750 pcm",
-    "sig": "lakeside road|W14|2"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/73860177/": {
-    "date": "2026-08-31",
-    "price": "£3,750 pcm",
-    "sig": "avonmore road|W14|3"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/74105203/": {
-    "date": "2026-08-31",
-    "price": "£2,150 pcm",
-    "sig": "essex road|N1|2"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/74104592/": {
-    "date": "2026-08-31",
-    "price": "£4,117 pcm",
-    "sig": "burton street|WC1H|3"
-  },
-  "https://www.onthemarket.com/details/20193064/": {
-    "date": "2026-08-31",
-    "price": "3,800 pcm (£877 pw)",
-    "sig": "addison bridge place|W14|3"
-  },
-  "https://www.onthemarket.com/details/12595421/": {
-    "date": "2026-08-31",
-    "price": "8,753 pcm (£2,020 pw)",
-    "sig": null
-  },
-  "https://www.rightmove.co.uk/properties/92526039#/?channel=RES_LET": {
-    "date": "2026-08-31",
-    "price": "£2,805 pcm\n£647 pw",
-    "sig": null
-  },
-  "https://www.onthemarket.com/details/20236782/": {
-    "date": "2026-08-31",
-    "price": "4,117 pcm (£950 pw)",
-    "sig": null
-  },
-  "https://www.rightmove.co.uk/properties/92377848#/?channel=RES_LET": {
-    "date": "2026-08-31",
-    "price": "£4,500 pcm\n£1,038 pw",
-    "sig": null
-  },
-  "https://www.onthemarket.com/details/20050938/": {
-    "date": "2026-08-31",
-    "price": "4,000 pcm (£923 pw)",
-    "sig": null
-  },
-  "https://www.onthemarket.com/details/20236642/": {
-    "date": "2026-08-31",
-    "price": "3,900 pcm (£900 pw)",
-    "sig": null
-  },
   "https://www.zoopla.co.uk/to-rent/details/71318400/": {
     "date": "2026-09-01",
     "price": "£3,750 pcm",
@@ -251,7 +156,7 @@
   },
   "https://www.rightmove.co.uk/properties/92672337#/?channel=RES_LET": {
     "date": "2026-09-03",
-    "price": "£3,499 pcm\n£807 pw",
+    "price": "£3,399 pcm\n£784 pw",
     "sig": "osbaburgh street|NW1|4"
   },
   "https://www.zoopla.co.uk/to-rent/details/74127326/": {
@@ -356,7 +261,7 @@
   },
   "https://www.rightmove.co.uk/properties/90453129#/?channel=RES_LET": {
     "date": "2026-09-03",
-    "price": "£3,380 pcm\n£780 pw\nGuide Price\nFURNISHED",
+    "price": "£3,311 pcm\n£764 pw\nGuide Price\nFURNISHED",
     "sig": null
   },
   "https://www.onthemarket.com/details/20260383/": {
@@ -381,7 +286,7 @@
   },
   "https://www.onthemarket.com/details/20062359/": {
     "date": "2026-09-03",
-    "price": "2,495 pcm (£576 pw)",
+    "price": "2,395 pcm (£553 pw)",
     "sig": null
   },
   "https://www.onthemarket.com/details/20255098/": {
@@ -1306,7 +1211,7 @@
   },
   "https://www.onthemarket.com/details/20307835/": {
     "date": "2026-09-11",
-    "price": "4,150 pcm (£958 pw)",
+    "price": "4,000 pcm (£923 pw)",
     "sig": null
   },
   "https://www.rightmove.co.uk/properties/91960797#/?channel=RES_LET": {
@@ -2742,6 +2647,76 @@
   "https://www.onthemarket.com/details/13592147/": {
     "date": "2026-09-29",
     "price": "2,600 pcm (£600 pw)",
+    "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/171728594#/?channel=RES_LET": {
+    "date": "2026-09-30",
+    "price": "£10,400 pcm\n£2,400 pw",
+    "sig": "sherwood street|W1F|3"
+  },
+  "https://www.rightmove.co.uk/properties/91557423#/?channel=RES_LET": {
+    "date": "2026-09-30",
+    "price": "£3,337 pcm\n£770 pw",
+    "sig": "tottenham street|W1T|2"
+  },
+  "https://www.rightmove.co.uk/properties/172241588#/?channel=RES_LET": {
+    "date": "2026-09-30",
+    "price": "£6,000 pcm\n£1,385 pw",
+    "sig": "great portland street|W1W|3"
+  },
+  "https://www.rightmove.co.uk/properties/93735627#/?channel=RES_LET": {
+    "date": "2026-09-30",
+    "price": "£3,100 pcm\n£715 pw",
+    "sig": "queens gardens|W2|2"
+  },
+  "https://www.onthemarket.com/details/20441807/": {
+    "date": "2026-09-30",
+    "price": "2,350 pcm (£542 pw)",
+    "sig": "thackeray court|W14|2"
+  },
+  "https://www.onthemarket.com/details/17562870/": {
+    "date": "2026-09-30",
+    "price": "3,800 pcm (£877 pw)",
+    "sig": "addison bridge place|W14|3"
+  },
+  "https://www.onthemarket.com/details/20154577/": {
+    "date": "2026-09-30",
+    "price": "2,900 pcm (£669 pw)",
+    "sig": "sinclair road|W14|2"
+  },
+  "https://www.onthemarket.com/details/20283066/": {
+    "date": "2026-09-30",
+    "price": "2,795 pcm (£645 pw)",
+    "sig": "lakeside road|W14|2"
+  },
+  "https://www.onthemarket.com/details/20445469/": {
+    "date": "2026-09-30",
+    "price": "3,750 pcm (£865 pw)",
+    "sig": "barnsbury road|N1|2"
+  },
+  "https://www.onthemarket.com/details/12595421/": {
+    "date": "2026-09-30",
+    "price": "8,753 pcm (£2,020 pw)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/17031134/": {
+    "date": "2026-09-30",
+    "price": "2,499 pcm (£577 pw)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/20440477/": {
+    "date": "2026-09-30",
+    "price": "4,498 pcm (£1,038 pw)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/7460202/": {
+    "date": "2026-09-30",
+    "price": "2,800 pcm (£646 pw)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/20050938/": {
+    "date": "2026-09-30",
+    "price": "4,000 pcm (£923 pw)",
     "sig": null
   }
 }
