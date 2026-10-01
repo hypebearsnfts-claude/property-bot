@@ -3348,5 +3348,20 @@
     "date": "2026-09-30",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/93790218#/?channel=RES_LET": {
+    "date": "2026-10-01",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "hyde park gardens|W2|5"
+  },
+  "https://www.onthemarket.com/details/20170299/": {
+    "date": "2026-10-01",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "oakwood court|W14|5"
+  },
+  "https://www.onthemarket.com/details/20451208/": {
+    "date": "2026-10-01",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
   }
 }
