@@ -3503,5 +3503,15 @@
     "date": "2026-10-03",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": "colosseum terrace|NW1|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/64269049/": {
+    "date": "2026-10-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "4 merchant square east|W2|3"
+  },
+  "https://www.onthemarket.com/details/18011721/": {
+    "date": "2026-10-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "cranley gardens|SW7|2"
   }
 }

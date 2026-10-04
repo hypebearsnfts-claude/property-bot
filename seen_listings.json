@@ -2728,5 +2728,30 @@
     "date": "2026-10-03",
     "price": "2,395 pcm (£553 pw)",
     "sig": null
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74415334/": {
+    "date": "2026-10-04",
+    "price": "£2,999 pcm",
+    "sig": "drummond st|NW1|2"
+  },
+  "https://www.rightmove.co.uk/properties/93791946#/?channel=RES_LET": {
+    "date": "2026-10-04",
+    "price": "£11,800 pcm\n£2,723 pw",
+    "sig": "tavistock place|WC1H|3"
+  },
+  "https://www.onthemarket.com/details/20461610/": {
+    "date": "2026-10-04",
+    "price": "3,300 pcm (£762 pw)",
+    "sig": null
+  },
+  "https://www.zoopla.co.uk/to-rent/details/70013208/": {
+    "date": "2026-10-04",
+    "price": "£3,683 pcm",
+    "sig": null
+  },
+  "https://www.zoopla.co.uk/to-rent/details/70628029/": {
+    "date": "2026-10-04",
+    "price": "£3,683 pcm",
+    "sig": null
   }
 }
