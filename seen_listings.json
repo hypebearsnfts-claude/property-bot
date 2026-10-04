@@ -306,7 +306,7 @@
   },
   "https://www.zoopla.co.uk/to-rent/details/73843754/": {
     "date": "2026-09-06",
-    "price": "£2,350 pcm",
+    "price": "£2,200 pcm",
     "sig": "throsby street|N1|2"
   },
   "https://www.zoopla.co.uk/to-rent/details/72970529/": {
@@ -2753,5 +2753,35 @@
     "date": "2026-10-04",
     "price": "£3,683 pcm",
     "sig": null
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74415336/": {
+    "date": "2026-10-04",
+    "price": "£3,500 pcm",
+    "sig": "wellesley terrace|N1|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74115005/": {
+    "date": "2026-10-04",
+    "price": "£3,099 pcm",
+    "sig": "buxton court|N1|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74100096/": {
+    "date": "2026-10-04",
+    "price": "£2,800 pcm",
+    "sig": "royal oak court|N1|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74125212/": {
+    "date": "2026-10-04",
+    "price": "£8,000 pcm",
+    "sig": "st georges drive|SW1V|4"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74206260/": {
+    "date": "2026-10-04",
+    "price": "£4,000 pcm",
+    "sig": "sidmouth street|WC1H|4"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74392354/": {
+    "date": "2026-10-04",
+    "price": "£2,968 pcm",
+    "sig": "inverness terrace|W2|2"
   }
 }

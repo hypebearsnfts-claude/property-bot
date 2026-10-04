@@ -3513,5 +3513,15 @@
     "date": "2026-10-04",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": "cranley gardens|SW7|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74414535/": {
+    "date": "2026-10-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "ebury street|SW1W|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/70628019/": {
+    "date": "2026-10-04",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
   }
 }
