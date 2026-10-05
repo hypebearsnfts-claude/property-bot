@@ -3523,5 +3523,40 @@
     "date": "2026-10-04",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": null
+  },
+  "https://www.zoopla.co.uk/to-rent/details/66100808/": {
+    "date": "2026-10-05",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "temple house|WC2R|3"
+  },
+  "https://www.rightmove.co.uk/properties/93928065#/?channel=RES_LET": {
+    "date": "2026-10-05",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "southwick street|W2|3"
+  },
+  "https://www.onthemarket.com/details/20473448/": {
+    "date": "2026-10-05",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "minford gardens|W14|3"
+  },
+  "https://www.onthemarket.com/details/20455151/": {
+    "date": "2026-10-05",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "dance square|EC1V|3"
+  },
+  "https://www.onthemarket.com/details/20473822/": {
+    "date": "2026-10-05",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "elvaston place|SW7|2"
+  },
+  "https://www.rightmove.co.uk/properties/93934512#/?channel=RES_LET": {
+    "date": "2026-10-05",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/93926118#/?channel=RES_LET": {
+    "date": "2026-10-05",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
   }
 }
