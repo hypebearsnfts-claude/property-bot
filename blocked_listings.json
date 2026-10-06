@@ -3563,5 +3563,35 @@
     "date": "2026-10-05",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": null
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74426394/": {
+    "date": "2026-10-06",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "temple|WC2R|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74433927/": {
+    "date": "2026-10-06",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "albemarle street|W1S|2"
+  },
+  "https://www.rightmove.co.uk/properties/93995589#/?channel=RES_LET": {
+    "date": "2026-10-06",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "harmont house|W1G|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74432992/": {
+    "date": "2026-10-06",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "portsea place|W2|3"
+  },
+  "https://www.onthemarket.com/details/9935379/": {
+    "date": "2026-10-06",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "pied bull yard|N1|3"
+  },
+  "https://www.rightmove.co.uk/properties/93997185#/?channel=RES_LET": {
+    "date": "2026-10-06",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
   }
 }
