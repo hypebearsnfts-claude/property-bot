@@ -3593,5 +3593,20 @@
     "date": "2026-10-06",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": null
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74440767/": {
+    "date": "2026-10-07",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "33 hill street|W1J|2"
+  },
+  "https://www.onthemarket.com/details/20491640/": {
+    "date": "2026-10-07",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "rheidol mews|N1|2"
+  },
+  "https://www.onthemarket.com/details/12278281/": {
+    "date": "2026-10-07",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "melton court|SW7|2"
   }
 }
