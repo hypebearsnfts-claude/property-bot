@@ -3668,5 +3668,30 @@
     "date": "2026-10-08",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/162337667#/?channel=RES_LET": {
+    "date": "2026-10-09",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "the water gardens hyde park|W2|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74389310/": {
+    "date": "2026-10-09",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "rathbone place|W1T|2"
+  },
+  "https://www.onthemarket.com/details/20512384/": {
+    "date": "2026-10-09",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "landon|N1|2"
+  },
+  "https://www.rightmove.co.uk/properties/93997293#/?channel=RES_LET": {
+    "date": "2026-10-09",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/151519124#/?channel=RES_LET": {
+    "date": "2026-10-09",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
   }
 }
