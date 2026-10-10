@@ -1,94 +1,4 @@
 {
-  "https://www.zoopla.co.uk/to-rent/details/74203083/": {
-    "date": "2026-09-10",
-    "price": "£3,500 pcm",
-    "sig": "bristol house|WC1B|3"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/74204146/": {
-    "date": "2026-09-10",
-    "price": "£3,000 pcm",
-    "sig": "chiltern street|W1U|2"
-  },
-  "https://www.onthemarket.com/details/20306904/": {
-    "date": "2026-09-10",
-    "price": "4,983 pcm (£1,150 pw)",
-    "sig": "mount street|W1K|3"
-  },
-  "https://www.rightmove.co.uk/properties/91841163#/?channel=RES_LET": {
-    "date": "2026-09-10",
-    "price": "£7,410 pcm\n£1,710 pw",
-    "sig": "mayfair|W1J|3"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/74208757/": {
-    "date": "2026-09-10",
-    "price": "£2,650 pcm",
-    "sig": "ossulston st|NW1|2"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/43799431/": {
-    "date": "2026-09-10",
-    "price": "£4,333 pcm",
-    "sig": "powis house|WC2B|2"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/74208252/": {
-    "date": "2026-09-10",
-    "price": "£3,423 pcm",
-    "sig": "samuel lewis trust dwellings|W14|2"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/73964309/": {
-    "date": "2026-09-10",
-    "price": "£7,500 pcm",
-    "sig": "aynhoe road|W14|6"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/73932075/": {
-    "date": "2026-09-10",
-    "price": "£3,740 pcm",
-    "sig": "holland road|W14|3"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/74202551/": {
-    "date": "2026-09-10",
-    "price": "£3,250 pcm",
-    "sig": "southampton row|WC1B|2"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/74207674/": {
-    "date": "2026-09-10",
-    "price": "£2,500 pcm",
-    "sig": "provost estate|N1|2"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/74200847/": {
-    "date": "2026-09-10",
-    "price": "£3,350 pcm",
-    "sig": "wenlock court|N1|3"
-  },
-  "https://www.onthemarket.com/details/20115675/": {
-    "date": "2026-09-10",
-    "price": "2,850 pcm (£658 pw)",
-    "sig": "argyll mansions|W14|2"
-  },
-  "https://www.onthemarket.com/details/20109674/": {
-    "date": "2026-09-10",
-    "price": "2,500 pcm (£577 pw)",
-    "sig": "stanwick road|W14|2"
-  },
-  "https://www.onthemarket.com/details/20309630/": {
-    "date": "2026-09-10",
-    "price": "3,423 pcm (£790 pw)",
-    "sig": "peacock court lisgar terrace|W14|2"
-  },
-  "https://www.rightmove.co.uk/properties/92969667#/?channel=RES_LET": {
-    "date": "2026-09-10",
-    "price": "£2,950 pcm\n£681 pw",
-    "sig": null
-  },
-  "https://www.rightmove.co.uk/properties/92962542#/?channel=RES_LET": {
-    "date": "2026-09-10",
-    "price": "£8,000 pcm\n£1,846 pw",
-    "sig": null
-  },
-  "https://www.onthemarket.com/details/15859550/": {
-    "date": "2026-09-10",
-    "price": "7,367 pcm (£1,700 pw)",
-    "sig": null
-  },
   "https://www.onthemarket.com/details/20147994/": {
     "date": "2026-09-11",
     "price": "2,400 pcm (£554 pw)",
@@ -1516,7 +1426,7 @@
   },
   "https://www.onthemarket.com/details/20422734/": {
     "date": "2026-09-28",
-    "price": "3,250 pcm (£750 pw)",
+    "price": "3,100 pcm (£715 pw)",
     "sig": "swinton st|WC1X|2"
   },
   "https://www.rightmove.co.uk/properties/173167532#/?channel=RES_LET": {
@@ -1716,7 +1626,7 @@
   },
   "https://www.rightmove.co.uk/properties/92785029#/?channel=RES_LET": {
     "date": "2026-10-01",
-    "price": "£4,983 pcm\n£1,150 pw",
+    "price": "£4,767 pcm\n£1,100 pw",
     "sig": "semley place|SW1W|3"
   },
   "https://www.rightmove.co.uk/properties/93811302#/?channel=RES_LET": {
@@ -1986,7 +1896,7 @@
   },
   "https://www.onthemarket.com/details/20062359/": {
     "date": "2026-10-03",
-    "price": "2,295 pcm (£530 pw)",
+    "price": "2,249 pcm (£519 pw)",
     "sig": null
   },
   "https://www.zoopla.co.uk/to-rent/details/74415334/": {
@@ -2161,7 +2071,7 @@
   },
   "https://www.zoopla.co.uk/to-rent/details/73882808/": {
     "date": "2026-10-05",
-    "price": "£2,395 pcm",
+    "price": "£2,249 pcm",
     "sig": null
   },
   "https://www.rightmove.co.uk/properties/90641271#/?channel=RES_LET": {
@@ -2533,5 +2443,60 @@
     "date": "2026-10-09",
     "price": "£3,600 pcm\n£831 pw",
     "sig": "theobalds road pk517 holborn|WC1X|2"
+  },
+  "https://www.rightmove.co.uk/properties/94166934#/?channel=RES_LET": {
+    "date": "2026-10-10",
+    "price": "£2,500 pcm\n£577 pw",
+    "sig": "levita house|NW1|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/65795782/": {
+    "date": "2026-10-10",
+    "price": "£2,492 pcm",
+    "sig": "richmond way|W12|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73964309/": {
+    "date": "2026-10-10",
+    "price": "£7,500 pcm",
+    "sig": "aynhoe road|W14|6"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73929809/": {
+    "date": "2026-10-10",
+    "price": "£3,500 pcm",
+    "sig": "avonmore place|W14|2"
+  },
+  "https://www.onthemarket.com/details/20476617/": {
+    "date": "2026-10-10",
+    "price": "8,750 pcm (£2,019 pw)",
+    "sig": "windsor way|W14|4"
+  },
+  "https://www.onthemarket.com/details/20360825/": {
+    "date": "2026-10-10",
+    "price": "3,423 pcm (£790 pw)",
+    "sig": "peacock court lisgar terrace|W14|2"
+  },
+  "https://www.onthemarket.com/details/20516690/": {
+    "date": "2026-10-10",
+    "price": "3,375 pcm (£779 pw)",
+    "sig": "vickery court|EC1V|3"
+  },
+  "https://www.rightmove.co.uk/properties/94037130#/?channel=RES_LET": {
+    "date": "2026-10-10",
+    "price": "£3,000 pcm\n£692 pw",
+    "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/94026738#/?channel=RES_LET": {
+    "date": "2026-10-10",
+    "price": "£3,900 pcm\n£900 pw",
+    "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/92962542#/?channel=RES_LET": {
+    "date": "2026-10-10",
+    "price": "£8,000 pcm\n£1,846 pw",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/15859550/": {
+    "date": "2026-10-10",
+    "price": "7,367 pcm (£1,700 pw)",
+    "sig": null
   }
 }

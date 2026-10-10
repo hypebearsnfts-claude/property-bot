@@ -3693,5 +3693,10 @@
     "date": "2026-10-09",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": null
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74471285/": {
+    "date": "2026-10-10",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "the atelier|W14|2"
   }
 }
