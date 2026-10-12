@@ -3703,5 +3703,30 @@
     "date": "2026-10-11",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": "earl s court|SW5|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74480585/": {
+    "date": "2026-10-12",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "dorset square|NW1|4"
+  },
+  "https://www.onthemarket.com/details/20524433/": {
+    "date": "2026-10-12",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "redan street|W14|2"
+  },
+  "https://www.onthemarket.com/details/20524694/": {
+    "date": "2026-10-12",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "kendal house|N1|2"
+  },
+  "https://www.onthemarket.com/details/20524642/": {
+    "date": "2026-10-12",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "9 bollinder place|EC1V|2"
+  },
+  "https://www.rightmove.co.uk/properties/94217460#/?channel=RES_LET": {
+    "date": "2026-10-12",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
   }
 }
