@@ -1,49 +1,4 @@
 {
-  "https://www.rightmove.co.uk/properties/90894000#/?channel=RES_LET": {
-    "date": "2026-09-13",
-    "price": "£3,900 pcm\n£900 pw",
-    "sig": "jerome house|NW1|2"
-  },
-  "https://www.rightmove.co.uk/properties/91996743#/?channel=RES_LET": {
-    "date": "2026-09-13",
-    "price": "£4,300 pcm\n£992 pw",
-    "sig": "eccleston square|SW1V|2"
-  },
-  "https://www.rightmove.co.uk/properties/89864154#/?channel=RES_LET": {
-    "date": "2026-09-13",
-    "price": "£7,500 pcm\n£1,731 pw",
-    "sig": "lower belgrave street|SW1W|3"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/74227789/": {
-    "date": "2026-09-13",
-    "price": "£3,575 pcm",
-    "sig": "redman house|EC1N|3"
-  },
-  "https://www.onthemarket.com/details/19934022/": {
-    "date": "2026-09-13",
-    "price": "3,900 pcm (£900 pw)",
-    "sig": null
-  },
-  "https://www.onthemarket.com/details/12366860/": {
-    "date": "2026-09-13",
-    "price": "4,749 pcm (£1,096 pw)",
-    "sig": null
-  },
-  "https://www.rightmove.co.uk/properties/91266132#/?channel=RES_LET": {
-    "date": "2026-09-13",
-    "price": "£2,800 pcm\n£646 pw",
-    "sig": "frampton street|NW8|2"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/74229303/": {
-    "date": "2026-09-13",
-    "price": "£3,250 pcm",
-    "sig": "bevan house|WC1N|2"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/73970304/": {
-    "date": "2026-09-13",
-    "price": "£3,400 pcm",
-    "sig": "heathcote street|WC1N|2"
-  },
   "https://www.rightmove.co.uk/properties/93127485#/?channel=RES_LET": {
     "date": "2026-09-14",
     "price": "£5,447 pcm\n£1,257 pw",
@@ -901,7 +856,7 @@
   },
   "https://www.zoopla.co.uk/to-rent/details/74285331/": {
     "date": "2026-09-24",
-    "price": "£4,500 pcm",
+    "price": "£4,000 pcm",
     "sig": "lamb s conduit passage|WC1R|3"
   },
   "https://www.zoopla.co.uk/to-rent/details/62435238/": {
@@ -951,7 +906,7 @@
   },
   "https://www.rightmove.co.uk/properties/93516447#/?channel=RES_LET": {
     "date": "2026-09-24",
-    "price": "£4,500 pcm\n£1,038 pw",
+    "price": "£4,000 pcm\n£923 pw",
     "sig": null
   },
   "https://www.onthemarket.com/details/19827682/": {
@@ -1146,7 +1101,7 @@
   },
   "https://www.rightmove.co.uk/properties/92527668#/?channel=RES_LET": {
     "date": "2026-09-27",
-    "price": "£4,200 pcm\n£969 pw",
+    "price": "£4,116 pcm\n£950 pw\nPREMIUM LISTING",
     "sig": "northdown street|N1|2"
   },
   "https://www.rightmove.co.uk/properties/92406621#/?channel=RES_LET": {
@@ -1301,7 +1256,7 @@
   },
   "https://www.zoopla.co.uk/to-rent/details/74366542/": {
     "date": "2026-09-29",
-    "price": "£3,200 pcm",
+    "price": "£3,150 pcm",
     "sig": "hoxton|N1|3"
   },
   "https://www.zoopla.co.uk/to-rent/details/74366168/": {
@@ -1351,7 +1306,7 @@
   },
   "https://www.rightmove.co.uk/properties/91557423#/?channel=RES_LET": {
     "date": "2026-09-30",
-    "price": "£3,336 pcm\n£770 pw",
+    "price": "£3,250 pcm\n£750 pw",
     "sig": "tottenham street|W1T|2"
   },
   "https://www.rightmove.co.uk/properties/172241588#/?channel=RES_LET": {
@@ -2236,7 +2191,7 @@
   },
   "https://www.zoopla.co.uk/to-rent/details/70318719/": {
     "date": "2026-10-09",
-    "price": "£3,500 pcm",
+    "price": "£3,250 pcm",
     "sig": "river street|EC1R|2"
   },
   "https://www.zoopla.co.uk/to-rent/details/65694333/": {
@@ -2408,5 +2363,75 @@
     "date": "2026-10-12",
     "price": "3,987 pcm (£920 pw)",
     "sig": "grosvenor hill|W1K|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74482955/": {
+    "date": "2026-10-13",
+    "price": "£2,600 pcm",
+    "sig": "frampton street|NW8|2"
+  },
+  "https://www.rightmove.co.uk/properties/89864154#/?channel=RES_LET": {
+    "date": "2026-10-13",
+    "price": "£7,500 pcm\n£1,731 pw",
+    "sig": "lower belgrave street|SW1W|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74493218/": {
+    "date": "2026-10-13",
+    "price": "£7,000 pcm",
+    "sig": "north mews|WC1N|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/72651008/": {
+    "date": "2026-10-13",
+    "price": "£6,500 pcm",
+    "sig": "clareville street|SW7|3"
+  },
+  "https://www.onthemarket.com/details/20271209/": {
+    "date": "2026-10-13",
+    "price": "3,350 pcm (£773 pw)",
+    "sig": "29 31 courtfield road|SW7|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/50763599/": {
+    "date": "2026-10-13",
+    "price": "£3,000 pcm",
+    "sig": "144 drummond street|NW1|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73952339/": {
+    "date": "2026-10-13",
+    "price": "£3,000 pcm",
+    "sig": "hammersmith road|W14|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74499739/": {
+    "date": "2026-10-13",
+    "price": "£2,800 pcm",
+    "sig": "haberdasher st|N1|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74493486/": {
+    "date": "2026-10-13",
+    "price": "£3,950 pcm",
+    "sig": "central street|EC1V|4"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74473376/": {
+    "date": "2026-10-13",
+    "price": "£3,200 pcm",
+    "sig": "myrtle walk|N1|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73123346/": {
+    "date": "2026-10-13",
+    "price": "£3,300 pcm",
+    "sig": "wenlock court|N1|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74499366/": {
+    "date": "2026-10-13",
+    "price": "£8,500 pcm",
+    "sig": "osten mews|SW7|4"
+  },
+  "https://www.onthemarket.com/details/19934022/": {
+    "date": "2026-10-13",
+    "price": "3,900 pcm (£900 pw)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/20536771/": {
+    "date": "2026-10-13",
+    "price": "2,750 pcm (£635 pw)",
+    "sig": null
   }
 }

@@ -3728,5 +3728,30 @@
     "date": "2026-10-12",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/94254858#/?channel=RES_LET": {
+    "date": "2026-10-13",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "seymour street|W2|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74497099/": {
+    "date": "2026-10-13",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "sussex gardens|W2|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/66268223/": {
+    "date": "2026-10-13",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "naoroji street|WC1X|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/66090060/": {
+    "date": "2026-10-13",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "2 principal place|EC2A|2"
+  },
+  "https://www.onthemarket.com/details/20542398/": {
+    "date": "2026-10-13",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "oakwood court|W14|2"
   }
 }
