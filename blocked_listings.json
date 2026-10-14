@@ -3753,5 +3753,30 @@
     "date": "2026-10-13",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": "oakwood court|W14|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/53873634/": {
+    "date": "2026-10-14",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "great cumberland mews|W1H|3"
+  },
+  "https://www.rightmove.co.uk/properties/150130895#/?channel=RES_LET": {
+    "date": "2026-10-14",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "new cavendish street|W1W|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74508094/": {
+    "date": "2026-10-14",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "earsby street|W14|4"
+  },
+  "https://www.onthemarket.com/details/20547613/": {
+    "date": "2026-10-14",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "more close|W14|2"
+  },
+  "https://www.onthemarket.com/details/20332259/": {
+    "date": "2026-10-14",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "liverpool road|N1|2"
   }
 }
