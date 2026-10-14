@@ -3778,5 +3778,25 @@
     "date": "2026-10-14",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": "liverpool road|N1|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74488245/": {
+    "date": "2026-10-14",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "vauxhall bridge road|SW1V|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/72160584/": {
+    "date": "2026-10-14",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "marylebone road|NW1|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74504199/": {
+    "date": "2026-10-14",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "chancery lane|WC2A|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74509887/": {
+    "date": "2026-10-14",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "ritson house|N1|3"
   }
 }

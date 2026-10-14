@@ -2413,5 +2413,25 @@
     "date": "2026-10-14",
     "price": "3,003 pcm (£693 pw)",
     "sig": null
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73890459/": {
+    "date": "2026-10-14",
+    "price": "£3,250 pcm",
+    "sig": "king s cross|N1|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/71141034/": {
+    "date": "2026-10-14",
+    "price": "£2,850 pcm",
+    "sig": "coopers lane|NW1|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/73970304/": {
+    "date": "2026-10-14",
+    "price": "£3,400 pcm",
+    "sig": "heathcote street|WC1N|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/71119581/": {
+    "date": "2026-10-14",
+    "price": "£4,750 pcm",
+    "sig": "northdown street|N1|3"
   }
 }
