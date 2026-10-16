@@ -3828,5 +3828,35 @@
     "date": "2026-10-15",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/94051170#/?channel=RES_LET": {
+    "date": "2026-10-16",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "brechin place|SW7|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74531901/": {
+    "date": "2026-10-16",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "lincoln square|WC2A|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74527557/": {
+    "date": "2026-10-16",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "townshend court|NW8|3"
+  },
+  "https://www.onthemarket.com/details/20515107/": {
+    "date": "2026-10-16",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "elsham road|W14|2"
+  },
+  "https://www.onthemarket.com/details/20465935/": {
+    "date": "2026-10-16",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "napier place|W14|2"
+  },
+  "https://www.onthemarket.com/details/20563130/": {
+    "date": "2026-10-16",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
   }
 }
