@@ -926,7 +926,7 @@
   },
   "https://www.rightmove.co.uk/properties/93811302#/?channel=RES_LET": {
     "date": "2026-10-01",
-    "price": "£3,500 pcm\n£808 pw",
+    "price": "£3,250 pcm\n£750 pw",
     "sig": "churston mansions|WC1X|2"
   },
   "https://www.rightmove.co.uk/properties/93820494#/?channel=RES_LET": {
@@ -951,7 +951,7 @@
   },
   "https://www.rightmove.co.uk/properties/93778617#/?channel=RES_LET": {
     "date": "2026-10-01",
-    "price": "£2,600 pcm\n£600 pw",
+    "price": "£2,500 pcm\n£577 pw",
     "sig": null
   },
   "https://www.rightmove.co.uk/properties/90681630#/?channel=RES_LET": {
@@ -2312,6 +2312,11 @@
   "https://www.onthemarket.com/details/19970081/": {
     "date": "2026-10-19",
     "price": "7,410 pcm (£1,710 pw)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/20582733/": {
+    "date": "2026-10-19",
+    "price": "4,500 pcm (£1,038 pw)",
     "sig": null
   }
 }
