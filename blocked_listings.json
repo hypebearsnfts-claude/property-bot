@@ -3903,5 +3903,25 @@
     "date": "2026-10-19",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": null
+  },
+  "https://www.zoopla.co.uk/to-rent/details/57679508/": {
+    "date": "2026-10-20",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "wyndham place|W1H|2"
+  },
+  "https://www.rightmove.co.uk/properties/94496289#/?channel=RES_LET": {
+    "date": "2026-10-20",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "aviary house|SW1E|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74554660/": {
+    "date": "2026-10-20",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "marylebone high street|W1U|3"
+  },
+  "https://www.rightmove.co.uk/properties/94495431#/?channel=RES_LET": {
+    "date": "2026-10-20",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
   }
 }

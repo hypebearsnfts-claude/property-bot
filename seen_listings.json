@@ -1,69 +1,4 @@
 {
-  "https://www.rightmove.co.uk/properties/92219226#/?channel=RES_LET": {
-    "date": "2026-09-20",
-    "price": "£3,430 pcm\n£792 pw",
-    "sig": "upper montagu street|W1H|2"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/62552611/": {
-    "date": "2026-09-20",
-    "price": "£2,340 pcm",
-    "sig": "woodstock grove|W12|2"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/74085683/": {
-    "date": "2026-09-20",
-    "price": "£3,300 pcm",
-    "sig": "president house|EC1V|3"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/74281137/": {
-    "date": "2026-09-20",
-    "price": "£4,100 pcm",
-    "sig": "old pye st|SW1P|3"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/74211430/": {
-    "date": "2026-09-20",
-    "price": "£3,500 pcm",
-    "sig": "gloucester road|SW7|2"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/68390498/": {
-    "date": "2026-09-20",
-    "price": "£7,367 pcm",
-    "sig": "queen s gate place mews|SW7|3"
-  },
-  "https://www.onthemarket.com/details/18639775/": {
-    "date": "2026-09-20",
-    "price": "2,599 pcm (£600 pw)",
-    "sig": "175 gloucester place|NW1|2"
-  },
-  "https://www.onthemarket.com/details/7150537/": {
-    "date": "2026-09-20",
-    "price": "3,098 pcm (£715 pw)",
-    "sig": null
-  },
-  "https://www.zoopla.co.uk/to-rent/details/74257882/": {
-    "date": "2026-09-20",
-    "price": "£12,003 pcm",
-    "sig": null
-  },
-  "https://www.rightmove.co.uk/properties/91299747#/?channel=RES_LET": {
-    "date": "2026-09-20",
-    "price": "£8,199 pcm\n£1,892 pw",
-    "sig": "marylebone|W1U|3"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/64393513/": {
-    "date": "2026-09-20",
-    "price": "£6,500 pcm",
-    "sig": "wyndham house|W1H|4"
-  },
-  "https://www.rightmove.co.uk/properties/92768538#/?channel=RES_LET": {
-    "date": "2026-09-20",
-    "price": "£8,948 pcm\n£2,065 pw\nPREMIUM LISTING",
-    "sig": null
-  },
-  "https://www.rightmove.co.uk/properties/92912580#/?channel=RES_LET": {
-    "date": "2026-09-20",
-    "price": "£7,950 pcm\n£1,835 pw",
-    "sig": null
-  },
   "https://www.rightmove.co.uk/properties/92281845#/?channel=RES_LET": {
     "date": "2026-09-21",
     "price": "£4,750 pcm\n£1,096 pw",
@@ -436,7 +371,7 @@
   },
   "https://www.onthemarket.com/details/20008258/": {
     "date": "2026-09-24",
-    "price": "2,999 pcm (£692 pw)",
+    "price": "2,595 pcm (£599 pw)",
     "sig": null
   },
   "https://www.onthemarket.com/details/18748444/": {
@@ -1191,7 +1126,7 @@
   },
   "https://www.onthemarket.com/details/20062359/": {
     "date": "2026-10-03",
-    "price": "2,249 pcm (£519 pw)",
+    "price": "2,225 pcm (£513 pw)",
     "sig": null
   },
   "https://www.zoopla.co.uk/to-rent/details/74415334/": {
@@ -1366,7 +1301,7 @@
   },
   "https://www.zoopla.co.uk/to-rent/details/73882808/": {
     "date": "2026-10-05",
-    "price": "£2,249 pcm",
+    "price": "£2,225 pcm",
     "sig": null
   },
   "https://www.rightmove.co.uk/properties/90641271#/?channel=RES_LET": {
@@ -2318,5 +2253,75 @@
     "date": "2026-10-19",
     "price": "4,500 pcm (£1,038 pw)",
     "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/94521009#/?channel=RES_LET": {
+    "date": "2026-10-20",
+    "price": "£3,200 pcm\n£738 pw",
+    "sig": "agar street|WC2N|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74554541/": {
+    "date": "2026-10-20",
+    "price": "£5,369 pcm",
+    "sig": "upper montagu street|W1H|2"
+  },
+  "https://www.rightmove.co.uk/properties/94511121#/?channel=RES_LET": {
+    "date": "2026-10-20",
+    "price": "£5,500 pcm\n£1,269 pw",
+    "sig": "charlotte street|W1T|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/70212133/": {
+    "date": "2026-10-20",
+    "price": "£3,250 pcm",
+    "sig": "penfold street|NW8|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74553920/": {
+    "date": "2026-10-20",
+    "price": "£3,185 pcm",
+    "sig": "greenwell street|W1W|3"
+  },
+  "https://www.rightmove.co.uk/properties/94507956#/?channel=RES_LET": {
+    "date": "2026-10-20",
+    "price": "£4,600 pcm\n£1,062 pw",
+    "sig": "lyall street|SW1X|2"
+  },
+  "https://www.rightmove.co.uk/properties/94506102#/?channel=RES_LET": {
+    "date": "2026-10-20",
+    "price": "£3,400 pcm\n£785 pw",
+    "sig": "russell house|SW1V|3"
+  },
+  "https://www.rightmove.co.uk/properties/94495845#/?channel=RES_LET": {
+    "date": "2026-10-20",
+    "price": "£2,925 pcm\n£675 pw",
+    "sig": "warwick way|SW1V|2"
+  },
+  "https://www.rightmove.co.uk/properties/94495809#/?channel=RES_LET": {
+    "date": "2026-10-20",
+    "price": "£3,500 pcm\n£808 pw",
+    "sig": "greycoat place|SW1P|2"
+  },
+  "https://www.rightmove.co.uk/properties/94495470#/?channel=RES_LET": {
+    "date": "2026-10-20",
+    "price": "£5,499 pcm\n£1,269 pw",
+    "sig": "tonbridge street|WC1H|5"
+  },
+  "https://www.rightmove.co.uk/properties/94480572#/?channel=RES_LET": {
+    "date": "2026-10-20",
+    "price": "£4,500 pcm\n£1,038 pw",
+    "sig": "kynance mews|SW7|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74540209/": {
+    "date": "2026-10-20",
+    "price": "£5,200 pcm",
+    "sig": "gloucester place|W1U|4"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/56924877/": {
+    "date": "2026-10-20",
+    "price": "£2,448 pcm",
+    "sig": "woodstock grove|W12|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74558399/": {
+    "date": "2026-10-20",
+    "price": "£3,950 pcm",
+    "sig": "st john s lane|EC1M|2"
   }
 }
