@@ -3923,5 +3923,50 @@
     "date": "2026-10-20",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/94549584#/?channel=RES_LET": {
+    "date": "2026-10-21",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "new quebec street|W1H|3"
+  },
+  "https://www.rightmove.co.uk/properties/153281627#/?channel=RES_LET": {
+    "date": "2026-10-21",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "cleveland street|W1T|2"
+  },
+  "https://www.onthemarket.com/details/20429248/": {
+    "date": "2026-10-21",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "kensington west|W14|2"
+  },
+  "https://www.onthemarket.com/details/18666099/": {
+    "date": "2026-10-21",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "bridgeman house|W14|2"
+  },
+  "https://www.onthemarket.com/details/20572704/": {
+    "date": "2026-10-21",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/20587077/": {
+    "date": "2026-10-21",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/94568742#/?channel=RES_LET": {
+    "date": "2026-10-21",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/9504194/": {
+    "date": "2026-10-21",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/20595067/": {
+    "date": "2026-10-21",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
   }
 }
