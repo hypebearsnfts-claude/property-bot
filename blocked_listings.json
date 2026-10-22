@@ -3968,5 +3968,40 @@
     "date": "2026-10-21",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/94618293#/?channel=RES_LET": {
+    "date": "2026-10-22",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "peninsula praed street paddington|W2|2"
+  },
+  "https://www.onthemarket.com/details/16352769/": {
+    "date": "2026-10-22",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "maygood street|N1|2"
+  },
+  "https://www.onthemarket.com/details/14259118/": {
+    "date": "2026-10-22",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "charles house|W14|3"
+  },
+  "https://www.onthemarket.com/details/13473526/": {
+    "date": "2026-10-22",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "broadwalk house|SW7|4"
+  },
+  "https://www.onthemarket.com/details/20602218/": {
+    "date": "2026-10-22",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/20608604/": {
+    "date": "2026-10-22",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/20522819/": {
+    "date": "2026-10-22",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
   }
 }
