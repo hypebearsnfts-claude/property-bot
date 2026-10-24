@@ -4023,5 +4023,15 @@
     "date": "2026-10-23",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/94302057#/?channel=RES_LET": {
+    "date": "2026-10-24",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "gloucester place|W1H|2"
+  },
+  "https://www.rightmove.co.uk/properties/94568934#/?channel=RES_LET": {
+    "date": "2026-10-24",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
   }
 }
