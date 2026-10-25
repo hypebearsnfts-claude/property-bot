@@ -4033,5 +4033,10 @@
     "date": "2026-10-24",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/93381225#/?channel=RES_LET": {
+    "date": "2026-10-25",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "central tower|SW1V|2"
   }
 }
