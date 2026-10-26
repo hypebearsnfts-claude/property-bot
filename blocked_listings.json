@@ -4038,5 +4038,20 @@
     "date": "2026-10-25",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": "central tower|SW1V|2"
+  },
+  "https://www.rightmove.co.uk/properties/94739292#/?channel=RES_LET": {
+    "date": "2026-10-26",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "vincent house|SW1P|2"
+  },
+  "https://www.onthemarket.com/details/20623995/": {
+    "date": "2026-10-26",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "st georges court|SW7|4"
+  },
+  "https://www.onthemarket.com/details/20624464/": {
+    "date": "2026-10-26",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
   }
 }

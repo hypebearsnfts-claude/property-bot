@@ -1,114 +1,4 @@
 {
-  "https://www.zoopla.co.uk/to-rent/details/74343220/": {
-    "date": "2026-09-26",
-    "price": "£3,000 pcm",
-    "sig": "6 upper john street|W1F|2"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/74343215/": {
-    "date": "2026-09-26",
-    "price": "£3,000 pcm",
-    "sig": "25 charles street|W1J|2"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/74260250/": {
-    "date": "2026-09-26",
-    "price": "£3,199 pcm",
-    "sig": "cumberland street|SW1V|2"
-  },
-  "https://www.rightmove.co.uk/properties/92469696#/?channel=RES_LET": {
-    "date": "2026-09-26",
-    "price": "£6,174 pcm\n£1,425 pw",
-    "sig": "semley house|SW1W|3"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/74069446/": {
-    "date": "2026-09-26",
-    "price": "£9,317 pcm",
-    "sig": "buckingham gate|SW1E|3"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/73536246/": {
-    "date": "2026-09-26",
-    "price": "£8,342 pcm",
-    "sig": "ebury mews|SW1W|3"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/73522118/": {
-    "date": "2026-09-26",
-    "price": "£3,750 pcm",
-    "sig": "copperfield house|WC1N|2"
-  },
-  "https://www.rightmove.co.uk/properties/91404231#/?channel=RES_LET": {
-    "date": "2026-09-26",
-    "price": "£8,350 pcm\n£1,927 pw",
-    "sig": "old manor yard|SW5|5"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/74263856/": {
-    "date": "2026-09-26",
-    "price": "£3,750 pcm",
-    "sig": "dombey street|WC1N|3"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/74324977/": {
-    "date": "2026-09-26",
-    "price": "£3,800 pcm",
-    "sig": "new north road|N1|2"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/60834415/": {
-    "date": "2026-09-26",
-    "price": "£2,650 pcm",
-    "sig": "micawber court|N1|2"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/51533331/": {
-    "date": "2026-09-26",
-    "price": "£3,500 pcm",
-    "sig": "marie lloyd house|N1|3"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/73013823/": {
-    "date": "2026-09-26",
-    "price": "£5,500 pcm",
-    "sig": "whitehall court|SW1A|3"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/73587332/": {
-    "date": "2026-09-26",
-    "price": "£6,250 pcm",
-    "sig": "ashburnham mews|SW1P|3"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/73963434/": {
-    "date": "2026-09-26",
-    "price": "£3,850 pcm",
-    "sig": "wellesley house|NW1|3"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/74342404/": {
-    "date": "2026-09-26",
-    "price": "£3,190 pcm",
-    "sig": "doric way|NW1|2"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/74057583/": {
-    "date": "2026-09-26",
-    "price": "£3,650 pcm",
-    "sig": "killick street|N1|2"
-  },
-  "https://www.onthemarket.com/details/3172165/": {
-    "date": "2026-09-26",
-    "price": "3,497 pcm (£807 pw)",
-    "sig": "emperors gate|SW7|3"
-  },
-  "https://www.onthemarket.com/details/14685514/": {
-    "date": "2026-09-26",
-    "price": "4,767 pcm (£1,100 pw)",
-    "sig": null
-  },
-  "https://www.rightmove.co.uk/properties/92989866#/?channel=RES_LET": {
-    "date": "2026-09-26",
-    "price": "£3,750 pcm\n£865 pw",
-    "sig": null
-  },
-  "https://www.onthemarket.com/details/17179429/": {
-    "date": "2026-09-26",
-    "price": "7,748 pcm (£1,788 pw)",
-    "sig": null
-  },
-  "https://www.onthemarket.com/details/20214250/": {
-    "date": "2026-09-26",
-    "price": "1,200 pcm (£277 pw)",
-    "sig": null
-  },
   "https://www.rightmove.co.uk/properties/92527668#/?channel=RES_LET": {
     "date": "2026-09-27",
     "price": "£4,116 pcm\n£950 pw\nPREMIUM LISTING",
@@ -296,7 +186,7 @@
   },
   "https://www.rightmove.co.uk/properties/93712128#/?channel=RES_LET": {
     "date": "2026-09-29",
-    "price": "£4,300 pcm\n£992 pw",
+    "price": "£4,000 pcm\n£923 pw",
     "sig": null
   },
   "https://www.onthemarket.com/details/19411034/": {
@@ -1356,7 +1246,7 @@
   },
   "https://www.rightmove.co.uk/properties/93793944#/?channel=RES_LET": {
     "date": "2026-10-12",
-    "price": "£3,200 pcm\n£738 pw",
+    "price": "£3,100 pcm\n£715 pw\nCLOSE TO STATION",
     "sig": "hogarth road|SW5|2"
   },
   "https://www.rightmove.co.uk/properties/92897448#/?channel=RES_LET": {
@@ -1971,7 +1861,7 @@
   },
   "https://www.rightmove.co.uk/properties/94622196#/?channel=RES_LET": {
     "date": "2026-10-22",
-    "price": "£2,800 pcm\n£646 pw\nFixed Price",
+    "price": "£2,600 pcm\n£600 pw\nFixed Price",
     "sig": "65 rochester row|SW1P|2"
   },
   "https://www.rightmove.co.uk/properties/94581069#/?channel=RES_LET": {
@@ -2143,5 +2033,80 @@
     "date": "2026-10-25",
     "price": "3,000 pcm (£692 pw)",
     "sig": "whiteleys cottages|W14|2"
+  },
+  "https://www.rightmove.co.uk/properties/93449532#/?channel=RES_LET": {
+    "date": "2026-10-26",
+    "price": "£10,000 pcm\n£2,308 pw",
+    "sig": "harley st|W1G|3"
+  },
+  "https://www.rightmove.co.uk/properties/92716521#/?channel=RES_LET": {
+    "date": "2026-10-26",
+    "price": "£7,410 pcm\n£1,710 pw",
+    "sig": "mayfair|W1J|3"
+  },
+  "https://www.rightmove.co.uk/properties/92469696#/?channel=RES_LET": {
+    "date": "2026-10-26",
+    "price": "£6,174 pcm\n£1,425 pw\nPREMIUM LISTING",
+    "sig": "semley house|SW1W|3"
+  },
+  "https://www.rightmove.co.uk/properties/94745205#/?channel=RES_LET": {
+    "date": "2026-10-26",
+    "price": "£3,300 pcm\n£762 pw",
+    "sig": "argyle square|WC1H|2"
+  },
+  "https://www.rightmove.co.uk/properties/94473837#/?channel=RES_LET": {
+    "date": "2026-10-26",
+    "price": "£3,500 pcm\n£808 pw",
+    "sig": "killick street|N1|2"
+  },
+  "https://www.rightmove.co.uk/properties/94134162#/?channel=RES_LET": {
+    "date": "2026-10-26",
+    "price": "£5,417 pcm\n£1,250 pw\nPREMIUM LISTING",
+    "sig": "redcliffe square|SW10|2"
+  },
+  "https://www.rightmove.co.uk/properties/94739820#/?channel=RES_LET": {
+    "date": "2026-10-26",
+    "price": "£2,600 pcm\n£600 pw\nFixed Price",
+    "sig": "78 gloucester terrace|W2|2"
+  },
+  "https://www.rightmove.co.uk/properties/94342239#/?channel=RES_LET": {
+    "date": "2026-10-26",
+    "price": "£9,000 pcm\n£2,077 pw",
+    "sig": "porchester terrace hyde park|W2|5"
+  },
+  "https://www.onthemarket.com/details/20624300/": {
+    "date": "2026-10-26",
+    "price": "4,008 pcm (£925 pw)",
+    "sig": "phoenix|WC2H|2"
+  },
+  "https://www.onthemarket.com/details/14685514/": {
+    "date": "2026-10-26",
+    "price": "4,767 pcm (£1,100 pw)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/20628186/": {
+    "date": "2026-10-26",
+    "price": "4,500 pcm (£1,038 pw)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/20625078/": {
+    "date": "2026-10-26",
+    "price": "3,000 pcm (£692 pw)",
+    "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/94718496#/?channel=RES_LET": {
+    "date": "2026-10-26",
+    "price": "£4,000 pcm\n£923 pw",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/20629736/": {
+    "date": "2026-10-26",
+    "price": "3,500 pcm (£808 pw)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/20214250/": {
+    "date": "2026-10-26",
+    "price": "1,200 pcm (£277 pw)",
+    "sig": null
   }
 }
