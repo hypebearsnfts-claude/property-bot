@@ -4053,5 +4053,30 @@
     "date": "2026-10-26",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/94768266#/?channel=RES_LET": {
+    "date": "2026-10-27",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "paddington|W2|2"
+  },
+  "https://www.onthemarket.com/details/7140011/": {
+    "date": "2026-10-27",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/13422912/": {
+    "date": "2026-10-27",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/94803507#/?channel=RES_LET": {
+    "date": "2026-10-27",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/20599862/": {
+    "date": "2026-10-27",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
   }
 }
