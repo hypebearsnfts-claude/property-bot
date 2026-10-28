@@ -2123,5 +2123,20 @@
     "date": "2026-10-28",
     "price": "11,267 pcm (£2,600 pw)",
     "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/94861908#/?channel=RES_LET": {
+    "date": "2026-10-28",
+    "price": "£4,983 pcm\n£1,150 pw",
+    "sig": "chesham street|SW1X|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74620986/": {
+    "date": "2026-10-28",
+    "price": "£3,500 pcm",
+    "sig": "copperworks|N1|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74601624/": {
+    "date": "2026-10-28",
+    "price": "£3,000 pcm",
+    "sig": "york way|N1|2"
   }
 }
