@@ -4078,5 +4078,15 @@
     "date": "2026-10-27",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/94837248#/?channel=RES_LET": {
+    "date": "2026-10-28",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "york place mansions|W1U|2"
+  },
+  "https://www.rightmove.co.uk/properties/94807527#/?channel=RES_LET": {
+    "date": "2026-10-28",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "emerson court|N1|2"
   }
 }

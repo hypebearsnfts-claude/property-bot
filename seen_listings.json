@@ -1,49 +1,4 @@
 {
-  "https://www.zoopla.co.uk/to-rent/details/71803886/": {
-    "date": "2026-09-28",
-    "price": "£6,933 pcm",
-    "sig": "connaught street|W2|4"
-  },
-  "https://www.rightmove.co.uk/properties/93637539#/?channel=RES_LET": {
-    "date": "2026-09-28",
-    "price": "£3,350 pcm\n£773 pw",
-    "sig": "doric way|NW1|4"
-  },
-  "https://www.rightmove.co.uk/properties/92722239#/?channel=RES_LET": {
-    "date": "2026-09-28",
-    "price": "£4,300 pcm\n£992 pw",
-    "sig": "huntley street|WC1E|2"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/73900175/": {
-    "date": "2026-09-28",
-    "price": "£3,000 pcm",
-    "sig": "gray s inn road|WC1X|2"
-  },
-  "https://www.rightmove.co.uk/properties/90278715#/?channel=RES_LET": {
-    "date": "2026-09-28",
-    "price": "£5,417 pcm\n£1,250 pw",
-    "sig": "courtfield road|SW7|3"
-  },
-  "https://www.rightmove.co.uk/properties/93360930#/?channel=RES_LET": {
-    "date": "2026-09-28",
-    "price": "£4,329 pcm\n£999 pw",
-    "sig": "gloucester terrace|W2|2"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/71018750/": {
-    "date": "2026-09-28",
-    "price": "£3,400 pcm",
-    "sig": "broadwick street|W1F|2"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/44664803/": {
-    "date": "2026-09-28",
-    "price": "£5,750 pcm",
-    "sig": "sandringham court|W1F|3"
-  },
-  "https://www.onthemarket.com/details/20422734/": {
-    "date": "2026-09-28",
-    "price": "3,100 pcm (£715 pw)",
-    "sig": "swinton st|WC1X|2"
-  },
   "https://www.rightmove.co.uk/properties/173167532#/?channel=RES_LET": {
     "date": "2026-09-29",
     "price": "£6,933 pcm\n£1,600 pw",
@@ -1376,7 +1331,7 @@
   },
   "https://www.rightmove.co.uk/properties/93156027#/?channel=RES_LET": {
     "date": "2026-10-15",
-    "price": "£6,000 pcm\n£1,385 pw",
+    "price": "£5,500 pcm\n£1,269 pw",
     "sig": "evelyn mansions|SW1P|4"
   },
   "https://www.rightmove.co.uk/properties/94356636#/?channel=RES_LET": {
@@ -1571,7 +1526,7 @@
   },
   "https://www.onthemarket.com/details/20310938/": {
     "date": "2026-10-18",
-    "price": "4,333 pcm (£1,000 pw)",
+    "price": "4,000 pcm (£923 pw)",
     "sig": null
   },
   "https://www.onthemarket.com/details/20574307/": {
@@ -2066,7 +2021,7 @@
   },
   "https://www.rightmove.co.uk/properties/94194786#/?channel=RES_LET": {
     "date": "2026-10-27",
-    "price": "£3,142 pcm\n£725 pw",
+    "price": "£3,120 pcm\n£720 pw",
     "sig": "caledonian road|N1|2"
   },
   "https://www.rightmove.co.uk/properties/93468261#/?channel=RES_LET": {
@@ -2097,6 +2052,76 @@
   "https://www.onthemarket.com/details/20637740/": {
     "date": "2026-10-27",
     "price": "3,750 pcm (£865 pw)",
+    "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/94844466#/?channel=RES_LET": {
+    "date": "2026-10-28",
+    "price": "£3,500 pcm\n£808 pw",
+    "sig": "morpeth terrace|SW1P|2"
+  },
+  "https://www.rightmove.co.uk/properties/94810239#/?channel=RES_LET": {
+    "date": "2026-10-28",
+    "price": "£3,300 pcm\n£762 pw\nPREMIUM LISTING",
+    "sig": "glynde reach|WC1H|2"
+  },
+  "https://www.rightmove.co.uk/properties/94528743#/?channel=RES_LET": {
+    "date": "2026-10-28",
+    "price": "£4,000 pcm\n£923 pw",
+    "sig": "huntley street|WC1E|2"
+  },
+  "https://www.rightmove.co.uk/properties/98631332#/?channel=RES_LET": {
+    "date": "2026-10-28",
+    "price": "£4,225 pcm\n£975 pw",
+    "sig": "gray s inn road|WC1X|2"
+  },
+  "https://www.rightmove.co.uk/properties/94751472#/?channel=RES_LET": {
+    "date": "2026-10-28",
+    "price": "£7,500 pcm\n£1,731 pw",
+    "sig": "collingham road|SW5|4"
+  },
+  "https://www.onthemarket.com/details/5805793/": {
+    "date": "2026-10-28",
+    "price": "5,417 pcm (£1,250 pw)",
+    "sig": "courtfield road|SW7|3"
+  },
+  "https://www.rightmove.co.uk/properties/94738839#/?channel=RES_LET": {
+    "date": "2026-10-28",
+    "price": "£3,748 pcm\n£865 pw",
+    "sig": "gloucester terrace|W2|2"
+  },
+  "https://www.onthemarket.com/details/14124945/": {
+    "date": "2026-10-28",
+    "price": "3,500 pcm (£808 pw)",
+    "sig": "providence place|N1|2"
+  },
+  "https://www.onthemarket.com/details/20274750/": {
+    "date": "2026-10-28",
+    "price": "3,750 pcm (£865 pw)",
+    "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/94565160#/?channel=RES_LET": {
+    "date": "2026-10-28",
+    "price": "£2,600 pcm\n£600 pw",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/20641669/": {
+    "date": "2026-10-28",
+    "price": "3,500 pcm (£808 pw)",
+    "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/92989866#/?channel=RES_LET": {
+    "date": "2026-10-28",
+    "price": "£2,500 pcm\n£577 pw",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/17160285/": {
+    "date": "2026-10-28",
+    "price": "2,900 pcm (£669 pw)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/14364352/": {
+    "date": "2026-10-28",
+    "price": "11,267 pcm (£2,600 pw)",
     "sig": null
   }
 }
