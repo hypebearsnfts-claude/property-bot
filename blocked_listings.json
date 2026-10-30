@@ -4113,5 +4113,80 @@
     "date": "2026-10-29",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": null
+  },
+  "https://www.zoopla.co.uk/to-rent/details/52934614/": {
+    "date": "2026-10-30",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "castlereagh street|W1H|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/56247092/": {
+    "date": "2026-10-30",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "castlereagh street|W1H|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74623685/": {
+    "date": "2026-10-30",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "buckingham gate|SW1E|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74622253/": {
+    "date": "2026-10-30",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "morpeth mansions|SW1P|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74553499/": {
+    "date": "2026-10-30",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "14 hand axe yard|WC1X|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74610381/": {
+    "date": "2026-10-30",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "park house|W1K|3"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74622872/": {
+    "date": "2026-10-30",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "owen street|EC1V|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/70123442/": {
+    "date": "2026-10-30",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "worcester point|EC1V|2"
+  },
+  "https://www.zoopla.co.uk/to-rent/details/74621285/": {
+    "date": "2026-10-30",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "eccleston square|SW1V|2"
+  },
+  "https://www.onthemarket.com/details/20660457/": {
+    "date": "2026-10-30",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "warwick road beckford close|W14|2"
+  },
+  "https://www.onthemarket.com/details/20287040/": {
+    "date": "2026-10-30",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "sinclair road|W14|2"
+  },
+  "https://www.onthemarket.com/details/20659638/": {
+    "date": "2026-10-30",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "bartholomew close|EC1A|2"
+  },
+  "https://www.onthemarket.com/details/20655693/": {
+    "date": "2026-10-30",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/94948539#/?channel=RES_LET": {
+    "date": "2026-10-30",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/94590837#/?channel=RES_LET": {
+    "date": "2026-10-30",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
   }
 }
