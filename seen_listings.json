@@ -1,139 +1,4 @@
 {
-  "https://www.rightmove.co.uk/properties/90681630#/?channel=RES_LET": {
-    "date": "2026-10-02",
-    "price": "£7,908 pcm\n£1,825 pw",
-    "sig": "knox street|W1H|3"
-  },
-  "https://www.rightmove.co.uk/properties/92644392#/?channel=RES_LET": {
-    "date": "2026-10-02",
-    "price": "£6,998 pcm\n£1,615 pw",
-    "sig": "park road|NW8|3"
-  },
-  "https://www.rightmove.co.uk/properties/93872898#/?channel=RES_LET": {
-    "date": "2026-10-02",
-    "price": "£2,600 pcm\n£600 pw",
-    "sig": "henry wise house|SW1V|3"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/73914552/": {
-    "date": "2026-10-02",
-    "price": "£6,250 pcm",
-    "sig": "artillery row|SW1P|3"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/66550938/": {
-    "date": "2026-10-02",
-    "price": "£3,250 pcm",
-    "sig": "wharton street|WC1X|2"
-  },
-  "https://www.rightmove.co.uk/properties/15084889#/?channel=RES_LET": {
-    "date": "2026-10-02",
-    "price": "£2,817 pcm\n£650 pw",
-    "sig": "omega place|N1|2"
-  },
-  "https://www.rightmove.co.uk/properties/87644679#/?channel=RES_LET": {
-    "date": "2026-10-02",
-    "price": "£5,500 pcm\n£1,269 pw",
-    "sig": "palace gate|W8|3"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/73309400/": {
-    "date": "2026-10-02",
-    "price": "£6,000 pcm",
-    "sig": "gloucester terrace|W2|3"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/74368506/": {
-    "date": "2026-10-02",
-    "price": "£3,200 pcm",
-    "sig": "gresse street|W1T|2"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/74403702/": {
-    "date": "2026-10-02",
-    "price": "£5,300 pcm",
-    "sig": "wesley court|W1G|2"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/74403033/": {
-    "date": "2026-10-02",
-    "price": "£5,400 pcm",
-    "sig": "cumberland market|NW1|4"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/51551729/": {
-    "date": "2026-10-02",
-    "price": "£3,300 pcm",
-    "sig": "dereham place|EC2A|2"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/51551635/": {
-    "date": "2026-10-02",
-    "price": "£3,300 pcm",
-    "sig": "8 dereham place|EC2A|2"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/74384283/": {
-    "date": "2026-10-02",
-    "price": "£3,500 pcm",
-    "sig": "alford court|N1|3"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/74373747/": {
-    "date": "2026-10-02",
-    "price": "£3,100 pcm",
-    "sig": "fullwood mews|N1|2"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/74252150/": {
-    "date": "2026-10-02",
-    "price": "£3,099 pcm",
-    "sig": "custance house provost estate|N1|3"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/74390156/": {
-    "date": "2026-10-02",
-    "price": "£3,275 pcm",
-    "sig": "alderney st|SW1V|2"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/72847597/": {
-    "date": "2026-10-02",
-    "price": "£4,250 pcm",
-    "sig": "granville square|WC1X|3"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/74363717/": {
-    "date": "2026-10-02",
-    "price": "£9,967 pcm",
-    "sig": "lexham gardens|W8|4"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/74390918/": {
-    "date": "2026-10-02",
-    "price": "£3,450 pcm",
-    "sig": "talbot square|W2|2"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/74390291/": {
-    "date": "2026-10-02",
-    "price": "£2,492 pcm",
-    "sig": "hallfield estate|W2|2"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/73914503/": {
-    "date": "2026-10-02",
-    "price": "£3,460 pcm",
-    "sig": "sussex gardens|W2|2"
-  },
-  "https://www.onthemarket.com/details/20459443/": {
-    "date": "2026-10-02",
-    "price": "2,600 pcm (£600 pw)",
-    "sig": "charlton place|N1|2"
-  },
-  "https://www.rightmove.co.uk/properties/93866712#/?channel=RES_LET": {
-    "date": "2026-10-02",
-    "price": "£5,300 pcm\n£1,223 pw",
-    "sig": null
-  },
-  "https://www.onthemarket.com/details/20461915/": {
-    "date": "2026-10-02",
-    "price": "2,968 pcm (£685 pw)",
-    "sig": null
-  },
-  "https://www.onthemarket.com/details/20245694/": {
-    "date": "2026-10-02",
-    "price": "5,460 pcm (£1,260 pw)",
-    "sig": null
-  },
-  "https://www.onthemarket.com/details/20245695/": {
-    "date": "2026-10-02",
-    "price": "5,460 pcm (£1,260 pw)",
-    "sig": null
-  },
   "https://www.zoopla.co.uk/to-rent/details/74390869/": {
     "date": "2026-10-03",
     "price": "£6,000 pcm",
@@ -1571,7 +1436,7 @@
   },
   "https://www.rightmove.co.uk/properties/94648050#/?channel=RES_LET": {
     "date": "2026-10-23",
-    "price": "£2,250 pcm\n£519 pw",
+    "price": "£2,200 pcm\n£508 pw",
     "sig": "penfold place|NW1|2"
   },
   "https://www.rightmove.co.uk/properties/165210122#/?channel=RES_LET": {
@@ -2187,6 +2052,31 @@
   "https://www.onthemarket.com/details/19337293/": {
     "date": "2026-10-31",
     "price": "3,445 pcm (£795 pw)",
+    "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/90480600#/?channel=RES_LET": {
+    "date": "2026-11-01",
+    "price": "£5,995 pcm\n£1,383 pw",
+    "sig": "artillery row|SW1P|3"
+  },
+  "https://www.rightmove.co.uk/properties/92508420#/?channel=RES_LET": {
+    "date": "2026-11-01",
+    "price": "£4,214 pcm\n£972 pw",
+    "sig": "handel street|WC1N|2"
+  },
+  "https://www.rightmove.co.uk/properties/15084889#/?channel=RES_LET": {
+    "date": "2026-11-01",
+    "price": "£2,817 pcm\n£650 pw",
+    "sig": "omega place|N1|2"
+  },
+  "https://www.onthemarket.com/details/20487923/": {
+    "date": "2026-11-01",
+    "price": "4,200 pcm (£969 pw)",
+    "sig": "theberton street|N1|2"
+  },
+  "https://www.onthemarket.com/details/20461915/": {
+    "date": "2026-11-01",
+    "price": "2,968 pcm (£685 pw)",
     "sig": null
   }
 }
