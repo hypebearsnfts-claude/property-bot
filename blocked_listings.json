@@ -4188,5 +4188,35 @@
     "date": "2026-10-30",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/95006550#/?channel=RES_LET": {
+    "date": "2026-11-02",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "centre point tower|WC1A|2"
+  },
+  "https://www.rightmove.co.uk/properties/95002326#/?channel=RES_LET": {
+    "date": "2026-11-02",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "carrick yard|NW8|2"
+  },
+  "https://www.rightmove.co.uk/properties/93869769#/?channel=RES_LET": {
+    "date": "2026-11-02",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "craven hill gardens|W2|3"
+  },
+  "https://www.rightmove.co.uk/properties/95016855#/?channel=RES_LET": {
+    "date": "2026-11-02",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/5988809/": {
+    "date": "2026-11-02",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/20672977/": {
+    "date": "2026-11-02",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
   }
 }
