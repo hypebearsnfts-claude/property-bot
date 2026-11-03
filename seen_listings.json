@@ -1,59 +1,4 @@
 {
-  "https://www.zoopla.co.uk/to-rent/details/74415334/": {
-    "date": "2026-10-04",
-    "price": "£2,999 pcm",
-    "sig": "drummond st|NW1|2"
-  },
-  "https://www.rightmove.co.uk/properties/93791946#/?channel=RES_LET": {
-    "date": "2026-10-04",
-    "price": "£11,800 pcm\n£2,723 pw",
-    "sig": "tavistock place|WC1H|3"
-  },
-  "https://www.onthemarket.com/details/20461610/": {
-    "date": "2026-10-04",
-    "price": "3,200 pcm (£738 pw)",
-    "sig": null
-  },
-  "https://www.zoopla.co.uk/to-rent/details/70013208/": {
-    "date": "2026-10-04",
-    "price": "£3,683 pcm",
-    "sig": null
-  },
-  "https://www.zoopla.co.uk/to-rent/details/70628029/": {
-    "date": "2026-10-04",
-    "price": "£3,683 pcm",
-    "sig": null
-  },
-  "https://www.zoopla.co.uk/to-rent/details/74415336/": {
-    "date": "2026-10-04",
-    "price": "£3,300 pcm",
-    "sig": "wellesley terrace|N1|2"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/74115005/": {
-    "date": "2026-10-04",
-    "price": "£3,099 pcm",
-    "sig": "buxton court|N1|3"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/74100096/": {
-    "date": "2026-10-04",
-    "price": "£2,800 pcm",
-    "sig": "royal oak court|N1|2"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/74125212/": {
-    "date": "2026-10-04",
-    "price": "£8,000 pcm",
-    "sig": "st georges drive|SW1V|4"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/74206260/": {
-    "date": "2026-10-04",
-    "price": "£4,000 pcm",
-    "sig": "sidmouth street|WC1H|4"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/74392354/": {
-    "date": "2026-10-04",
-    "price": "£2,968 pcm",
-    "sig": "inverness terrace|W2|2"
-  },
   "https://www.zoopla.co.uk/to-rent/details/74421185/": {
     "date": "2026-10-05",
     "price": "£5,005 pcm",
@@ -186,7 +131,7 @@
   },
   "https://www.rightmove.co.uk/properties/93965511#/?channel=RES_LET": {
     "date": "2026-10-06",
-    "price": "£6,998 pcm\n£1,615 pw",
+    "price": "£6,933 pcm\n£1,600 pw",
     "sig": "marloes road|W8|3"
   },
   "https://www.rightmove.co.uk/properties/90596535#/?channel=RES_LET": {
@@ -581,7 +526,7 @@
   },
   "https://www.rightmove.co.uk/properties/94037130#/?channel=RES_LET": {
     "date": "2026-10-10",
-    "price": "£3,000 pcm\n£692 pw",
+    "price": "£2,750 pcm\n£635 pw",
     "sig": null
   },
   "https://www.rightmove.co.uk/properties/94026738#/?channel=RES_LET": {
@@ -991,7 +936,7 @@
   },
   "https://www.onthemarket.com/details/5035861/": {
     "date": "2026-10-16",
-    "price": "3,000 pcm (£692 pw)",
+    "price": "2,750 pcm (£635 pw)",
     "sig": null
   },
   "https://www.onthemarket.com/details/16240817/": {
@@ -1551,7 +1496,7 @@
   },
   "https://www.rightmove.co.uk/properties/94194786#/?channel=RES_LET": {
     "date": "2026-10-27",
-    "price": "£3,120 pcm\n£720 pw",
+    "price": "£3,046 pcm\n£703 pw",
     "sig": "caledonian road|N1|2"
   },
   "https://www.rightmove.co.uk/properties/93468261#/?channel=RES_LET": {
@@ -1626,7 +1571,7 @@
   },
   "https://www.onthemarket.com/details/20274750/": {
     "date": "2026-10-28",
-    "price": "3,750 pcm (£865 pw)",
+    "price": "3,650 pcm (£842 pw)",
     "sig": null
   },
   "https://www.rightmove.co.uk/properties/94565160#/?channel=RES_LET": {
@@ -2038,5 +1983,35 @@
     "date": "2026-11-02",
     "price": "2,225 pcm (£513 pw)",
     "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/94552647#/?channel=RES_LET": {
+    "date": "2026-11-03",
+    "price": "£6,327 pcm\n£1,460 pw",
+    "sig": "falmouth house|W2|3"
+  },
+  "https://www.rightmove.co.uk/properties/95065563#/?channel=RES_LET": {
+    "date": "2026-11-03",
+    "price": "£2,550 pcm\n£588 pw",
+    "sig": "regent house|NW1|2"
+  },
+  "https://www.rightmove.co.uk/properties/93791946#/?channel=RES_LET": {
+    "date": "2026-11-03",
+    "price": "£11,800 pcm\n£2,723 pw\nSHORT LET",
+    "sig": "tavistock place|WC1H|3"
+  },
+  "https://www.rightmove.co.uk/properties/94394436#/?channel=RES_LET": {
+    "date": "2026-11-03",
+    "price": "£4,767 pcm\n£1,100 pw",
+    "sig": "cornwall gardens|SW7|3"
+  },
+  "https://www.onthemarket.com/details/20684167/": {
+    "date": "2026-11-03",
+    "price": "3,500 pcm (£808 pw)",
+    "sig": "packington street|N1|2"
+  },
+  "https://www.onthemarket.com/details/20683858/": {
+    "date": "2026-11-03",
+    "price": "2,700 pcm (£623 pw)",
+    "sig": "danbury street|N1|2"
   }
 }
