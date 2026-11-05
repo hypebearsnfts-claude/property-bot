@@ -1,84 +1,4 @@
 {
-  "https://www.rightmove.co.uk/properties/90641271#/?channel=RES_LET": {
-    "date": "2026-10-06",
-    "price": "£5,000 pcm\n£1,154 pw",
-    "sig": "14 semley pl|SW1W|3"
-  },
-  "https://www.rightmove.co.uk/properties/94001901#/?channel=RES_LET": {
-    "date": "2026-10-06",
-    "price": "£4,750 pcm\n£1,096 pw",
-    "sig": "elvaston place|SW7|3"
-  },
-  "https://www.rightmove.co.uk/properties/93965511#/?channel=RES_LET": {
-    "date": "2026-10-06",
-    "price": "£6,500 pcm\n£1,500 pw",
-    "sig": "marloes road|W8|3"
-  },
-  "https://www.rightmove.co.uk/properties/90596535#/?channel=RES_LET": {
-    "date": "2026-10-06",
-    "price": "£6,500 pcm\n£1,500 pw",
-    "sig": "earls court road|SW5|4"
-  },
-  "https://www.rightmove.co.uk/properties/170913854#/?channel=RES_LET": {
-    "date": "2026-10-06",
-    "price": "£6,000 pcm\n£1,385 pw\nPREMIUM LISTING",
-    "sig": "cromwell road|SW5|3"
-  },
-  "https://www.rightmove.co.uk/properties/93582318#/?channel=RES_LET": {
-    "date": "2026-10-06",
-    "price": "£2,590 pcm\n£598 pw",
-    "sig": "devonshire terrace|W2|2"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/74268492/": {
-    "date": "2026-10-06",
-    "price": "£10,000 pcm",
-    "sig": "cato street|W1H|3"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/74431170/": {
-    "date": "2026-10-06",
-    "price": "£3,200 pcm",
-    "sig": "warwick gardens|W14|2"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/74429627/": {
-    "date": "2026-10-06",
-    "price": "£4,850 pcm",
-    "sig": "berners house|N1|4"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/74430437/": {
-    "date": "2026-10-06",
-    "price": "£3,460 pcm",
-    "sig": "king s cross road|WC1X|2"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/74407201/": {
-    "date": "2026-10-06",
-    "price": "£4,050 pcm",
-    "sig": "chalton street|NW1|3"
-  },
-  "https://www.onthemarket.com/details/6846619/": {
-    "date": "2026-10-06",
-    "price": "3,100 pcm (£715 pw)",
-    "sig": "netherwood road|W14|3"
-  },
-  "https://www.onthemarket.com/details/20362521/": {
-    "date": "2026-10-06",
-    "price": "2,200 pcm (£508 pw)",
-    "sig": null
-  },
-  "https://www.onthemarket.com/details/20202318/": {
-    "date": "2026-10-06",
-    "price": "3,467 pcm (£800 pw)",
-    "sig": null
-  },
-  "https://www.onthemarket.com/details/20482341/": {
-    "date": "2026-10-06",
-    "price": "1,450 pcm (£335 pw)",
-    "sig": null
-  },
-  "https://www.onthemarket.com/details/20064625/": {
-    "date": "2026-10-06",
-    "price": "5,001 pcm (£1,154 pw)",
-    "sig": null
-  },
   "https://www.zoopla.co.uk/to-rent/details/74440000/": {
     "date": "2026-10-07",
     "price": "£8,000 pcm",
@@ -591,7 +511,7 @@
   },
   "https://www.rightmove.co.uk/properties/94304589#/?channel=RES_LET": {
     "date": "2026-10-14",
-    "price": "£3,000 pcm\n£692 pw",
+    "price": "£2,800 pcm\n£646 pw",
     "sig": "ebury bridge road|SW1W|2"
   },
   "https://www.rightmove.co.uk/properties/94294356#/?channel=RES_LET": {
@@ -1992,6 +1912,91 @@
   "https://www.onthemarket.com/details/20473771/": {
     "date": "2026-11-04",
     "price": "5,600 pcm (£1,292 pw)",
+    "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/95148345#/?channel=RES_LET": {
+    "date": "2026-11-05",
+    "price": "£3,575 pcm\n£825 pw",
+    "sig": "villiers street|WC2N|2"
+  },
+  "https://www.rightmove.co.uk/properties/95147739#/?channel=RES_LET": {
+    "date": "2026-11-05",
+    "price": "£3,000 pcm\n£692 pw",
+    "sig": "tottenham court road|W1|2"
+  },
+  "https://www.rightmove.co.uk/properties/95138037#/?channel=RES_LET": {
+    "date": "2026-11-05",
+    "price": "£4,350 pcm\n£1,004 pw",
+    "sig": "sale place paddington|W2|3"
+  },
+  "https://www.rightmove.co.uk/properties/95172738#/?channel=RES_LET": {
+    "date": "2026-11-05",
+    "price": "£4,995 pcm\n£1,153 pw",
+    "sig": "emery hill st|SW1P|2"
+  },
+  "https://www.rightmove.co.uk/properties/90641271#/?channel=RES_LET": {
+    "date": "2026-11-05",
+    "price": "£5,000 pcm\n£1,154 pw",
+    "sig": "14 semley pl|SW1W|3"
+  },
+  "https://www.rightmove.co.uk/properties/95167089#/?channel=RES_LET": {
+    "date": "2026-11-05",
+    "price": "£2,900 pcm\n£669 pw\nFixed Price",
+    "sig": "2 doughty street|WC1N|2"
+  },
+  "https://www.rightmove.co.uk/properties/95158548#/?channel=RES_LET": {
+    "date": "2026-11-05",
+    "price": "£3,300 pcm\n£762 pw",
+    "sig": "old brompton road|SW5|2"
+  },
+  "https://www.rightmove.co.uk/properties/93965511#/?channel=RES_LET": {
+    "date": "2026-11-05",
+    "price": "£6,500 pcm\n£1,500 pw",
+    "sig": "marloes road|W8|3"
+  },
+  "https://www.rightmove.co.uk/properties/90596535#/?channel=RES_LET": {
+    "date": "2026-11-05",
+    "price": "£6,500 pcm\n£1,500 pw",
+    "sig": "earls court road|SW5|4"
+  },
+  "https://www.rightmove.co.uk/properties/170913854#/?channel=RES_LET": {
+    "date": "2026-11-05",
+    "price": "£6,000 pcm\n£1,385 pw\nPREMIUM LISTING",
+    "sig": "cromwell road|SW5|3"
+  },
+  "https://www.rightmove.co.uk/properties/93582318#/?channel=RES_LET": {
+    "date": "2026-11-05",
+    "price": "£2,590 pcm\n£598 pw",
+    "sig": "devonshire terrace|W2|2"
+  },
+  "https://www.onthemarket.com/details/20700158/": {
+    "date": "2026-11-05",
+    "price": "2,700 pcm (£623 pw)",
+    "sig": "souldern road|W14|2"
+  },
+  "https://www.onthemarket.com/details/20695801/": {
+    "date": "2026-11-05",
+    "price": "2,750 pcm (£635 pw)",
+    "sig": "barons keep|W14|2"
+  },
+  "https://www.onthemarket.com/details/8691675/": {
+    "date": "2026-11-05",
+    "price": "2,995 pcm (£691 pw)",
+    "sig": "netherwood road|W14|3"
+  },
+  "https://www.onthemarket.com/details/20698473/": {
+    "date": "2026-11-05",
+    "price": "3,750 pcm (£865 pw)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/20696182/": {
+    "date": "2026-11-05",
+    "price": "4,500 pcm (£1,038 pw)",
+    "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/94752735#/?channel=RES_LET": {
+    "date": "2026-11-05",
+    "price": "£3,400 pcm\n£785 pw",
     "sig": null
   }
 }

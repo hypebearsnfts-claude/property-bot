@@ -4268,5 +4268,25 @@
     "date": "2026-11-04",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": null
+  },
+  "https://www.onthemarket.com/details/12958557/": {
+    "date": "2026-11-05",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "more close|W14|3"
+  },
+  "https://www.onthemarket.com/details/20693440/": {
+    "date": "2026-11-05",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "valencia tower city road|EC1V|2"
+  },
+  "https://www.onthemarket.com/details/20699054/": {
+    "date": "2026-11-05",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/20698529/": {
+    "date": "2026-11-05",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
   }
 }
