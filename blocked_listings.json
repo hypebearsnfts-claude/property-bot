@@ -4318,5 +4318,10 @@
     "date": "2026-11-06",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": null
+  },
+  "https://www.onthemarket.com/details/14900283/": {
+    "date": "2026-11-07",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "225 city road|EC1V|2"
   }
 }
