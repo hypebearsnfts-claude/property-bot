@@ -1,119 +1,4 @@
 {
-  "https://www.rightmove.co.uk/properties/94104123#/?channel=RES_LET": {
-    "date": "2026-10-09",
-    "price": "£3,850 pcm\n£888 pw",
-    "sig": "halsey house|WC1R|2"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/74470200/": {
-    "date": "2026-10-09",
-    "price": "£3,900 pcm",
-    "sig": "quebec court|W1H|2"
-  },
-  "https://www.rightmove.co.uk/properties/169271303#/?channel=RES_LET": {
-    "date": "2026-10-09",
-    "price": "£10,400 pcm\n£2,400 pw",
-    "sig": "mayfair|W1|3"
-  },
-  "https://www.rightmove.co.uk/properties/94145946#/?channel=RES_LET": {
-    "date": "2026-10-09",
-    "price": "£4,225 pcm\n£975 pw",
-    "sig": "sutherland street|SW1V|2"
-  },
-  "https://www.rightmove.co.uk/properties/94123239#/?channel=RES_LET": {
-    "date": "2026-10-09",
-    "price": "£2,999 pcm\n£692 pw",
-    "sig": "belgrave rd|SW1V|2"
-  },
-  "https://www.rightmove.co.uk/properties/90773286#/?channel=RES_LET": {
-    "date": "2026-10-09",
-    "price": "£3,200 pcm\n£738 pw",
-    "sig": "west warwick place|SW1V|2"
-  },
-  "https://www.rightmove.co.uk/properties/94115343#/?channel=RES_LET": {
-    "date": "2026-10-09",
-    "price": "£3,300 pcm\n£762 pw\nFixed Price",
-    "sig": "boswell court|WC1N|2"
-  },
-  "https://www.rightmove.co.uk/properties/93465029#/?channel=RES_LET": {
-    "date": "2026-10-09",
-    "price": "£4,550 pcm\n£1,050 pw",
-    "sig": "red lion street|WC1R|2"
-  },
-  "https://www.rightmove.co.uk/properties/92910081#/?channel=RES_LET": {
-    "date": "2026-10-09",
-    "price": "£2,498 pcm\n£576 pw",
-    "sig": "earls court|SW5|2"
-  },
-  "https://www.rightmove.co.uk/properties/94089021#/?channel=RES_LET": {
-    "date": "2026-10-09",
-    "price": "£4,312 pcm\n£995 pw",
-    "sig": "queen s gate|SW7|2"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/74460829/": {
-    "date": "2026-10-09",
-    "price": "£3,850 pcm",
-    "sig": "red lion square|WC1R|2"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/74401076/": {
-    "date": "2026-10-09",
-    "price": "£5,417 pcm",
-    "sig": "gloucester place|W1U|2"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/70315529/": {
-    "date": "2026-10-09",
-    "price": "£3,142 pcm",
-    "sig": "homer street|W1H|2"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/74463824/": {
-    "date": "2026-10-09",
-    "price": "£2,700 pcm",
-    "sig": "hatton row|NW8|2"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/74430973/": {
-    "date": "2026-10-09",
-    "price": "£3,467 pcm",
-    "sig": "albany street|NW1|2"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/70643427/": {
-    "date": "2026-10-09",
-    "price": "£5,500 pcm",
-    "sig": "122 chancery lane|WC2A|2"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/62150902/": {
-    "date": "2026-10-09",
-    "price": "£4,800 pcm",
-    "sig": "islington green|N1|3"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/70318719/": {
-    "date": "2026-10-09",
-    "price": "£3,100 pcm",
-    "sig": "river street|EC1R|2"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/65694333/": {
-    "date": "2026-10-09",
-    "price": "£3,200 pcm",
-    "sig": "city rise|EC1V|2"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/74462663/": {
-    "date": "2026-10-09",
-    "price": "£3,750 pcm",
-    "sig": "shire house|EC1Y|2"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/74445307/": {
-    "date": "2026-10-09",
-    "price": "£3,750 pcm",
-    "sig": "collingham place|SW5|2"
-  },
-  "https://www.onthemarket.com/details/20272471/": {
-    "date": "2026-10-09",
-    "price": "2,700 pcm (£623 pw)",
-    "sig": "edith road|W14|2"
-  },
-  "https://www.rightmove.co.uk/properties/94017867#/?channel=RES_LET": {
-    "date": "2026-10-09",
-    "price": "£3,600 pcm\n£831 pw",
-    "sig": "theobalds road pk517 holborn|WC1X|2"
-  },
   "https://www.rightmove.co.uk/properties/94166934#/?channel=RES_LET": {
     "date": "2026-10-10",
     "price": "£2,500 pcm\n£577 pw",
@@ -1943,5 +1828,40 @@
     "date": "2026-11-07",
     "price": "£2,500 pcm\n£577 pw",
     "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/161540396#/?channel=RES_LET": {
+    "date": "2026-11-08",
+    "price": "£3,497 pcm\n£807 pw",
+    "sig": "gloucester place|W1U|2"
+  },
+  "https://www.rightmove.co.uk/properties/94146126#/?channel=RES_LET": {
+    "date": "2026-11-08",
+    "price": "£3,750 pcm\n£865 pw",
+    "sig": "quebec court|W1H|2"
+  },
+  "https://www.rightmove.co.uk/properties/169271303#/?channel=RES_LET": {
+    "date": "2026-11-08",
+    "price": "£10,400 pcm\n£2,400 pw",
+    "sig": "mayfair|W1|3"
+  },
+  "https://www.rightmove.co.uk/properties/95045034#/?channel=RES_LET": {
+    "date": "2026-11-08",
+    "price": "£2,700 pcm\n£623 pw\nPREMIUM LISTING",
+    "sig": "albany street|NW1|2"
+  },
+  "https://www.rightmove.co.uk/properties/93465029#/?channel=RES_LET": {
+    "date": "2026-11-08",
+    "price": "£4,767 pcm\n£1,100 pw",
+    "sig": "red lion street|WC1R|2"
+  },
+  "https://www.rightmove.co.uk/properties/92910081#/?channel=RES_LET": {
+    "date": "2026-11-08",
+    "price": "£2,498 pcm\n£576 pw",
+    "sig": "earls court|SW5|2"
+  },
+  "https://www.onthemarket.com/details/20508826/": {
+    "date": "2026-11-08",
+    "price": "3,350 pcm (£773 pw)",
+    "sig": "shire house|EC1Y|2"
   }
 }
