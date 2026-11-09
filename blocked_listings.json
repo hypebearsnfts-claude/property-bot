@@ -4323,5 +4323,30 @@
     "date": "2026-11-07",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": "225 city road|EC1V|2"
+  },
+  "https://www.rightmove.co.uk/properties/143739380#/?channel=RES_LET": {
+    "date": "2026-11-09",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "museum street|WC1A|2"
+  },
+  "https://www.rightmove.co.uk/properties/170706728#/?channel=RES_LET": {
+    "date": "2026-11-09",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "ganton street|W1F|2"
+  },
+  "https://www.rightmove.co.uk/properties/95291757#/?channel=RES_LET": {
+    "date": "2026-11-09",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "abbey lodge|NW8|4"
+  },
+  "https://www.onthemarket.com/details/12360787/": {
+    "date": "2026-11-09",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/20664487/": {
+    "date": "2026-11-09",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
   }
 }
