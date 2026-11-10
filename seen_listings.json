@@ -1,54 +1,4 @@
 {
-  "https://www.rightmove.co.uk/properties/94174158#/?channel=RES_LET": {
-    "date": "2026-10-11",
-    "price": "£9,995 pcm\n£2,307 pw",
-    "sig": "charing cross road|WC2H|3"
-  },
-  "https://www.onthemarket.com/details/3173295/": {
-    "date": "2026-10-11",
-    "price": "3,000 pcm (£692 pw)",
-    "sig": "emperors gate|SW7|2"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/74477151/": {
-    "date": "2026-10-11",
-    "price": "£3,249 pcm",
-    "sig": "holland park|W11|2"
-  },
-  "https://www.onthemarket.com/details/20313435/": {
-    "date": "2026-10-11",
-    "price": "5,460 pcm (£1,260 pw)",
-    "sig": "two bedoom let in|W1J|2"
-  },
-  "https://www.onthemarket.com/details/15654428/": {
-    "date": "2026-10-11",
-    "price": "8,667 pcm (£2,000 pw)",
-    "sig": "mayfair|W1K|3"
-  },
-  "https://www.onthemarket.com/details/20398021/": {
-    "date": "2026-10-11",
-    "price": "3,423 pcm (£790 pw)",
-    "sig": "lisgar terrace|W14|2"
-  },
-  "https://www.onthemarket.com/details/20117571/": {
-    "date": "2026-10-11",
-    "price": "5,250 pcm (£1,212 pw)",
-    "sig": "egerton court|SW7|4"
-  },
-  "https://www.onthemarket.com/details/20307835/": {
-    "date": "2026-10-11",
-    "price": "4,000 pcm (£923 pw)",
-    "sig": null
-  },
-  "https://www.rightmove.co.uk/properties/91960797#/?channel=RES_LET": {
-    "date": "2026-10-11",
-    "price": "£3,400 pcm\n£785 pw",
-    "sig": null
-  },
-  "https://www.zoopla.co.uk/to-rent/details/74414579/": {
-    "date": "2026-10-11",
-    "price": "£12,003 pcm",
-    "sig": null
-  },
   "https://www.zoopla.co.uk/to-rent/details/74203083/": {
     "date": "2026-10-12",
     "price": "£3,500 pcm",
@@ -1036,7 +986,7 @@
   },
   "https://www.onthemarket.com/details/20641669/": {
     "date": "2026-10-28",
-    "price": "3,200 pcm (£738 pw)",
+    "price": "3,100 pcm (£715 pw)",
     "sig": null
   },
   "https://www.rightmove.co.uk/properties/92989866#/?channel=RES_LET": {
@@ -1441,7 +1391,7 @@
   },
   "https://www.rightmove.co.uk/properties/94552647#/?channel=RES_LET": {
     "date": "2026-11-03",
-    "price": "£6,327 pcm\n£1,460 pw",
+    "price": "£6,067 pcm\n£1,400 pw",
     "sig": "falmouth house|W2|3"
   },
   "https://www.rightmove.co.uk/properties/95065563#/?channel=RES_LET": {
@@ -1806,7 +1756,7 @@
   },
   "https://www.onthemarket.com/details/20508826/": {
     "date": "2026-11-08",
-    "price": "3,350 pcm (£773 pw)",
+    "price": "3,250 pcm (£750 pw)",
     "sig": "shire house|EC1Y|2"
   },
   "https://www.rightmove.co.uk/properties/95262108#/?channel=RES_LET": {
@@ -1867,6 +1817,86 @@
   "https://www.onthemarket.com/details/20719976/": {
     "date": "2026-11-09",
     "price": "1,175 pcm (£271 pw)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/20521082/": {
+    "date": "2026-11-10",
+    "price": "9,995 pcm (£2,307 pw)",
+    "sig": "charing cross road|WC2H|3"
+  },
+  "https://www.rightmove.co.uk/properties/95317539#/?channel=RES_LET": {
+    "date": "2026-11-10",
+    "price": "£4,117 pcm\n£950 pw",
+    "sig": "gloucester place mews marylebone|W1U|2"
+  },
+  "https://www.rightmove.co.uk/properties/95201139#/?channel=RES_LET": {
+    "date": "2026-11-10",
+    "price": "£6,900 pcm\n£1,592 pw\nPREMIUM LISTING",
+    "sig": "hyde park place|W2|3"
+  },
+  "https://www.rightmove.co.uk/properties/95317461#/?channel=RES_LET": {
+    "date": "2026-11-10",
+    "price": "£4,220 pcm\n£974 pw",
+    "sig": "winchester street|SW1V|2"
+  },
+  "https://www.rightmove.co.uk/properties/95337189#/?channel=RES_LET": {
+    "date": "2026-11-10",
+    "price": "£2,700 pcm\n£623 pw",
+    "sig": "balfe street|N1|2"
+  },
+  "https://www.rightmove.co.uk/properties/95331045#/?channel=RES_LET": {
+    "date": "2026-11-10",
+    "price": "£5,250 pcm\n£1,212 pw",
+    "sig": "medburn street|NW1|4"
+  },
+  "https://www.rightmove.co.uk/properties/95303982#/?channel=RES_LET": {
+    "date": "2026-11-10",
+    "price": "£2,900 pcm\n£669 pw",
+    "sig": "argyle walk|WC1H|2"
+  },
+  "https://www.onthemarket.com/details/20545627/": {
+    "date": "2026-11-10",
+    "price": "3,500 pcm (£808 pw)",
+    "sig": "emperors gate|SW7|2"
+  },
+  "https://www.onthemarket.com/details/15654428/": {
+    "date": "2026-11-10",
+    "price": "8,667 pcm (£2,000 pw)",
+    "sig": "mayfair|W1K|3"
+  },
+  "https://www.onthemarket.com/details/20728143/": {
+    "date": "2026-11-10",
+    "price": "2,850 pcm (£658 pw)",
+    "sig": "argyll mansions|W14|2"
+  },
+  "https://www.onthemarket.com/details/20398021/": {
+    "date": "2026-11-10",
+    "price": "3,423 pcm (£790 pw)",
+    "sig": "lisgar terrace|W14|2"
+  },
+  "https://www.onthemarket.com/details/20726526/": {
+    "date": "2026-11-10",
+    "price": "3,250 pcm (£750 pw)",
+    "sig": "upper street|N1|2"
+  },
+  "https://www.onthemarket.com/details/20117571/": {
+    "date": "2026-11-10",
+    "price": "5,250 pcm (£1,212 pw)",
+    "sig": "egerton court|SW7|4"
+  },
+  "https://www.onthemarket.com/details/20729350/": {
+    "date": "2026-11-10",
+    "price": "6,002 pcm (£1,385 pw)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/20725806/": {
+    "date": "2026-11-10",
+    "price": "3,500 pcm (£808 pw)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/20307835/": {
+    "date": "2026-11-10",
+    "price": "4,000 pcm (£923 pw)",
     "sig": null
   }
 }

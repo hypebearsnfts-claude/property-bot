@@ -4348,5 +4348,25 @@
     "date": "2026-11-09",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/95321271#/?channel=RES_LET": {
+    "date": "2026-11-10",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "ebury mews|SW1W|2"
+  },
+  "https://www.onthemarket.com/details/20731130/": {
+    "date": "2026-11-10",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "berners house|N1|2"
+  },
+  "https://www.rightmove.co.uk/properties/95328789#/?channel=RES_LET": {
+    "date": "2026-11-10",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/20728067/": {
+    "date": "2026-11-10",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
   }
 }
