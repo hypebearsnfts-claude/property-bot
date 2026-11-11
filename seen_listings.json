@@ -1,44 +1,4 @@
 {
-  "https://www.zoopla.co.uk/to-rent/details/74203083/": {
-    "date": "2026-10-12",
-    "price": "£3,500 pcm",
-    "sig": "bristol house|WC1B|2"
-  },
-  "https://www.rightmove.co.uk/properties/89644776#/?channel=RES_LET": {
-    "date": "2026-10-12",
-    "price": "£9,815 pcm\n£2,265 pw",
-    "sig": "strathmore court|NW8|4"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/74205083/": {
-    "date": "2026-10-12",
-    "price": "£4,983 pcm",
-    "sig": "mount street|W1K|3"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/74439587/": {
-    "date": "2026-10-12",
-    "price": "£3,100 pcm",
-    "sig": "miles building|NW1|2"
-  },
-  "https://www.rightmove.co.uk/properties/93793944#/?channel=RES_LET": {
-    "date": "2026-10-12",
-    "price": "£2,900 pcm\n£669 pw\nAVAILABLE NOW",
-    "sig": "hogarth road|SW5|2"
-  },
-  "https://www.rightmove.co.uk/properties/92897448#/?channel=RES_LET": {
-    "date": "2026-10-12",
-    "price": "£8,450 pcm\n£1,950 pw\nSHORT LET",
-    "sig": "queen s gate gardens south kensington|SW7|3"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/74280625/": {
-    "date": "2026-10-12",
-    "price": "£6,283 pcm",
-    "sig": "reeves mews|W1K|4"
-  },
-  "https://www.onthemarket.com/details/20526916/": {
-    "date": "2026-10-12",
-    "price": "3,987 pcm (£920 pw)",
-    "sig": "grosvenor hill|W1K|2"
-  },
   "https://www.zoopla.co.uk/to-rent/details/74482955/": {
     "date": "2026-10-13",
     "price": "£2,600 pcm",
@@ -486,7 +446,7 @@
   },
   "https://www.rightmove.co.uk/properties/94511121#/?channel=RES_LET": {
     "date": "2026-10-20",
-    "price": "£5,500 pcm\n£1,269 pw",
+    "price": "£5,250 pcm\n£1,212 pw",
     "sig": "charlotte street|W1T|3"
   },
   "https://www.zoopla.co.uk/to-rent/details/70212133/": {
@@ -511,7 +471,7 @@
   },
   "https://www.rightmove.co.uk/properties/94495845#/?channel=RES_LET": {
     "date": "2026-10-20",
-    "price": "£2,925 pcm\n£675 pw",
+    "price": "£2,730 pcm\n£630 pw",
     "sig": "warwick way|SW1V|2"
   },
   "https://www.rightmove.co.uk/properties/94495809#/?channel=RES_LET": {
@@ -1526,7 +1486,7 @@
   },
   "https://www.rightmove.co.uk/properties/95147739#/?channel=RES_LET": {
     "date": "2026-11-05",
-    "price": "£3,000 pcm\n£692 pw",
+    "price": "£2,900 pcm\n£669 pw",
     "sig": "tottenham court road|W1|2"
   },
   "https://www.rightmove.co.uk/properties/95138037#/?channel=RES_LET": {
@@ -1696,7 +1656,7 @@
   },
   "https://www.onthemarket.com/details/20709179/": {
     "date": "2026-11-06",
-    "price": "3,500 pcm (£808 pw)",
+    "price": "3,400 pcm (£785 pw)",
     "sig": null
   },
   "https://www.onthemarket.com/details/17267353/": {
@@ -1897,6 +1857,76 @@
   "https://www.onthemarket.com/details/20307835/": {
     "date": "2026-11-10",
     "price": "4,000 pcm (£923 pw)",
+    "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/94192305#/?channel=RES_LET": {
+    "date": "2026-11-11",
+    "price": "£3,350 pcm\n£773 pw",
+    "sig": "bristol house|WC1B|2"
+  },
+  "https://www.rightmove.co.uk/properties/94797006#/?channel=RES_LET": {
+    "date": "2026-11-11",
+    "price": "£9,815 pcm\n£2,265 pw",
+    "sig": "strathmore court|NW8|4"
+  },
+  "https://www.onthemarket.com/details/20306904/": {
+    "date": "2026-11-11",
+    "price": "4,983 pcm (£1,150 pw)",
+    "sig": "mount street|W1K|3"
+  },
+  "https://www.rightmove.co.uk/properties/95357835#/?channel=RES_LET": {
+    "date": "2026-11-11",
+    "price": "£3,250 pcm\n£750 pw",
+    "sig": "bolsover street|W1W|3"
+  },
+  "https://www.rightmove.co.uk/properties/95359359#/?channel=RES_LET": {
+    "date": "2026-11-11",
+    "price": "£3,748 pcm\n£865 pw",
+    "sig": "cabbell street|NW1|3"
+  },
+  "https://www.rightmove.co.uk/properties/95375274#/?channel=RES_LET": {
+    "date": "2026-11-11",
+    "price": "£3,500 pcm\n£808 pw",
+    "sig": "falcon|WC1N|3"
+  },
+  "https://www.rightmove.co.uk/properties/95375052#/?channel=RES_LET": {
+    "date": "2026-11-11",
+    "price": "£8,000 pcm\n£1,846 pw",
+    "sig": "old manor yard|SW5|5"
+  },
+  "https://www.rightmove.co.uk/properties/95153223#/?channel=RES_LET": {
+    "date": "2026-11-11",
+    "price": "£3,250 pcm\n£750 pw",
+    "sig": "hogarth road|SW5|2"
+  },
+  "https://www.rightmove.co.uk/properties/92897448#/?channel=RES_LET": {
+    "date": "2026-11-11",
+    "price": "£8,450 pcm\n£1,950 pw\nSHORT LET",
+    "sig": "queen s gate gardens south kensington|SW7|3"
+  },
+  "https://www.rightmove.co.uk/properties/95361681#/?channel=RES_LET": {
+    "date": "2026-11-11",
+    "price": "£3,700 pcm\n£854 pw",
+    "sig": "eastbourne mews|W2|2"
+  },
+  "https://www.onthemarket.com/details/20710140/": {
+    "date": "2026-11-11",
+    "price": "3,750 pcm (£865 pw)",
+    "sig": "souldern road|W14|3"
+  },
+  "https://www.onthemarket.com/details/20737129/": {
+    "date": "2026-11-11",
+    "price": "3,750 pcm (£865 pw)",
+    "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/95375598#/?channel=RES_LET": {
+    "date": "2026-11-11",
+    "price": "£7,410 pcm\n£1,710 pw",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/4695480/": {
+    "date": "2026-11-11",
+    "price": "4,251 pcm (£981 pw)",
     "sig": null
   }
 }

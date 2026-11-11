@@ -4368,5 +4368,35 @@
     "date": "2026-11-10",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/95354436#/?channel=RES_LET": {
+    "date": "2026-11-11",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "seymour street|W1H|2"
+  },
+  "https://www.rightmove.co.uk/properties/95382063#/?channel=RES_LET": {
+    "date": "2026-11-11",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "southwick street|W2|2"
+  },
+  "https://www.onthemarket.com/details/20734958/": {
+    "date": "2026-11-11",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "maclise road|W14|2"
+  },
+  "https://www.onthemarket.com/details/15952240/": {
+    "date": "2026-11-11",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "burgh street|N1|4"
+  },
+  "https://www.onthemarket.com/details/20735878/": {
+    "date": "2026-11-11",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "508|W1F|2"
+  },
+  "https://www.onthemarket.com/details/20738828/": {
+    "date": "2026-11-11",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
   }
 }
