@@ -4398,5 +4398,55 @@
     "date": "2026-11-11",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/95333058#/?channel=RES_LET": {
+    "date": "2026-11-12",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "little portland street|W1W|3"
+  },
+  "https://www.rightmove.co.uk/properties/170882999#/?channel=RES_LET": {
+    "date": "2026-11-12",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "frampton street|NW8|2"
+  },
+  "https://www.rightmove.co.uk/properties/95408958#/?channel=RES_LET": {
+    "date": "2026-11-12",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "kings cross quarter|N1|2"
+  },
+  "https://www.onthemarket.com/details/20744939/": {
+    "date": "2026-11-12",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "north end house|W14|2"
+  },
+  "https://www.onthemarket.com/details/20744595/": {
+    "date": "2026-11-12",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "palace mansions|W14|3"
+  },
+  "https://www.rightmove.co.uk/properties/95414865#/?channel=RES_LET": {
+    "date": "2026-11-12",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "three bedroom apartment|W2|3"
+  },
+  "https://www.rightmove.co.uk/properties/95412675#/?channel=RES_LET": {
+    "date": "2026-11-12",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/20749053/": {
+    "date": "2026-11-12",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/13404820/": {
+    "date": "2026-11-12",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/20742966/": {
+    "date": "2026-11-12",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
   }
 }
