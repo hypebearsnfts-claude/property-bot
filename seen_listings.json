@@ -1,44 +1,4 @@
 {
-  "https://www.rightmove.co.uk/properties/89807400#/?channel=RES_LET": {
-    "date": "2026-10-15",
-    "price": "£12,497 pcm\n£2,884 pw\nPREMIUM LISTING",
-    "sig": "connaught place|W2|3"
-  },
-  "https://www.rightmove.co.uk/properties/93156027#/?channel=RES_LET": {
-    "date": "2026-10-15",
-    "price": "£5,500 pcm\n£1,269 pw",
-    "sig": "evelyn mansions|SW1P|4"
-  },
-  "https://www.rightmove.co.uk/properties/94356636#/?channel=RES_LET": {
-    "date": "2026-10-15",
-    "price": "£3,950 pcm\n£912 pw",
-    "sig": "harrington gardens|SW7|2"
-  },
-  "https://www.zoopla.co.uk/to-rent/details/74520482/": {
-    "date": "2026-10-15",
-    "price": "£4,500 pcm",
-    "sig": "st giles high street|WC2H|2"
-  },
-  "https://www.onthemarket.com/details/12549876/": {
-    "date": "2026-10-15",
-    "price": "2,750 pcm (£635 pw)",
-    "sig": "gwendwr road|W14|2"
-  },
-  "https://www.rightmove.co.uk/properties/94150314#/?channel=RES_LET": {
-    "date": "2026-10-15",
-    "price": "£2,800 pcm\n£646 pw",
-    "sig": null
-  },
-  "https://www.rightmove.co.uk/properties/94318065#/?channel=RES_LET": {
-    "date": "2026-10-15",
-    "price": "£3,600 pcm\n£831 pw",
-    "sig": null
-  },
-  "https://www.onthemarket.com/details/20554329/": {
-    "date": "2026-10-15",
-    "price": "2,850 pcm (£658 pw)",
-    "sig": null
-  },
   "https://www.zoopla.co.uk/to-rent/details/74532001/": {
     "date": "2026-10-16",
     "price": "£3,000 pcm",
@@ -1838,5 +1798,20 @@
     "date": "2026-11-13",
     "price": "3,467 pcm (£800 pw)",
     "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/89807400#/?channel=RES_LET": {
+    "date": "2026-11-14",
+    "price": "£12,497 pcm\n£2,884 pw\nPREMIUM LISTING",
+    "sig": "connaught place|W2|3"
+  },
+  "https://www.rightmove.co.uk/properties/93156027#/?channel=RES_LET": {
+    "date": "2026-11-14",
+    "price": "£5,500 pcm\n£1,269 pw",
+    "sig": "evelyn mansions|SW1P|4"
+  },
+  "https://www.rightmove.co.uk/properties/95473812#/?channel=RES_LET": {
+    "date": "2026-11-14",
+    "price": "£2,550 pcm\n£588 pw",
+    "sig": "cranleigh house|NW1|2"
   }
 }
