@@ -4508,5 +4508,35 @@
     "date": "2026-11-16",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/95577456#/?channel=RES_LET": {
+    "date": "2026-11-17",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "glentworth street|NW1|4"
+  },
+  "https://www.rightmove.co.uk/properties/95579313#/?channel=RES_LET": {
+    "date": "2026-11-17",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/20637654/": {
+    "date": "2026-11-17",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/95568234#/?channel=RES_LET": {
+    "date": "2026-11-17",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/95546139#/?channel=RES_LET": {
+    "date": "2026-11-17",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/20706826/": {
+    "date": "2026-11-17",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
   }
 }

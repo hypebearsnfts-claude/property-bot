@@ -1,29 +1,4 @@
 {
-  "https://www.zoopla.co.uk/to-rent/details/74472167/": {
-    "date": "2026-10-18",
-    "price": "£3,370 pcm",
-    "sig": "vickery court|EC1V|2"
-  },
-  "https://www.onthemarket.com/details/20129037/": {
-    "date": "2026-10-18",
-    "price": "3,250 pcm (£750 pw)",
-    "sig": "wesley house|EC1A|2"
-  },
-  "https://www.onthemarket.com/details/20310938/": {
-    "date": "2026-10-18",
-    "price": "4,000 pcm (£923 pw)",
-    "sig": null
-  },
-  "https://www.onthemarket.com/details/20574307/": {
-    "date": "2026-10-18",
-    "price": "3,600 pcm (£831 pw)",
-    "sig": null
-  },
-  "https://www.onthemarket.com/details/20157676/": {
-    "date": "2026-10-18",
-    "price": "7,280 pcm (£1,680 pw)",
-    "sig": null
-  },
   "https://www.zoopla.co.uk/to-rent/details/74543261/": {
     "date": "2026-10-19",
     "price": "£3,033 pcm",
@@ -311,7 +286,7 @@
   },
   "https://www.rightmove.co.uk/properties/93713778#/?channel=RES_LET": {
     "date": "2026-10-24",
-    "price": "£4,250 pcm\n£981 pw",
+    "price": "£4,000 pcm\n£923 pw",
     "sig": "dorset street|W1U|2"
   },
   "https://www.rightmove.co.uk/properties/91348740#/?channel=RES_LET": {
@@ -976,12 +951,12 @@
   },
   "https://www.onthemarket.com/details/14348129/": {
     "date": "2026-11-02",
-    "price": "3,300 pcm (£762 pw)",
+    "price": "3,195 pcm (£737 pw)",
     "sig": "roberts court|N1|2"
   },
   "https://www.rightmove.co.uk/properties/90453129#/?channel=RES_LET": {
     "date": "2026-11-02",
-    "price": "£3,241 pcm\n£748 pw\nGuide Price\nFURNISHED",
+    "price": "£2,990 pcm\n£690 pw\nGuide Price\nFURNISHED",
     "sig": null
   },
   "https://www.onthemarket.com/details/7998688/": {
@@ -1296,7 +1271,7 @@
   },
   "https://www.onthemarket.com/details/19856008/": {
     "date": "2026-11-06",
-    "price": "3,241 pcm (£748 pw)",
+    "price": "2,990 pcm (£690 pw)",
     "sig": null
   },
   "https://www.onthemarket.com/details/20709179/": {
@@ -1737,6 +1712,56 @@
   "https://www.onthemarket.com/details/10202002/": {
     "date": "2026-11-16",
     "price": "3,000 pcm (£692 pw)",
+    "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/95584497#/?channel=RES_LET": {
+    "date": "2026-11-17",
+    "price": "£8,500 pcm\n£1,962 pw",
+    "sig": "garrick house|WC2|3"
+  },
+  "https://www.onthemarket.com/details/20773922/": {
+    "date": "2026-11-17",
+    "price": "3,795 pcm (£876 pw)",
+    "sig": "ashburn gardens|SW7|2"
+  },
+  "https://www.onthemarket.com/details/20608698/": {
+    "date": "2026-11-17",
+    "price": "3,950 pcm (£912 pw)",
+    "sig": "whitecross street|EC1Y|2"
+  },
+  "https://www.onthemarket.com/details/20129037/": {
+    "date": "2026-11-17",
+    "price": "3,250 pcm (£750 pw)",
+    "sig": "wesley house|EC1A|2"
+  },
+  "https://www.onthemarket.com/details/20310938/": {
+    "date": "2026-11-17",
+    "price": "3,800 pcm (£877 pw)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/20769449/": {
+    "date": "2026-11-17",
+    "price": "4,000 pcm (£923 pw)",
+    "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/95566257#/?channel=RES_LET": {
+    "date": "2026-11-17",
+    "price": "£4,500 pcm\n£1,038 pw",
+    "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/95536599#/?channel=RES_LET": {
+    "date": "2026-11-17",
+    "price": "£2,600 pcm\n£600 pw",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/20574307/": {
+    "date": "2026-11-17",
+    "price": "3,800 pcm (£877 pw)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/20119277/": {
+    "date": "2026-11-17",
+    "price": "3,800 pcm (£877 pw)",
     "sig": null
   }
 }
