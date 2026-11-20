@@ -4583,5 +4583,35 @@
     "date": "2026-11-19",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/95700990#/?channel=RES_LET": {
+    "date": "2026-11-20",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "palace gate|W8|2"
+  },
+  "https://www.onthemarket.com/details/20792258/": {
+    "date": "2026-11-20",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "upper berkeley st|W1H|2"
+  },
+  "https://www.rightmove.co.uk/properties/95697198#/?channel=RES_LET": {
+    "date": "2026-11-20",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/20792312/": {
+    "date": "2026-11-20",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/20793091/": {
+    "date": "2026-11-20",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/20796108/": {
+    "date": "2026-11-20",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
   }
 }
