@@ -1,39 +1,4 @@
 {
-  "https://www.rightmove.co.uk/properties/94670763#/?channel=RES_LET": {
-    "date": "2026-10-23",
-    "price": "£4,225 pcm\n£975 pw",
-    "sig": "frith street|W1D|2"
-  },
-  "https://www.rightmove.co.uk/properties/94662570#/?channel=RES_LET": {
-    "date": "2026-10-23",
-    "price": "£4,099 pcm\n£946 pw",
-    "sig": "old marylebone road|NW1|3"
-  },
-  "https://www.rightmove.co.uk/properties/94648050#/?channel=RES_LET": {
-    "date": "2026-10-23",
-    "price": "£2,200 pcm\n£508 pw",
-    "sig": "penfold place|NW1|2"
-  },
-  "https://www.rightmove.co.uk/properties/165210122#/?channel=RES_LET": {
-    "date": "2026-10-23",
-    "price": "£5,500 pcm\n£1,269 pw",
-    "sig": "queens gardens|W2|3"
-  },
-  "https://www.onthemarket.com/details/20458196/": {
-    "date": "2026-10-23",
-    "price": "5,600 pcm (£1,292 pw)",
-    "sig": "blackburnes mews|W1K|3"
-  },
-  "https://www.rightmove.co.uk/properties/94396644#/?channel=RES_LET": {
-    "date": "2026-10-23",
-    "price": "£2,750 pcm\n£635 pw",
-    "sig": null
-  },
-  "https://www.onthemarket.com/details/16995163/": {
-    "date": "2026-10-23",
-    "price": "4,550 pcm (£1,050 pw)",
-    "sig": null
-  },
   "https://www.rightmove.co.uk/properties/93713778#/?channel=RES_LET": {
     "date": "2026-10-24",
     "price": "£4,000 pcm\n£923 pw",
@@ -1768,5 +1733,20 @@
     "date": "2026-11-21",
     "price": "£4,749 pcm\n£1,096 pw",
     "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/95221056#/?channel=RES_LET": {
+    "date": "2026-11-22",
+    "price": "£4,225 pcm\n£975 pw",
+    "sig": "frith street|W1D|2"
+  },
+  "https://www.rightmove.co.uk/properties/95408970#/?channel=RES_LET": {
+    "date": "2026-11-22",
+    "price": "£3,709 pcm\n£856 pw",
+    "sig": "old marylebone road|NW1|3"
+  },
+  "https://www.rightmove.co.uk/properties/95338467#/?channel=RES_LET": {
+    "date": "2026-11-22",
+    "price": "£5,400 pcm\n£1,246 pw",
+    "sig": "wells st|W1T|2"
   }
 }
