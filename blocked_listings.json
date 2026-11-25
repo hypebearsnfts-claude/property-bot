@@ -4688,5 +4688,20 @@
     "date": "2026-11-24",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/95820699#/?channel=RES_LET": {
+    "date": "2026-11-25",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "guildhouse st|SW1V|2"
+  },
+  "https://www.onthemarket.com/details/20816618/": {
+    "date": "2026-11-25",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "white lion street|N1|2"
+  },
+  "https://www.onthemarket.com/details/7245968/": {
+    "date": "2026-11-25",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "the lexington|EC1Y|2"
   }
 }

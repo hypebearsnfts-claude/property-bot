@@ -1,79 +1,4 @@
 {
-  "https://www.rightmove.co.uk/properties/93449532#/?channel=RES_LET": {
-    "date": "2026-10-26",
-    "price": "£10,000 pcm\n£2,308 pw",
-    "sig": "harley st|W1G|3"
-  },
-  "https://www.rightmove.co.uk/properties/92716521#/?channel=RES_LET": {
-    "date": "2026-10-26",
-    "price": "£7,410 pcm\n£1,710 pw",
-    "sig": "mayfair|W1J|3"
-  },
-  "https://www.rightmove.co.uk/properties/92469696#/?channel=RES_LET": {
-    "date": "2026-10-26",
-    "price": "£6,174 pcm\n£1,425 pw\nPREMIUM LISTING",
-    "sig": "semley house|SW1W|3"
-  },
-  "https://www.rightmove.co.uk/properties/94745205#/?channel=RES_LET": {
-    "date": "2026-10-26",
-    "price": "£3,300 pcm\n£762 pw",
-    "sig": "argyle square|WC1H|2"
-  },
-  "https://www.rightmove.co.uk/properties/94473837#/?channel=RES_LET": {
-    "date": "2026-10-26",
-    "price": "£3,500 pcm\n£808 pw",
-    "sig": "killick street|N1|2"
-  },
-  "https://www.rightmove.co.uk/properties/94134162#/?channel=RES_LET": {
-    "date": "2026-10-26",
-    "price": "£5,417 pcm\n£1,250 pw\nPREMIUM LISTING",
-    "sig": "redcliffe square|SW10|2"
-  },
-  "https://www.rightmove.co.uk/properties/94739820#/?channel=RES_LET": {
-    "date": "2026-10-26",
-    "price": "£2,600 pcm\n£600 pw\nFixed Price",
-    "sig": "78 gloucester terrace|W2|2"
-  },
-  "https://www.rightmove.co.uk/properties/94342239#/?channel=RES_LET": {
-    "date": "2026-10-26",
-    "price": "£9,000 pcm\n£2,077 pw",
-    "sig": "porchester terrace hyde park|W2|5"
-  },
-  "https://www.onthemarket.com/details/20624300/": {
-    "date": "2026-10-26",
-    "price": "4,008 pcm (£925 pw)",
-    "sig": "phoenix|WC2H|2"
-  },
-  "https://www.onthemarket.com/details/14685514/": {
-    "date": "2026-10-26",
-    "price": "4,767 pcm (£1,100 pw)",
-    "sig": null
-  },
-  "https://www.onthemarket.com/details/20628186/": {
-    "date": "2026-10-26",
-    "price": "4,500 pcm (£1,038 pw)",
-    "sig": null
-  },
-  "https://www.onthemarket.com/details/20625078/": {
-    "date": "2026-10-26",
-    "price": "3,000 pcm (£692 pw)",
-    "sig": null
-  },
-  "https://www.rightmove.co.uk/properties/94718496#/?channel=RES_LET": {
-    "date": "2026-10-26",
-    "price": "£3,750 pcm\n£865 pw",
-    "sig": null
-  },
-  "https://www.onthemarket.com/details/20629736/": {
-    "date": "2026-10-26",
-    "price": "3,500 pcm (£808 pw)",
-    "sig": null
-  },
-  "https://www.onthemarket.com/details/20214250/": {
-    "date": "2026-10-26",
-    "price": "1,150 pcm (£265 pw)",
-    "sig": null
-  },
   "https://www.rightmove.co.uk/properties/92232645#/?channel=RES_LET": {
     "date": "2026-10-27",
     "price": "£3,350 pcm\n£773 pw",
@@ -461,7 +386,7 @@
   },
   "https://www.rightmove.co.uk/properties/93811302#/?channel=RES_LET": {
     "date": "2026-10-31",
-    "price": "£3,000 pcm\n£692 pw",
+    "price": "£2,850 pcm\n£658 pw",
     "sig": "churston mansions|WC1X|2"
   },
   "https://www.onthemarket.com/details/20662761/": {
@@ -496,7 +421,7 @@
   },
   "https://www.rightmove.co.uk/properties/92508420#/?channel=RES_LET": {
     "date": "2026-11-01",
-    "price": "£4,214 pcm\n£972 pw",
+    "price": "£4,130 pcm\n£953 pw",
     "sig": "handel street|WC1N|2"
   },
   "https://www.rightmove.co.uk/properties/15084889#/?channel=RES_LET": {
@@ -1506,7 +1431,7 @@
   },
   "https://www.rightmove.co.uk/properties/95660493#/?channel=RES_LET": {
     "date": "2026-11-20",
-    "price": "£3,425 pcm\n£790 pw",
+    "price": "£2,950 pcm\n£681 pw",
     "sig": "doric way|NW1|3"
   },
   "https://www.onthemarket.com/details/20592859/": {
@@ -1606,7 +1531,7 @@
   },
   "https://www.rightmove.co.uk/properties/90981573#/?channel=RES_LET": {
     "date": "2026-11-21",
-    "price": "£3,011 pcm\n£695 pw",
+    "price": "£2,817 pcm\n£650 pw",
     "sig": "euston road|NW1|2"
   },
   "https://www.rightmove.co.uk/properties/94629372#/?channel=RES_LET": {
@@ -1758,5 +1683,85 @@
     "date": "2026-11-24",
     "price": "£10,500 pcm\n£2,423 pw\nAIR CONDITIONED",
     "sig": "queen s gate mews|SW7|3"
+  },
+  "https://www.rightmove.co.uk/properties/95834559#/?channel=RES_LET": {
+    "date": "2026-11-25",
+    "price": "£14,000 pcm\n£3,231 pw",
+    "sig": "lincoln s inn fields|WC2A|3"
+  },
+  "https://www.rightmove.co.uk/properties/94613010#/?channel=RES_LET": {
+    "date": "2026-11-25",
+    "price": "£12,567 pcm\n£2,900 pw",
+    "sig": "kean street|WC2B|3"
+  },
+  "https://www.rightmove.co.uk/properties/93449532#/?channel=RES_LET": {
+    "date": "2026-11-25",
+    "price": "£10,000 pcm\n£2,308 pw",
+    "sig": "harley st|W1G|3"
+  },
+  "https://www.rightmove.co.uk/properties/95856867#/?channel=RES_LET": {
+    "date": "2026-11-25",
+    "price": "£3,250 pcm\n£750 pw",
+    "sig": "sussex street|SW1V|2"
+  },
+  "https://www.rightmove.co.uk/properties/92469696#/?channel=RES_LET": {
+    "date": "2026-11-25",
+    "price": "£6,051 pcm\n£1,396 pw",
+    "sig": "semley house|SW1W|3"
+  },
+  "https://www.rightmove.co.uk/properties/95380299#/?channel=RES_LET": {
+    "date": "2026-11-25",
+    "price": "£3,500 pcm\n£808 pw",
+    "sig": "killick street|N1|2"
+  },
+  "https://www.rightmove.co.uk/properties/94134162#/?channel=RES_LET": {
+    "date": "2026-11-25",
+    "price": "£5,417 pcm\n£1,250 pw",
+    "sig": "redcliffe square|SW10|2"
+  },
+  "https://www.onthemarket.com/details/20624300/": {
+    "date": "2026-11-25",
+    "price": "4,008 pcm (£925 pw)",
+    "sig": "phoenix|WC2H|2"
+  },
+  "https://www.onthemarket.com/details/20561330/": {
+    "date": "2026-11-25",
+    "price": "4,500 pcm (£1,038 pw)",
+    "sig": "st giles high street|WC2H|2"
+  },
+  "https://www.onthemarket.com/details/14685514/": {
+    "date": "2026-11-25",
+    "price": "4,767 pcm (£1,100 pw)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/20628186/": {
+    "date": "2026-11-25",
+    "price": "4,500 pcm (£1,038 pw)",
+    "sig": null
+  },
+  "https://www.rightmove.co.uk/properties/94718496#/?channel=RES_LET": {
+    "date": "2026-11-25",
+    "price": "£3,750 pcm\n£865 pw",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/19480370/": {
+    "date": "2026-11-25",
+    "price": "5,993 pcm (£1,383 pw)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/10863472/": {
+    "date": "2026-11-25",
+    "price": "8,498 pcm (£1,961 pw)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/20629736/": {
+    "date": "2026-11-25",
+    "price": "3,900 pcm (£900 pw)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/20214250/": {
+    "date": "2026-11-25",
+    "price": "1,150 pcm (£265 pw)",
+    "sig": null
   }
 }
