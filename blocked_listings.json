@@ -4703,5 +4703,30 @@
     "date": "2026-11-25",
     "reason": "detail-keyword (porter/concierge/unfurnished)",
     "sig": "the lexington|EC1Y|2"
+  },
+  "https://www.onthemarket.com/details/15889341/": {
+    "date": "2026-11-26",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": "half moon court|EC1A|2"
+  },
+  "https://www.rightmove.co.uk/properties/95867082#/?channel=RES_LET": {
+    "date": "2026-11-26",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/20823316/": {
+    "date": "2026-11-26",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/20827515/": {
+    "date": "2026-11-26",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
+  },
+  "https://www.onthemarket.com/details/20774148/": {
+    "date": "2026-11-26",
+    "reason": "detail-keyword (porter/concierge/unfurnished)",
+    "sig": null
   }
 }
